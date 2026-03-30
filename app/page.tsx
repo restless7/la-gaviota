@@ -3,13 +3,15 @@ import ProductGrid from './components/store/ProductGrid';
 export default function Home() {
   return (
     <div className="flex flex-col">
-      {/* Wave Separator from Navigation */}
-      <div className="w-full">
-         <div className="wave-divider-top h-16 w-full -mt-2 relative z-0"></div>
+      {/* Sweeping Red Curve (Reference design match) */}
+      <div className="w-full relative z-0 h-24 md:h-40 overflow-hidden transform-gpu flex items-start -mt-[1px]">
+         <svg className="absolute top-0 w-full object-cover min-w-[1200px] h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#CC0000" fillOpacity="1" d="M0,96L80,112C160,128,320,160,480,170.7C640,181,800,171,960,138.7C1120,107,1280,53,1360,26.7L1440,0L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
+         </svg>
       </div>
 
       {/* Hero Section exactly like the reference "De la Granja a la Mesa" */}
-      <section className="relative w-full overflow-hidden bg-white text-slate-800 mb-12">
+      <section className="relative w-full overflow-hidden bg-white text-slate-800 mb-12 -mt-16 sm:-mt-24">
         {/* Leaf Background Motifs (using SVG shapes inside absolute divs) */}
         <div className="absolute right-0 top-0 opacity-10 pointer-events-none w-1/2 h-full flex items-center justify-end overflow-hidden">
            <svg className="w-[600px] h-[600px] text-gaviota-green fill-current" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">

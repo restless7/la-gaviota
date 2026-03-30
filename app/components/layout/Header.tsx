@@ -36,12 +36,12 @@ export default function Header() {
         </Link>
         
         {/* Navigation Matching the Reference (Inicio, Sobre Nosotros, Noticias, Comunidad, Contacto) */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-700">
-           <Link href="/" className="text-gaviota-red border-b-2 border-gaviota-red pb-1">Inicio</Link>
-           <Link href="#" className="hover:text-gaviota-red transition-colors pb-1">Sobre Nosotros</Link>
-           <Link href="#" className="hover:text-gaviota-red transition-colors pb-1">Noticias</Link>
-           <Link href="#" className="hover:text-gaviota-red transition-colors pb-1">Comunidad</Link>
-           <Link href="#" className="hover:text-gaviota-red transition-colors pb-1">Contacto</Link>
+        <nav className="hidden md:flex items-center gap-6 text-[15px] font-medium text-gray-600">
+           <Link href="/" className="text-gaviota-red border-b-2 border-gaviota-red pb-1 font-semibold">Inicio</Link>
+           <Link href="/sobre-nosotros" className="hover:text-gaviota-red transition-colors pb-1">Sobre Nosotros</Link>
+           <Link href="/noticias" className="hover:text-gaviota-red transition-colors pb-1">Noticias</Link>
+           <Link href="/comunidad" className="hover:text-gaviota-red transition-colors pb-1">Comunidad</Link>
+           <Link href="/contacto" className="hover:text-gaviota-red transition-colors pb-1">Contacto</Link>
         </nav>
 
         {/* Actions Menu */}
