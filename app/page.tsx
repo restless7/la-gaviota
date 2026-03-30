@@ -1,17 +1,18 @@
+import Image from 'next/image';
 import ProductGrid from './components/store/ProductGrid';
 
 export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Sweeping Red Curve (Reference design match) */}
-      <div className="w-full relative z-0 h-24 md:h-40 overflow-hidden transform-gpu flex items-start -mt-[1px]">
-         <svg className="absolute top-0 w-full object-cover min-w-[1200px] h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <div className="relative w-[100vw] left-[50%] -ml-[50vw] z-0 h-24 md:h-40 overflow-hidden flex items-start -mt-[1px]">
+         <svg className="absolute top-0 w-full object-cover min-w-[1440px] h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path fill="#CC0000" fillOpacity="1" d="M0,96L80,112C160,128,320,160,480,170.7C640,181,800,171,960,138.7C1120,107,1280,53,1360,26.7L1440,0L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
          </svg>
       </div>
 
       {/* Hero Section exactly like the reference "De la Granja a la Mesa" */}
-      <section className="relative w-full overflow-hidden bg-white text-slate-800 mb-12 -mt-16 sm:-mt-24">
+      <section className="relative w-[100vw] left-[50%] -ml-[50vw] overflow-hidden bg-white text-slate-800 mb-12 -mt-16 sm:-mt-24">
         {/* Leaf Background Motifs (using SVG shapes inside absolute divs) */}
         <div className="absolute right-0 top-0 opacity-10 pointer-events-none w-1/2 h-full flex items-center justify-end overflow-hidden">
            <svg className="w-[600px] h-[600px] text-gaviota-green fill-current" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -23,13 +24,21 @@ export default function Home() {
           
           {/* Left Farmer Image */}
           <div className="w-full md:w-1/2 flex justify-center md:justify-start">
-             <div className="relative w-full max-w-lg aspect-square rounded-3xl overflow-hidden shadow-2xl ring-4 ring-white">
-                {/* Fallback layout if no real image exists */}
-                <div className="absolute inset-0 bg-slate-200">
-                   <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+             <div className="relative w-full max-w-lg aspect-square mb-12 lg:mb-0">
+                {/* Real photo overlaying the background */}
+                <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl ring-4 ring-white z-20 bg-slate-100 flex items-center justify-center">
+                   <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400 opacity-0 hidden">
                      <span className="text-6xl mb-4">👨‍🌾</span>
-                     <span className="text-sm font-semibold max-w-[200px] text-center">Imagen del Productor Local (Agricultor con canasta)</span>
+                     <span className="text-sm font-semibold max-w-[200px] text-center">Imagen del Productor Local</span>
                    </div>
+                   
+                   <Image 
+                     src="/images/farmer.jpg" 
+                     alt="Productor Local La Gaviota" 
+                     fill 
+                     className="object-cover" 
+                     priority
+                   />
                 </div>
              </div>
           </div>

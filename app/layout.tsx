@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         <UserProvider>
           <div className="min-h-screen flex flex-col bg-slate-50">
             <Header />

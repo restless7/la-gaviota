@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useUserRole, UserRole } from '@/app/context/UserContext';
 
 export default function Header() {
@@ -18,21 +19,25 @@ export default function Header() {
       </div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        {/* Exact Logo implementation from reference */}
+        {/* Exact Logo implementation supporting user-provided image */}
         <Link href="/" className="flex items-center gap-2">
-          {/* Mockup for La Gaviota script logo with leaf */}
-          <div className="flex flex-col relative">
-             <div className="text-3xl font-serif text-gaviota-red font-black leading-none drop-shadow-sm tracking-tighter">
-                <span className="italic">La</span><br/>
-                <span className="text-4xl italic">Gaviota</span>
-             </div>
-             <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-1">
-                 <svg className="w-8 h-8 text-gaviota-green fill-current" viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22l1-2.3A13.89,13.89,0,0,0,20.53,12C20.53,12,17,8,17,8Z"/></svg>
-             </div>
-             <span className="text-[9px] bg-gaviota-red text-white font-bold px-1.5 py-0.5 rounded-full mt-1 w-max">
-                La forma chévere de mercar
-             </span>
-          </div>
+           <div className="relative w-40 h-16 flex items-center">
+              {/* Fallback layout if image not ready */}
+              <div className="absolute inset-0 flex flex-col items-start justify-center text-gaviota-red font-serif leading-none tracking-tighter opacity-0 hidden">
+                 <span className="italic text-2xl">La</span>
+                 <span className="italic text-3xl font-black">Gaviota</span>
+              </div>
+              
+              {/* Actual Image Tag pointing to public/images */}
+              <Image 
+                src="/images/logo.png" 
+                alt="La Gaviota Logo" 
+                width={160} 
+                height={64} 
+                className="object-contain"
+                priority
+              />
+           </div>
         </Link>
         
         {/* Navigation Matching the Reference (Inicio, Sobre Nosotros, Noticias, Comunidad, Contacto) */}
