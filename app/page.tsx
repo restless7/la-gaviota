@@ -2,65 +2,62 @@ import ProductGrid from './components/store/ProductGrid';
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-8">
-      {/* Hero Section */}
-      <section className="relative w-full rounded-3xl overflow-hidden bg-gaviota-red text-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-red-600/90 to-red-500/80 z-10"></div>
-        {/* Decorative Wave Divider at the bottom inside hero */}
-        <div className="wave-divider absolute bottom-0 left-0 right-0 h-12 z-20"></div>
-        
-        <div className="relative z-20 px-8 py-16 md:py-24 max-w-2xl">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-sm font-semibold mb-4 border border-white/30">
-            🌿 Del campo a tu negocio
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight font-serif drop-shadow-md">
-            Frescura que se nota, <br/>
-            <span className="text-gaviota-yellow">calidad que se prueba.</span>
-          </h1>
-          <p className="text-lg md:text-xl text-red-100 mb-8 max-w-xl font-medium leading-relaxed">
-            Surtifruver La Gaviota te trae las mejores frutas y verduras. Precios especiales para hogares, micromercados y restaurantes.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <button className="bg-white text-gaviota-red hover:bg-red-50 px-8 py-3.5 rounded-full font-bold shadow-lg transition-transform hover:scale-105 active:scale-95">
-              Comprar Ahora
-            </button>
-            <button className="bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white border border-white/20 px-8 py-3.5 rounded-full font-bold transition-colors">
-              Nuestras Ofertas
-            </button>
+    <div className="flex flex-col">
+      {/* Wave Separator from Navigation */}
+      <div className="w-full">
+         <div className="wave-divider-top h-16 w-full -mt-2 relative z-0"></div>
+      </div>
+
+      {/* Hero Section exactly like the reference "De la Granja a la Mesa" */}
+      <section className="relative w-full overflow-hidden bg-white text-slate-800 mb-12">
+        {/* Leaf Background Motifs (using SVG shapes inside absolute divs) */}
+        <div className="absolute right-0 top-0 opacity-10 pointer-events-none w-1/2 h-full flex items-center justify-end overflow-hidden">
+           <svg className="w-[600px] h-[600px] text-gaviota-green fill-current" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#22c55e" d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,81.3,-46.2C90.8,-33.3,96.8,-17.6,96.5,-2.1C96.2,13.4,89.5,26.8,79.9,38.8C70.3,50.8,57.7,61.4,43.4,68.9C29.1,76.4,13.1,80.8,-2.6,85.1C-18.3,89.4,-36.6,93.6,-50.7,86.2C-64.8,78.8,-74.7,59.8,-81.9,41C-89.1,22.2,-93.6,3.6,-92,-14.2C-90.4,-32,-82.7,-49,-69.7,-60.7C-56.7,-72.4,-38.4,-78.8,-21.8,-82.5C-5.2,-86.2,9.7,-87.2,24.4,-84.9C39.1,-82.6,53.6,-77.1,44.7,-76.4Z" transform="translate(100 100) scale(1.1)" />
+           </svg>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row items-center gap-12 relative z-10">
+          
+          {/* Left Farmer Image */}
+          <div className="w-full md:w-1/2 flex justify-center md:justify-start">
+             <div className="relative w-full max-w-lg aspect-square rounded-3xl overflow-hidden shadow-2xl ring-4 ring-white">
+                {/* Fallback layout if no real image exists */}
+                <div className="absolute inset-0 bg-slate-200">
+                   <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                     <span className="text-6xl mb-4">👨‍🌾</span>
+                     <span className="text-sm font-semibold max-w-[200px] text-center">Imagen del Productor Local (Agricultor con canasta)</span>
+                   </div>
+                </div>
+             </div>
           </div>
+
+          {/* Right Text Context */}
+          <div className="w-full md:w-1/2 flex flex-col space-y-6">
+             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gaviota-green font-serif leading-tight">
+               De la Granja a la Mesa: Nuestra Historia
+             </h1>
+             <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+               La Gaviota is a collective of the lowest local colombian farms at tetanae. That decoaores experience of psrvattw.
+               Teourment ecomonian dengmc logonores, ouvt hvvrods sorves a toval Colombian, and dortonze soemai rwies with ms-wm witta and prormoune/a as Colombian among as sawrathes vithluis.
+             </p>
+             <p className="text-2xl font-bold font-serif text-gaviota-red italic">
+               &quot;La forma chévere de mercar&quot;
+             </p>
+             <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+               La Gaviota is dolor sit amet, consectetur adipiscing elit. Sed dia unsrxansanoea ismod tincidunt et dolore mmcrarqua ainsnous mttura. Vetgooets nostrud miniuv pama...
+             </p>
+          </div>
+          
         </div>
       </section>
 
-      {/* Main Store Content */}
-      <ProductGrid />
-      
-      {/* Testimonials / Features Banner */}
-      <section className="mt-8 bg-green-50 rounded-3xl p-8 md:p-12 text-center border border-green-100">
-        <h2 className="text-2xl font-black text-gaviota-green font-serif mb-8">¿Por qué elegir La Gaviota?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="flex flex-col items-center">
-            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl mb-4 text-gaviota-green">
-              🚜
-            </div>
-            <h3 className="font-bold text-slate-800 mb-2">Directo del Productor</h3>
-            <p className="text-sm text-slate-600">Sin intermediarios, garantizando frescura y el mejor precio del mercado.</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl mb-4 text-gaviota-green">
-              🛵
-            </div>
-            <h3 className="font-bold text-slate-800 mb-2">Entrega Rápida</h3>
-            <p className="text-sm text-slate-600">Domicilios en toda la ciudad. ¡Gratis por compras superiores a $50.000!</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl mb-4 text-gaviota-green">
-              ⭐
-            </div>
-            <h3 className="font-bold text-slate-800 mb-2">Calidad Garantizada</h3>
-            <p className="text-sm text-slate-600">Seleccionamos a mano cada producto para asegurar que lleves solo lo mejor.</p>
-          </div>
-        </div>
-      </section>
+      {/* Main Store Content - Now with Sidebar Layout in ProductGrid Component */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mb-20 relative">
+        {/* Soft background glow for the grid area */}
+        <div className="absolute -inset-x-0 -top-20 h-40 bg-gradient-to-b from-transparent to-slate-50/50 pointer-events-none"></div>
+        <ProductGrid />
+      </div>
     </div>
   );
 }
