@@ -6,7 +6,7 @@ export default function WhatsAppHook() {
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2 isolate">
       {/* Tooltip/Hook Message */}
-      <div className="bg-white px-4 py-2 rounded-2xl shadow-lg border border-gray-100 text-sm font-medium text-gray-700 animate-bounce mb-1">
+      <div className="bg-white px-5 py-2.5 rounded-full shadow-xl border border-gray-100 text-sm font-medium text-gray-700 animate-bounce mb-1">
         ¿Dudas con tu pedido? Habla con IA 👋
       </div>
       

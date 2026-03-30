@@ -34,7 +34,7 @@ export default function Header() {
                 alt="La Gaviota Logo" 
                 width={160} 
                 height={64} 
-                className="object-contain"
+                className="object-contain w-auto h-auto max-h-16"
                 priority
               />
            </div>

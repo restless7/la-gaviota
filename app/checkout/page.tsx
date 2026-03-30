@@ -64,7 +64,8 @@ export default function CheckoutPage() {
                  alt="La Gaviota Logo" 
                  width={160} 
                  height={64} 
-                 className="object-contain drop-shadow-md bg-white rounded-xl p-2"
+                 className="object-contain w-auto h-auto max-h-16 drop-shadow-md bg-white rounded-xl p-2"
+                 priority
                />
              </Link>
           </div>

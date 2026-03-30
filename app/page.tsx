@@ -36,6 +36,7 @@ export default function Home() {
                      src="/IMAGES/Colombian_produce_on_202603260851.jpeg" 
                      alt="Productor Local La Gaviota" 
                      fill 
+                     sizes="(max-width: 768px) 100vw, 50vw"
                      className="object-cover" 
                      priority
                    />
@@ -49,14 +50,13 @@ export default function Home() {
                De la Granja a la Mesa: Nuestra Historia
              </h1>
              <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-               La Gaviota is a collective of the lowest local colombian farms at tetanae. That decoaores experience of psrvattw.
-               Teourment ecomonian dengmc logonores, ouvt hvvrods sorves a toval Colombian, and dortonze soemai rwies with ms-wm witta and prormoune/a as Colombian among as sawrathes vithluis.
+               En La Gaviota nos sentimos orgullosos de trabajar de la mano con las familias campesinas de nuestra región. Nuestro modelo elimina intermediarios para que recibas productos frescos, directamente desde la tierra hasta tu mesa, garantizando una calidad superior y un pago justo para el agricultor local.
              </p>
-             <p className="text-2xl font-bold font-serif text-gaviota-red italic">
+             <p className="text-2xl md:text-3xl font-bold font-serif text-gaviota-red italic">
                &quot;La forma chévere de mercar&quot;
              </p>
              <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-               La Gaviota is dolor sit amet, consectetur adipiscing elit. Sed dia unsrxansanoea ismod tincidunt et dolore mmcrarqua ainsnous mttura. Vetgooets nostrud miniuv pama...
+               Nuestra misión es transformar la manera en que compras tus frutas y verduras. Con entregas rápidas, selección cuidadosa y precios dinámicos competitivos para hogares y restaurantes, te aseguramos una experiencia excepcional con auténtico sabor a campo.
              </p>
           </div>
           
