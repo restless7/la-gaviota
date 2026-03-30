@@ -60,7 +60,7 @@ export default function CheckoutPage() {
           <div className="hidden md:flex justify-end">
              <Link href="/">
                <Image 
-                 src="/images/logo.png" 
+                 src="/IMAGES/logo.jpeg" 
                  alt="La Gaviota Logo" 
                  width={160} 
                  height={64} 

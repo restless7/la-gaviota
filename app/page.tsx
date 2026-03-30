@@ -33,7 +33,7 @@ export default function Home() {
                    </div>
                    
                    <Image 
-                     src="/images/farmer.jpg" 
+                     src="/IMAGES/Colombian_produce_on_202603260851.jpeg" 
                      alt="Productor Local La Gaviota" 
                      fill 
                      className="object-cover" 

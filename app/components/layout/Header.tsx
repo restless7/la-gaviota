@@ -30,7 +30,7 @@ export default function Header() {
               
               {/* Actual Image Tag pointing to public/images */}
               <Image 
-                src="/images/logo.png" 
+                src="/IMAGES/logo.jpeg" 
                 alt="La Gaviota Logo" 
                 width={160} 
                 height={64} 
