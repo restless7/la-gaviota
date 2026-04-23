@@ -1,87 +1,100 @@
 'use client';
 
 import React, { useState } from 'react';
-import ProductCard, { Product } from './ProductCard';
+import { ProductCard } from '@/src/components/store/ProductCard';
+import { Product } from '@/src/data/products';
+import Image from 'next/image';
+
+const CATEGORY_BANNERS: Record<string, string> = {
+  'Frutas': '/IMAGES/frutas-banner.jpeg',
+  'Verduras Y Hortalizas': '/IMAGES/verduras-banner.jpeg',
+  'Verduras': '/IMAGES/verduras-banner.jpeg',
+  'Carnes': '/IMAGES/carnes-banner1.jpeg',
+};
 
 const SAMPLE_PRODUCTS: Product[] = [
   {
     id: '1',
+    slug: 'tomate-chonto',
     name: 'Tomate Chonto',
-    category: 'Verduras',
+    category: 'Verduras Y Hortalizas',
     unit: '1 kg',
-    image: '/images/tomate.jpg',
-    prices: {
-      'Personas Naturales': 12000,
-      'Micromercados': 11000,
-      'Restaurantes': 9500,
-    }
+    imagePlaceholder: '/IMAGES/product-display.jpeg',
+    description: 'Fresco tomate chonto.',
+    priceRetail: 12000,
+    priceMicro: 11000,
+    priceRestaurant: 9500,
   },
   {
     id: '2',
+    slug: 'aguacate-hass',
     name: 'Aguacate Hass',
-    category: 'Verduras',
+    category: 'Frutas',
     unit: '1 kg',
-    image: '/images/aguacate.jpg',
-    prices: {
-      'Personas Naturales': 12000,
-      'Micromercados': 10500,
-      'Restaurantes': 9000,
-    }
+    imagePlaceholder: '/IMAGES/product-display.jpeg',
+    description: 'Aguacate hass de calidad.',
+    priceRetail: 12000,
+    priceMicro: 10500,
+    priceRestaurant: 9000,
   },
   {
     id: '3',
+    slug: 'manzana-roja',
     name: 'Manzana Roja',
     category: 'Frutas',
     unit: '1 kg',
-    image: '/images/manzana.jpg',
-    prices: {
-      'Personas Naturales': 15000,
-      'Micromercados': 13500,
-      'Restaurantes': 12000,
-    }
+    imagePlaceholder: '/IMAGES/product-display.jpeg',
+    description: 'Manzana roja fresca.',
+    priceRetail: 15000,
+    priceMicro: 13500,
+    priceRestaurant: 12000,
   },
   {
     id: '4',
+    slug: 'zanahoria',
     name: 'Zanahoria',
-    category: 'Verduras',
+    category: 'Verduras Y Hortalizas',
     unit: '1 kg',
-    image: '/images/zanahoria.jpg',
-    prices: {
-      'Personas Naturales': 3200,
-      'Micromercados': 2900,
-      'Restaurantes': 2600,
-    }
+    imagePlaceholder: '/IMAGES/product-display.jpeg',
+    description: 'Zanahoria fresca.',
+    priceRetail: 3200,
+    priceMicro: 2900,
+    priceRestaurant: 2600,
   },
   {
     id: '5',
+    slug: 'banano-criollo',
     name: 'Banano Criollo',
     category: 'Frutas',
     unit: '1 kg',
-    image: '/images/banano.jpg',
-    prices: {
-      'Personas Naturales': 2800,
-      'Micromercados': 2500,
-      'Restaurantes': 2200,
-    }
+    imagePlaceholder: '/IMAGES/product-display.jpeg',
+    description: 'Banano criollo dulce.',
+    priceRetail: 2800,
+    priceMicro: 2500,
+    priceRestaurant: 2200,
   },
   {
     id: '6',
+    slug: 'kit-sancocho',
     name: 'Kit Sancocho Familiar',
-    category: 'Kits',
+    category: 'Kits Negocios',
     unit: 'Bandeja',
-    image: '/images/sancocho.jpg',
-    prices: {
-      'Personas Naturales': 12000,
-      'Micromercados': 11000,
-      'Restaurantes': 9500,
-    }
+    imagePlaceholder: '/IMAGES/product-display.jpeg',
+    description: 'Kit completo para sancocho.',
+    priceRetail: 12000,
+    priceMicro: 11000,
+    priceRestaurant: 9500,
   }
 ];
 
 export default function ProductGrid() {
-  const [filter, setFilter] = useState<'Todos' | 'Frutas' | 'Verduras' | 'Kits'>('Todos');
+  const [filter, setFilter] = useState<'Todos' | 'Frutas' | 'Verduras' | 'Verduras Y Hortalizas' | 'Carnes' | 'Kits'>('Todos');
 
-  const filteredProducts = SAMPLE_PRODUCTS.filter(p => filter === 'Todos' || p.category === filter);
+  const filteredProducts = SAMPLE_PRODUCTS.filter(p => {
+    if (filter === 'Todos') return true;
+    if (filter === 'Verduras') return p.category === 'Verduras Y Hortalizas';
+    return p.category === filter;
+  });
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 w-full mt-10">
@@ -93,10 +106,10 @@ export default function ProductGrid() {
         <div className="flex flex-col">
           <h3 className="font-semibold text-slate-800 mb-3 text-[15px]">Categorías</h3>
           <div className="flex flex-col gap-1.5 pl-1">
-            {['Todos', 'Frutas', 'Verduras', 'Kits'].map(cat => (
+            {['Todos', 'Frutas', 'Verduras', 'Carnes', 'Kits'].map(cat => (
               <button
                 key={cat}
-                onClick={() => setFilter(cat as typeof filter)}
+                onClick={() => setFilter(cat as any)}
                 className={`text-left px-4 py-2 rounded-full text-[14px] font-medium transition-all ${
                   filter === cat 
                     ? 'bg-[#CC0000] text-white shadow-md' 
@@ -144,6 +157,22 @@ export default function ProductGrid() {
 
       {/* Main Grid Area */}
       <section className="flex-1">
+        {/* Dynamic Category Banner */}
+        {filter !== 'Todos' && CATEGORY_BANNERS[filter] && (
+          <div className="w-full relative aspect-[21/9] md:aspect-[16/4] rounded-3xl overflow-hidden shadow-md mb-8 group cursor-pointer">
+             <Image 
+               src={CATEGORY_BANNERS[filter]} 
+               alt={`${filter} Banner`} 
+               fill 
+               className="object-cover object-center group-hover:scale-105 transition-transform duration-1000"
+               sizes="(max-width: 768px) 100vw, 80vw"
+             />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10 flex flex-col justify-end p-6 md:p-8">
+               <h2 className="text-3xl md:text-5xl font-black text-white font-serif drop-shadow-lg uppercase tracking-tight">{filter}</h2>
+             </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />

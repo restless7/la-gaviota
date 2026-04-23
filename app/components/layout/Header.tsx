@@ -3,70 +3,71 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useUserRole, UserRole } from '@/app/context/UserContext';
+import { useCart } from '@/src/contexts/CartContext';
+import { MiniCartDropdown } from '@/src/components/cart/MiniCartDropdown';
 
 export default function Header() {
-  const { role, setRole } = useUserRole();
-
-  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRole(e.target.value as UserRole);
-  };
+  const { itemCount, isCartOpen, setIsCartOpen } = useCart();
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white transition-all shadow-sm">
-      <div className="bg-gaviota-red text-white py-1 px-4 text-xs font-semibold text-center hidden sm:block">
-        ¡Ventas mayoristas para restaurantes! 🚜 Contacta al equipo comercial
-      </div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        {/* Exact Logo implementation supporting user-provided image */}
+    <header className="sticky top-0 z-50 w-full bg-white transition-all shadow-sm border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+        {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-           <div className="relative w-40 h-16 flex items-center">
-              {/* Fallback layout if image not ready */}
-              <div className="absolute inset-0 flex flex-col items-start justify-center text-gaviota-red font-serif leading-none tracking-tighter opacity-0 hidden">
-                 <span className="italic text-2xl">La</span>
-                 <span className="italic text-3xl font-black">Gaviota</span>
-              </div>
-              
-              {/* Actual Image Tag pointing to public/images */}
+           <div className="relative w-[140px] sm:w-[170px] h-12 flex items-center">
               <Image 
                 src="/IMAGES/logo.jpeg" 
                 alt="La Gaviota Logo" 
-                width={160} 
-                height={64} 
-                className="object-contain w-auto h-auto max-h-16"
+                fill
+                className="object-contain"
                 priority
               />
            </div>
         </Link>
         
-        {/* Navigation Matching the Reference (Inicio, Sobre Nosotros, Noticias, Comunidad, Contacto) */}
-        <nav className="hidden md:flex items-center gap-6 text-[15px] font-medium text-gray-600">
-           <Link href="/" className="text-gaviota-red border-b-2 border-gaviota-red pb-1 font-semibold">Inicio</Link>
-           <Link href="/sobre-nosotros" className="hover:text-gaviota-red transition-colors pb-1">Sobre Nosotros</Link>
-           <Link href="/noticias" className="hover:text-gaviota-red transition-colors pb-1">Noticias</Link>
-           <Link href="/comunidad" className="hover:text-gaviota-red transition-colors pb-1">Comunidad</Link>
-           <Link href="/contacto" className="hover:text-gaviota-red transition-colors pb-1">Contacto</Link>
+        {/* Navigation */}
+        <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-gray-700">
+           <Link href="/" className="hover:text-[#E30613] transition-colors pb-1">Inicio</Link>
+           <Link href="/shop" className="hover:text-[#E30613] transition-colors pb-1 font-bold">Tienda</Link>
+           <Link href="/sobre-nosotros" className="hover:text-[#E30613] transition-colors pb-1">Nosotros</Link>
+           <Link href="/dashboard" className="text-[#83b745] hover:text-[#6c9c36] font-black transition-colors pb-1 flex items-center gap-1 bg-[#83b745]/10 px-3 py-1.5 rounded-full ml-4">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+              Mi Portal
+           </Link>
         </nav>
 
         {/* Actions Menu */}
-        <div className="flex items-center gap-5">
-          {/* User Role Testing Box */}
-          <div className="flex flex-col items-end hidden lg:flex">
-            <span className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">Rol de Compra</span>
-            <select 
-              value={role} 
-              onChange={handleRoleChange}
-              className="text-xs font-bold bg-slate-50 text-slate-800 border border-slate-200 rounded-md p-1 outline-none cursor-pointer hover:bg-slate-100 transition-colors"
-            >
-              <option value="Personas Naturales">Natural</option>
-              <option value="Micromercados">Micromercados</option>
-              <option value="Restaurantes">Restaurantes</option>
-            </select>
+        <div className="flex items-center gap-4">
+          <div className="relative">
+             <button 
+               onClick={() => setIsCartOpen(!isCartOpen)}
+               className="flex items-center justify-center p-2 text-gray-700 hover:text-[#E30613] transition-colors relative"
+             >
+               <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                 <path d="M3 6h18"/>
+                 <path d="M16 10a4 4 0 0 1-8 0"/>
+               </svg>
+               {itemCount > 0 && (
+                 <span className="absolute -top-1 -right-1 bg-[#FFCC00] text-[#E30613] text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-sm border border-white">
+                   {itemCount}
+                 </span>
+               )}
+             </button>
+
+             {/* Rendering the Dropdown directly underneath (Hidden on Mobile) */}
+             {isCartOpen && (
+                <div className="hidden md:block">
+                   <MiniCartDropdown onClose={() => setIsCartOpen(false)} />
+                </div>
+             )}
           </div>
           
-          <button className="text-gray-700 p-1 hover:text-gaviota-red transition-colors md:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button 
+             onClick={() => setIsCartOpen(!isCartOpen)}
+             className="text-gray-700 p-1 hover:text-[#E30613] transition-colors md:hidden"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
