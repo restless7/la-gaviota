@@ -1,6 +1,7 @@
 {
   "name": "la-gaviota",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "description": "La Gaviota Ecommerce - Standalone Admin & Pricing System",
   "private": true,
   "scripts": {
     "dev": "next dev",
