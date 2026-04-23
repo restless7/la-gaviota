@@ -23,10 +23,13 @@ async function main() {
   
   // 1. Seed Pricing Configs
   console.log("⚙️  Seeding Pricing Configs...");
-  // We use string names for mutations to avoid dependency on generated files in a standalone script if they are not built yet
+  // We use string names for mutations to avoid dependency on generated files in a standalone script
+  // @ts-ignore
   await client.mutation("gaviota:updatePricingConfig", { key: "retail_margin", value: 0.25 });
+  // @ts-ignore
   await client.mutation("gaviota:updatePricingConfig", { key: "micro_margin", value: 0.15 });
-  await client.mutation("gaviota:updatePricingConfig", { key: "restaurant_margin", value: 0.05 });
+  // @ts-ignore
+  await client.mutation("gaviota:updatePricingConfig", { key: "restaurant_margin", value: 0.10 });
 
   // 2. Seed Products in batches
   const batchSize = 50;

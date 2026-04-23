@@ -10,6 +10,7 @@ export function ConvexProvider({ children }: {
 }) {
   return (
     <ConvexProviderBase client={convex}>
+      {/* @ts-ignore - Monorepo React version mismatch */}
       {children}
     </ConvexProviderBase>
   );

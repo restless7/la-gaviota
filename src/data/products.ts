@@ -6,6 +6,7 @@ export interface Product {
   subcategory?: string;
   unit: string;
   imagePlaceholder: string;
+  image?: string; // Optional field used by some admin views
   description: string;
   priceRetail: number;
   priceMicro: number;

@@ -56,7 +56,7 @@ export default function InventoryPage() {
                      <tr key={p.id} className="hover:bg-slate-50 transition-colors">
                         <td className="p-4 flex items-center gap-3">
                            <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-100 relative bg-white">
-                              <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                              <img src={p.image || p.imagePlaceholder} alt={p.name} className="w-full h-full object-cover" />
                            </div>
                            <p className="font-bold text-slate-800">{p.name}</p>
                         </td>
