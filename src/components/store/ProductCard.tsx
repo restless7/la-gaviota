@@ -1,21 +1,39 @@
 'use client';
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { Product } from '@/src/data/products';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { useCart } from '@/src/contexts/CartContext';
+
+const CATEGORY_GRADIENTS: Record<string, string> = {
+  'Frutas': 'from-orange-400 to-red-400',
+  'Verduras Y Hortalizas': 'from-green-400 to-emerald-500',
+  'Pulpas': 'from-purple-400 to-pink-400',
+  'Varios Preparados': 'from-amber-400 to-orange-400',
+  'Carnes': 'from-red-500 to-rose-600',
+  'Condimentos Frutos Secos Aromaticas': 'from-yellow-500 to-amber-500',
+  'Kits Negocios': 'from-blue-400 to-indigo-500',
+};
+
+const CATEGORY_EMOJI: Record<string, string> = {
+  'Frutas': '🍎',
+  'Verduras Y Hortalizas': '🥬',
+  'Pulpas': '🧃',
+  'Varios Preparados': '🥗',
+  'Carnes': '🥩',
+  'Condimentos Frutos Secos Aromaticas': '🌶️',
+  'Kits Negocios': '📦',
+};
 
 export function ProductCard({ product }: { product: Product }) {
   const { role } = useUserRole();
   const { addToCart, setIsCartOpen } = useCart();
   const [isHovered, setIsHovered] = useState(false);
-  const [imageError, setImageError] = useState(false);
 
   // Dynamic Pricing Logic directly integrated via Context Switch
-  const activePrice = role === 'Restaurantes' 
-        ? product.priceRestaurant 
-        : role === 'Micromercados' 
-           ? product.priceMicro 
+  const activePrice = role === 'Restaurantes'
+        ? product.priceRestaurant
+        : role === 'Micromercados'
+           ? product.priceMicro
            : product.priceRetail;
 
   const handleAddToCart = () => {
@@ -23,34 +41,33 @@ export function ProductCard({ product }: { product: Product }) {
      setIsCartOpen(true); // Triggers Modal automatically
   };
 
+  const gradient = CATEGORY_GRADIENTS[product.category] || 'from-slate-400 to-slate-500';
+  const emoji = CATEGORY_EMOJI[product.category] || '📦';
+  const initial = product.name.charAt(0).toUpperCase();
+
   return (
-    <div 
+    <div
        className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full relative"
        onMouseEnter={() => setIsHovered(true)}
        onMouseLeave={() => setIsHovered(false)}
     >
-       {/* Image Section */}
-       <div className="aspect-[4/3] w-full relative bg-slate-100 overflow-hidden flex items-center justify-center p-6">
-          {!imageError ? (
-             <div className="relative w-full h-full transform transition-transform duration-500 group-hover:scale-110">
-                <Image 
-                   src={`/IMAGES/product-display.jpeg`}
-                   alt={product.name}
-                   fill
-                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                   className="object-cover mix-blend-multiply" 
-                   onError={() => setImageError(true)}
-                />
-             </div>
-          ) : (
-             <span className="text-6xl text-slate-200">🍅</span>
-          )}
-          
+       {/* Image Section — Dynamic Category Placeholder */}
+       <div className={`aspect-[4/3] w-full relative bg-gradient-to-br ${gradient} overflow-hidden flex items-center justify-center`}>
+          {/* Large emoji background */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-20">
+            <span className="text-[120px] select-none">{emoji}</span>
+          </div>
+          {/* Product initial */}
+          <div className="relative z-10 flex flex-col items-center gap-1">
+            <span className="text-6xl font-black text-white/90 drop-shadow-lg">{initial}</span>
+            <span className="text-white/70 text-xs font-bold uppercase tracking-widest">{product.category.split(' ')[0]}</span>
+          </div>
+
           {/* Quick Add Overlay */}
           <div className={`absolute bottom-4 left-0 right-0 flex justify-center opacity-0 transform translate-y-4 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : ''}`}>
-             
+
              {role === 'Personas Naturales' ? (
-                <button 
+                <button
                    onClick={handleAddToCart}
                    className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] hover:text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all w-[85%] truncate flex items-center justify-center gap-2"
                 >
@@ -59,13 +76,13 @@ export function ProductCard({ product }: { product: Product }) {
                 </button>
              ) : (
                 <div className="flex gap-2 w-[90%]">
-                   <button 
+                   <button
                       onClick={handleAddToCart}
                       className="bg-white border border-[#83b745] text-[#83b745] hover:bg-[#83b745] hover:text-white px-2 py-2 rounded-xl font-bold text-xs shadow-md transition-all flex-1 text-center"
                    >
                       +1 {product.unit}
                    </button>
-                   <button 
+                   <button
                       onClick={() => { addToCart(product, 10); setIsCartOpen(true); }}
                       className="bg-[#83b745] hover:bg-[#6c9c36] text-white px-2 py-2 rounded-xl font-black text-xs shadow-md transition-all flex-1 text-center truncate"
                    >

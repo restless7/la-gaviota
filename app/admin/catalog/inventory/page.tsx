@@ -1,10 +1,51 @@
 'use client';
 
-import React from 'react';
-import { Package, Search, Filter, AlertTriangle, CheckCircle2 } from 'lucide-react';
-import { products } from '@/src/data/products';
+import React, { useState, useMemo } from 'react';
+import { Package, Search, Filter, AlertTriangle, ChevronDown, Save } from 'lucide-react';
+import { products, CATEGORIES } from '@/src/data/products';
+
+// Deterministic stock based on product index (no Math.random)
+function getStock(index: number): number {
+  const seeds = [320, 45, 180, 12, 500, 88, 210, 35, 150, 420, 8, 275, 60, 340, 22, 190, 400, 55, 130, 310];
+  return seeds[index % seeds.length];
+}
+
+const CATEGORY_EMOJI: Record<string, string> = {
+  'Frutas': '🍎',
+  'Verduras Y Hortalizas': '🥬',
+  'Pulpas': '🧃',
+  'Varios Preparados': '🥗',
+  'Carnes': '🥩',
+  'Condimentos Frutos Secos Aromaticas': '🌶️',
+  'Kits Negocios': '📦',
+};
 
 export default function InventoryPage() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [savedItems, setSavedItems] = useState<Set<string>>(new Set());
+
+  const filtered = useMemo(() => {
+    return products.filter(p => {
+      const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory ? p.category === selectedCategory : true;
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchTerm, selectedCategory]);
+
+  const handleSave = (id: string) => {
+    setSavedItems(prev => new Set(prev).add(id));
+    setTimeout(() => {
+      setSavedItems(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }, 2000);
+  };
+
+  const lowStockCount = products.filter((_, i) => getStock(i) < 50).length;
+
   return (
     <div className="p-8 max-w-[1400px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
@@ -14,7 +55,9 @@ export default function InventoryPage() {
             </div>
             <div>
                <h1 className="text-3xl font-black text-slate-800">Inventario General</h1>
-               <p className="text-gray-500 mt-1">Existencias, mermas y temporada de productos agrícolas.</p>
+               <p className="text-gray-500 mt-1">
+                 {products.length} productos registrados · <span className="text-[#E30613] font-bold">{lowStockCount} en stock bajo</span>
+               </p>
             </div>
          </div>
          <button className="bg-slate-800 hover:bg-slate-900 text-white px-6 py-2 rounded-lg font-bold shadow-md transition-all">
@@ -26,11 +69,30 @@ export default function InventoryPage() {
       <div className="flex gap-4 items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100">
          <div className="flex-1 relative">
             <Search className="h-5 w-5 absolute left-3 top-2.5 text-gray-400" />
-            <input type="text" placeholder="Buscar producto por nombre o SKU..." className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg outline-none focus:border-[#4CAF50] focus:ring-1 focus:ring-[#4CAF50] transition-all bg-slate-50" />
+            <input
+              type="text"
+              placeholder="Buscar producto por nombre..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg outline-none focus:border-[#4CAF50] focus:ring-1 focus:ring-[#4CAF50] transition-all bg-slate-50"
+            />
          </div>
-         <button className="flex items-center gap-2 border border-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors font-medium">
-            <Filter className="h-4 w-4" /> Temporada
-         </button>
+         <div className="relative">
+           <select
+             value={selectedCategory || ''}
+             onChange={(e) => setSelectedCategory(e.target.value || null)}
+             className="appearance-none bg-white border border-gray-200 rounded-lg pl-4 pr-10 py-2 font-medium text-slate-700 outline-none focus:border-[#4CAF50] cursor-pointer"
+           >
+             <option value="">Todas</option>
+             {CATEGORIES.map(cat => (
+               <option key={cat} value={cat}>{cat}</option>
+             ))}
+           </select>
+           <ChevronDown className="h-4 w-4 absolute right-3 top-3 text-gray-400 pointer-events-none" />
+         </div>
+         <span className="text-sm font-bold text-gray-400 whitespace-nowrap">
+           {filtered.length} resultados
+         </span>
       </div>
 
       {/* Datagrid */}
@@ -48,26 +110,32 @@ export default function InventoryPage() {
                   </tr>
                </thead>
                <tbody className="divide-y divide-gray-100">
-                  {products.slice(0, 8).map((p, i) => {
-                     const stock = Math.floor(Math.random() * 500) + 10;
+                  {filtered.map((p, i) => {
+                     const globalIndex = products.indexOf(p);
+                     const stock = getStock(globalIndex);
                      const isLowStock = stock < 50;
+                     const isSaved = savedItems.has(p.id);
+                     const emoji = CATEGORY_EMOJI[p.category] || '📦';
 
                      return (
                      <tr key={p.id} className="hover:bg-slate-50 transition-colors">
                         <td className="p-4 flex items-center gap-3">
-                           <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-100 relative bg-white">
-                              <img src={p.image || p.imagePlaceholder} alt={p.name} className="w-full h-full object-cover" />
+                           <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-100 relative bg-slate-100 flex items-center justify-center text-xl">
+                              {emoji}
                            </div>
-                           <p className="font-bold text-slate-800">{p.name}</p>
+                           <div>
+                             <p className="font-bold text-slate-800">{p.name}</p>
+                             <p className="text-[10px] text-gray-400">{p.unit}</p>
+                           </div>
                         </td>
                         <td className="p-4 text-center text-sm font-medium text-gray-500">{p.category}</td>
                         <td className="p-4 text-right">
                            <div className="flex items-center justify-end gap-2">
                               {isLowStock && <AlertTriangle className="h-4 w-4 text-[#E30613]" />}
-                              <input 
-                                 type="text" 
+                              <input
+                                 type="text"
                                  defaultValue={`${stock}`}
-                                 className={`w-20 text-right px-2 py-1 border rounded-md font-bold focus:ring-[#4CAF50] focus:border-[#4CAF50] outline-none ${isLowStock ? 'border-[#E30613]/50 text-[#E30613] bg-[#E30613]/5' : 'border-gray-200 text-slate-700'}`} 
+                                 className={`w-20 text-right px-2 py-1 border rounded-md font-bold focus:ring-[#4CAF50] focus:border-[#4CAF50] outline-none ${isLowStock ? 'border-[#E30613]/50 text-[#E30613] bg-[#E30613]/5' : 'border-gray-200 text-slate-700'}`}
                               />
                            </div>
                         </td>
@@ -76,16 +144,19 @@ export default function InventoryPage() {
                         </td>
                         <td className="p-4 text-center">
                            <label className="relative inline-flex items-center cursor-pointer">
-                             <input type="checkbox" className="sr-only peer" defaultChecked={i % 4 !== 0} />
+                             <input type="checkbox" className="sr-only peer" defaultChecked={globalIndex % 4 !== 0} />
                              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4CAF50]"></div>
                              <span className="ml-3 text-sm font-medium text-gray-600">
-                                {i % 4 !== 0 ? 'En Temporada' : 'Agotado'}
+                                {globalIndex % 4 !== 0 ? 'En Temporada' : 'Agotado'}
                              </span>
                            </label>
                         </td>
                         <td className="p-4 text-center">
-                           <button className="text-[#4CAF50] hover:text-green-700 font-bold text-sm transition-colors decoration-2 hover:underline">
-                              Guardar
+                           <button
+                             onClick={() => handleSave(p.id)}
+                             className={`font-bold text-sm transition-all ${isSaved ? 'text-green-600' : 'text-[#4CAF50] hover:text-green-700 hover:underline decoration-2'}`}
+                           >
+                              {isSaved ? '✓ Guardado' : 'Guardar'}
                            </button>
                         </td>
                      </tr>

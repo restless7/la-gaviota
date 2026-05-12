@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DndContext, closestCorners, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { KanbanColumn } from './KanbanColumn';
@@ -9,9 +9,39 @@ import { OrderSummarySheet } from './OrderSummarySheet';
 
 const COLUMNS: OrderStatus[] = ['Pendiente', 'En Preparación', 'En Ruta', 'Entregado'];
 
+const STORAGE_KEY = 'gaviota_orders';
+
+function loadOrders(): Order[] {
+  if (typeof window === 'undefined') return initialOrders;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch { /* ignore */ }
+  return initialOrders;
+}
+
+function saveOrders(orders: Order[]) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); } catch { /* ignore */ }
+}
+
 export function OrderKanbanBoard() {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Load from localStorage only on client
+  useEffect(() => {
+    setOrders(loadOrders());
+    setMounted(true);
+  }, []);
+
+  // Persist on change
+  useEffect(() => {
+    if (mounted) saveOrders(orders);
+  }, [orders, mounted]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -58,12 +88,35 @@ export function OrderKanbanBoard() {
     });
   };
 
+  const resetOrders = () => {
+    setOrders(initialOrders);
+    localStorage.removeItem(STORAGE_KEY);
+  };
+
   return (
     <div className="flex flex-col h-[calc(100vh-160px)]">
       <div className="flex items-center justify-between mb-6">
          <div>
             <h1 className="text-3xl font-black text-slate-800 font-serif">Gestión de Pedidos</h1>
             <p className="text-gray-500">Arrastra las tarjetas para cambiar el estado de la operación logística.</p>
+         </div>
+         <div className="flex items-center gap-4">
+            <div className="flex gap-2 text-sm">
+              {COLUMNS.map(status => {
+                const count = orders.filter(o => o.status === status).length;
+                return (
+                  <span key={status} className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-bold text-xs">
+                    {status}: {count}
+                  </span>
+                );
+              })}
+            </div>
+            <button
+              onClick={resetOrders}
+              className="text-xs text-gray-400 hover:text-gray-600 border border-gray-200 px-3 py-1 rounded-lg"
+            >
+              Resetear
+            </button>
          </div>
       </div>
 
@@ -73,10 +126,10 @@ export function OrderKanbanBoard() {
             const columnOrders = orders.filter((o) => o.status === status);
             return (
               <SortableContext key={status} id={status} items={columnOrders.map(o => o.id)}>
-                <KanbanColumn 
-                   status={status} 
-                   orders={columnOrders} 
-                   onSelectOrder={(order: Order) => setSelectedOrder(order)} 
+                <KanbanColumn
+                   status={status}
+                   orders={columnOrders}
+                   onSelectOrder={(order: Order) => setSelectedOrder(order)}
                 />
               </SortableContext>
             );
@@ -86,9 +139,9 @@ export function OrderKanbanBoard() {
 
       {/* Slide-out Sheet for Order Detail */}
       {selectedOrder && (
-         <OrderSummarySheet 
-            order={selectedOrder} 
-            onClose={() => setSelectedOrder(null)} 
+         <OrderSummarySheet
+            order={selectedOrder}
+            onClose={() => setSelectedOrder(null)}
          />
       )}
     </div>

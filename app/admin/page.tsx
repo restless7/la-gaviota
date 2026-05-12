@@ -8,14 +8,14 @@ import {
   TrendingUp,
   PackageSearch,
   ShoppingCart,
-  Zap,
   Globe,
   Database,
   Wifi,
-  WifiOff
 } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { initialOrders } from '@/src/data/mockOrders';
+import { mockSuppliers } from '@/src/data/mockSuppliers';
+import { products } from '@/src/data/products';
 
 const StatCard = ({
   title,
@@ -94,14 +94,32 @@ const QuickAction = ({
   </Link>
 );
 
+// Derived metrics from mock data
+const pendingOrders = initialOrders.filter(o => o.status === 'Pendiente').length;
+const totalRevenue = initialOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+const formattedRevenue = `$${(totalRevenue / 1_000_000).toFixed(1)}M`;
+const activeSuppliers = mockSuppliers.filter(s => s.status === 'Activo').length;
+
+// Get recent orders for dashboard table (latest 5)
+const recentB2BOrders = initialOrders
+  .filter(o => o.customerTier !== 'Personas Naturales')
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 5);
+
+// Low stock items (deterministic)
+const lowStockItems = [
+  { name: 'Tomate Chonto', stock: 5, unit: 'kg', severity: 'critical' },
+  { name: 'Cebolla Cabezona', stock: 12, unit: 'kg', severity: 'warning' },
+  { name: 'Ajo Blanco', stock: 8, unit: 'kg', severity: 'critical' },
+];
+
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate initial load of Gaviota Metrics
     setTimeout(() => {
       setLoading(false);
-    }, 800);
+    }, 600);
   }, []);
 
   if (loading) {
@@ -112,6 +130,21 @@ export default function AdminDashboard() {
     );
   }
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Pendiente': return 'text-orange-600';
+      case 'En Preparación': return 'text-blue-600';
+      case 'En Ruta': return 'text-yellow-600';
+      case 'Entregado': return 'text-green-600';
+      default: return 'text-gray-600';
+    }
+  };
+
+  const getTierBadge = (tier: string) => {
+    if (tier === 'Micromercados') return <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-md text-[10px] font-bold uppercase">Micromercado</span>;
+    return <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-[10px] font-bold uppercase">Restaurante</span>;
+  };
+
   return (
     <div className="space-y-8 animate-fade-in max-w-7xl mx-auto">
       {/* Header */}
@@ -121,7 +154,7 @@ export default function AdminDashboard() {
             Módulo General La Gaviota
           </h1>
           <p className="text-gray-500 font-medium">
-            Resumen operativo y métricas fresquitas del día.
+            Resumen operativo — {products.length} productos · {initialOrders.length} pedidos · {mockSuppliers.length} proveedores
           </p>
         </div>
 
@@ -138,11 +171,11 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Stats Grid */}
+      {/* Stats Grid — derived from actual data */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
-          title="Ventas del Día"
-          value="$4.8M"
+          title="Ventas Totales"
+          value={formattedRevenue}
           icon={TrendingUp}
           color="text-[#4CAF50]"
           bgColor="bg-[#4CAF50]"
@@ -150,22 +183,22 @@ export default function AdminDashboard() {
         />
         <StatCard
           title="Pedidos Pendientes"
-          value="24"
+          value={pendingOrders}
           icon={ShoppingBag}
           color="text-[#E30613]"
           bgColor="bg-[#E30613]"
         />
         <StatCard
-          title="Clientes (Todos los Tiers)"
-          value="1.240"
+          title="Proveedores Activos"
+          value={`${activeSuppliers}/${mockSuppliers.length}`}
           icon={Users}
           color="text-[#1C2059]"
           bgColor="bg-[#1C2059]"
-          trend="+5 nuevos hoy"
+          trend={`${activeSuppliers} verificados`}
         />
         <StatCard
           title="Alertas Inventario"
-          value="8 items"
+          value={`${lowStockItems.length} items`}
           icon={AlertTriangle}
           color="text-[#FFCC00]"
           bgColor="bg-[#FFCC00]"
@@ -208,7 +241,7 @@ export default function AdminDashboard() {
                </div>
             </div>
             
-            {/* Recent Orders Overview */}
+            {/* Recent B2B Orders Overview — from real mock data */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                <div className="flex justify-between items-center mb-6">
                   <h3 className="font-bold text-lg text-slate-800">Últimos Pedidos B2B (Wholesale)</h3>
@@ -219,6 +252,7 @@ export default function AdminDashboard() {
                   <table className="w-full text-left text-sm">
                      <thead className="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-[10px] font-black">
                         <tr>
+                           <th className="px-4 py-3">ID</th>
                            <th className="px-4 py-3">Cliente</th>
                            <th className="px-4 py-3">Tier</th>
                            <th className="px-4 py-3">Monto</th>
@@ -226,24 +260,15 @@ export default function AdminDashboard() {
                         </tr>
                      </thead>
                      <tbody className="divide-y divide-gray-50">
-                        <tr className="hover:bg-slate-50">
-                           <td className="px-4 py-3 font-bold text-slate-800">Tienda Las Palmas</td>
-                           <td className="px-4 py-3"><span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-md text-[10px] font-bold uppercase">Micromercado</span></td>
-                           <td className="px-4 py-3 font-medium">$450,000</td>
-                           <td className="px-4 py-3 text-yellow-600 font-bold">Empacando</td>
-                        </tr>
-                        <tr className="hover:bg-slate-50">
-                           <td className="px-4 py-3 font-bold text-slate-800">Asadero El Pollo Gordo</td>
-                           <td className="px-4 py-3"><span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-[10px] font-bold uppercase">Restaurante</span></td>
-                           <td className="px-4 py-3 font-medium">$1,200,000</td>
-                           <td className="px-4 py-3 text-green-600 font-bold">En Camino</td>
-                        </tr>
-                        <tr className="hover:bg-slate-50">
-                           <td className="px-4 py-3 font-bold text-slate-800">Mercado Doña Flor</td>
-                           <td className="px-4 py-3"><span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-md text-[10px] font-bold uppercase">Micromercado</span></td>
-                           <td className="px-4 py-3 font-medium">$320,000</td>
-                           <td className="px-4 py-3 text-green-600 font-bold">Entregado</td>
-                        </tr>
+                        {recentB2BOrders.map(order => (
+                           <tr key={order.id} className="hover:bg-slate-50">
+                              <td className="px-4 py-3 font-mono text-xs text-gray-400">{order.id}</td>
+                              <td className="px-4 py-3 font-bold text-slate-800">{order.customerName}</td>
+                              <td className="px-4 py-3">{getTierBadge(order.customerTier)}</td>
+                              <td className="px-4 py-3 font-medium">${order.totalAmount.toLocaleString()}</td>
+                              <td className={`px-4 py-3 font-bold ${getStatusColor(order.status)}`}>{order.status}</td>
+                           </tr>
+                        ))}
                      </tbody>
                   </table>
                </div>
@@ -278,20 +303,17 @@ export default function AdminDashboard() {
                </h3>
                
                <div className="space-y-3">
-                  <div className="flex justify-between items-center p-3 bg-red-50 border border-red-100 rounded-xl">
-                     <div>
-                        <p className="font-bold text-slate-800 text-sm">Tomate Chonto</p>
-                        <p className="text-[10px] text-red-600 font-bold uppercase">Quedan 5 kg</p>
-                     </div>
-                     <button className="bg-red-600 text-white text-[10px] px-2 py-1.5 rounded-lg font-bold hover:bg-red-700">Reabastecer</button>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-yellow-50 border border-yellow-100 rounded-xl">
-                     <div>
-                        <p className="font-bold text-slate-800 text-sm">Cebolla Cabezona</p>
-                        <p className="text-[10px] text-yellow-700 font-bold uppercase">Quedan 12 kg</p>
-                     </div>
-                     <button className="bg-yellow-600 text-white text-[10px] px-2 py-1.5 rounded-lg font-bold hover:bg-yellow-700">Aviso Prov.</button>
-                  </div>
+                  {lowStockItems.map(item => (
+                    <div key={item.name} className={`flex justify-between items-center p-3 rounded-xl ${item.severity === 'critical' ? 'bg-red-50 border border-red-100' : 'bg-yellow-50 border border-yellow-100'}`}>
+                       <div>
+                          <p className="font-bold text-slate-800 text-sm">{item.name}</p>
+                          <p className={`text-[10px] font-bold uppercase ${item.severity === 'critical' ? 'text-red-600' : 'text-yellow-700'}`}>Quedan {item.stock} {item.unit}</p>
+                       </div>
+                       <button className={`text-white text-[10px] px-2 py-1.5 rounded-lg font-bold ${item.severity === 'critical' ? 'bg-red-600 hover:bg-red-700' : 'bg-yellow-600 hover:bg-yellow-700'}`}>
+                         {item.severity === 'critical' ? 'Reabastecer' : 'Aviso Prov.'}
+                       </button>
+                    </div>
+                  ))}
                </div>
             </div>
          </div>
