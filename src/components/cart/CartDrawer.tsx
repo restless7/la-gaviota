@@ -107,14 +107,26 @@ export function CartDrawer() {
               >
                  Ver página de carrito
               </Link>
-              <Link 
-                 href="/checkout"
-                 onClick={() => setIsCartOpen(false)}
-                 className="w-full bg-[#E30613] hover:bg-[#c90510] text-amber-300 py-4 rounded-xl font-black tracking-wide text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
-              >
-                 <span>Proceder al pago</span>
-                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </Link>
+              
+              {/* Role-based Minimum Order Validation */}
+              {role === 'Micromercados' && cartTotal < 150000 ? (
+                 <div className="w-full bg-yellow-50 border border-yellow-200 text-yellow-700 py-3 px-4 rounded-xl text-sm font-bold text-center">
+                    Faltan {formatPrice(150000 - cartTotal)} para el pedido mínimo de Micromercados ({formatPrice(150000)})
+                 </div>
+              ) : role === 'Restaurantes' && cartTotal < 300000 ? (
+                 <div className="w-full bg-green-50 border border-green-200 text-green-700 py-3 px-4 rounded-xl text-sm font-bold text-center">
+                    Faltan {formatPrice(300000 - cartTotal)} para el pedido mínimo de Restaurantes ({formatPrice(300000)})
+                 </div>
+              ) : (
+                 <Link 
+                    href="/checkout"
+                    onClick={() => setIsCartOpen(false)}
+                    className="w-full bg-[#E30613] hover:bg-[#c90510] text-amber-300 py-4 rounded-xl font-black tracking-wide text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
+                 >
+                    <span>Proceder al pago</span>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                 </Link>
+              )}
            </div>
         )}
       </div>

@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import { esES } from "@clerk/localizations";
 
 import { UserRoleProvider } from "@/src/contexts/UserRoleContext";
 import { CartProvider } from "@/src/contexts/CartContext";
 import Header from "@/app/components/layout/Header";
 import FloatingWhatsApp from "@/app/components/ui/FloatingWhatsApp";
-import { RoleSwitcher } from "@/src/components/RoleSwitcher";
 import { CartDrawer } from "@/src/components/cart/CartDrawer";
-import { ConvexProvider } from "@/src/components/convex-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +23,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className={`${inter.className} overflow-x-hidden min-h-screen flex flex-col bg-slate-50 text-slate-800`}>
-        <ConvexProvider>
+    <ClerkProvider
+      localization={esES}
+      appearance={{
+        variables: {
+          colorPrimary: '#E30613',
+          colorText: '#1e293b',
+          colorTextOnPrimaryBackground: '#FFCC00',
+          borderRadius: '0.75rem',
+          fontFamily: 'Inter, sans-serif',
+        },
+        elements: {
+          formButtonPrimary: 'bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] font-bold shadow-lg',
+          card: 'shadow-xl border border-gray-100',
+          headerTitle: 'font-black',
+          headerSubtitle: 'text-gray-500',
+          socialButtonsBlockButton: 'border-gray-200 hover:bg-slate-50',
+          footerActionLink: 'text-[#E30613] hover:text-[#c90510] font-bold',
+        },
+      }}
+    >
+      <html lang="es">
+        <body className={`${inter.className} overflow-x-hidden min-h-screen flex flex-col bg-slate-50 text-slate-800`}>
           <UserRoleProvider>
             <CartProvider>
               <Header />
@@ -42,13 +61,12 @@ export default function RootLayout({
               </footer>
               
               {/* Global UI Overlays */}
-              <RoleSwitcher />
               <FloatingWhatsApp />
               <CartDrawer />
             </CartProvider>
           </UserRoleProvider>
-        </ConvexProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

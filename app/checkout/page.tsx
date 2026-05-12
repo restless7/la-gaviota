@@ -44,6 +44,33 @@ export default function CheckoutPage() {
       );
    }
 
+   const minOrderMicromercados = 150000;
+   const minOrderRestaurantes = 300000;
+
+   if (role === 'Micromercados' && cartTotal < minOrderMicromercados) {
+      return (
+         <div className="max-w-3xl mx-auto px-4 py-32 text-center text-slate-800">
+            <span className="text-6xl mb-6 block">⚠️</span>
+            <h1 className="text-3xl font-black font-serif mb-4">No se ha alcanzado el pedido mínimo</h1>
+            <p className="text-gray-500 mb-6">El pedido mínimo para tu perfil (Micromercados) es de {formatPrice(minOrderMicromercados)}.</p>
+            <p className="font-bold text-yellow-600 mb-8">Faltan {formatPrice(minOrderMicromercados - cartTotal)} para poder proceder.</p>
+            <a href="/shop" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</a>
+         </div>
+      );
+   }
+
+   if (role === 'Restaurantes' && cartTotal < minOrderRestaurantes) {
+      return (
+         <div className="max-w-3xl mx-auto px-4 py-32 text-center text-slate-800">
+            <span className="text-6xl mb-6 block">⚠️</span>
+            <h1 className="text-3xl font-black font-serif mb-4">No se ha alcanzado el pedido mínimo</h1>
+            <p className="text-gray-500 mb-6">El pedido mínimo para tu perfil (Restaurantes) es de {formatPrice(minOrderRestaurantes)}.</p>
+            <p className="font-bold text-green-600 mb-8">Faltan {formatPrice(minOrderRestaurantes - cartTotal)} para poder proceder.</p>
+            <a href="/shop" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</a>
+         </div>
+      );
+   }
+
    return (
       <div className="bg-white min-h-screen">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-slate-800">

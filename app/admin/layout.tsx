@@ -58,6 +58,7 @@ const navigation = [
     ]
   },
   { name: 'Gestión de Pedidos', href: '/admin/orders', icon: TrendingUp, roles: ['SUPER_ADMIN', 'ADMIN'] },
+  { name: 'Solicitudes de Negocio', href: '/admin/solicitudes', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN'] },
   { name: 'Proveedores & Granjas', href: '/admin/suppliers', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN'] },
   { name: 'Reportes y Ventas', href: '/admin/reports', icon: BarChart3, roles: ['SUPER_ADMIN', 'ADMIN'] },
   { name: 'Audit Log (Transacciones)', href: '/admin/audit', icon: ScrollText, roles: ['SUPER_ADMIN'] },

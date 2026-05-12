@@ -1,37 +1,65 @@
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/shop(.*)',
+  '/sobre-nosotros(.*)',
+  '/product/(.*)',
+  '/categoria/(.*)',
+  '/comunidad(.*)',
+  '/contacto(.*)',
+  '/noticias(.*)',
+  '/aplicar-negocio(.*)',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/api/(.*)',
+]);
+
+const isAdminRoute = createRouteMatcher(['/admin(.*)']);
+
+export default clerkMiddleware(async (auth, request) => {
   const url = request.nextUrl;
-  const roleCookie = request.cookies.get('gaviota_user_role')?.value;
 
-  // We are protecting the role dashboards
-  if (url.pathname === '/dashboard' || ['/retail', '/micromercado', '/restaurante'].some(p => url.pathname.startsWith(p))) {
-    // Determine target based on cookie role
-    let targetPath = '/retail'; // default
-    if (roleCookie === 'Micromercados') targetPath = '/micromercado';
-    if (roleCookie === 'Restaurantes') targetPath = '/restaurante';
+  // Public routes — no auth required
+  if (isPublicRoute(request)) {
+    return NextResponse.next();
+  }
 
-    // If user is at generic /dashboard, redirect to their specific portal
-    if (url.pathname === '/dashboard') {
-      return NextResponse.redirect(new URL(targetPath, request.url));
-    }
+  // All other routes require authentication
+  const session = await auth.protect();
 
-    // Role Enforcement: prevent a retail user from going to /restaurante directly
-    if (url.pathname.startsWith('/retail') && targetPath !== '/retail') {
-        return NextResponse.redirect(new URL(targetPath, request.url));
-    }
-    if (url.pathname.startsWith('/micromercado') && targetPath !== '/micromercado') {
-        return NextResponse.redirect(new URL(targetPath, request.url));
-    }
-    if (url.pathname.startsWith('/restaurante') && targetPath !== '/restaurante') {
-        return NextResponse.redirect(new URL(targetPath, request.url));
+  // Admin routes — require admin role in metadata
+  if (isAdminRoute(request)) {
+    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
+    const tier = metadata?.tier;
+    if (tier !== 'admin') {
+      // Non-admins get redirected to their dashboard
+      return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }
 
+  // /dashboard — redirect to the correct portal based on role
+  if (url.pathname === '/dashboard') {
+    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
+    const tier = metadata?.tier || 'Personas Naturales';
+
+    let targetPath = '/retail';
+    if (tier === 'Micromercados') targetPath = '/micromercado';
+    if (tier === 'Restaurantes') targetPath = '/restaurante';
+    if (tier === 'admin') targetPath = '/admin';
+
+    return NextResponse.redirect(new URL(targetPath, request.url));
+  }
+
   return NextResponse.next();
-}
+});
 
 export const config = {
-  matcher: ['/retail/:path*', '/micromercado/:path*', '/restaurante/:path*', '/dashboard'],
+  matcher: [
+    // Skip Next.js internals and static files
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
 };

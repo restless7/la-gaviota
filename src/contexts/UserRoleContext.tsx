@@ -1,48 +1,65 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
+import { useUser } from '@clerk/nextjs';
 
 export type UserRole = 'Personas Naturales' | 'Micromercados' | 'Restaurantes';
 
 interface UserRoleContextType {
   role: UserRole;
-  setRole: (role: UserRole) => void;
   isLoading: boolean;
+  isSignedIn: boolean;
+  userName: string | null;
+  businessName: string | null;
 }
 
 const UserRoleContext = createContext<UserRoleContextType | undefined>(undefined);
 
 export function UserRoleProvider({
   children,
-  initialRole = 'Personas Naturales',
 }: {
   children: React.ReactNode;
-  initialRole?: UserRole;
 }) {
-  const [role, setRoleState] = useState<UserRole>(initialRole);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, isLoaded, isSignedIn } = useUser();
 
-  useEffect(() => {
-    // On mount, sync from cookie if available
-    const savedRole = getCookie('gaviota_user_role') as UserRole;
-    if (savedRole && ['Personas Naturales', 'Micromercados', 'Restaurantes'].includes(savedRole)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setRoleState(savedRole);
+  const contextValue = useMemo(() => {
+    if (!isLoaded) {
+      return {
+        role: 'Personas Naturales' as UserRole,
+        isLoading: true,
+        isSignedIn: false,
+        userName: null,
+        businessName: null,
+      };
     }
-    setIsLoading(false);
-  }, []);
 
-  const setRole = (newRole: UserRole) => {
-    setRoleState(newRole);
-    setCookie('gaviota_user_role', newRole, 365);
-    // Force a router refresh to update Next.js Server Components with the new cookie
-    if (typeof window !== 'undefined') {
-        window.location.reload(); 
+    if (!isSignedIn || !user) {
+      return {
+        role: 'Personas Naturales' as UserRole,
+        isLoading: false,
+        isSignedIn: false,
+        userName: null,
+        businessName: null,
+      };
     }
-  };
+
+    // Derive role from Clerk publicMetadata
+    const metadata = user.publicMetadata as Record<string, string> | undefined;
+    const tier = metadata?.tier as UserRole | undefined;
+    const validTiers: UserRole[] = ['Personas Naturales', 'Micromercados', 'Restaurantes'];
+    const role: UserRole = tier && validTiers.includes(tier) ? tier : 'Personas Naturales';
+
+    return {
+      role,
+      isLoading: false,
+      isSignedIn: true,
+      userName: user.firstName || user.fullName || user.primaryEmailAddress?.emailAddress || null,
+      businessName: (metadata?.businessName as string) || null,
+    };
+  }, [user, isLoaded, isSignedIn]);
 
   return (
-    <UserRoleContext.Provider value={{ role, setRole, isLoading }}>
+    <UserRoleContext.Provider value={contextValue}>
       {children}
     </UserRoleContext.Provider>
   );
@@ -54,19 +71,4 @@ export function useUserRole() {
     throw new Error('useUserRole must be used within a UserRoleProvider');
   }
   return context;
-}
-
-// Minimal cookie helpers for client side sync
-function setCookie(name: string, value: string, days: number) {
-  if (typeof document === 'undefined') return;
-  const expires = new Date();
-  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-  document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
-}
-
-function getCookie(name: string): string | null {
-  if (typeof document === 'undefined') return null;
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  if (match) return match[2];
-  return null;
 }
