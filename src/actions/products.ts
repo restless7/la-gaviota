@@ -31,6 +31,7 @@ export interface Product {
   isActive: boolean;
   isInSeason: boolean;
   imageUrl: string | null;
+  description: string | null;
 }
 
 export async function fetchProducts(): Promise<Product[]> {
@@ -58,7 +59,8 @@ export async function fetchProducts(): Promise<Product[]> {
     stockQuantity: p.stock_quantity,
     isActive: p.is_active,
     isInSeason: p.is_in_season,
-    imageUrl: p.image_url
+    imageUrl: p.image_url,
+    description: p.description
   }));
 }
 
@@ -172,7 +174,8 @@ export async function createProduct(product: Omit<Product, 'id'>) {
       stock_quantity: product.stockQuantity,
       is_active: product.isActive,
       is_in_season: product.isInSeason,
-      image_url: product.imageUrl
+      image_url: product.imageUrl,
+      description: product.description
     });
 
   if (error) {

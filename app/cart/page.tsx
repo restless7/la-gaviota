@@ -50,7 +50,7 @@ export default function CartPage() {
                      return (
                         <div key={item.product.id} className="flex gap-6 border-b border-gray-100 pb-8 relative group">
                            <div className="w-24 h-24 sm:w-32 sm:h-32 relative bg-slate-50 border border-gray-100 rounded-2xl overflow-hidden shrink-0">
-                              <Image src={item.product.imagePlaceholder || `/IMAGES/product-display.jpeg`} alt={item.product.name} fill className="object-cover mix-blend-multiply" />
+                              <Image src={item.product.imageUrl || `/IMAGES/product-display.jpeg`} alt={item.product.name} fill className="object-cover mix-blend-multiply" />
                            </div>
                            <div className="flex-1 flex flex-col justify-start">
                               <div className="flex justify-between items-start">

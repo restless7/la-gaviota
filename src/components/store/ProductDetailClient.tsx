@@ -26,7 +26,7 @@ export default function ProductDetailClient({ product, relatedProducts }: { prod
             <div className="w-full md:w-1/2">
                <div className="aspect-square w-full relative bg-slate-100 rounded-3xl overflow-hidden border border-gray-100 flex items-center justify-center">
                   <Image 
-                     src={`/IMAGES/product-display.jpeg`}
+                     src={product.imageUrl || `/IMAGES/product-display.jpeg`}
                      alt={product.name}
                      fill
                      className="object-cover mix-blend-multiply"
@@ -51,7 +51,7 @@ export default function ProductDetailClient({ product, relatedProducts }: { prod
                </h1>
                
                <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                  {product.description} Este producto es seleccionado hermosamente desde nuestras fincas aliadas garantizando la mejor durabilidad y frescura en tu cocina.
+                  {product.description || 'Este producto es seleccionado hermosamente desde nuestras fincas aliadas garantizando la mejor durabilidad y frescura en tu cocina.'}
                </p>
 
                <div className="bg-slate-50 border border-gray-100 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-6">

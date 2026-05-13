@@ -71,7 +71,7 @@ export function CartDrawer() {
                     return (
                        <li key={item.product.id} className="flex gap-4 border border-gray-100 rounded-xl p-3 shadow-sm bg-slate-50/50">
                           <div className="w-20 h-20 relative bg-white rounded-lg overflow-hidden border border-gray-100 flex-shrink-0">
-                             <Image src={`/IMAGES/product-display.jpeg`} alt={item.product.name} fill className="object-cover mix-blend-multiply" />
+                             <Image src={item.product.imageUrl || `/IMAGES/product-display.jpeg`} alt={item.product.name} fill className="object-cover mix-blend-multiply" />
                           </div>
                           <div className="flex-1 flex flex-col justify-between">
                              <div className="flex justify-between items-start gap-2">
