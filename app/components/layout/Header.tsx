@@ -30,7 +30,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-           <div className="relative w-[140px] sm:w-[170px] h-12 flex items-center">
+           <div className="relative w-[420px] sm:w-[510px] h-[144px] flex items-center">
               <Image 
                 src="/IMAGES/logo.jpeg" 
                 alt="La Gaviota Logo" 
