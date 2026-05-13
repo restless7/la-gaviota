@@ -34,15 +34,7 @@ interface AdminDashboardClientProps {
   initialActiveSuppliers: number;
   initialPendingApplications: number;
 }
-
-const StatCard = ({
-  title,
-  value,
-  icon: Icon,
-  color,
-  bgColor,
-  trend
-}: {
+interface StatCardProps {
   title: string;
   value: string | number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,28 +42,47 @@ const StatCard = ({
   color: string;
   bgColor: string;
   trend?: string;
-}) => (
-  <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-    <div className={`absolute top-0 right-0 w-32 h-32 ${bgColor} rounded-full blur-3xl -mr-16 -mt-16 opacity-50 transition-opacity group-hover:opacity-80`}></div>
-    <div className="flex items-center justify-between relative z-10">
-      <div>
-        <p className="text-gray-500 text-sm font-bold uppercase tracking-wider">{title}</p>
-        <p className={`text-3xl font-black mt-1 ${color}`}>
-          {value}
-        </p>
-        {trend && (
-          <p className="text-xs text-[#4CAF50] font-bold mt-2 flex items-center gap-1">
-            <TrendingUp size={12} />
-            {trend}
+  href?: string;
+}
+
+const StatCard = ({
+  title,
+  value,
+  icon: Icon,
+  color,
+  bgColor,
+  trend,
+  href
+}: StatCardProps) => {
+  const content = (
+    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group h-full">
+      <div className={`absolute top-0 right-0 w-32 h-32 ${bgColor} rounded-full blur-3xl -mr-16 -mt-16 opacity-50 transition-opacity group-hover:opacity-80`}></div>
+      <div className="flex items-center justify-between relative z-10">
+        <div>
+          <p className="text-gray-500 text-sm font-bold uppercase tracking-wider">{title}</p>
+          <p className={`text-3xl font-black mt-1 ${color}`}>
+            {value}
           </p>
-        )}
-      </div>
-      <div className={`p-4 rounded-xl ${bgColor} text-white shadow-sm`}>
-         <Icon className="h-6 w-6" />
+          {trend && (
+            <p className="text-xs text-[#4CAF50] font-bold mt-2 flex items-center gap-1">
+              <TrendingUp size={12} />
+              {trend}
+            </p>
+          )}
+        </div>
+        <div className={`p-4 rounded-xl ${bgColor} text-white shadow-sm transition-transform group-hover:scale-110`}>
+           <Icon className="h-6 w-6" />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+
+  if (href) {
+    return <Link href={href} className="block transition-transform hover:-translate-y-1">{content}</Link>;
+  }
+
+  return content;
+};
 
 const QuickAction = ({
   title,
@@ -189,6 +200,7 @@ export default function AdminDashboardClient({
           color="text-[#4CAF50]"
           bgColor="bg-[#4CAF50]"
           trend="Calculado de facturación real"
+          href="/admin/reports"
         />
         <StatCard
           title="Pedidos Pendientes"
@@ -196,6 +208,7 @@ export default function AdminDashboardClient({
           icon={ShoppingBag}
           color="text-[#E30613]"
           bgColor="bg-[#E30613]"
+          href="/admin/orders"
         />
         <StatCard
           title="Proveedores Activos"
@@ -204,6 +217,7 @@ export default function AdminDashboardClient({
           color="text-[#1C2059]"
           bgColor="bg-[#1C2059]"
           trend={`${initialActiveSuppliers} verificados`}
+          href="/admin/suppliers"
         />
         <StatCard
           title="Alertas Inventario"
@@ -211,6 +225,7 @@ export default function AdminDashboardClient({
           icon={AlertTriangle}
           color="text-[#FFCC00]"
           bgColor="bg-[#FFCC00]"
+          href="/admin/catalog/inventory"
         />
       </div>
 
@@ -236,9 +251,9 @@ export default function AdminDashboardClient({
                    icon={PackageSearch}
                  />
                  <QuickAction
-                   title="Rutas de Entrega"
-                   description="Monitoreo logístico de pedidos hacia Restaurantes y Micromercados."
-                   href="/admin/orders"
+                   title="Resumen de Carga"
+                   description="Consolidado de productos por cantidades totales para pedidos pendientes."
+                   href="/admin/reports/consolidation"
                    icon={ShoppingCart}
                  />
                  <QuickAction

@@ -119,3 +119,29 @@ export async function createOrder(orderData: Omit<Order, 'id' | 'created_at' | '
   revalidatePath('/admin/clientes');
   return { success: true, orderId: order.id };
 }
+export async function fetchOrderConsolidation(status: string = 'Pendiente') {
+  const { data, error } = await supabase
+    .from('order_items')
+    .select(`
+      quantity,
+      product_name,
+      orders!inner(status)
+    `)
+    .eq('orders.status', status);
+
+  if (error) {
+    console.error('Error fetching order consolidation:', error);
+    throw new Error('Failed to fetch order consolidation');
+  }
+
+  const consolidation: Record<string, { name: string, quantity: number }> = {};
+
+  data.forEach((item: any) => {
+    if (!consolidation[item.product_name]) {
+      consolidation[item.product_name] = { name: item.product_name, quantity: 0 };
+    }
+    consolidation[item.product_name].quantity += item.quantity;
+  });
+
+  return Object.values(consolidation).sort((a, b) => b.quantity - a.quantity);
+}
