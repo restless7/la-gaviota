@@ -49,12 +49,12 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
               src={CATEGORY_BANNERS[selectedCategory]} 
               alt={`${selectedCategory} Banner`} 
               fill 
-              className="object-cover object-top brightness-[0.85]"
+              className="object-cover object-top"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 flex flex-col justify-end py-12">
+            <div className="absolute inset-0 z-10 flex flex-col justify-end py-12">
                <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-                 <h2 className="text-4xl md:text-6xl font-black text-white font-serif drop-shadow-lg uppercase tracking-tight">{selectedCategory}</h2>
+                 <h2 className="text-4xl md:text-6xl font-black text-white font-serif drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] uppercase tracking-tight">{selectedCategory}</h2>
                </div>
             </div>
          </div>
