@@ -3,21 +3,30 @@
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Order, OrderStatus } from '@/src/data/mockOrders';
+import { Order } from '@/src/actions/orders';
 import { OrderCard } from './OrderCard';
 
-export function KanbanColumn({ status, orders, onSelectOrder }: { status: OrderStatus; orders: Order[]; onSelectOrder: (o: Order) => void }) {
+export function KanbanColumn({ 
+  status, 
+  orders, 
+  onSelectOrder 
+}: { 
+  status: Order['status']; 
+  orders: Order[]; 
+  onSelectOrder: (o: Order) => void 
+}) {
   const { setNodeRef, isOver } = useDroppable({
     id: status,
     data: { type: 'Column', status },
   });
 
-  const getHeaderColor = (status: OrderStatus) => {
+  const getHeaderColor = (status: Order['status']) => {
     switch (status) {
       case 'Pendiente': return 'bg-gray-100 text-gray-700 border-gray-200';
       case 'En Preparación': return 'bg-blue-50 text-blue-700 border-blue-200';
       case 'En Ruta': return 'bg-[#FFCC00]/20 text-[#ca8a04] border-[#FFCC00]';
       case 'Entregado': return 'bg-[#4CAF50]/10 text-[#4CAF50] border-[#4CAF50]/30';
+      case 'Cancelado': return 'bg-red-50 text-red-700 border-red-200';
     }
   };
 

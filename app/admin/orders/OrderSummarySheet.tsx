@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Order } from '@/src/data/mockOrders';
+import { Order } from '@/src/actions/orders';
 import { X, MapPin, Calendar, Package } from 'lucide-react';
 
 export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: () => void }) {
@@ -12,9 +12,9 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
          <div className="p-6 border-b border-gray-100 flex items-center justify-between">
             <div>
                <span className="bg-[#E30613]/10 text-[#E30613] text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">
-                 {order.customerTier}
+                 {order.clerk_user_id ? 'Wholesale' : 'Retail'}
                </span>
-               <h2 className="text-2xl font-black text-slate-800 font-serif">{order.id}</h2>
+               <h2 className="text-2xl font-black text-slate-800 font-serif">{order.id.slice(0, 13)}</h2>
             </div>
             <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full text-gray-400 transition-colors">
                <X className="w-5 h-5" />
@@ -30,21 +30,21 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
                      <div className="bg-slate-100 p-2 rounded-full text-slate-500"><Package className="w-4 h-4" /></div>
                      <div>
                         <p className="text-xs text-gray-500 font-medium">Nombre / Negocio</p>
-                        <p className="font-bold text-slate-800 text-sm">{order.customerName}</p>
+                        <p className="font-bold text-slate-800 text-sm">{order.customer_name}</p>
                      </div>
                   </div>
                   <div className="flex items-center gap-3">
                      <div className="bg-slate-100 p-2 rounded-full text-slate-500"><MapPin className="w-4 h-4" /></div>
                      <div>
                         <p className="text-xs text-gray-500 font-medium">Dirección de Entrega</p>
-                        <p className="font-bold text-slate-800 text-sm">{order.address}</p>
+                        <p className="font-bold text-slate-800 text-sm">{order.delivery_address}, {order.delivery_municipality}</p>
                      </div>
                   </div>
                   <div className="flex items-center gap-3">
                      <div className="bg-slate-100 p-2 rounded-full text-slate-500"><Calendar className="w-4 h-4" /></div>
                      <div>
                         <p className="text-xs text-gray-500 font-medium">Fecha de Solicitud</p>
-                        <p className="font-bold text-slate-800 text-sm">{new Date(order.date).toLocaleString('es-CO')}</p>
+                        <p className="font-bold text-slate-800 text-sm">{new Date(order.created_at).toLocaleString('es-CO')}</p>
                      </div>
                   </div>
                </div>
@@ -54,15 +54,15 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
             <div>
                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Productos</h3>
                <div className="space-y-4">
-                  {order.items.map((item, idx) => (
+                  {order.order_items?.map((item, idx) => (
                      <div key={idx} className="flex items-center justify-between border-b border-gray-50 pb-4">
                         <div>
-                           <p className="font-bold text-slate-800 text-sm">{item.name}</p>
+                           <p className="font-bold text-slate-800 text-sm">{item.product_name}</p>
                            <p className="text-xs font-semibold text-gray-500 mt-1">
-                              {item.quantity} {item.unit} x ${item.price.toLocaleString('es-CO')}
+                              {item.quantity} x ${item.price_at_purchase.toLocaleString('es-CO')}
                            </p>
                         </div>
-                        <span className="font-black text-[#4CAF50]">${item.total.toLocaleString('es-CO')}</span>
+                        <span className="font-black text-[#4CAF50]">${(item.quantity * item.price_at_purchase).toLocaleString('es-CO')}</span>
                      </div>
                   ))}
                </div>
@@ -73,10 +73,10 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
          <div className="p-6 bg-slate-50 border-t border-gray-100 mt-auto">
             <div className="flex items-center justify-between mb-4">
                <span className="text-gray-500 font-bold">Total a Facturar</span>
-               <span className="text-2xl font-black text-[#E30613]">${order.totalAmount.toLocaleString('es-CO')}</span>
+               <span className="text-2xl font-black text-[#E30613]">${order.total_amount.toLocaleString('es-CO')}</span>
             </div>
             <button className="w-full bg-[#4CAF50] hover:bg-[#3d8c40] text-white font-black py-4 rounded-xl shadow-lg transition-all text-sm uppercase tracking-wide">
-               Generar Factura & Romisión
+               Generar Factura & Remisión
             </button>
          </div>
       </div>

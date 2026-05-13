@@ -3,7 +3,7 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Order } from '@/src/data/mockOrders';
+import { Order } from '@/src/actions/orders';
 
 export function OrderCard({ order, onClick }: { order: Order; onClick: () => void }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -16,12 +16,9 @@ export function OrderCard({ order, onClick }: { order: Order; onClick: () => voi
     transition,
   };
 
-  const getTierColor = (tier: string) => {
-    switch (tier) {
-      case 'Restaurantes': return 'bg-[#FFCC00]/20 text-[#ca8a04] border-[#FFCC00]';
-      case 'Micromercados': return 'bg-blue-50 text-blue-700 border-blue-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
+  const getTierColor = (clerk_user_id: string | null) => {
+    if (!clerk_user_id) return 'bg-gray-100 text-gray-700 border-gray-200';
+    return 'bg-blue-50 text-blue-700 border-blue-200';
   };
 
   return (
@@ -36,15 +33,17 @@ export function OrderCard({ order, onClick }: { order: Order; onClick: () => voi
       }`}
     >
       <div className="flex justify-between items-start mb-2">
-        <span className="text-xs font-black text-gray-400">{order.id}</span>
-        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getTierColor(order.customerTier)}`}>
-          {order.customerTier === 'Personas Naturales' ? 'Retail' : order.customerTier}
+        <span className="text-[10px] font-black text-gray-400">{order.id.slice(0, 8)}</span>
+        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getTierColor(order.clerk_user_id)}`}>
+          {order.clerk_user_id ? 'Wholesale' : 'Retail'}
         </span>
       </div>
-      <h4 className="font-bold text-slate-800 text-sm mb-1">{order.customerName}</h4>
+      <h4 className="font-bold text-slate-800 text-sm mb-1">{order.customer_name}</h4>
       <div className="flex justify-between items-end mt-4">
-        <span className="text-xs text-gray-500 font-medium">{new Date(order.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-        <span className="font-black text-[#4CAF50]">${order.totalAmount.toLocaleString('es-CO')}</span>
+        <span className="text-[10px] text-gray-500 font-medium">
+          {new Date(order.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+        </span>
+        <span className="font-black text-[#4CAF50]">${order.total_amount.toLocaleString('es-CO')}</span>
       </div>
     </div>
   );
