@@ -20,7 +20,8 @@ export default function NewProductPage() {
     stockQuantity: 100,
     isActive: true,
     isInSeason: true,
-    imageUrl: ''
+    imageUrl: '',
+    description: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -112,6 +113,17 @@ export default function NewProductPage() {
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#4CAF50] outline-none font-medium"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Descripción del Producto</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Describa la frescura, origen o usos del producto..."
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#4CAF50] outline-none transition-all font-medium h-24 resize-none"
+                />
               </div>
             </div>
           </div>
