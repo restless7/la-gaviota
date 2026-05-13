@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Package, ArrowLeft, Save, Loader2, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
-import { CATEGORIES, createProduct } from '@/src/actions/products';
+import { createProduct } from '@/src/actions/products';
+import { CATEGORIES } from '@/src/constants/productConstants';
 
 export default function NewProductPage() {
   const router = useRouter();

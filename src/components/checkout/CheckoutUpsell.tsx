@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useCart } from '@/src/contexts/CartContext';
-import { products } from '@/src/actions/products';
+
 
 export function CheckoutUpsell() {
   const { addToCart } = useCart();

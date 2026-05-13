@@ -3,15 +3,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 
-export const CATEGORIES = [
-  "Frutas",
-  "Verduras Y Hortalizas",
-  "Pulpas",
-  "Varios Preparados",
-  "Carnes",
-  "Condimentos Frutos Secos Aromaticas",
-  "Kits Negocios"
-];
+import { CATEGORIES } from '@/src/constants/productConstants';
 
 // We initialize the Supabase client here for server actions
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
