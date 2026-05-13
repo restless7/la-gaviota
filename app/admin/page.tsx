@@ -3,10 +3,13 @@ import AdminDashboardClient from './AdminDashboardClient';
 import { fetchProducts } from '@/src/actions/products';
 import { fetchOrders } from '@/src/actions/orders';
 
+import { fetchDashboardMetrics } from '@/src/actions/dashboard';
+
 export default async function AdminDashboardPage() {
-  const [products, orders] = await Promise.all([
+  const [products, orders, metrics] = await Promise.all([
     fetchProducts(),
-    fetchOrders()
+    fetchOrders(),
+    fetchDashboardMetrics()
   ]);
   
   // Calculate real inventory stats
@@ -34,6 +37,9 @@ export default async function AdminDashboardPage() {
       initialPendingOrders={pendingOrders}
       initialTotalRevenue={totalRevenue}
       initialRecentOrders={recentOrders}
+      initialSupplierCount={metrics.supplierCount}
+      initialActiveSuppliers={metrics.activeSuppliers}
+      initialPendingApplications={metrics.pendingApplications}
     />
   );
 }

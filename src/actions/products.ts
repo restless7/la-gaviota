@@ -2,6 +2,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
+import { logAuditEvent } from './audit';
 
 import { CATEGORIES } from '@/src/constants/productConstants';
 
@@ -90,19 +91,38 @@ export async function updateProductSeasonStatus(id: string, inSeason: boolean) {
 
 export async function updateProductPricing(
   id: string, 
-  base_cost: number, 
-  price_retail: number, 
-  price_micro: number, 
-  price_restaurant: number
+  base_cost?: number, 
+  price_retail?: number, 
+  price_micro?: number, 
+  price_restaurant?: number
 ) {
+  const updates: any = {};
+  if (base_cost !== undefined && base_cost !== 0) updates.base_cost = base_cost;
+  if (price_retail !== undefined && price_retail !== 0) updates.price_retail = price_retail;
+  if (price_micro !== undefined && price_micro !== 0) updates.price_micro = price_micro;
+  if (price_restaurant !== undefined && price_restaurant !== 0) updates.price_restaurant = price_restaurant;
+
+  if (Object.keys(updates).length === 0) return { success: true };
+
   const { error } = await supabase
     .from('products')
-    .update({ base_cost, price_retail, price_micro, price_restaurant })
+    .update(updates)
     .eq('id', id);
 
   if (error) {
     console.error('Error updating product pricing:', error);
     throw new Error('Failed to update product pricing');
+  }
+
+  // Log the event if it's a cost change
+  if (updates.base_cost) {
+    await logAuditEvent({
+      actor: 'Sebastian Garcia',
+      action: 'Actualizó costo base',
+      target: id,
+      category: 'pricing',
+      details: `Nuevo costo: $${updates.base_cost} COP.`
+    });
   }
 
   revalidatePath('/admin/pricing');
@@ -118,7 +138,7 @@ export async function applyMacroMargins(
   // To avoid hitting edge limits, we fetch all, calculate, and do a batch upsert
   const { data: products, error: fetchError } = await supabase
     .from('products')
-    .select('id, base_cost, name, category, unit, stock_quantity, is_active, is_in_season, image_url, created_at, updated_at');
+    .select('*');
     
   if (fetchError || !products) throw new Error('Failed to fetch products for macro update');
 
@@ -137,6 +157,15 @@ export async function applyMacroMargins(
     console.error('Error applying macro margins:', updateError);
     throw new Error('Failed to apply macro margins');
   }
+
+  // 3. Log the event
+  await logAuditEvent({
+    actor: 'Sebastian Garcia', // Defaulting to Sebastian as admin for now
+    action: 'Aplicó multiplicadores masivos',
+    target: 'Gestión de Precios',
+    category: 'pricing',
+    details: `Márgenes: Detal +${retailMargin}%, Micro +${microMargin}%, Rest. +${restaurantMargin}% — ${updatedProducts.length} productos actualizados.`
+  });
 
   revalidatePath('/admin/pricing');
   revalidatePath('/shop');

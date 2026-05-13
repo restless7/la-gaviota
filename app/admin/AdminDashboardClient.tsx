@@ -13,7 +13,7 @@ import {
   Wifi,
 } from 'lucide-react';
 import Link from 'next/link';
-import { mockSuppliers } from '@/src/data/mockSuppliers';
+
 import { Order } from '@/src/actions/orders';
 
 interface LowStockItem {
@@ -30,6 +30,9 @@ interface AdminDashboardClientProps {
   initialPendingOrders: number;
   initialTotalRevenue: number;
   initialRecentOrders: Order[];
+  initialSupplierCount: number;
+  initialActiveSuppliers: number;
+  initialPendingApplications: number;
 }
 
 const StatCard = ({
@@ -115,7 +118,10 @@ export default function AdminDashboardClient({
   initialOrderCount,
   initialPendingOrders,
   initialTotalRevenue,
-  initialRecentOrders
+  initialRecentOrders,
+  initialSupplierCount,
+  initialActiveSuppliers,
+  initialPendingApplications
 }: AdminDashboardClientProps) {
   const [loading, setLoading] = useState(true);
 
@@ -132,7 +138,6 @@ export default function AdminDashboardClient({
   }
 
   const formattedRevenue = `$${(initialTotalRevenue / 1_000_000).toFixed(1)}M`;
-  const activeSuppliers = mockSuppliers.filter(s => s.status === 'Activo').length;
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -158,7 +163,7 @@ export default function AdminDashboardClient({
             Módulo General La Gaviota
           </h1>
           <p className="text-gray-500 font-medium">
-            Resumen operativo — {initialProductCount} productos · {initialOrderCount} pedidos · {mockSuppliers.length} proveedores
+            Resumen operativo — {initialProductCount} productos · {initialOrderCount} pedidos · {initialSupplierCount} proveedores
           </p>
         </div>
 
@@ -194,11 +199,11 @@ export default function AdminDashboardClient({
         />
         <StatCard
           title="Proveedores Activos"
-          value={`${activeSuppliers}/${mockSuppliers.length}`}
+          value={`${initialActiveSuppliers}/${initialSupplierCount}`}
           icon={Users}
           color="text-[#1C2059]"
           bgColor="bg-[#1C2059]"
-          trend={`${activeSuppliers} verificados`}
+          trend={`${initialActiveSuppliers} verificados`}
         />
         <StatCard
           title="Alertas Inventario"

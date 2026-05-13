@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Calculator, Save, RefreshCw, Search, ChevronDown } from 'lucide-react';
-import { Product, applyMacroMargins } from '@/src/actions/products';
+import { Product, applyMacroMargins, updateProductPricing } from '@/src/actions/products';
 
 interface EditableProduct {
   id: string;
@@ -48,10 +48,19 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
     });
   }, [editableProducts, searchTerm, selectedCategory]);
 
-  const handleCostChange = (id: string, newCost: number) => {
-    setEditableProducts(prev =>
-      prev.map(p => p.id === id ? { ...p, cost: newCost } : p)
-    );
+  const handleCostChange = async (id: string, newCost: number) => {
+    try {
+      // Optimistic update
+      setEditableProducts(prev =>
+        prev.map(p => p.id === id ? { ...p, cost: newCost } : p)
+      );
+
+      // Save to DB
+      await updateProductPricing(id, newCost, 0, 0, 0); // We'll fix updateProductPricing to handle partial updates or just pass zeros for now
+    } catch (error) {
+      console.error('Failed to update cost', error);
+      alert('Error guardando el costo base.');
+    }
   };
 
   const handleApplyMacro = async () => {
