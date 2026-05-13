@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { Product, CATEGORIES } from '@/src/data/products';
+import { Product, CATEGORIES } from '@/src/actions/products';
 import { ProductCard } from './ProductCard';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import Image from 'next/image';

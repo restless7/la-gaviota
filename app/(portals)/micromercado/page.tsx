@@ -1,13 +1,10 @@
-'use client';
-
 import React from 'react';
-import { useUserRole } from '@/src/contexts/UserRoleContext';
 import Image from 'next/image';
 import { ProductCard } from '@/src/components/store/ProductCard';
-import { products } from '@/src/data/products';
+import { fetchProducts } from '@/src/actions/products';
 
-export default function MicromercadoDashboard() {
-  const { role } = useUserRole();
+export default async function MicromercadoDashboard() {
+  const products = await fetchProducts();
 
   // Micromercado: Focus on essential vegetables and kits for resale
   const bulkPicks = products.filter(p => p.category === 'Verduras Y Hortalizas' || p.category === 'Kits Negocios').slice(0, 4);

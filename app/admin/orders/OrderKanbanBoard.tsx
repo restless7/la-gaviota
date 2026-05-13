@@ -1,96 +1,68 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useTransition } from 'react';
 import { DndContext, closestCorners, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { KanbanColumn } from './KanbanColumn';
-import { Order, initialOrders, OrderStatus } from '@/src/data/mockOrders';
+import { Order, updateOrderStatus } from '@/src/actions/orders';
 import { OrderSummarySheet } from './OrderSummarySheet';
 
-const COLUMNS: OrderStatus[] = ['Pendiente', 'En Preparación', 'En Ruta', 'Entregado'];
+const COLUMNS: Order['status'][] = ['Pendiente', 'En Preparación', 'En Ruta', 'Entregado'];
 
-const STORAGE_KEY = 'gaviota_orders';
-
-function loadOrders(): Order[] {
-  if (typeof window === 'undefined') return initialOrders;
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-    }
-  } catch { /* ignore */ }
-  return initialOrders;
-}
-
-function saveOrders(orders: Order[]) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); } catch { /* ignore */ }
-}
-
-export function OrderKanbanBoard() {
+export function OrderKanbanBoard({ initialOrders }: { initialOrders: Order[] }) {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  // Load from localStorage only on client
-  useEffect(() => {
-    setOrders(loadOrders());
-    setMounted(true);
-  }, []);
-
-  // Persist on change
-  useEffect(() => {
-    if (mounted) saveOrders(orders);
-  }, [orders, mounted]);
+  const [isPending, startTransition] = useTransition();
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over) return;
 
-    const activeId = active.id;
-    const overId = over.id;
+    const activeId = active.id as string;
+    const overId = over.id as string;
 
     if (activeId === overId) return;
 
-    setOrders((prev) => {
-      const activeOrder = prev.find((o) => o.id === activeId);
-      const overOrder = prev.find((o) => o.id === overId);
+    const activeOrder = orders.find((o) => o.id === activeId);
+    if (!activeOrder) return;
 
-      if (!activeOrder) return prev;
+    let newStatus: Order['status'] | null = null;
 
-      // If we dropped over a column directly (empty column or dropping area)
-      if (COLUMNS.includes(overId as OrderStatus)) {
-        return prev.map(o => o.id === activeId ? { ...o, status: overId as OrderStatus } : o);
-      }
-
+    // If dropped over a column directly
+    if (COLUMNS.includes(overId as Order['status'])) {
+      newStatus = overId as Order['status'];
+    } else {
       // If dropped over another item
-      if (overOrder) {
-        if (activeOrder.status !== overOrder.status) {
-          // Changed status
-          const updated = [...prev];
-          const movedIdx = updated.findIndex(o => o.id === activeId);
-          updated[movedIdx] = { ...updated[movedIdx], status: overOrder.status };
-          return updated;
-        } else {
-          // Same status, just reorder
-          const oldIndex = prev.findIndex((item) => item.id === activeId);
-          const newIndex = prev.findIndex((item) => item.id === overId);
-          return arrayMove(prev, oldIndex, newIndex);
-        }
+      const overOrder = orders.find((o) => o.id === overId);
+      if (overOrder && activeOrder.status !== overOrder.status) {
+        newStatus = overOrder.status;
       }
+    }
 
-      return prev;
-    });
-  };
-
-  const resetOrders = () => {
-    setOrders(initialOrders);
-    localStorage.removeItem(STORAGE_KEY);
+    if (newStatus && newStatus !== activeOrder.status) {
+      // Optimistic update
+      const oldStatus = activeOrder.status;
+      setOrders(prev => prev.map(o => o.id === activeId ? { ...o, status: newStatus as Order['status'] } : o));
+      
+      try {
+        await updateOrderStatus(activeId, newStatus);
+      } catch (error) {
+        console.error('Failed to update order status:', error);
+        // Rollback
+        setOrders(prev => prev.map(o => o.id === activeId ? { ...o, status: oldStatus } : o));
+        alert('Error al actualizar el estado del pedido.');
+      }
+    } else if (activeOrder.status === (orders.find(o => o.id === overId)?.status)) {
+        // Reorder in same column (only local for now)
+        const oldIndex = orders.findIndex((item) => item.id === activeId);
+        const newIndex = orders.findIndex((item) => item.id === overId);
+        setOrders(prev => arrayMove(prev, oldIndex, newIndex));
+    }
   };
 
   return (
@@ -111,12 +83,6 @@ export function OrderKanbanBoard() {
                 );
               })}
             </div>
-            <button
-              onClick={resetOrders}
-              className="text-xs text-gray-400 hover:text-gray-600 border border-gray-200 px-3 py-1 rounded-lg"
-            >
-              Resetear
-            </button>
          </div>
       </div>
 
@@ -129,7 +95,7 @@ export function OrderKanbanBoard() {
                 <KanbanColumn
                    status={status}
                    orders={columnOrders}
-                   onSelectOrder={(order: Order) => setSelectedOrder(order)}
+                   onSelectOrder={(order: any) => setSelectedOrder(order)}
                 />
               </SortableContext>
             );

@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Product } from '@/src/data/products';
+import { Product } from '@/src/actions/products';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { useCart } from '@/src/contexts/CartContext';
 

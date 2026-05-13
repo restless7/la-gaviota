@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product } from '@/src/data/products';
+import { Product } from '@/src/actions/products';
 import { useUserRole } from './UserRoleContext';
 
 export interface CartItem {

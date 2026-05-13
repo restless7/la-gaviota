@@ -5,8 +5,11 @@ import ImageCarousel from './components/ui/ImageCarousel';
 import CategoryBanner from './components/ui/CategoryBanner';
 import PromotionalBanner from './components/ui/PromotionalBanner';
 import ProductGrid from './components/store/ProductGrid';
+import { fetchProducts } from '@/src/actions/products';
 
-export default function Home() {
+export default async function Home() {
+  const products = await fetchProducts();
+
   return (
     <div className="flex flex-col w-full overflow-x-hidden">
       {/* 1. Hero Section */}
@@ -110,7 +113,7 @@ export default function Home() {
              <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-4 font-serif">Nuestros <span className="text-gaviota-red italic">Más Pedidos</span></h2>
              <div className="w-24 h-2 bg-gaviota-yellow mx-auto rounded-full"></div>
           </div>
-          <ProductGrid />
+          <ProductGrid products={products} />
         </div>
       </section>
     </div>

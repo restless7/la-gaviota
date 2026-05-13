@@ -1,21 +1,15 @@
-'use client';
-
 import React from 'react';
 import { Users, Search, Filter, Mail, ShoppingBag } from 'lucide-react';
+import { fetchCustomers } from '@/src/actions/customers';
 
-const MOCK_RETAIL_CLIENTS = [
-  { id: 'C001', name: 'Ana Maria Lopez', email: 'alopez@gmail.com', orders: 12, latestOrder: '2026-04-20', ltv: 650000, status: 'Active' },
-  { id: 'C002', name: 'Carlos Rendon', email: 'crendon@hotmail.com', orders: 3, latestOrder: '2026-04-15', ltv: 125000, status: 'Active' },
-  { id: 'C003', name: 'Lucia Quintero', email: 'lucia.q@yahoo.com', orders: 28, latestOrder: '2026-04-21', ltv: 2150000, status: 'VIP' },
-  { id: 'C004', name: 'Mario Vargas', email: 'm.vargas@empresa.com', orders: 1, latestOrder: '2026-01-10', ltv: 45000, status: 'Inactive' },
-];
+export default async function RetailCustomersPage() {
+  const customers = await fetchCustomers('Personas Naturales');
 
-export default function RetailCustomersPage() {
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-6">
+    <div className="p-8 max-w-7xl mx-auto space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
          <div>
-            <h1 className="text-3xl font-black text-slate-800 flex items-center gap-3">
+            <h1 className="text-3xl font-black text-slate-800 flex items-center gap-3 font-serif">
                <Users className="h-8 w-8 text-[#E30613]" />
                Personas Naturales
             </h1>
@@ -48,16 +42,15 @@ export default function RetailCustomersPage() {
                      <th className="p-4 text-center">Pedidos</th>
                      <th className="p-4 text-right">LTV (COP)</th>
                      <th className="p-4 text-center">Última Compra</th>
-                     <th className="p-4 text-center">Estado</th>
                      <th className="p-4 text-center">Acciones</th>
                   </tr>
                </thead>
                <tbody className="divide-y divide-gray-100">
-                  {MOCK_RETAIL_CLIENTS.map(client => (
-                     <tr key={client.id} className="hover:bg-slate-50 transition-colors group">
+                  {customers.map(client => (
+                     <tr key={client.clerk_user_id} className="hover:bg-slate-50 transition-colors group">
                         <td className="p-4">
-                           <p className="font-bold text-slate-800">{client.name}</p>
-                           <p className="text-xs text-gray-400">ID: {client.id}</p>
+                           <p className="font-bold text-slate-800">{client.full_name}</p>
+                           <p className="text-[10px] text-gray-400 font-mono">ID: {client.clerk_user_id.slice(0, 12)}...</p>
                         </td>
                         <td className="p-4">
                            <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -65,19 +58,12 @@ export default function RetailCustomersPage() {
                               {client.email}
                            </div>
                         </td>
-                        <td className="p-4 text-center font-medium text-slate-700">{client.orders}</td>
+                        <td className="p-4 text-center font-medium text-slate-700">{client.total_orders}</td>
                         <td className="p-4 text-right font-black text-[#4CAF50]">
-                           ${client.ltv.toLocaleString()}
+                           ${client.total_spent.toLocaleString()}
                         </td>
-                        <td className="p-4 text-center text-sm text-gray-500">{client.latestOrder}</td>
-                        <td className="p-4 text-center">
-                           <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                              client.status === 'VIP' ? 'bg-[#FFCC00]/20 text-[#ca8a04]' :
-                              client.status === 'Active' ? 'bg-[#4CAF50]/10 text-[#4CAF50]' :
-                              'bg-gray-100 text-gray-500'
-                           }`}>
-                              {client.status}
-                           </span>
+                        <td className="p-4 text-center text-sm text-gray-500">
+                           {client.last_order_at ? new Date(client.last_order_at).toLocaleDateString() : 'Nunca'}
                         </td>
                         <td className="p-4 text-center">
                            <button className="text-gray-400 hover:text-[#E30613] transition-colors p-2">
@@ -86,6 +72,13 @@ export default function RetailCustomersPage() {
                         </td>
                      </tr>
                   ))}
+                  {customers.length === 0 && (
+                     <tr>
+                        <td colSpan={6} className="p-12 text-center text-gray-400 font-medium italic">
+                           No hay registros de clientes en este segmento.
+                        </td>
+                     </tr>
+                  )}
                </tbody>
             </table>
          </div>

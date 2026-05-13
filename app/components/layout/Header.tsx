@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { useCart } from '@/src/contexts/CartContext';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
@@ -17,7 +18,12 @@ const TIER_BADGES: Record<string, { label: string; color: string; bg: string }> 
 export default function Header() {
   const { itemCount, isCartOpen, setIsCartOpen } = useCart();
   const { role, isSignedIn } = useUserRole();
+  const pathname = usePathname();
   const badge = TIER_BADGES[role];
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white transition-all shadow-sm border-b border-gray-100">

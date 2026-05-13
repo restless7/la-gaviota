@@ -1,13 +1,10 @@
-'use client';
-
 import React from 'react';
-import { useUserRole } from '@/src/contexts/UserRoleContext';
 import Image from 'next/image';
 import { ProductCard } from '@/src/components/store/ProductCard';
-import { products } from '@/src/data/products';
+import { fetchProducts } from '@/src/actions/products';
 
-export default function RestauranteDashboard() {
-  const { role } = useUserRole();
+export default async function RestauranteDashboard() {
+  const products = await fetchProducts();
 
   // Restaurante focus: All products basically, maybe prioritize Kits and veggies
   const wholesalePicks = products.slice(0, 4);

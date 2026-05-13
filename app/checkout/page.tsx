@@ -8,7 +8,7 @@ import { CheckoutUpsell } from '@/src/components/checkout/CheckoutUpsell';
 import { submitCheckoutOrder } from '@/src/actions/checkoutAction';
 
 export default function CheckoutPage() {
-   const { items, cartTotal, remainingForFreeShipping } = useCart();
+   const { items, cartTotal, remainingForFreeShipping, clearCart } = useCart();
    const { role } = useUserRole();
    const [paymentMethod, setPaymentMethod] = useState<'bold' | 'cash'>('bold');
    const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,15 +20,23 @@ export default function CheckoutPage() {
    const deliveryCost = items.length > 0 ? (remainingForFreeShipping === 0 ? 0 : 10000) : 0;
    const finalTotal = cartTotal + deliveryCost;
 
+
+
    const handleOrderSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       setIsSubmitting(true);
       try {
-         const result = await submitCheckoutOrder(new FormData(e.target as HTMLFormElement));
-         alert(`Pedido #${result.orderId} generado exitosamente.\nTotal cobrado: ${formatPrice(finalTotal)}`);
+         const result = await submitCheckoutOrder(
+            new FormData(e.target as HTMLFormElement),
+            items.map(i => ({ product: i.product, quantity: i.quantity })),
+            finalTotal
+         );
+         alert(`Pedido #${result.orderId} generado exitosamente.\nTotal: ${formatPrice(finalTotal)}`);
+         clearCart();
          window.location.href = '/';
       } catch (err) {
          console.error(err);
+         alert('Error al procesar el pedido. Por favor intente de nuevo.');
       } finally {
          setIsSubmitting(false);
       }
@@ -89,6 +97,7 @@ export default function CheckoutPage() {
             </p>
 
             <form onSubmit={handleOrderSubmit} className="flex flex-col lg:flex-row gap-12 items-start">
+               <input type="hidden" name="paymentMethod" value={paymentMethod} />
                {/* Checkout Form - Left */}
                <div className="w-full lg:w-7/12">
                   <DeliveryScheduler />

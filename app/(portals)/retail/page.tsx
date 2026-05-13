@@ -1,13 +1,10 @@
-'use client';
-
 import React from 'react';
-import { useUserRole } from '@/src/contexts/UserRoleContext';
 import Image from 'next/image';
 import { ProductCard } from '@/src/components/store/ProductCard';
-import { products } from '@/src/data/products';
+import { fetchProducts } from '@/src/actions/products';
 
-export default function RetailDashboard() {
-  const { role } = useUserRole();
+export default async function RetailDashboard() {
+  const products = await fetchProducts();
 
   // Consumer-friendly: Filter recent fruits
   const quickPicks = products.filter(p => p.category === 'Frutas').slice(0, 4);
@@ -19,7 +16,7 @@ export default function RetailDashboard() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-red-50 rounded-full blur-3xl -mr-20 -mt-20 z-0"></div>
         <div className="w-32 h-32 md:w-48 md:h-48 relative shrink-0 z-10 bg-slate-100 rounded-full overflow-hidden border-4 border-white shadow-lg">
            {/* Fallback to mascot-waving or farmer */}
-           <Image src="/images/mascot-waving.jpg" alt="Mascot Waving" fill className="object-cover" />
+           <Image src="/IMAGES/mascota.jpeg" alt="Mascot Waving" fill className="object-cover" />
         </div>
         <div className="flex-1 z-10 text-center md:text-left">
            <span className="text-[#CC0000] font-black tracking-widest uppercase text-xs sm:text-sm mb-2 block">¡Mercar Chévere!</span>

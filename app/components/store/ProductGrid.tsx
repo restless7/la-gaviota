@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { ProductCard } from '@/src/components/store/ProductCard';
-import { Product } from '@/src/data/products';
 import Image from 'next/image';
+import { Product } from '@/src/actions/products';
 
 const CATEGORY_BANNERS: Record<string, string> = {
   'Frutas': '/IMAGES/frutas-banner.jpeg',
@@ -12,89 +12,14 @@ const CATEGORY_BANNERS: Record<string, string> = {
   'Carnes': '/IMAGES/carnes-banner1.jpeg',
 };
 
-const SAMPLE_PRODUCTS: Product[] = [
-  {
-    id: '1',
-    slug: 'tomate-chonto',
-    name: 'Tomate Chonto',
-    category: 'Verduras Y Hortalizas',
-    unit: '1 kg',
-    imagePlaceholder: '/IMAGES/product-display.jpeg',
-    description: 'Fresco tomate chonto.',
-    priceRetail: 12000,
-    priceMicro: 11000,
-    priceRestaurant: 9500,
-  },
-  {
-    id: '2',
-    slug: 'aguacate-hass',
-    name: 'Aguacate Hass',
-    category: 'Frutas',
-    unit: '1 kg',
-    imagePlaceholder: '/IMAGES/product-display.jpeg',
-    description: 'Aguacate hass de calidad.',
-    priceRetail: 12000,
-    priceMicro: 10500,
-    priceRestaurant: 9000,
-  },
-  {
-    id: '3',
-    slug: 'manzana-roja',
-    name: 'Manzana Roja',
-    category: 'Frutas',
-    unit: '1 kg',
-    imagePlaceholder: '/IMAGES/product-display.jpeg',
-    description: 'Manzana roja fresca.',
-    priceRetail: 15000,
-    priceMicro: 13500,
-    priceRestaurant: 12000,
-  },
-  {
-    id: '4',
-    slug: 'zanahoria',
-    name: 'Zanahoria',
-    category: 'Verduras Y Hortalizas',
-    unit: '1 kg',
-    imagePlaceholder: '/IMAGES/product-display.jpeg',
-    description: 'Zanahoria fresca.',
-    priceRetail: 3200,
-    priceMicro: 2900,
-    priceRestaurant: 2600,
-  },
-  {
-    id: '5',
-    slug: 'banano-criollo',
-    name: 'Banano Criollo',
-    category: 'Frutas',
-    unit: '1 kg',
-    imagePlaceholder: '/IMAGES/product-display.jpeg',
-    description: 'Banano criollo dulce.',
-    priceRetail: 2800,
-    priceMicro: 2500,
-    priceRestaurant: 2200,
-  },
-  {
-    id: '6',
-    slug: 'kit-sancocho',
-    name: 'Kit Sancocho Familiar',
-    category: 'Kits Negocios',
-    unit: 'Bandeja',
-    imagePlaceholder: '/IMAGES/product-display.jpeg',
-    description: 'Kit completo para sancocho.',
-    priceRetail: 12000,
-    priceMicro: 11000,
-    priceRestaurant: 9500,
-  }
-];
-
-export default function ProductGrid() {
+export default function ProductGrid({ products = [] }: { products: Product[] }) {
   const [filter, setFilter] = useState<'Todos' | 'Frutas' | 'Verduras' | 'Verduras Y Hortalizas' | 'Carnes' | 'Kits'>('Todos');
 
-  const filteredProducts = SAMPLE_PRODUCTS.filter(p => {
+  const filteredProducts = products.filter(p => {
     if (filter === 'Todos') return true;
     if (filter === 'Verduras') return p.category === 'Verduras Y Hortalizas';
     return p.category === filter;
-  });
+  }).slice(0, 6);
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 w-full mt-10">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { products } from '@/src/data/products';
+import { fetchProducts } from '@/src/actions/products';
 import ShopView from '@/src/components/store/ShopView';
 import type { Metadata } from 'next';
 
@@ -8,7 +8,9 @@ export const metadata: Metadata = {
   description: 'Explora nuestro catálogo fresco y haz tu pedido con precios mayoristas en Bogotá.',
 };
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  const products = await fetchProducts();
+
   return (
      <div className="w-full">
         {/* Soft decorative background element */}

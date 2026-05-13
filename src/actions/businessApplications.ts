@@ -98,6 +98,30 @@ export async function approveApplication(applicationId: string, clerkUserId: str
       return { success: false, error: error.message };
     }
 
+    // 3. Create/Update customer record in 'customers' table
+    // Fetch the application details to get all info
+    const { data: appData } = await supabase
+      .from('business_applications')
+      .select('*')
+      .eq('id', applicationId)
+      .single();
+
+    if (appData) {
+      await supabase
+        .from('customers')
+        .upsert({
+          clerk_user_id: clerkUserId,
+          full_name: appData.applicant_name,
+          business_name: appData.business_name,
+          email: appData.applicant_email,
+          phone: appData.phone,
+          address: appData.address,
+          nit: appData.nit,
+          tier: businessType,
+          updated_at: new Date().toISOString()
+        });
+    }
+
     return { success: true };
   } catch (err) {
     console.error('Approve error:', err);
