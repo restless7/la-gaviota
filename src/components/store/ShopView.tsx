@@ -112,12 +112,12 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
              </div>
 
              {/* Categories */}
-             <div className="border-t border-gray-100 pt-6">
+             <div className="mb-8 border-t border-gray-100 pt-6">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4 block">Categorías</label>
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-row lg:flex-col overflow-x-auto no-scrollbar gap-2 lg:gap-1.5 pb-2 lg:pb-0">
                    <button 
                       onClick={() => setSelectedCategory(null)}
-                      className={`text-left text-sm py-2 px-3 rounded-lg transition-all font-medium ${selectedCategory === null ? 'bg-[#4CAF50] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'}`}
+                      className={`whitespace-nowrap text-left text-sm py-2 px-4 lg:px-3 rounded-full lg:rounded-lg transition-all font-medium border ${selectedCategory === null ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'}`}
                    >
                      Todos los productos
                    </button>
@@ -125,7 +125,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                       <button 
                          key={cat}
                          onClick={() => setSelectedCategory(cat)}
-                         className={`text-left text-sm py-2 px-3 rounded-lg transition-all font-medium ${selectedCategory === cat ? 'bg-[#4CAF50] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'}`}
+                         className={`whitespace-nowrap text-left text-sm py-2 px-4 lg:px-3 rounded-full lg:rounded-lg transition-all font-medium border ${selectedCategory === cat ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'}`}
                       >
                          {cat}
                       </button>
@@ -133,17 +133,15 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                 </div>
              </div>
 
-             {/* Phase 6 Delivery Integration Request */}
-             <div className="mt-8 pt-6 border-t border-gray-100">
-                <div className="scale-90 origin-top-left w-[111%]"> {/* Scaling down slightly to perfectly fit sidebar width */}
-                  <DeliveryScheduler />
-                </div>
-             </div>
-          </div>
+           </div>
         </aside>
 
         {/* Dynamic Grid View */}
-        <div className="flex-1 w-full">
+        <div className="flex-1 w-full flex flex-col">
+           {/* Phase 6 Delivery Integration Request - Moved to top of grid for horizontal spread */}
+           <div className="mb-6 w-full">
+             <DeliveryScheduler />
+           </div>
 
            <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
