@@ -60,6 +60,29 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
          </div>
        )}
 
+       {/* MOBILE STICKY CATEGORIES — Must be outside the flex layout to stick to viewport */}
+       <div className="lg:hidden sticky top-[64px] z-40 bg-white/95 backdrop-blur-md py-3 shadow-sm border-b border-gray-100">
+           <div className="max-w-7xl mx-auto w-full px-4 sm:px-6">
+             <div className="flex flex-row overflow-x-auto no-scrollbar gap-2 pb-1">
+                 <button 
+                    onClick={() => setSelectedCategory(null)}
+                    className={`whitespace-nowrap text-xs py-1.5 px-4 rounded-full transition-all font-bold border ${selectedCategory === null ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}
+                 >
+                   Todos
+                 </button>
+                 {CATEGORIES.map(cat => (
+                    <button 
+                       key={cat}
+                       onClick={() => setSelectedCategory(cat)}
+                       className={`whitespace-nowrap text-xs py-1.5 px-4 rounded-full transition-all font-bold border ${selectedCategory === cat ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}
+                    >
+                       {cat}
+                    </button>
+                 ))}
+             </div>
+           </div>
+       </div>
+
        {/* Main Layout Area */}
        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 pt-8">
          {/* Filter Sidebar */}
@@ -138,26 +161,6 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
 
         {/* Dynamic Grid View */}
         <div className="flex-1 w-full flex flex-col">
-           {/* MOBILE STICKY CATEGORIES */}
-           <div className="lg:hidden sticky top-16 z-40 bg-white/95 backdrop-blur-md pt-4 pb-4 -mx-4 px-4 mb-6 shadow-sm border-b border-gray-100">
-               <div className="flex flex-row overflow-x-auto no-scrollbar gap-2">
-                   <button 
-                      onClick={() => setSelectedCategory(null)}
-                      className={`whitespace-nowrap text-sm py-2 px-5 rounded-full transition-all font-bold border ${selectedCategory === null ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}
-                   >
-                     Todos los productos
-                   </button>
-                   {CATEGORIES.map(cat => (
-                      <button 
-                         key={cat}
-                         onClick={() => setSelectedCategory(cat)}
-                         className={`whitespace-nowrap text-sm py-2 px-5 rounded-full transition-all font-bold border ${selectedCategory === cat ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}
-                      >
-                         {cat}
-                      </button>
-                   ))}
-               </div>
-           </div>
 
            {/* Phase 6 Delivery Integration Request - Moved to top of grid for horizontal spread */}
            <div className="mb-6 w-full">

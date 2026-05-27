@@ -9,7 +9,6 @@ export default function FloatingWhatsApp() {
   const [isShrunk, setIsShrunk] = useState(false);
 
   useEffect(() => {
-    // Start large, then shrink after 3.5 seconds to become non-invasive
     const timer = setTimeout(() => {
       setIsShrunk(true);
     }, 3500);
@@ -19,8 +18,10 @@ export default function FloatingWhatsApp() {
   const shouldBeLarge = !isShrunk || isHovered;
 
   return (
-    <div 
-      className="fixed bottom-4 left-4 md:bottom-6 md:right-6 md:left-auto z-50 flex flex-col md:items-end items-start gap-2 md:gap-3 isolate"
+    <motion.div 
+      className="fixed bottom-4 left-4 md:bottom-6 md:right-6 md:left-auto z-50 flex flex-col md:items-end items-start isolate"
+      animate={{ gap: shouldBeLarge ? 12 : 4 }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -28,9 +29,9 @@ export default function FloatingWhatsApp() {
       <motion.div 
         initial={{ opacity: 0, y: 10, scale: 0.8 }}
         animate={{ 
-          opacity: shouldBeLarge ? 1 : 0.8,
-          scale: shouldBeLarge ? 1 : 0.85,
-          y: 0
+          opacity: shouldBeLarge ? 1 : 0.7,
+          scale: shouldBeLarge ? 1 : 0.75,
+          y: shouldBeLarge ? 0 : 20
         }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         className="bg-white px-3 py-1.5 rounded-full shadow-lg border-2 border-gaviota-green flex items-center gap-2 origin-bottom-left md:origin-bottom-right"
@@ -62,6 +63,6 @@ export default function FloatingWhatsApp() {
           className="object-cover p-1 md:p-1.5 rounded-full z-10"
         />
       </motion.button>
-    </div>
+    </motion.div>
   );
 }
