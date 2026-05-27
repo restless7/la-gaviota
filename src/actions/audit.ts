@@ -8,19 +8,20 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface AuditLog {
   id: string;
-  timestamp: string;
-  actor: string;
-  action: string;
-  target: string;
-  category: 'pricing' | 'order' | 'supplier' | 'system' | 'inventory';
-  details: string;
+  created_at: string;
+  user_id: string;
+  actor_name: string;
+  category: 'PRICING' | 'KITS' | 'SUPPLIER' | 'ORDERS' | 'SYSTEM';
+  action_type: string;
+  description: string;
+  reference_id?: string;
 }
 
 export async function fetchAuditLogs(): Promise<AuditLog[]> {
   const { data, error } = await supabase
     .from('audit_logs')
     .select('*')
-    .order('timestamp', { ascending: false })
+    .order('created_at', { ascending: false })
     .limit(50);
 
   if (error) {
@@ -29,14 +30,4 @@ export async function fetchAuditLogs(): Promise<AuditLog[]> {
   }
 
   return data || [];
-}
-
-export async function logAuditEvent(log: Omit<AuditLog, 'id' | 'timestamp'>) {
-  const { error } = await supabase
-    .from('audit_logs')
-    .insert([log]);
-
-  if (error) {
-    console.error('Error logging audit event:', error);
-  }
 }

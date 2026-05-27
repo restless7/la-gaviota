@@ -3,7 +3,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 import { auth, clerkClient } from '@clerk/nextjs/server';
-import { logAuditEvent } from './audit';
+import { logAdminAction } from '@/src/lib/audit';
 
 import { CATEGORIES } from '@/src/constants/productConstants';
 
@@ -121,13 +121,12 @@ export async function updateProductPricing(
 
   // Log the event if it's a cost change
   if (updates.base_cost) {
-    await logAuditEvent({
-      actor: userId, // ideally use name, but userId works for zero-trust
-      action: 'Actualizó costo base',
-      target: id,
-      category: 'pricing',
-      details: `Nuevo costo: $${updates.base_cost} COP.`
-    });
+    await logAdminAction(
+      'PRICING',
+      'Actualizó costo base',
+      `Nuevo costo: $${updates.base_cost} COP.`,
+      id
+    );
   }
 
   revalidatePath('/admin/pricing');
@@ -158,13 +157,12 @@ export async function updateProductPrices(productId: string, prices: { retail: n
     throw new Error('Failed to update three-tier pricing');
   }
 
-  await logAuditEvent({
-      actor: user.firstName || userId,
-      action: 'Actualizó estructura de precios de 3 niveles',
-      target: productId,
-      category: 'pricing',
-      details: `Retail: ${prices.retail}, Micro: ${prices.micro}, Rest: ${prices.restaurant}`
-  });
+  await logAdminAction(
+      'PRICING',
+      'Actualización de estructura de precios de 3 niveles',
+      `Retail: ${prices.retail}, Micro: ${prices.micro}, Rest: ${prices.restaurant}`,
+      productId
+  );
 
   revalidatePath('/admin/pricing');
   revalidatePath('/shop');
@@ -200,13 +198,12 @@ export async function applyMacroMargins(
   }
 
   // 3. Log the event
-  await logAuditEvent({
-    actor: 'Sebastian Garcia', // Defaulting to Sebastian as admin for now
-    action: 'Aplicó multiplicadores masivos',
-    target: 'Gestión de Precios',
-    category: 'pricing',
-    details: `Márgenes: Detal +${retailMargin}%, Micro +${microMargin}%, Rest. +${restaurantMargin}% — ${updatedProducts.length} productos actualizados.`
-  });
+  await logAdminAction(
+    'PRICING',
+    'Aplicó multiplicadores masivos',
+    `Márgenes: Detal +${retailMargin}%, Micro +${microMargin}%, Rest. +${restaurantMargin}% — ${updatedProducts.length} productos actualizados.`,
+    'MACRO_UPDATE'
+  );
 
   revalidatePath('/admin/pricing');
   revalidatePath('/shop');

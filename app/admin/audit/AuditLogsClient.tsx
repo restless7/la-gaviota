@@ -1,31 +1,31 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Filter, Search, User, DollarSign, Truck, Settings, Package, ChevronDown } from 'lucide-react';
+import { Filter, Search, User, DollarSign, Truck, Settings, Package, ChevronDown, Layers } from 'lucide-react';
 import { AuditLog } from '@/src/actions/audit';
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
-  pricing: <DollarSign className="w-4 h-4" />,
-  order: <Truck className="w-4 h-4" />,
-  supplier: <Package className="w-4 h-4" />,
-  system: <Settings className="w-4 h-4" />,
-  inventory: <Package className="w-4 h-4" />,
+  PRICING: <DollarSign className="w-4 h-4" />,
+  KITS: <Layers className="w-4 h-4" />,
+  SUPPLIER: <Package className="w-4 h-4" />,
+  SYSTEM: <Settings className="w-4 h-4" />,
+  ORDERS: <Truck className="w-4 h-4" />,
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  pricing: 'bg-yellow-50 text-yellow-700 border-yellow-200',
-  order: 'bg-blue-50 text-blue-700 border-blue-200',
-  supplier: 'bg-green-50 text-green-700 border-green-200',
-  system: 'bg-slate-50 text-slate-600 border-slate-200',
-  inventory: 'bg-red-50 text-red-600 border-red-200',
+  PRICING: 'bg-yellow-50 text-yellow-700 border-yellow-200',
+  KITS: 'bg-purple-50 text-purple-700 border-purple-200',
+  SUPPLIER: 'bg-green-50 text-green-700 border-green-200',
+  SYSTEM: 'bg-slate-50 text-slate-600 border-slate-200',
+  ORDERS: 'bg-blue-50 text-blue-600 border-blue-200',
 };
 
 const CATEGORY_DOT: Record<string, string> = {
-  pricing: 'bg-yellow-500',
-  order: 'bg-blue-500',
-  supplier: 'bg-green-500',
-  system: 'bg-slate-400',
-  inventory: 'bg-red-500',
+  PRICING: 'bg-yellow-500',
+  KITS: 'bg-purple-500',
+  SUPPLIER: 'bg-green-500',
+  SYSTEM: 'bg-slate-400',
+  ORDERS: 'bg-blue-500',
 };
 
 export function AuditLogsClient({ initialLogs }: { initialLogs: AuditLog[] }) {
@@ -35,9 +35,9 @@ export function AuditLogsClient({ initialLogs }: { initialLogs: AuditLog[] }) {
   const filtered = initialLogs.filter(ev => {
     const matchesCategory = filterCategory ? ev.category === filterCategory : true;
     const matchesSearch = searchTerm
-      ? ev.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        ev.target.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        ev.details.toLowerCase().includes(searchTerm.toLowerCase())
+      ? ev.action_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (ev.reference_id && ev.reference_id.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        ev.description.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
     return matchesCategory && matchesSearch;
   });
@@ -79,11 +79,11 @@ export function AuditLogsClient({ initialLogs }: { initialLogs: AuditLog[] }) {
             className="appearance-none bg-white border border-gray-200 rounded-lg pl-4 pr-10 py-2 font-medium text-slate-700 outline-none focus:border-slate-800 cursor-pointer"
           >
             <option value="">Todas las categorías</option>
-            <option value="pricing">💰 Precios</option>
-            <option value="order">🚚 Pedidos</option>
-            <option value="supplier">🌿 Proveedores</option>
-            <option value="inventory">📦 Inventario</option>
-            <option value="system">⚙️ Sistema</option>
+            <option value="PRICING">💰 Precios</option>
+            <option value="KITS">📦 Kits/Combos</option>
+            <option value="ORDERS">🚚 Pedidos</option>
+            <option value="SUPPLIER">🌿 Proveedores</option>
+            <option value="SYSTEM">⚙️ Sistema</option>
           </select>
           <ChevronDown className="h-4 w-4 absolute right-3 top-3 text-gray-400 pointer-events-none" />
         </div>
@@ -118,18 +118,18 @@ export function AuditLogsClient({ initialLogs }: { initialLogs: AuditLog[] }) {
                         {CATEGORY_ICONS[event.category]}
                         {event.category}
                       </span>
-                      <span className="text-xs text-gray-400 font-medium">{formatTimestamp(event.timestamp)}</span>
+                      <span className="text-xs text-gray-400 font-medium">{formatTimestamp(event.created_at)}</span>
                     </div>
-                    <p className="font-bold text-slate-800 text-sm">{event.action}</p>
-                    <p className="text-gray-500 text-xs mt-1">{event.details} — <span className="text-slate-400 italic">{event.target}</span></p>
+                    <p className="font-bold text-slate-800 text-sm">{event.action_type}</p>
+                    <p className="text-gray-500 text-xs mt-1">{event.description} — <span className="text-slate-400 italic">{event.reference_id || 'Global'}</span></p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                    <div className="flex items-center gap-1.5 text-xs text-gray-400 justify-end">
                       <User className="w-3 h-3" />
-                      {event.actor}
+                      {event.actor_name}
                     </div>
                     <p className="text-[10px] text-gray-300 mt-1 font-mono">
-                      {new Date(event.timestamp).toLocaleString('es-CO', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' })}
+                      {new Date(event.created_at).toLocaleString('es-CO', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' })}
                     </p>
                   </div>
                 </div>
