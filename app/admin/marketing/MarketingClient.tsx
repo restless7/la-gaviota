@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ShoppingCart, TrendingUp, Users, MessageCircle, AlertTriangle, ArrowUpRight } from 'lucide-react';
+import { ShoppingCart, TrendingUp, Users, MessageCircle, AlertTriangle, ArrowUpRight, CheckCircle } from 'lucide-react';
 
 interface MarketingClientProps {
   kpis: {
@@ -10,9 +10,10 @@ interface MarketingClientProps {
     recoveryRate: number;
   };
   recentCarts: any[];
+  reorderEligible: any[];
 }
 
-export default function MarketingClient({ kpis, recentCarts }: MarketingClientProps) {
+export default function MarketingClient({ kpis, recentCarts, reorderEligible }: MarketingClientProps) {
   return (
     <div className="p-8 max-w-[1400px] mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center justify-between mb-2">
@@ -90,25 +91,42 @@ export default function MarketingClient({ kpis, recentCarts }: MarketingClientPr
             </div>
          </div>
 
-         {/* Embudos B2B Placeholder for Phase 2 & 3 */}
-         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden relative">
-            <div className="absolute inset-0 bg-slate-50/50 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center">
-               <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 text-center max-w-sm">
-                  <div className="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                     <Users className="h-8 w-8 text-amber-600" />
-                  </div>
-                  <h4 className="font-black text-slate-800 text-xl mb-2">Embudos B2B (Fase 2)</h4>
-                  <p className="text-sm text-gray-500 font-medium mb-4">La automatización de lealtad y leads se desplegará próximamente según el Roadmap.</p>
-               </div>
+         {/* Phase 2: B2B Loyalty Reorder Engine */}
+         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-slate-50">
+               <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                 <Users className="h-5 w-5 text-purple-500" />
+                 B2B: Listos para Recompra (+7 días)
+               </h3>
+               <button className="text-sm font-bold text-blue-600 hover:underline">Gestionar</button>
             </div>
-            <div className="p-6 opacity-30 pointer-events-none">
-               <h3 className="font-bold text-slate-800 mb-6">CRM Prospección Comercial</h3>
-               {/* Dummy skeleton content */}
-               <div className="space-y-4">
-                 <div className="h-16 bg-gray-200 rounded-xl w-full"></div>
-                 <div className="h-16 bg-gray-200 rounded-xl w-full"></div>
-                 <div className="h-16 bg-gray-200 rounded-xl w-full"></div>
-               </div>
+            <div className="divide-y divide-gray-100 flex-1">
+               {reorderEligible.map(cust => (
+                  <div key={cust.clerk_user_id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                     <div>
+                        <p className="font-bold text-slate-800">{cust.business_name || cust.full_name}</p>
+                        <p className="text-xs text-gray-500">
+                          Último pedido: {new Date(cust.last_order_at).toLocaleDateString('es-CO')}
+                        </p>
+                     </div>
+                     <div className="text-right">
+                        <p className="font-black text-slate-800">${(cust.total_spent / 1_000_000).toFixed(1)}M Total</p>
+                        <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${
+                          cust.tier === 'Restaurantes' ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
+                        }`}>
+                          {cust.tier}
+                        </span>
+                     </div>
+                  </div>
+               ))}
+               {reorderEligible.length === 0 && (
+                 <div className="p-8 text-center text-gray-400 font-medium">
+                   <div className="bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                     <CheckCircle className="h-8 w-8 text-slate-300" />
+                   </div>
+                   Todos los clientes B2B están al día.
+                 </div>
+               )}
             </div>
          </div>
       </div>

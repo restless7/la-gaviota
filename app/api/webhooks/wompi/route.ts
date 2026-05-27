@@ -118,6 +118,22 @@ export async function POST(req: Request) {
             if (cartError) console.error('[Wompi Webhook] Failed to mark cart as recovered', cartError);
             else console.log(`[Wompi Webhook] Cart for ${orderData.clerk_user_id} marked as recovered.`);
           });
+
+        // Update Customer Loyalty Metrics (Phase 2 Prep)
+        if (orderData.clerk_user_id) {
+          // Fetch current customer to increment totals
+          supabase.from('customers').select('total_spent, total_orders').eq('clerk_user_id', orderData.clerk_user_id).single()
+            .then(({ data: cust }) => {
+               if (cust) {
+                 supabase.from('customers').update({
+                   total_spent: cust.total_spent + orderData.total_amount,
+                   total_orders: cust.total_orders + 1,
+                   last_order_at: new Date().toISOString(),
+                   updated_at: new Date().toISOString()
+                 }).eq('clerk_user_id', orderData.clerk_user_id).catch(console.error);
+               }
+            });
+        }
       }
     }
 

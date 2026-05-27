@@ -12,6 +12,7 @@ export default async function MarketingHubPage() {
   let totalRecoveredAmount = 0;
   let recoveryRate = 0;
   let carts = [];
+  let reorderEligible = [];
 
   try {
     const { data: abandonedData, error } = await supabase
@@ -28,6 +29,22 @@ export default async function MarketingHubPage() {
         recoveryRate = (recovered.length / totalAbandoned) * 100;
       }
     }
+
+    // Phase 2: Fetch B2B Reorder Pipeline
+    const SEVEN_DAYS_AGO = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: b2bData } = await supabase
+      .from('customers')
+      .select('clerk_user_id, full_name, business_name, tier, last_order_at, total_spent')
+      .in('tier', ['Micromercados', 'Restaurantes'])
+      .gt('total_orders', 0)
+      .lt('last_order_at', SEVEN_DAYS_AGO)
+      .order('last_order_at', { ascending: true })
+      .limit(5);
+      
+    if (b2bData) {
+      reorderEligible = b2bData;
+    }
+
   } catch (err) {
     console.error('Abandoned carts table might not exist yet.', err);
   }
@@ -39,6 +56,6 @@ export default async function MarketingHubPage() {
   };
 
   return (
-    <MarketingClient kpis={kpis} recentCarts={carts} />
+    <MarketingClient kpis={kpis} recentCarts={carts} reorderEligible={reorderEligible} />
   );
 }
