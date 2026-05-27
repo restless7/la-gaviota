@@ -40,7 +40,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
    }, [initialProducts, search, selectedCategory, sortOrder, role]);
 
    return (
-     <div className="w-full flex flex-col pb-24 overflow-x-hidden">
+     <div className="w-full flex flex-col pb-24">
        
        {/* Full Width Category Banner */}
        {selectedCategory && CATEGORY_BANNERS[selectedCategory] && (
