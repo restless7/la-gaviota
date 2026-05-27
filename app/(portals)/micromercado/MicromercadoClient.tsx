@@ -1,0 +1,136 @@
+'use client';
+
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { ProductCard } from '@/src/components/store/ProductCard';
+import { useCart } from '@/src/contexts/CartContext';
+import { useRouter } from 'next/navigation';
+import { X } from 'lucide-react';
+
+export default function MicromercadoClient({ 
+  bulkPicks, 
+  lastOrder,
+  allOrders
+}: { 
+  bulkPicks: any[]; 
+  lastOrder: any;
+  allOrders: any[];
+}) {
+  const { addToCart } = useCart();
+  const router = useRouter();
+  const [showInvoices, setShowInvoices] = useState(false);
+
+  const handleQuickReorder = () => {
+    if (!lastOrder || !lastOrder.order_items) {
+      alert('No se encontró una orden previa para repetir.');
+      return;
+    }
+    
+    lastOrder.order_items.forEach((item: any) => {
+       if (item.products && item.quantity) {
+         addToCart(item.products, item.quantity);
+       }
+    });
+    alert(`Se agregaron ${lastOrder.order_items.length} productos al carrito exitosamente.`);
+    router.push('/cart');
+  };
+
+  const handleRouteStatus = () => {
+    if (!lastOrder) {
+      alert('No tiene órdenes activas en ruta.');
+      return;
+    }
+    if (lastOrder.status === 'SHIPPED') {
+      alert('¡El camión de La Gaviota está en camino hacia su negocio! Llegada estimada: Hoy antes de las 5:00 PM.');
+    } else if (lastOrder.status === 'PENDING' || lastOrder.status === 'PAID') {
+      alert('Su orden está siendo preparada en bodega y pronto saldrá a ruta.');
+    } else {
+      alert(`Estado de su última orden: ${lastOrder.status}`);
+    }
+  };
+
+  return (
+    <div className="animate-fade-in relative">
+      {/* Welcome & Wholesale Banner */}
+      <div className="flex flex-col md:flex-row items-center bg-white rounded-3xl p-8 lg:p-12 shadow-sm border border-gray-200 gap-8 mb-10 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFCC00]/20 rounded-full blur-3xl -mr-20 -mt-20 z-0"></div>
+        <div className="w-32 h-32 md:w-48 md:h-48 relative shrink-0 z-10 bg-slate-100 rounded-3xl overflow-hidden shadow-lg border border-gray-100">
+           <Image src="/images/frutas-banner.jpg" alt="Micromercado Banner" fill className="object-cover" />
+        </div>
+        <div className="flex-1 z-10 text-center md:text-left">
+           <span className="text-yellow-600 font-black tracking-widest uppercase text-xs sm:text-sm mb-2 block">Portal Bodega & Micromercados</span>
+           <h1 className="text-3xl lg:text-5xl font-black text-slate-800 font-serif mb-4 leading-tight">
+             Surta su negocio <span className="text-yellow-600">con la mejor calidad</span>
+           </h1>
+           <p className="text-gray-500 font-medium max-w-xl mx-auto md:mx-0">
+             Inventario fresco garantizado. Disfrute de su tarifa especial &quot;Micromercados&quot; en todos nuestros productos.
+           </p>
+        </div>
+      </div>
+
+      {/* Action Links */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+         <div onClick={handleQuickReorder} className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col items-center text-center hover:border-yellow-400 hover:shadow-lg transition-all cursor-pointer group">
+            <span className="text-4xl mb-4 group-hover:scale-110 transition-transform">📦</span>
+            <h3 className="font-bold text-slate-800 text-lg mb-1">Pedidos Rápidos</h3>
+            <p className="text-xs text-gray-500">Repita su última compra al instante.</p>
+         </div>
+         <div onClick={() => setShowInvoices(true)} className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col items-center text-center hover:border-yellow-400 hover:shadow-lg transition-all cursor-pointer group">
+            <span className="text-4xl mb-4 group-hover:scale-110 transition-transform">📊</span>
+            <h3 className="font-bold text-slate-800 text-lg mb-1">Mis Facturas</h3>
+            <p className="text-xs text-gray-500">Historial y comprobantes de compra.</p>
+         </div>
+         <div onClick={handleRouteStatus} className="bg-[#4CAF50] rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-lg hover:bg-green-600 transition-all cursor-pointer group relative overflow-hidden">
+            {lastOrder?.status === 'SHIPPED' && (
+              <div className="absolute inset-0 bg-green-500 animate-pulse opacity-50 z-0"></div>
+            )}
+            <span className="text-4xl mb-2 z-10">🚚</span>
+            <h3 className="font-bold text-white text-lg z-10">Ver estado de Ruta</h3>
+         </div>
+      </div>
+
+      {/* Suggested Products */}
+      <div className="mb-6 flex justify-between items-end">
+         <h2 className="text-2xl font-black text-slate-800 font-serif">Sugeridos para Inventario</h2>
+         <a href="/shop" className="text-sm font-bold text-yellow-600 hover:text-yellow-700 underline">Ver todo el catálogo</a>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+         {bulkPicks.map(p => (
+            <ProductCard key={p.id} product={p} />
+         ))}
+      </div>
+
+      {/* Invoices Modal */}
+      {showInvoices && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden shadow-2xl animate-fade-in">
+            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-slate-50">
+              <h2 className="text-xl font-bold text-slate-800 font-serif">Mis Facturas y Órdenes</h2>
+              <button onClick={() => setShowInvoices(false)} className="p-2 hover:bg-gray-200 rounded-full transition-colors">
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              {allOrders.length === 0 ? (
+                <p className="text-center text-gray-500 py-10">No hay órdenes registradas.</p>
+              ) : (
+                allOrders.map(order => (
+                  <div key={order.id} className="border border-gray-200 rounded-xl p-4 flex justify-between items-center hover:border-yellow-400 transition-colors">
+                    <div>
+                      <p className="font-bold text-slate-800">Orden #{order.id.slice(0,8).toUpperCase()}</p>
+                      <p className="text-sm text-gray-500">{new Date(order.created_at).toLocaleDateString()} • {order.order_items?.length || 0} ítems</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-black text-slate-800">${Number(order.total_amount).toLocaleString()} COP</p>
+                      <span className="text-xs font-bold text-white bg-[#4CAF50] px-2 py-1 rounded-sm mt-1 inline-block">{order.status}</span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

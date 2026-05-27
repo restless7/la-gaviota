@@ -17,6 +17,8 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 const isAdminRoute = createRouteMatcher(['/admin(.*)']);
+const isRestauranteRoute = createRouteMatcher(['/restaurante(.*)']);
+const isMicromercadoRoute = createRouteMatcher(['/micromercado(.*)']);
 
 export default clerkMiddleware(async (auth, request) => {
   const url = request.nextUrl;
@@ -36,6 +38,24 @@ export default clerkMiddleware(async (auth, request) => {
     if (tier !== 'admin') {
       // Non-admins get redirected to their dashboard
       return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
+  }
+
+  // Restaurante routes — require Restaurantes role
+  if (isRestauranteRoute(request)) {
+    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
+    const tier = metadata?.tier;
+    if (tier !== 'Restaurantes' && tier !== 'admin') {
+      return NextResponse.redirect(new URL('/shop?error=access_denied_b2b', request.url));
+    }
+  }
+
+  // Micromercado routes — require Micromercados role
+  if (isMicromercadoRoute(request)) {
+    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
+    const tier = metadata?.tier;
+    if (tier !== 'Micromercados' && tier !== 'admin') {
+      return NextResponse.redirect(new URL('/shop?error=access_denied_b2b', request.url));
     }
   }
 
