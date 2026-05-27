@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Calculator, Save, RefreshCw, Search, ChevronDown } from 'lucide-react';
-import { Product, applyMacroMargins, updateProductPricing } from '@/src/actions/products';
+import { Product, applyMacroMargins, updateProductPricing, updateProductPrices } from '@/src/actions/products';
 
 interface EditableProduct {
   id: string;
@@ -76,7 +76,6 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
         restaurant: field === 'priceRestaurant' ? newValue : product.priceRestaurant,
       };
 
-      const { updateProductPrices } = await import('@/src/actions/products');
       await updateProductPrices(id, newPrices);
     } catch (error) {
       console.error('Failed to update specific price', error);

@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Package, Search, Filter, AlertTriangle, ChevronDown, Save } from 'lucide-react';
 import { Product, updateProductStock, updateProductSeasonStatus } from '@/src/actions/products';
+import { toggleInventoryTracking } from '@/src/actions/settings';
 
 const CATEGORY_EMOJI: Record<string, string> = {
   'Frutas': '🍎',
@@ -74,7 +75,6 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
   const handleToggleTracking = async () => {
     setIsToggling(true);
     try {
-      const { toggleInventoryTracking } = await import('@/src/actions/settings');
       await toggleInventoryTracking(!isTracking);
       setIsTracking(!isTracking);
     } catch (err) {
