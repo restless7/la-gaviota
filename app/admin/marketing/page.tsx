@@ -11,8 +11,9 @@ export default async function MarketingHubPage() {
   let totalAbandoned = 0;
   let totalRecoveredAmount = 0;
   let recoveryRate = 0;
-  let carts = [];
-  let reorderEligible = [];
+  let carts: any[] = [];
+  let reorderEligible: any[] = [];
+  let rawLeads: any[] = [];
 
   try {
     const { data: abandonedData, error } = await supabase
@@ -45,8 +46,19 @@ export default async function MarketingHubPage() {
       reorderEligible = b2bData;
     }
 
+    // Phase 3: Fetch B2B Commercial Leads
+    const { data: leadsData } = await supabase
+      .from('marketing_leads')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (leadsData) {
+      rawLeads = leadsData;
+    }
+
   } catch (err) {
-    console.error('Abandoned carts table might not exist yet.', err);
+    console.error('Database query failed for marketing hub.', err);
   }
 
   const kpis = {
@@ -56,6 +68,6 @@ export default async function MarketingHubPage() {
   };
 
   return (
-    <MarketingClient kpis={kpis} recentCarts={carts} reorderEligible={reorderEligible} />
+    <MarketingClient kpis={kpis} recentCarts={carts} reorderEligible={reorderEligible} rawLeads={rawLeads} />
   );
 }

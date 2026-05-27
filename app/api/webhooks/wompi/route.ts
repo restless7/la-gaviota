@@ -130,7 +130,9 @@ export async function POST(req: Request) {
                    total_orders: cust.total_orders + 1,
                    last_order_at: new Date().toISOString(),
                    updated_at: new Date().toISOString()
-                 }).eq('clerk_user_id', orderData.clerk_user_id).catch(console.error);
+                 }).eq('clerk_user_id', orderData.clerk_user_id).then(({ error: updError }) => {
+                   if (updError) console.error(updError);
+                 });
                }
             });
         }

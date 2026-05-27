@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ShoppingCart, TrendingUp, Users, MessageCircle, AlertTriangle, ArrowUpRight, CheckCircle } from 'lucide-react';
+import { ShoppingCart, TrendingUp, Users, MessageCircle, AlertTriangle, ArrowUpRight, CheckCircle, UserPlus } from 'lucide-react';
 
 interface MarketingClientProps {
   kpis: {
@@ -11,9 +11,10 @@ interface MarketingClientProps {
   };
   recentCarts: any[];
   reorderEligible: any[];
+  rawLeads: any[];
 }
 
-export default function MarketingClient({ kpis, recentCarts, reorderEligible }: MarketingClientProps) {
+export default function MarketingClient({ kpis, recentCarts, reorderEligible, rawLeads }: MarketingClientProps) {
   return (
     <div className="p-8 max-w-[1400px] mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center justify-between mb-2">
@@ -54,16 +55,17 @@ export default function MarketingClient({ kpis, recentCarts, reorderEligible }: 
          </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+         {/* Phase 1: Abandoned Carts */}
+         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
             <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-slate-50">
                <h3 className="font-bold text-slate-800 flex items-center gap-2">
                  <AlertTriangle className="h-5 w-5 text-amber-500" />
-                 Carritos Recientes en Riesgo
+                 Carritos Recientes
                </h3>
                <button className="text-sm font-bold text-blue-600 hover:underline">Ver Todos</button>
             </div>
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-gray-100 flex-1">
                {recentCarts.slice(0, 5).map(cart => (
                   <div key={cart.id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
                      <div>
@@ -96,7 +98,7 @@ export default function MarketingClient({ kpis, recentCarts, reorderEligible }: 
             <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-slate-50">
                <h3 className="font-bold text-slate-800 flex items-center gap-2">
                  <Users className="h-5 w-5 text-purple-500" />
-                 B2B: Listos para Recompra (+7 días)
+                 Listos para Recompra
                </h3>
                <button className="text-sm font-bold text-blue-600 hover:underline">Gestionar</button>
             </div>
@@ -104,7 +106,7 @@ export default function MarketingClient({ kpis, recentCarts, reorderEligible }: 
                {reorderEligible.map(cust => (
                   <div key={cust.clerk_user_id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
                      <div>
-                        <p className="font-bold text-slate-800">{cust.business_name || cust.full_name}</p>
+                        <p className="font-bold text-slate-800 truncate max-w-[150px]">{cust.business_name || cust.full_name}</p>
                         <p className="text-xs text-gray-500">
                           Último pedido: {new Date(cust.last_order_at).toLocaleDateString('es-CO')}
                         </p>
@@ -124,7 +126,44 @@ export default function MarketingClient({ kpis, recentCarts, reorderEligible }: 
                    <div className="bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                      <CheckCircle className="h-8 w-8 text-slate-300" />
                    </div>
-                   Todos los clientes B2B están al día.
+                   Todos los clientes están al día.
+                 </div>
+               )}
+            </div>
+         </div>
+
+         {/* Phase 3: B2B Commercial Leads */}
+         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-slate-50">
+               <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                 <UserPlus className="h-5 w-5 text-indigo-500" />
+                 Prospectos B2B (Leads)
+               </h3>
+               <button className="text-sm font-bold text-blue-600 hover:underline">Abrir CRM</button>
+            </div>
+            <div className="divide-y divide-gray-100 flex-1">
+               {rawLeads.map(lead => (
+                  <div key={lead.id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                     <div>
+                        <p className="font-bold text-slate-800 truncate max-w-[150px]">{lead.business_name || lead.full_name}</p>
+                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                          {lead.business_type} · {new Date(lead.created_at).toLocaleDateString('es-CO')}
+                        </p>
+                     </div>
+                     <div className="text-right">
+                        <p className="font-bold text-slate-600 text-sm">{lead.phone}</p>
+                        <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${
+                          lead.status === 'Nuevo' ? 'bg-green-100 text-green-700' :
+                          lead.status === 'Contactado' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-700'
+                        }`}>
+                          {lead.status}
+                        </span>
+                     </div>
+                  </div>
+               ))}
+               {rawLeads.length === 0 && (
+                 <div className="p-8 text-center text-gray-400 font-medium">
+                   Aún no hay prospectos registrados.
                  </div>
                )}
             </div>
