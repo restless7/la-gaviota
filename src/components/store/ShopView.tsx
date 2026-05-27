@@ -40,7 +40,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
    }, [initialProducts, search, selectedCategory, sortOrder, role]);
 
    return (
-     <div className="w-full flex flex-col pb-24">
+     <div className="w-full flex flex-col pb-24 overflow-x-hidden">
        
        {/* Full Width Category Banner */}
        {selectedCategory && CATEGORY_BANNERS[selectedCategory] && (
@@ -111,13 +111,13 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                 </div>
              </div>
 
-             {/* Categories */}
-             <div className="mb-8 border-t border-gray-100 pt-6">
+             {/* Categories (Desktop only) */}
+             <div className="hidden lg:block mb-8 border-t border-gray-100 pt-6">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4 block">Categorías</label>
-                <div className="flex flex-row lg:flex-col overflow-x-auto no-scrollbar gap-2 lg:gap-1.5 pb-2 lg:pb-0">
+                <div className="flex flex-col gap-1.5">
                    <button 
                       onClick={() => setSelectedCategory(null)}
-                      className={`whitespace-nowrap text-left text-sm py-2 px-4 lg:px-3 rounded-full lg:rounded-lg transition-all font-medium border ${selectedCategory === null ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+                      className={`text-left text-sm py-2 px-3 rounded-lg transition-all font-medium border-transparent border ${selectedCategory === null ? 'bg-[#4CAF50] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 border-transparent hover:border-gray-200'}`}
                    >
                      Todos los productos
                    </button>
@@ -125,7 +125,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                       <button 
                          key={cat}
                          onClick={() => setSelectedCategory(cat)}
-                         className={`whitespace-nowrap text-left text-sm py-2 px-4 lg:px-3 rounded-full lg:rounded-lg transition-all font-medium border ${selectedCategory === cat ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+                         className={`text-left text-sm py-2 px-3 rounded-lg transition-all font-medium border-transparent border ${selectedCategory === cat ? 'bg-[#4CAF50] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 border-transparent hover:border-gray-200'}`}
                       >
                          {cat}
                       </button>
@@ -138,6 +138,27 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
 
         {/* Dynamic Grid View */}
         <div className="flex-1 w-full flex flex-col">
+           {/* MOBILE STICKY CATEGORIES */}
+           <div className="lg:hidden sticky top-16 z-40 bg-white/95 backdrop-blur-md pt-4 pb-4 -mx-4 px-4 mb-6 shadow-sm border-b border-gray-100">
+               <div className="flex flex-row overflow-x-auto no-scrollbar gap-2">
+                   <button 
+                      onClick={() => setSelectedCategory(null)}
+                      className={`whitespace-nowrap text-sm py-2 px-5 rounded-full transition-all font-bold border ${selectedCategory === null ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}
+                   >
+                     Todos los productos
+                   </button>
+                   {CATEGORIES.map(cat => (
+                      <button 
+                         key={cat}
+                         onClick={() => setSelectedCategory(cat)}
+                         className={`whitespace-nowrap text-sm py-2 px-5 rounded-full transition-all font-bold border ${selectedCategory === cat ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}
+                      >
+                         {cat}
+                      </button>
+                   ))}
+               </div>
+           </div>
+
            {/* Phase 6 Delivery Integration Request - Moved to top of grid for horizontal spread */}
            <div className="mb-6 w-full">
              <DeliveryScheduler />
