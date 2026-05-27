@@ -6,11 +6,19 @@ import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { DeliveryScheduler } from '@/src/components/checkout/DeliveryScheduler';
 import { CheckoutUpsell } from '@/src/components/checkout/CheckoutUpsell';
 import { submitCheckoutOrder } from '@/src/actions/checkoutAction';
+import { initializeWompiTransaction } from '@/src/actions/wompi';
+import Script from 'next/script';
+
+declare global {
+  interface Window {
+    WidgetCheckout: any;
+  }
+}
 
 export default function CheckoutPage() {
    const { items, cartTotal, remainingForFreeShipping, clearCart } = useCart();
    const { role } = useUserRole();
-   const [paymentMethod, setPaymentMethod] = useState<'bold' | 'cash'>('bold');
+   const [paymentMethod, setPaymentMethod] = useState<'wompi' | 'cash'>('wompi');
    const [isSubmitting, setIsSubmitting] = useState(false);
 
    const formatPrice = (price: number) => {
@@ -26,18 +34,44 @@ export default function CheckoutPage() {
       e.preventDefault();
       setIsSubmitting(true);
       try {
-         const result = await submitCheckoutOrder(
-            new FormData(e.target as HTMLFormElement),
-            items.map(i => ({ product: i.product, quantity: i.quantity })),
-            finalTotal
-         );
-         alert(`Pedido #${result.orderId} generado exitosamente.\nTotal: ${formatPrice(finalTotal)}`);
-         clearCart();
-         window.location.href = '/';
+         const formData = new FormData(e.target as HTMLFormElement);
+         const checkoutItems = items.map(i => ({ product: i.product, quantity: i.quantity }));
+
+         if (paymentMethod === 'wompi') {
+            // 1. Get secure server-side transaction data
+            const wompiData = await initializeWompiTransaction(formData, checkoutItems);
+
+            // 2. Open Wompi Widget
+            const widget = new window.WidgetCheckout({
+              currency: wompiData.currency,
+              amountInCents: wompiData.amountInCents,
+              reference: wompiData.reference,
+              publicKey: wompiData.publicKey,
+              signature: { integrity: wompiData.signature },
+              customerData: wompiData.customerData
+            });
+
+            widget.open((result: any) => {
+              const transaction = result.transaction;
+              if (transaction.status === 'APPROVED') {
+                 alert(`¡Pago aprobado! Pedido #${wompiData.reference} generado exitosamente.\nTotal: ${formatPrice(finalTotal)}`);
+                 clearCart();
+                 window.location.href = '/';
+              } else {
+                 alert(`El pago no fue aprobado. Estado: ${transaction.status}. Por favor intente con otro método.`);
+              }
+              setIsSubmitting(false);
+            });
+         } else {
+            // Cash on delivery flow
+            const result = await submitCheckoutOrder(formData, checkoutItems, finalTotal);
+            alert(`Pedido #${result.orderId} generado exitosamente (Contra Entrega).\nTotal: ${formatPrice(finalTotal)}`);
+            clearCart();
+            window.location.href = '/';
+         }
       } catch (err) {
          console.error(err);
          alert('Error al procesar el pedido. Por favor intente de nuevo.');
-      } finally {
          setIsSubmitting(false);
       }
    };
@@ -81,6 +115,7 @@ export default function CheckoutPage() {
 
    return (
       <div className="bg-white min-h-screen">
+         <Script src="https://checkout.wompi.co/widget.js" strategy="lazyOnload" />
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-slate-800">
             
             {/* Breadcrumbs matching Cart */}
@@ -245,33 +280,31 @@ export default function CheckoutPage() {
                      <CheckoutUpsell />
 
                      <div className="mt-8 flex flex-col gap-3">
-                        {/* Bold Payment Option Mockup */}
+                        {/* Wompi Payment Option */}
                         <label 
-                           className={`relative border-2 rounded-xl p-4 cursor-pointer transition-all ${paymentMethod === 'bold' ? 'border-[#3898ec] bg-blue-50/30 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}
-                           onClick={() => setPaymentMethod('bold')}
+                           className={`relative border-2 rounded-xl p-4 cursor-pointer transition-all ${paymentMethod === 'wompi' ? 'border-[#1C2059] bg-blue-50/30 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}
+                           onClick={() => setPaymentMethod('wompi')}
                         >
                            <div className="flex items-center justify-between mb-4">
                               <span className="font-black text-slate-800 text-sm flex items-center gap-3">
-                                 <input type="radio" checked={paymentMethod === 'bold'} readOnly className="accent-[#3898ec] w-4 h-4 scale-125" />
-                                 💳 Paga en línea con Bold
+                                 <input type="radio" checked={paymentMethod === 'wompi'} readOnly className="accent-[#1C2059] w-4 h-4 scale-125" />
+                                 💳 Paga en línea de forma segura
                               </span>
-                              <div className="flex gap-1 opacity-50 shrink-0 hidden sm:flex">
-                                 <div className="w-5 h-3 bg-red-400 rounded-sm"></div>
-                                 <div className="w-5 h-3 bg-blue-400 rounded-sm"></div>
-                                 <div className="w-5 h-3 bg-green-400 rounded-sm"></div>
+                              <div className="flex gap-2 shrink-0 h-6">
+                                 <Image src="/IMAGES/wompi-logo.png" alt="Wompi" width={60} height={20} className="object-contain opacity-50 grayscale" />
                               </div>
                            </div>
                            
-                           {/* Bold UI Dropdown Drawer */}
-                           {paymentMethod === 'bold' && (
+                           {/* Wompi UI Dropdown Drawer */}
+                           {paymentMethod === 'wompi' && (
                               <div className="bg-white border border-blue-100 rounded-xl p-4 text-center mt-2 shadow-sm animate-in fade-in zoom-in-95">
                                  <h4 className="font-black text-[22px] tracking-tighter text-[#1C2059] mb-2 flex items-center justify-center gap-1">
-                                    b<span className="text-[#3898ec]">●</span>ld
+                                    Pagos con <span className="text-blue-600">Wompi</span>
                                  </h4>
                                  <p className="text-[11px] text-gray-500 font-semibold leading-relaxed mb-4 max-w-[200px] mx-auto">
-                                    Te llevaremos a la pasarela de pagos Bold para completar tu pago de forma fácil y segura
+                                    Tarjetas de Crédito, PSE, Nequi y más. Operación 100% segura por Bancolombia.
                                  </p>
-                                 <div className="flex justify-center items-center gap-2 pt-2 border-t border-gray-100 uppercase text-[9px] font-extrabold tracking-widest text-[#3898ec]/70">
+                                 <div className="flex justify-center items-center gap-2 pt-2 border-t border-gray-100 uppercase text-[9px] font-extrabold tracking-widest text-blue-600/70">
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                                     Compra 100% Protegida
                                  </div>
@@ -298,7 +331,7 @@ export default function CheckoutPage() {
                         disabled={isSubmitting}
                         className="w-full mt-6 bg-[#83b745] hover:bg-[#6c9c36] text-white py-4 rounded-sm font-black tracking-wide text-lg transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-[#83b745]/30"
                      >
-                        {isSubmitting ? 'PROCESANDO...' : (paymentMethod === 'bold' ? 'PAGA EN LÍNEA CON BOLD' : 'CONFIRMAR PEDIDO CONTRA ENTREGA')}
+                        {isSubmitting ? 'PROCESANDO...' : (paymentMethod === 'wompi' ? 'PAGAR DE FORMA SEGURA' : 'CONFIRMAR PEDIDO CONTRA ENTREGA')}
                      </button>
                      
                      <p className="text-[9px] text-gray-500 font-medium leading-relaxed mt-6 text-justify">
