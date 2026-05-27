@@ -40,8 +40,18 @@ export async function fetchProducts(): Promise<Product[]> {
     throw new Error('Failed to fetch products');
   }
 
-  // Map snake_case to camelCase
-  return (data || []).map(p => ({
+  // Fetch active kits to integrate them into the catalog
+  const { data: kitsData, error: kitsError } = await supabase
+    .from('kits')
+    .select('*')
+    .eq('status', 'active');
+
+  if (kitsError) {
+    console.error('Error fetching kits:', kitsError);
+  }
+
+  // Map products
+  const mappedProducts = (data || []).map(p => ({
     id: p.id,
     name: p.name,
     category: p.category,
@@ -56,7 +66,28 @@ export async function fetchProducts(): Promise<Product[]> {
     imageUrl: p.image_url,
     description: p.description
   }));
+
+  // Map kits as products
+  const mappedKits = (kitsData || []).map(k => ({
+    id: k.id,
+    name: k.name,
+    category: 'Kits Negocios',
+    unit: 'Combo',
+    baseCost: Number(k.fixed_price),
+    priceRetail: Number(k.fixed_price),
+    priceMicro: Number(k.fixed_price),
+    priceRestaurant: Number(k.fixed_price),
+    stockQuantity: 999, // Kits are virtually unlimited based on underlying stock
+    isActive: true,
+    isInSeason: true,
+    imageUrl: k.banner_url || null,
+    description: `Combo mayorista: ${k.name}`
+  }));
+
+  // Combine and sort
+  return [...mappedProducts, ...mappedKits].sort((a, b) => a.name.localeCompare(b.name));
 }
+
 
 export async function updateProductStock(id: string, newStock: number) {
   const { error } = await supabase

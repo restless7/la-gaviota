@@ -21,7 +21,19 @@ function getNextBusinessDay() {
 }
 
 export function DeliveryScheduler() {
-  const nextDelivery = getNextBusinessDay();
+  const [nextDelivery, setNextDelivery] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    setNextDelivery(getNextBusinessDay());
+  }, []);
+
+  if (!nextDelivery) {
+    return (
+      <div className="bg-[#83b745]/50 animate-pulse text-transparent rounded-[2rem] p-8 md:p-10 mb-12 h-48">
+        Cargando itinerario...
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#83b745] text-white rounded-[2rem] p-8 md:p-10 mb-12 shadow-lg relative overflow-hidden">
