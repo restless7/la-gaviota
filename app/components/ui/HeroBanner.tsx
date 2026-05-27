@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const HERO_IMAGES = [
@@ -61,10 +62,10 @@ export default function HeroBanner() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="pointer-events-auto"
         >
-          <button className="bg-[#E30613] hover:bg-red-700 text-white font-black py-4 px-10 rounded-full text-lg shadow-[0_10px_30px_rgba(227,6,19,0.5)] transition-all transform hover:scale-105 active:scale-95 flex items-center gap-3 border-2 border-white/20">
+          <Link href="/shop" className="bg-[#E30613] hover:bg-red-700 text-white font-black py-4 px-10 rounded-full text-lg shadow-[0_10px_30px_rgba(227,6,19,0.5)] transition-all transform hover:scale-105 active:scale-95 flex items-center gap-3 border-2 border-white/20">
             Comprar Ahora
             <span className="text-2xl">→</span>
-          </button>
+          </Link>
         </motion.div>
       </div>
 

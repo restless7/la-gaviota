@@ -42,7 +42,7 @@ export default function RootLayout({
       }}
     >
       <html lang="es">
-        <body className={`${inter.className} overflow-x-hidden min-h-screen flex flex-col bg-slate-50 text-slate-800`}>
+        <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 text-slate-800`}>
           <UserRoleProvider>
             <CartProvider>
               <ConditionalWrapper>

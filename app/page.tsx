@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import HeroBanner from './components/ui/HeroBanner';
 import ImageCarousel from './components/ui/ImageCarousel';
 import CategoryBanner from './components/ui/CategoryBanner';
@@ -11,7 +12,7 @@ export default async function Home() {
   const products = await fetchProducts();
 
   return (
-    <div className="flex flex-col w-full overflow-x-hidden">
+    <div className="flex flex-col w-full">
       {/* 1. Hero Section */}
       <HeroBanner />
 
@@ -29,9 +30,9 @@ export default async function Home() {
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-2 font-serif">Nuestras <span className="text-gaviota-green italic">Categorías</span></h2>
               <p className="text-lg text-gray-500 font-medium tracking-tight">Seleccionado con amor en tierras Santandereanas.</p>
             </div>
-            <button className="text-gaviota-red font-black text-lg border-b-4 border-gaviota-red pb-1 hover:text-red-700 hover:border-red-700 transition-all">
+            <Link href="/shop" className="text-gaviota-red font-black text-lg border-b-4 border-gaviota-red pb-1 hover:text-red-700 hover:border-red-700 transition-all">
               Ver Todo el Catálogo
-            </button>
+            </Link>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

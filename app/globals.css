@@ -7,9 +7,21 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
   body {
     @apply bg-white text-slate-900 font-sans antialiased;
   }
+}
+
+/* Hide scrollbar for horizontal category scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 @layer utilities {

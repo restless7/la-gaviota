@@ -161,14 +161,14 @@ export default function Footer() {
               &copy; {currentYear} Surtifruver La Gaviota SAS. Todos los derechos reservados. NIT: 900.123.456-7
             </div>
             <div className="flex gap-8 text-xs font-bold text-gray-500 uppercase tracking-widest">
-              <Link href="#" className="hover:text-white transition-colors">Privacidad</Link>
-              <Link href="#" className="hover:text-white transition-colors">Términos</Link>
-              <Link href="#" className="hover:text-white transition-colors">PQRS</Link>
+              <Link href="/privacidad" className="hover:text-white transition-colors">Privacidad</Link>
+              <Link href="/terminos" className="hover:text-white transition-colors">Términos</Link>
+              <Link href="/pqrs" className="hover:text-white transition-colors">PQRS</Link>
             </div>
-            <div className="flex items-center gap-2 grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+            <a href="https://www.apexaisolutions.dev/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all">
               <span className="text-[10px] uppercase font-black tracking-tighter text-gray-400">Powered by</span>
               <div className="bg-white/10 px-2 py-1 rounded text-[10px] font-black text-white italic">APEX IA</div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
