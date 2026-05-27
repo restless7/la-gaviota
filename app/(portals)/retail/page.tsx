@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { ProductCard } from '@/src/components/store/ProductCard';
 import { fetchProducts } from '@/src/actions/products';
+import { CustomerOrderHistory } from '@/src/components/portals/CustomerOrderHistory';
 
 export default async function RetailDashboard() {
   const products = await fetchProducts();
@@ -27,6 +28,10 @@ export default async function RetailDashboard() {
              Descubre nuestros kits de la semana y los productos más frescos seleccionados directamente para ti.
            </p>
         </div>
+      </div>
+
+      <div className="mb-12">
+        <CustomerOrderHistory />
       </div>
 
       {/* Promos */}

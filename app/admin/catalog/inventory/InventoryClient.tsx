@@ -15,12 +15,14 @@ const CATEGORY_EMOJI: Record<string, string> = {
   'Kits Negocios': '📦',
 };
 
-export default function InventoryClient({ initialProducts }: { initialProducts: Product[] }) {
+export default function InventoryClient({ initialProducts, trackInventory }: { initialProducts: Product[], trackInventory: boolean }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [savingItems, setSavingItems] = useState<Set<string>>(new Set());
   const [savedItems, setSavedItems] = useState<Set<string>>(new Set());
   const [localProducts, setLocalProducts] = useState<Product[]>(initialProducts);
+  const [isTracking, setIsTracking] = useState(trackInventory);
+  const [isToggling, setIsToggling] = useState(false);
 
   const CATEGORIES = useMemo(() => Array.from(new Set(initialProducts.map(p => p.category))), [initialProducts]);
 
@@ -69,6 +71,20 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
     }
   };
 
+  const handleToggleTracking = async () => {
+    setIsToggling(true);
+    try {
+      const { toggleInventoryTracking } = await import('@/src/actions/settings');
+      await toggleInventoryTracking(!isTracking);
+      setIsTracking(!isTracking);
+    } catch (err) {
+      console.error('Failed to toggle tracking', err);
+      alert('Error cambiando estado de inventario');
+    } finally {
+      setIsToggling(false);
+    }
+  };
+
   const lowStockCount = localProducts.filter(p => p.stockQuantity < 50).length;
 
   return (
@@ -85,12 +101,30 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
                </p>
             </div>
          </div>
-         <Link 
-            href="/admin/catalog/inventory/new"
-            className="bg-slate-800 hover:bg-slate-900 text-white px-6 py-2 rounded-lg font-bold shadow-md transition-all flex items-center gap-2"
-         >
-            <span className="text-xl">+</span> Registrar Producto Nuevo
-         </Link>
+         <div className="flex gap-4 items-center">
+           <div className="flex items-center gap-3 bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
+             <span className="text-sm font-bold text-gray-500">Control de Stock:</span>
+             <button
+               onClick={handleToggleTracking}
+               disabled={isToggling}
+               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${isTracking ? 'bg-green-500' : 'bg-gray-200'} ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
+             >
+               <span
+                 className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isTracking ? 'translate-x-6' : 'translate-x-1'}`}
+               />
+             </button>
+             <span className={`text-xs font-bold ${isTracking ? 'text-green-600' : 'text-gray-400'}`}>
+               {isTracking ? 'ACTIVO' : 'BYPASS'}
+             </span>
+           </div>
+
+           <Link 
+              href="/admin/catalog/inventory/new"
+              className="bg-slate-800 hover:bg-slate-900 text-white px-6 py-2 rounded-lg font-bold shadow-md transition-all flex items-center gap-2"
+           >
+              <span className="text-xl">+</span> Registrar Producto
+           </Link>
+         </div>
       </div>
 
       {/* Toolbar */}

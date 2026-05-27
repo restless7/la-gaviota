@@ -76,7 +76,7 @@ export async function POST(req: Request) {
     } else {
       console.log(`[Wompi Webhook] Order ${orderId} updated to ${dbStatus}.`);
       
-      // 5. Trigger notifications if approved
+      // 5. Trigger notifications and inventory updates if approved
       if (wompiStatus === 'APPROVED' && orderData) {
         // Run notification asynchronously so we don't block the HTTP response
         triggerOrderNotification(
@@ -85,6 +85,28 @@ export async function POST(req: Request) {
           orderData.customer_name,
           orderData.total_amount
         ).catch(console.error);
+
+        // Deduct inventory if feature flag is active
+        const { getInventorySettings } = await import('@/src/actions/settings');
+        const { track_inventory } = await getInventorySettings();
+
+        if (track_inventory) {
+          const { data: items } = await supabase
+            .from('order_items')
+            .select('product_id, quantity')
+            .eq('order_id', orderId);
+
+          if (items) {
+            // Run deduction asynchronously
+            Promise.all(items.map(async (item) => {
+              // In production we should use an RPC or a safer decrement to avoid race conditions
+              const { data: prod } = await supabase.from('products').select('stock_quantity').eq('id', item.product_id).single();
+              if (prod) {
+                await supabase.from('products').update({ stock_quantity: Math.max(0, prod.stock_quantity - item.quantity) }).eq('id', item.product_id);
+              }
+            })).catch(console.error);
+          }
+        }
       }
     }
 

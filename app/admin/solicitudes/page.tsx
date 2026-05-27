@@ -49,12 +49,11 @@ export default function SolicitudesNegocioPage() {
 
   const handleApprove = async (app: BusinessApplication) => {
     setProcessingId(app.id);
-    const result = await approveApplication(
-      app.id,
+    const { approveClientTier } = await import('@/src/actions/customers');
+    const result = await approveClientTier(
       app.clerk_user_id,
       app.business_type,
-      app.business_name,
-      'Admin La Gaviota'
+      app.id
     );
     if (result.success) {
       await loadApplications();

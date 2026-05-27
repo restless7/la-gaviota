@@ -67,3 +67,43 @@ export async function ensureCustomer(clerkUserId: string, data: Partial<Customer
 
   return { success: true };
 }
+
+export async function approveClientTier(userId: string, requestedTier: string, applicationId?: string) {
+  const { clerkClient, auth } = await import('@clerk/nextjs/server');
+  const { userId: adminId } = await auth();
+  
+  if (!adminId) throw new Error("Unauthorized Admin");
+
+  const client = await clerkClient();
+  
+  // 1. Update Clerk
+  await client.users.updateUserMetadata(userId, {
+    publicMetadata: {
+      tier: requestedTier,
+      approvedAt: new Date().toISOString()
+    }
+  });
+
+  // 2. Update Customers table
+  await supabase
+    .from('customers')
+    .update({ tier: requestedTier, updated_at: new Date().toISOString() })
+    .eq('clerk_user_id', userId);
+
+  // 3. Update Business Application if provided
+  if (applicationId) {
+    await supabase
+      .from('business_applications')
+      .update({
+        status: 'approved',
+        reviewed_by: adminId,
+        reviewed_at: new Date().toISOString()
+      })
+      .eq('id', applicationId);
+  }
+
+  revalidatePath('/admin/solicitudes');
+  revalidatePath('/admin/clientes/restaurantes');
+  revalidatePath('/admin/clientes/micro');
+  return { success: true };
+}

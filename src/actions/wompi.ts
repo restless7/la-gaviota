@@ -22,15 +22,28 @@ export async function initializeWompiTransaction(formData: FormData, items: Chec
   const user = await client.users.getUser(userId);
   const role = (user.publicMetadata?.tier as string) || 'Personas Naturales';
 
-  // 2. Fetch fresh prices from the database for anti-tampering
+  // 2. Fetch fresh prices and stock from the database for anti-tampering
   const productIds = items.map(item => item.product.id);
   const { data: dbProducts, error } = await supabase
     .from('products')
-    .select('id, name, price_retail, price_micro, price_restaurant')
+    .select('id, name, price_retail, price_micro, price_restaurant, stock_quantity')
     .in('id', productIds);
 
   if (error || !dbProducts) {
     throw new Error('Error validando productos en la base de datos');
+  }
+
+  // 3. Evaluate Inventory Feature Flag
+  const { getInventorySettings } = await import('@/src/actions/settings');
+  const { track_inventory } = await getInventorySettings();
+
+  if (track_inventory) {
+    for (const clientItem of items) {
+      const dbProduct = dbProducts.find(p => p.id === clientItem.product.id);
+      if (dbProduct && dbProduct.stock_quantity < clientItem.quantity) {
+        throw new Error(`Stock insuficiente para ${dbProduct.name}. Disponibles: ${dbProduct.stock_quantity}`);
+      }
+    }
   }
 
   // 3. Calculate true total
