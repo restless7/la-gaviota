@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     // We fetch current notes and customer info to append and notify
     const { data: orderData } = await supabase
       .from('orders')
-      .select('notes, customer_phone, customer_name, total_amount')
+      .select('notes, customer_phone, customer_name, total_amount, clerk_user_id')
       .eq('id', orderId)
       .single();
 
@@ -107,6 +107,17 @@ export async function POST(req: Request) {
             })).catch(console.error);
           }
         }
+
+        // Mark Abandoned Cart as Recovered
+        supabase
+          .from('abandoned_carts')
+          .update({ status: 'recovered', updated_at: new Date().toISOString() })
+          .eq('clerk_user_id', orderData.clerk_user_id)
+          .in('status', ['active', 'abandoned'])
+          .then(({ error: cartError }) => {
+            if (cartError) console.error('[Wompi Webhook] Failed to mark cart as recovered', cartError);
+            else console.log(`[Wompi Webhook] Cart for ${orderData.clerk_user_id} marked as recovered.`);
+          });
       }
     }
 

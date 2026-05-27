@@ -50,8 +50,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isInitialized) {
       localStorage.setItem('gaviota_cart', JSON.stringify(items));
+      
+      // Sync with Abandoned Cart Backend
+      const cartTotal = items.reduce((total, item) => {
+        const activePrice = role === 'Restaurantes' 
+          ? item.product.priceRestaurant 
+          : role === 'Micromercados' 
+            ? item.product.priceMicro 
+            : item.product.priceRetail;
+        return total + (activePrice * item.quantity);
+      }, 0);
+
+      fetch('/api/marketing/abandoned-cart/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items,
+          cartTotal,
+          isCompleted: false
+        })
+      }).catch(err => console.warn('Failed to sync cart', err));
     }
-  }, [items, isInitialized]);
+  }, [items, isInitialized, role]);
 
   const addToCart = (product: Product, quantity = 1) => {
     setItems(prev => {
