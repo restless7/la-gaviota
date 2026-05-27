@@ -242,6 +242,14 @@ export async function createProduct(product: Omit<Product, 'id'>) {
     throw new Error('Failed to create product');
   }
 
+  // Log the audit event
+  await logAdminAction(
+    'SUPPLIER',
+    'Creación de Nuevo Producto',
+    `Nombre: ${product.name} | Costo Base: $${product.baseCost}`,
+    newId
+  );
+
   revalidatePath('/admin/catalog/inventory');
   revalidatePath('/shop');
   return { success: true, id: newId };

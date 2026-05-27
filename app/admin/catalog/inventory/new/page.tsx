@@ -5,6 +5,11 @@ import { useRouter } from 'next/navigation';
 import { Package, ArrowLeft, Save, Loader2, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import { createProduct } from '@/src/actions/products';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey);
 import { CATEGORIES } from '@/src/constants/productConstants';
 
 export default function NewProductPage() {
@@ -24,12 +29,32 @@ export default function NewProductPage() {
     imageUrl: '',
     description: ''
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await createProduct(formData);
+      let finalImageUrl = formData.imageUrl;
+      
+      if (imageFile) {
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `product-${Date.now()}.${fileExt}`;
+        const { data, error } = await supabase.storage
+          .from('product-images')
+          .upload(fileName, imageFile);
+          
+        if (error) {
+          console.error("Error uploading image:", error);
+          // Fallback to what we have if error
+        } else if (data) {
+          const { data: publicData } = supabase.storage.from('product-images').getPublicUrl(data.path);
+          finalImageUrl = publicData.publicUrl;
+        }
+      }
+
+      await createProduct({ ...formData, imageUrl: finalImageUrl });
       router.push('/admin/catalog/inventory');
       router.refresh();
     } catch (error) {
@@ -40,14 +65,22 @@ export default function NewProductPage() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    const val = type === 'number' ? parseInt(value) || 0 : (e.target as HTMLInputElement).checked ?? value;
+    const val = type === 'number' ? parseFloat(value) || 0 : (e.target as HTMLInputElement).checked ?? value;
     
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : val
     }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
   };
 
   return (
@@ -230,15 +263,24 @@ export default function NewProductPage() {
           <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
             <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
               <ImageIcon className="h-5 w-5 text-gray-400" />
-              Imagen
+              Imagen Principal
             </h2>
-            <div className="aspect-square bg-slate-50 rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center p-4">
-              <p className="text-xs font-medium text-gray-400 px-4">Próximamente: Carga directa de imágenes</p>
-            </div>
+            <label className="aspect-square bg-slate-50 rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center p-4 cursor-pointer hover:border-[#4CAF50] transition-colors relative overflow-hidden group">
+              {imagePreview ? (
+                <img src={imagePreview} alt="Preview" className="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <>
+                  <ImageIcon className="h-8 w-8 mb-2 text-gray-400 group-hover:text-[#4CAF50]" />
+                  <p className="text-xs font-bold text-gray-500 px-4 group-hover:text-[#4CAF50]">Haga clic para subir una imagen</p>
+                  <p className="text-[10px] text-gray-400 mt-1">JPG o PNG (máx 2MB)</p>
+                </>
+              )}
+              <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+            </label>
             <input
               type="text"
               name="imageUrl"
-              placeholder="URL de la imagen (opcional)"
+              placeholder="O ingrese una URL externa..."
               value={formData.imageUrl}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:border-[#4CAF50]"
