@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS kits (
 CREATE TABLE IF NOT EXISTS kit_items (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   kit_id UUID REFERENCES kits(id) ON DELETE CASCADE,
-  product_id UUID REFERENCES products(id) ON DELETE CASCADE,
+  product_id TEXT REFERENCES products(id) ON DELETE CASCADE,
   quantity NUMERIC NOT NULL DEFAULT 1,
   UNIQUE(kit_id, product_id)
 );
