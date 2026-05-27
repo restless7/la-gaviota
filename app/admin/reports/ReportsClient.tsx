@@ -9,7 +9,13 @@ interface ReportsClientProps {
   salesData: SalesAnalytics[];
   kpis: {
     totalRevenue: number;
-    b2bRatio: number;
+    retailRatio: number;
+    microRatio: number;
+    restRatio: number;
+    averageTicket: number;
+    avgRetail: number;
+    avgMicro: number;
+    avgRest: number;
     activeOrders: number;
   };
 }
@@ -40,7 +46,7 @@ export default function ReportsClient({ salesData, kpis }: ReportsClientProps) {
             <div className="bg-yellow-50 p-4 rounded-xl text-yellow-600"><Users /></div>
             <div>
                <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Flujo B2B (Rest/Micro)</p>
-               <h3 className="text-2xl font-black text-slate-800">{kpis.b2bRatio.toFixed(0)}% <span className="text-sm text-gray-400 font-medium">del volumen</span></h3>
+               <h3 className="text-2xl font-black text-slate-800">{(kpis.restRatio + kpis.microRatio).toFixed(0)}% <span className="text-sm text-gray-400 font-medium">del volumen</span></h3>
             </div>
          </div>
          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
@@ -49,6 +55,25 @@ export default function ReportsClient({ salesData, kpis }: ReportsClientProps) {
                <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Pedidos Activos</p>
                <h3 className="text-2xl font-black text-slate-800">{kpis.activeOrders} <span className="text-sm text-gray-400 font-medium">en proceso</span></h3>
             </div>
+         </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+         <div className="bg-slate-50 p-4 rounded-xl border border-gray-100 shadow-sm text-center">
+            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Ticket Promedio Global</p>
+            <p className="text-xl font-black text-slate-800">${(kpis.averageTicket / 1000).toFixed(1)}k</p>
+         </div>
+         <div className="bg-slate-50 p-4 rounded-xl border border-gray-100 shadow-sm text-center">
+            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Ticket Restaurantes</p>
+            <p className="text-xl font-black text-[#FFCC00]">${(kpis.avgRest / 1000).toFixed(1)}k</p>
+         </div>
+         <div className="bg-slate-50 p-4 rounded-xl border border-gray-100 shadow-sm text-center">
+            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Ticket Micromercados</p>
+            <p className="text-xl font-black text-[#2196F3]">${(kpis.avgMicro / 1000).toFixed(1)}k</p>
+         </div>
+         <div className="bg-slate-50 p-4 rounded-xl border border-gray-100 shadow-sm text-center">
+            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Ticket Retail</p>
+            <p className="text-xl font-black text-[#4CAF50]">${(kpis.avgRetail / 1000).toFixed(1)}k</p>
          </div>
       </div>
 

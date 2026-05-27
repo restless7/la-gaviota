@@ -69,17 +69,59 @@ export async function fetchSalesAnalytics(): Promise<SalesAnalytics[]> {
 
 export async function fetchKPIMetrics() {
   const { data: orders } = await supabase.from('orders').select('total_amount, status, clerk_user_id');
-  
-  const totalRevenue = orders?.reduce((acc, o) => acc + o.total_amount, 0) || 0;
-  
-  const { data: customers } = await supabase.from('customers').select('tier');
-  const b2bCount = customers?.filter(c => c.tier !== 'Personas Naturales').length || 0;
-  const totalCount = customers?.length || 1;
-  const b2bRatio = (b2bCount / totalCount) * 100;
+  const { data: customers } = await supabase.from('customers').select('clerk_user_id, tier');
+
+  const customerTierMap = new Map(customers?.map(c => [c.clerk_user_id, c.tier]) || []);
+
+  const validStatuses = ['En Preparación', 'En Ruta', 'Entregado'];
+  const validOrders = orders?.filter(o => validStatuses.includes(o.status)) || [];
+
+  // 1. Ingresos Totales Brutos
+  const totalRevenue = validOrders.reduce((acc, o) => acc + o.total_amount, 0);
+
+  // 2. Volumen y Ticket por Segmento
+  let countRetail = 0;
+  let countMicro = 0;
+  let countRest = 0;
+
+  let sumRetail = 0;
+  let sumMicro = 0;
+  let sumRest = 0;
+
+  validOrders.forEach(o => {
+    const tier = o.clerk_user_id ? customerTierMap.get(o.clerk_user_id) : 'Personas Naturales';
+    if (tier === 'Micromercados') {
+      countMicro++;
+      sumMicro += o.total_amount;
+    } else if (tier === 'Restaurantes') {
+      countRest++;
+      sumRest += o.total_amount;
+    } else {
+      countRetail++;
+      sumRetail += o.total_amount;
+    }
+  });
+
+  const totalValidCount = validOrders.length || 1;
+  const retailRatio = (countRetail / totalValidCount) * 100;
+  const microRatio = (countMicro / totalValidCount) * 100;
+  const restRatio = (countRest / totalValidCount) * 100;
+
+  // 3. Ticket Promedio
+  const averageTicket = totalValidCount > 0 ? totalRevenue / totalValidCount : 0;
+  const avgRetail = countRetail > 0 ? sumRetail / countRetail : 0;
+  const avgMicro = countMicro > 0 ? sumMicro / countMicro : 0;
+  const avgRest = countRest > 0 ? sumRest / countRest : 0;
 
   return {
     totalRevenue,
-    b2bRatio,
-    activeOrders: orders?.filter(o => o.status !== 'Entregado' && o.status !== 'Cancelado').length || 0
+    retailRatio,
+    microRatio,
+    restRatio,
+    averageTicket,
+    avgRetail,
+    avgMicro,
+    avgRest,
+    activeOrders: orders?.filter(o => o.status === 'Pendiente' || o.status === 'En Preparación' || o.status === 'En Ruta').length || 0
   };
 }

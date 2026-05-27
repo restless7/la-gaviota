@@ -56,10 +56,31 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
       );
 
       // Save to DB
-      await updateProductPricing(id, newCost, 0, 0, 0); // We'll fix updateProductPricing to handle partial updates or just pass zeros for now
+      await updateProductPricing(id, newCost); 
     } catch (error) {
       console.error('Failed to update cost', error);
       alert('Error guardando el costo base.');
+    }
+  };
+
+  const handlePriceChange = async (id: string, field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', newValue: number) => {
+    try {
+      setEditableProducts(prev => prev.map(p => p.id === id ? { ...p, [field]: newValue } : p));
+      
+      const product = editableProducts.find(p => p.id === id);
+      if (!product) return;
+      
+      const newPrices = {
+        retail: field === 'priceRetail' ? newValue : product.priceRetail,
+        micro: field === 'priceMicro' ? newValue : product.priceMicro,
+        restaurant: field === 'priceRestaurant' ? newValue : product.priceRestaurant,
+      };
+
+      const { updateProductPrices } = await import('@/src/actions/products');
+      await updateProductPrices(id, newPrices);
+    } catch (error) {
+      console.error('Failed to update specific price', error);
+      alert('Error actualizando el precio específico.');
     }
   };
 
@@ -232,14 +253,38 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
                             className="w-24 text-right px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-medium"
                            />
                         </td>
-                        <td className="p-3 text-center border-r border-gray-100 bg-red-50/20 font-bold text-[#E30613] font-mono">
-                           {formatCOP(p.priceRetail)}
+                        <td className="p-3 text-center border-r border-gray-100 bg-red-50/20">
+                           <input
+                            type="number"
+                            defaultValue={p.priceRetail}
+                            onBlur={(e) => {
+                              const val = parseInt(e.target.value);
+                              if (!isNaN(val) && val !== p.priceRetail) handlePriceChange(p.id, 'priceRetail', val);
+                            }}
+                            className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#E30613]"
+                           />
                         </td>
-                        <td className="p-3 text-center border-r border-gray-100 bg-green-50/20 font-bold text-[#218524] font-mono">
-                           {formatCOP(p.priceMicro)}
+                        <td className="p-3 text-center border-r border-gray-100 bg-green-50/20">
+                           <input
+                            type="number"
+                            defaultValue={p.priceMicro}
+                            onBlur={(e) => {
+                              const val = parseInt(e.target.value);
+                              if (!isNaN(val) && val !== p.priceMicro) handlePriceChange(p.id, 'priceMicro', val);
+                            }}
+                            className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#218524]"
+                           />
                         </td>
-                        <td className="p-3 text-center bg-yellow-50/20 font-bold text-[#a87405] font-mono">
-                           {formatCOP(p.priceRestaurant)}
+                        <td className="p-3 text-center bg-yellow-50/20">
+                           <input
+                            type="number"
+                            defaultValue={p.priceRestaurant}
+                            onBlur={(e) => {
+                              const val = parseInt(e.target.value);
+                              if (!isNaN(val) && val !== p.priceRestaurant) handlePriceChange(p.id, 'priceRestaurant', val);
+                            }}
+                            className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#a87405]"
+                           />
                         </td>
                      </tr>
                   ))}

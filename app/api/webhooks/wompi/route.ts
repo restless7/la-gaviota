@@ -1,16 +1,11 @@
 import { NextResponse } from 'next/server';
 import { validateWebhookSignature } from '@/src/lib/wompi';
 import { createClient } from '@supabase/supabase-js';
+import { triggerOrderNotification } from '@/src/lib/notifications';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
-
-// Helper stub for WhatsApp notification
-async function triggerOrderNotification(orderId: string) {
-  // TODO: Implement WhatsApp notification via Hermes/Twilio/WABA
-  console.log(`[Wompi Webhook] Triggering WhatsApp notification for order: ${orderId}`);
-}
 
 export async function POST(req: Request) {
   try {
@@ -56,10 +51,10 @@ export async function POST(req: Request) {
     const noteAppend = `\n[Wompi TX: ${transaction.id} - ${wompiStatus}]`;
 
     // 4. Update the Database non-blockingly (but we wait for the update to ensure consistency)
-    // We fetch current notes to append
+    // We fetch current notes and customer info to append and notify
     const { data: orderData } = await supabase
       .from('orders')
-      .select('notes')
+      .select('notes, customer_phone, customer_name, total_amount')
       .eq('id', orderId)
       .single();
 
@@ -82,9 +77,14 @@ export async function POST(req: Request) {
       console.log(`[Wompi Webhook] Order ${orderId} updated to ${dbStatus}.`);
       
       // 5. Trigger notifications if approved
-      if (wompiStatus === 'APPROVED') {
+      if (wompiStatus === 'APPROVED' && orderData) {
         // Run notification asynchronously so we don't block the HTTP response
-        triggerOrderNotification(orderId).catch(console.error);
+        triggerOrderNotification(
+          orderId,
+          orderData.customer_phone,
+          orderData.customer_name,
+          orderData.total_amount
+        ).catch(console.error);
       }
     }
 

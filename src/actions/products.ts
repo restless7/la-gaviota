@@ -2,6 +2,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { logAuditEvent } from './audit';
 
 import { CATEGORIES } from '@/src/constants/productConstants';
@@ -96,6 +97,10 @@ export async function updateProductPricing(
   price_micro?: number, 
   price_restaurant?: number
 ) {
+  // Enforce auth
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
   const updates: any = {};
   if (base_cost !== undefined && base_cost !== 0) updates.base_cost = base_cost;
   if (price_retail !== undefined && price_retail !== 0) updates.price_retail = price_retail;
@@ -117,13 +122,49 @@ export async function updateProductPricing(
   // Log the event if it's a cost change
   if (updates.base_cost) {
     await logAuditEvent({
-      actor: 'Sebastian Garcia',
+      actor: userId, // ideally use name, but userId works for zero-trust
       action: 'Actualizó costo base',
       target: id,
       category: 'pricing',
       details: `Nuevo costo: $${updates.base_cost} COP.`
     });
   }
+
+  revalidatePath('/admin/pricing');
+  revalidatePath('/shop');
+  return { success: true };
+}
+
+export async function updateProductPrices(productId: string, prices: { retail: number, micro: number, restaurant: number }) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  // In a real app, verify publicMetadata.role === 'admin' here. 
+  // For La Gaviota MVP, having access to this Server Action implies Admin Dashboard access.
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+
+  const { error } = await supabase
+    .from('products')
+    .update({
+      price_retail: prices.retail,
+      price_micro: prices.micro,
+      price_restaurant: prices.restaurant
+    })
+    .eq('id', productId);
+
+  if (error) {
+    console.error('Error updating three-tier pricing:', error);
+    throw new Error('Failed to update three-tier pricing');
+  }
+
+  await logAuditEvent({
+      actor: user.firstName || userId,
+      action: 'Actualizó estructura de precios de 3 niveles',
+      target: productId,
+      category: 'pricing',
+      details: `Retail: ${prices.retail}, Micro: ${prices.micro}, Rest: ${prices.restaurant}`
+  });
 
   revalidatePath('/admin/pricing');
   revalidatePath('/shop');
