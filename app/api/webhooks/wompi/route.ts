@@ -122,7 +122,7 @@ export async function POST(req: Request) {
         // Update Customer Loyalty Metrics (Phase 2 Prep)
         if (orderData.clerk_user_id) {
           // Fetch current customer to increment totals
-          supabase.from('customers').select('total_spent, total_orders').eq('clerk_user_id', orderData.clerk_user_id).single()
+          supabase.from('customers').select('total_spent, total_orders, email').eq('clerk_user_id', orderData.clerk_user_id).single()
             .then(({ data: cust }) => {
                if (cust) {
                  supabase.from('customers').update({
@@ -132,6 +132,17 @@ export async function POST(req: Request) {
                    updated_at: new Date().toISOString()
                  }).eq('clerk_user_id', orderData.clerk_user_id).then(({ error: updError }) => {
                    if (updError) console.error(updError);
+                 });
+                 
+                 // Phase 4: Meta CAPI Fire Purchase Event
+                 import('@/src/lib/metaCapi').then(({ sendPurchaseEventToMeta }) => {
+                   sendPurchaseEventToMeta({
+                     orderId: orderId,
+                     totalAmount: orderData.total_amount,
+                     currency: 'COP',
+                     customerEmail: cust.email,
+                     customerPhone: orderData.customer_phone
+                   });
                  });
                }
             });
