@@ -57,14 +57,14 @@ export function ProductCard({ product }: { product: Product }) {
        onMouseLeave={() => setIsHovered(false)}
     >
        {/* Image Section — Dynamic Category Placeholder or Actual Image */}
-       <div className={`aspect-[4/3] w-full relative bg-gradient-to-br ${gradient} overflow-hidden flex items-center justify-center`}>
+       <div className={`aspect-square w-full relative bg-gradient-to-br ${gradient} overflow-hidden flex items-center justify-center`}>
           {product.imageUrl ? (
              <Image 
                 src={product.imageUrl} 
                 alt={product.name} 
                 fill 
-                className="object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
              />
           ) : (
              <>
@@ -85,50 +85,50 @@ export function ProductCard({ product }: { product: Product }) {
           {/* Quick Add Overlay */}
           <div className={`absolute bottom-4 left-0 right-0 flex justify-center opacity-0 transform translate-y-4 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : ''}`}>
 
-             {role === 'Personas Naturales' ? (
-                <button
-                   onClick={handleAddToCart}
-                   className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] hover:text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all w-[85%] truncate flex items-center justify-center gap-2"
-                >
-                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                   Añadir al carrito
-                </button>
-             ) : (
-                <div className="flex gap-2 w-[90%]">
-                   <button
-                      onClick={handleAddToCart}
-                      className="bg-white border border-[#83b745] text-[#83b745] hover:bg-[#83b745] hover:text-white px-2 py-2 rounded-xl font-bold text-xs shadow-md transition-all flex-1 text-center"
-                   >
-                      +1 {product.unit}
-                   </button>
-                   <button
-                      onClick={() => { addToCart(product, 10); setIsCartOpen(true); }}
-                      className="bg-[#83b745] hover:bg-[#6c9c36] text-white px-2 py-2 rounded-xl font-black text-xs shadow-md transition-all flex-1 text-center truncate"
-                   >
-                      +10 (Caja)
-                   </button>
-                </div>
+              {role === 'Personas Naturales' ? (
+                 <button
+                    onClick={handleAddToCart}
+                    className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] hover:text-white px-3 py-2 rounded-full font-bold text-xs sm:text-sm shadow-lg hover:-translate-y-0.5 transition-all w-[90%] truncate flex items-center justify-center gap-1.5"
+                 >
+                    <svg className="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                    <span className="sm:hidden font-black">+</span> Añadir
+                 </button>
+              ) : (
+                 <div className="flex gap-1.5 w-[94%]">
+                    <button
+                       onClick={handleAddToCart}
+                       className="bg-white border border-[#83b745] text-[#83b745] hover:bg-[#83b745] hover:text-white px-1 sm:px-2 py-1.5 rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-xs shadow-md transition-all flex-1 text-center"
+                    >
+                       +1 {product.unit}
+                    </button>
+                    <button
+                       onClick={() => { addToCart(product, 10); setIsCartOpen(true); }}
+                       className="bg-[#83b745] hover:bg-[#6c9c36] text-white px-1 sm:px-2 py-1.5 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-xs shadow-md transition-all flex-1 text-center truncate"
+                    >
+                       +10 (Caja)
+                    </button>
+                 </div>
              )}
           </div>
        </div>
 
        {/* Content Section */}
-       <div className="p-5 flex flex-col flex-1">
-          <div className="flex justify-between items-start mb-2">
-             <span className="text-[10px] font-bold uppercase tracking-wider text-[#4CAF50] bg-[#4CAF50]/10 px-2 py-0.5 rounded-md truncate max-w-full">
+       <div className="p-3 flex flex-col flex-1">
+          <div className="flex justify-between items-start mb-1.5">
+             <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#4CAF50] bg-[#4CAF50]/10 px-1.5 py-0.5 rounded-md truncate max-w-full">
                {product.category} {product.subcategory ? `> ${product.subcategory}` : ''}
              </span>
           </div>
-          <h3 className="font-bold text-slate-800 text-base leading-snug mb-3 line-clamp-2 min-h-[2.5rem]">
+          <h3 className="font-bold text-slate-800 text-xs sm:text-sm leading-snug mb-2 line-clamp-2 min-h-[2rem]">
              {product.name}
           </h3>
           
-          <div className="mt-auto flex items-end justify-between border-t border-gray-50 pt-4">
+          <div className="mt-auto flex items-end justify-between border-t border-gray-50 pt-2 sm:pt-3">
              <div className="flex flex-col">
-                <span className="text-2xl font-black text-slate-900 tracking-tight leading-none">
+                <span className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-none">
                    {formatPrice(activePrice)}
                 </span>
-                <span className="text-[11px] font-semibold text-gray-500 mt-1 uppercase">
+                <span className="text-[10px] font-semibold text-gray-500 mt-0.5 uppercase">
                    / {product.unit}
                 </span>
              </div>

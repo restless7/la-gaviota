@@ -32,6 +32,11 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
        const timer = setTimeout(() => setShowToast(false), 8000);
        return () => clearTimeout(timer);
      }
+     
+     const urlCategory = searchParams?.get('category');
+     if (urlCategory && CATEGORIES.includes(urlCategory)) {
+       setSelectedCategory(urlCategory);
+     }
    }, [searchParams]);
 
    const filteredProducts = useMemo(() => {
@@ -93,9 +98,9 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
          </div>
        )}
 
-       {/* MOBILE STICKY CATEGORIES — Must be outside the flex layout to stick to viewport */}
-       <div className="lg:hidden sticky top-[64px] z-40 bg-white/95 backdrop-blur-md py-3 shadow-sm border-b border-gray-100">
-           <div className="max-w-7xl mx-auto w-full px-4 sm:px-6">
+       {/* Categories Quick Filter Desktop Only (since mobile has hamburger) */}
+       <div className="hidden lg:block sticky top-[80px] z-40 bg-white/95 backdrop-blur-md py-3 shadow-sm border-b border-gray-100">
+           <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
              <div className="flex flex-row overflow-x-auto no-scrollbar gap-2 pb-1">
                  <button 
                     onClick={() => handleCategorySelect(null)}
@@ -265,11 +270,11 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                  </button>
               </div>
            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                 {filteredProducts.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                 ))}
-              </div>
+               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+                  {filteredProducts.map(product => (
+                     <ProductCard key={product.id} product={product} />
+                  ))}
+               </div>
            )}
         </div>
       </div>
