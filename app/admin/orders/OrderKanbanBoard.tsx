@@ -6,12 +6,14 @@ import { SortableContext, arrayMove, sortableKeyboardCoordinates } from '@dnd-ki
 import { KanbanColumn } from './KanbanColumn';
 import { Order, updateOrderStatus } from '@/src/actions/orders';
 import { OrderSummarySheet } from './OrderSummarySheet';
+import { ProcurementSheet } from './ProcurementSheet';
 
 const COLUMNS: Order['status'][] = ['Pendiente', 'En Preparación', 'En Ruta', 'Entregado'];
 
 export function OrderKanbanBoard({ initialOrders }: { initialOrders: Order[] }) {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [isProcurementSheetOpen, setIsProcurementSheetOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   React.useEffect(() => {
@@ -98,6 +100,13 @@ export function OrderKanbanBoard({ initialOrders }: { initialOrders: Order[] }) 
             <p className="text-gray-500">Arrastra las tarjetas para cambiar el estado de la operación logística.</p>
          </div>
          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsProcurementSheetOpen(true)}
+              className="hidden sm:flex bg-[#1C2059] hover:bg-[#2A2F7A] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-colors items-center gap-2 text-sm uppercase tracking-wider"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+              Consolidado
+            </button>
             <div className="flex gap-2 text-sm">
               {COLUMNS.map(status => {
                 const count = orders.filter(o => o.status === status).length;
@@ -134,6 +143,11 @@ export function OrderKanbanBoard({ initialOrders }: { initialOrders: Order[] }) 
             order={selectedOrder}
             onClose={() => setSelectedOrder(null)}
          />
+      )}
+
+      {/* Slide-out Sheet for Procurement */}
+      {isProcurementSheetOpen && (
+        <ProcurementSheet onClose={() => setIsProcurementSheetOpen(false)} />
       )}
     </div>
   );

@@ -119,29 +119,55 @@ export async function createOrder(orderData: Omit<Order, 'id' | 'created_at' | '
   revalidatePath('/admin/clientes');
   return { success: true, orderId: order.id };
 }
-export async function fetchOrderConsolidation(status: string = 'Pendiente') {
+export async function fetchOrderConsolidation(statuses: string[] = ['Pendiente', 'En Preparación']) {
   const { data, error } = await supabase
     .from('order_items')
     .select(`
+      product_id,
       quantity,
       product_name,
       orders!inner(status)
     `)
-    .eq('orders.status', status);
+    .in('orders.status', statuses);
 
   if (error) {
     console.error('Error fetching order consolidation:', error);
     throw new Error('Failed to fetch order consolidation');
   }
 
-  const consolidation: Record<string, { name: string, quantity: number }> = {};
+  // Group by product_id
+  const consolidation: Record<string, { id: string, name: string, quantity: number }> = {};
 
   data.forEach((item: any) => {
-    if (!consolidation[item.product_name]) {
-      consolidation[item.product_name] = { name: item.product_name, quantity: 0 };
+    const pid = item.product_id;
+    if (!consolidation[pid]) {
+      consolidation[pid] = { id: pid, name: item.product_name, quantity: 0 };
     }
-    consolidation[item.product_name].quantity += item.quantity;
+    consolidation[pid].quantity += item.quantity;
   });
 
-  return Object.values(consolidation).sort((a, b) => b.quantity - a.quantity);
+  const consolidatedList = Object.values(consolidation).sort((a, b) => b.quantity - a.quantity);
+
+  // Fetch current stock for these products to compute deficit
+  if (consolidatedList.length > 0) {
+    const productIds = consolidatedList.map(c => c.id);
+    const { data: productsData } = await supabase
+      .from('products')
+      .select('id, stock_quantity, unit')
+      .in('id', productIds);
+
+    if (productsData) {
+      return consolidatedList.map(c => {
+        const p = productsData.find(pd => pd.id === c.id);
+        return {
+          ...c,
+          stock: p?.stock_quantity || 0,
+          unit: p?.unit || 'Und',
+          deficit: Math.max(0, c.quantity - (p?.stock_quantity || 0))
+        };
+      });
+    }
+  }
+
+  return consolidatedList.map(c => ({ ...c, stock: 0, unit: 'Und', deficit: c.quantity }));
 }
