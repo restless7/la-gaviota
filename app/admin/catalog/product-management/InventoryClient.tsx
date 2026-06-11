@@ -7,13 +7,15 @@ import { Product, updateProductStock, updateProductSeasonStatus } from '@/src/ac
 import { toggleInventoryTracking } from '@/src/actions/settings';
 
 const CATEGORY_EMOJI: Record<string, string> = {
-  'Frutas': '🍎',
-  'Verduras Y Hortalizas': '🥬',
-  'Pulpas': '🧃',
-  'Varios Preparados': '🥗',
-  'Carnes': '🥩',
-  'Condimentos Frutos Secos Aromaticas': '🌶️',
-  'Kits Negocios': '📦',
+  'FRUTAS': '🍎',
+  'VERDURAS Y HORTALIZAS': '🥬',
+  'PULPAS': '🧃',
+  'VARIOS': '🥗',
+  'CARNES X 500 GRAMOS': '🥩',
+  'CONDIMENTOS X 125 GR': '🌶️',
+  'FRUTOS SECOS Y ESPECIAS': '🥜',
+  'AROMÁTICAS Y HIERBAS X 125 GR': '🌿',
+  'KITS NEGOCIOS': '📦',
 };
 
 export default function InventoryClient({ initialProducts, trackInventory }: { initialProducts: Product[], trackInventory: boolean }) {

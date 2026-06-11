@@ -6,23 +6,27 @@ import { useCart } from '@/src/contexts/CartContext';
 import Image from 'next/image';
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
-  'Frutas': 'from-orange-400 to-red-400',
-  'Verduras Y Hortalizas': 'from-green-400 to-emerald-500',
-  'Pulpas': 'from-purple-400 to-pink-400',
-  'Varios Preparados': 'from-amber-400 to-orange-400',
-  'Carnes': 'from-red-500 to-rose-600',
-  'Condimentos Frutos Secos Aromaticas': 'from-yellow-500 to-amber-500',
-  'Kits Negocios': 'from-blue-400 to-indigo-500',
+  'FRUTAS': 'from-orange-400 to-red-400',
+  'VERDURAS Y HORTALIZAS': 'from-green-400 to-emerald-500',
+  'PULPAS': 'from-purple-400 to-pink-400',
+  'VARIOS': 'from-amber-400 to-orange-400',
+  'CARNES X 500 GRAMOS': 'from-red-500 to-rose-600',
+  'CONDIMENTOS X 125 GR': 'from-yellow-500 to-amber-500',
+  'FRUTOS SECOS Y ESPECIAS': 'from-yellow-600 to-orange-500',
+  'AROMÁTICAS Y HIERBAS X 125 GR': 'from-emerald-400 to-teal-500',
+  'KITS NEGOCIOS': 'from-blue-400 to-indigo-500',
 };
 
 const CATEGORY_EMOJI: Record<string, string> = {
-  'Frutas': '🍎',
-  'Verduras Y Hortalizas': '🥬',
-  'Pulpas': '🧃',
-  'Varios Preparados': '🥗',
-  'Carnes': '🥩',
-  'Condimentos Frutos Secos Aromaticas': '🌶️',
-  'Kits Negocios': '📦',
+  'FRUTAS': '🍎',
+  'VERDURAS Y HORTALIZAS': '🥬',
+  'PULPAS': '🧃',
+  'VARIOS': '🥗',
+  'CARNES X 500 GRAMOS': '🥩',
+  'CONDIMENTOS X 125 GR': '🌶️',
+  'FRUTOS SECOS Y ESPECIAS': '🥜',
+  'AROMÁTICAS Y HIERBAS X 125 GR': '🌿',
+  'KITS NEGOCIOS': '📦',
 };
 
 export function ProductCard({ product }: { product: Product }) {

@@ -10,10 +10,10 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState as useStateReact } from 'react';
 
 const CATEGORY_BANNERS: Record<string, string> = {
-  'Frutas': '/IMAGES/frutas-banner.jpeg',
-  'Verduras Y Hortalizas': '/IMAGES/verduras-banner1.jpeg',
-  'Verduras': '/IMAGES/verduras-banner1.jpeg',
-  'Carnes': '/IMAGES/carnes-banner1.jpeg',
+  'FRUTAS': '/IMAGES/frutas-banner.jpeg',
+  'VERDURAS Y HORTALIZAS': '/IMAGES/verduras-banner1.jpeg',
+  'VERDURAS': '/IMAGES/verduras-banner1.jpeg',
+  'CARNES X 500 GRAMOS': '/IMAGES/carnes-banner1.jpeg',
 };
 import { DeliveryScheduler } from '@/src/components/checkout/DeliveryScheduler';
 
