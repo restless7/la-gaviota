@@ -1,14 +1,26 @@
 "use client";
 
-import { useAuth } from '@/src/contexts/AuthContext';
+import { useUser } from '@clerk/nextjs';
 
 export type UserRole = 'SUPER_ADMIN' | 'COMMERCIAL' | 'CLIENT' | 'USER';
 
 export function useRBAC() {
-  const { user, loading } = useAuth();
+  const { user: clerkUser, isLoaded } = useUser();
   
-  // Backwards compatibility with the old ADMIN string if any remains
-  const mappedRole = user?.role === 'ADMIN' ? 'SUPER_ADMIN' : (user?.role as UserRole) || 'USER';
+  // Extract role and tier from Clerk publicMetadata
+  const metadata = clerkUser?.publicMetadata as Record<string, string> | undefined;
+  const rawRole = metadata?.role;
+  const tier = metadata?.tier;
+  
+  // Reconcile logic: Check explicitly for the 'role' field first, then fallback to implicit admin from 'tier'
+  let mappedRole: UserRole = 'USER';
+  if (rawRole === 'ADMIN' || rawRole === 'SUPER_ADMIN' || tier === 'admin' || tier === 'SUPER_ADMIN') {
+    mappedRole = 'SUPER_ADMIN';
+  } else if (rawRole === 'COMMERCIAL') {
+    mappedRole = 'COMMERCIAL';
+  } else if (rawRole === 'CLIENT' || tier === 'Restaurantes' || tier === 'Micromercados') {
+    mappedRole = 'CLIENT';
+  }
   
   const isSuperAdmin = mappedRole === 'SUPER_ADMIN';
   const isCommercial = mappedRole === 'COMMERCIAL';
@@ -16,20 +28,27 @@ export function useRBAC() {
   const isAdminAreaUser = isSuperAdmin || isCommercial;
 
   // Function to check if the current commercial user owns a resource
-  // The resource must have an ownerId or assignedTo matching the user's ID
   const canAccessResource = (ownerId?: string, assignedTo?: string) => {
     if (isSuperAdmin) return true;
     if (isCommercial) {
-      if (!user?.id) return false;
-      return user.id === ownerId || user.id === assignedTo;
+      if (!clerkUser?.id) return false;
+      return clerkUser.id === ownerId || clerkUser.id === assignedTo;
     }
     return false;
   };
 
+  // Create a compatible user object for the admin layout to consume
+  const user = clerkUser ? {
+    id: clerkUser.id,
+    username: clerkUser.fullName || clerkUser.primaryEmailAddress?.emailAddress?.split('@')[0] || 'Usuario',
+    role: mappedRole,
+    permissions: isSuperAdmin ? ['*'] : [],
+  } : null;
+
   return {
     user,
     role: mappedRole,
-    loading,
+    loading: !isLoaded,
     isSuperAdmin,
     isCommercial,
     isClient,

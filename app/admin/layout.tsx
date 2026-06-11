@@ -26,8 +26,8 @@ import {
   Calculator,
   ScrollText,
 } from 'lucide-react';
-import { AuthProvider, useAuth } from '@/src/contexts/AuthContext';
 import { useRBAC } from '@/src/hooks/useRBAC';
+import { useClerk } from '@clerk/nextjs';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -72,7 +72,11 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
   const [currentDate, setCurrentDate] = useState<string>('');
   const pathname = usePathname();
   const { user, loading, isSuperAdmin, isCommercial, isAdminAreaUser } = useRBAC();
-  const { logout } = useAuth(); // Import from original useAuth Context
+  const { signOut } = useClerk();
+
+  const handleLogout = () => {
+    signOut({ redirectUrl: '/' });
+  };
 
   useEffect(() => {
     setCurrentDate(new Date().toLocaleDateString('es-ES', {
@@ -116,7 +120,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
               Volver al Inicio
             </Link>
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="w-full py-3 px-4 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               <LogOut className="h-4 w-4" />
@@ -259,7 +263,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
                 </div>
               </div>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors font-medium shadow-sm"
               >
                 <LogOut className="h-4 w-4" />
@@ -303,8 +307,6 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
-    <AuthProvider>
-      <AdminLayoutContent>{children}</AdminLayoutContent>
-    </AuthProvider>
+    <AdminLayoutContent>{children}</AdminLayoutContent>
   );
 }
