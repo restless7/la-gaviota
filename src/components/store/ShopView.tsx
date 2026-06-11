@@ -151,7 +151,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 pt-8">
          {/* Filter Sidebar */}
         <aside className="w-full lg:w-72 flex-shrink-0 relative">
-          <div className="sticky top-28 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+          <div className="sticky top-28 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 max-h-[calc(100vh-8rem)] overflow-y-auto">
              <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-xl text-slate-800 font-serif">Filtros</h2>
                 { (search || selectedCategory || sortOrder || selectedSubcategory) && (
