@@ -36,9 +36,10 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md transition-all shadow-sm border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-0.5 flex items-center justify-between">
-        {/* Left Side: Hamburger & Logo */}
+    <>
+      <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md transition-all shadow-sm border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-0.5 flex items-center justify-between">
+          {/* Left Side: Hamburger & Logo */}
         <div className="flex items-center gap-2 sm:gap-4">
            <button 
              className="md:hidden p-2 text-gray-700 hover:text-[#E30613] transition-colors"
@@ -135,10 +136,11 @@ export default function Header() {
           </SignedOut>
         </div>
       </div>
+      </header>
 
       {/* Mobile Drawer */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-[60] flex md:hidden">
+        <div className="fixed inset-0 z-[100] flex md:hidden">
            {/* Overlay */}
            <div 
              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
@@ -184,6 +186,6 @@ export default function Header() {
            </div>
         </div>
       )}
-    </header>
+    </>
   );
 }

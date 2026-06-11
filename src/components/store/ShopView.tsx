@@ -9,11 +9,10 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState as useStateReact } from 'react';
 
-const CATEGORY_BANNERS: Record<string, string> = {
-  'FRUTAS': '/IMAGES/frutas-banner.jpeg',
-  'VERDURAS Y HORTALIZAS': '/IMAGES/verduras-banner1.jpeg',
-  'VERDURAS': '/IMAGES/verduras-banner1.jpeg',
-  'CARNES X 500 GRAMOS': '/IMAGES/carnes-banner1.jpeg',
+const CATEGORY_BANNERS: Record<string, string[]> = {
+  'FRUTAS': ['/IMAGES/frutas-banner.jpeg', '/IMAGES/frutas-banner1.jpeg', '/IMAGES/frutas-banner2.jpeg', '/IMAGES/frutas-banner3.jpeg'],
+  'VERDURAS Y HORTALIZAS': ['/IMAGES/verduras-banner1.jpeg', '/IMAGES/verduras-banner2.jpeg', '/IMAGES/verduras-banner3.jpeg', '/IMAGES/verduras-banner4.jpeg'],
+  'CARNES X 500 GRAMOS': ['/IMAGES/carnes-banner1.jpeg', '/IMAGES/carnes-banner2.jpeg', '/IMAGES/carnes-banner3.jpeg', '/IMAGES/carnes-banner4.jpeg'],
 };
 import { DeliveryScheduler } from '@/src/components/checkout/DeliveryScheduler';
 
@@ -25,6 +24,14 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
    const { role } = useUserRole();
    const searchParams = useSearchParams();
    const [showToast, setShowToast] = useState(false);
+   const [bannerIndex, setBannerIndex] = useState(0);
+
+   useEffect(() => {
+     const interval = setInterval(() => {
+       setBannerIndex(prev => prev + 1);
+     }, 4000);
+     return () => clearInterval(interval);
+   }, []);
 
    useEffect(() => {
      if (searchParams?.get('error') === 'unauthorized-tier') {
@@ -81,16 +88,16 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
        )}
 
        {/* Full Width Category Banner */}
-       {selectedCategory && CATEGORY_BANNERS[selectedCategory] && (
+       {selectedCategory && CATEGORY_BANNERS[selectedCategory] && CATEGORY_BANNERS[selectedCategory].length > 0 && (
          <div className="w-full relative aspect-video overflow-hidden">
             <Image 
-              src={CATEGORY_BANNERS[selectedCategory]} 
+              src={CATEGORY_BANNERS[selectedCategory][bannerIndex % CATEGORY_BANNERS[selectedCategory].length]} 
               alt={`${selectedCategory} Banner`} 
               fill 
-              className="object-cover object-top"
+              className="object-cover object-top transition-all duration-1000 ease-in-out"
               priority
             />
-            <div className="absolute inset-0 z-10 flex flex-col justify-end py-12">
+            <div className="absolute inset-0 z-10 flex flex-col justify-end py-12 bg-gradient-to-t from-black/60 to-transparent">
                <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
                  <h2 className="text-4xl md:text-6xl font-black text-white font-serif drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] uppercase tracking-tight">{selectedCategory}</h2>
                </div>
