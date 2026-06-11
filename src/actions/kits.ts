@@ -79,13 +79,21 @@ export async function createOrUpdateKit(kitData: KitPayload) {
       quantity: item.quantity
     }));
 
-    const { error: itemsError } = await supabase
-      .from('kit_items')
-      .insert(itemsToInsert);
+    try {
+      const { error: itemsError } = await supabase
+        .from('kit_items')
+        .insert(itemsToInsert);
 
-    if (itemsError) {
-      console.error('Failed to insert kit items:', itemsError);
-      throw new Error('Failed to link items to kit');
+      if (itemsError) {
+        throw itemsError;
+      }
+    } catch (err) {
+      console.error('Failed to insert kit items:', err);
+      if (!isUpdate) {
+        await supabase.from('kits').delete().eq('id', kitId);
+        console.log(`[Rollback] Kit ${kitId} eliminado por falla en kit_items.`);
+      }
+      throw new Error('Failed to link items to kit. Se ha revertido la creación del kit.');
     }
   }
 
