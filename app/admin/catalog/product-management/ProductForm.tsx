@@ -147,12 +147,13 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     <div className="p-8 max-w-[1000px] mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Link 
-            href="/admin/catalog/product-management"
-            className="p-2 hover:bg-slate-100 rounded-full transition-colors text-gray-500"
+          <button 
+            type="button"
+            onClick={() => router.push('/admin/catalog/product-management')}
+            className="p-2 hover:bg-slate-200 rounded-full transition-colors text-gray-600 bg-white shadow-sm border border-gray-200"
           >
             <ArrowLeft className="h-6 w-6" />
-          </Link>
+          </button>
           <div>
             <h1 className="text-3xl font-black text-slate-800 font-serif">
               {isEditing ? 'Editar Producto' : 'Registrar Nuevo Producto'}

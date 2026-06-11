@@ -43,7 +43,8 @@ const navigation = [
     subItems: [
       { name: 'Personas Naturales', href: '/admin/clientes/personas' },
       { name: 'Micromercados', href: '/admin/clientes/micro' },
-      { name: 'Restaurantes & Mayoristas', href: '/admin/clientes/restaurantes' }
+      { name: 'Restaurantes & Mayoristas', href: '/admin/clientes/restaurantes' },
+      { name: 'Gestión de Usuarios (Roles)', href: '/admin/clientes/usuarios' }
     ]
   },
   {
