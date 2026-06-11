@@ -35,7 +35,10 @@ export default clerkMiddleware(async (auth, request) => {
   if (isAdminRoute(request)) {
     const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
     const tier = metadata?.tier;
-    if (tier !== 'admin' && tier !== 'SUPER_ADMIN') {
+    const role = metadata?.role;
+    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
+    
+    if (!isAdmin) {
       // Non-admins get redirected to their dashboard
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
@@ -45,7 +48,10 @@ export default clerkMiddleware(async (auth, request) => {
   if (isRestauranteRoute(request)) {
     const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
     const tier = metadata?.tier;
-    if (tier !== 'Restaurantes' && tier !== 'admin' && tier !== 'SUPER_ADMIN') {
+    const role = metadata?.role;
+    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
+    
+    if (tier !== 'Restaurantes' && !isAdmin) {
       return NextResponse.redirect(new URL('/?error=access_denied_b2b', request.url));
     }
   }
@@ -54,7 +60,10 @@ export default clerkMiddleware(async (auth, request) => {
   if (isMicromercadoRoute(request)) {
     const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
     const tier = metadata?.tier;
-    if (tier !== 'Micromercados' && tier !== 'admin' && tier !== 'SUPER_ADMIN') {
+    const role = metadata?.role;
+    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
+    
+    if (tier !== 'Micromercados' && !isAdmin) {
       return NextResponse.redirect(new URL('/?error=access_denied_b2b', request.url));
     }
   }
@@ -63,11 +72,13 @@ export default clerkMiddleware(async (auth, request) => {
   if (url.pathname === '/dashboard') {
     const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
     const tier = metadata?.tier || 'Personas Naturales';
+    const role = metadata?.role;
+    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
 
     let targetPath = '/retail';
     if (tier === 'Micromercados') targetPath = '/micromercado';
     if (tier === 'Restaurantes') targetPath = '/restaurante';
-    if (tier === 'admin' || tier === 'SUPER_ADMIN') targetPath = '/admin';
+    if (isAdmin) targetPath = '/admin';
 
     return NextResponse.redirect(new URL(targetPath, request.url));
   }
