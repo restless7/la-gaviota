@@ -12,7 +12,7 @@ export default async function RestauranteDashboard() {
 
   const user = await currentUser();
   if (user?.publicMetadata?.tier !== 'Restaurantes') {
-    redirect('/shop?error=unauthorized-tier');
+    redirect('/?error=unauthorized-tier');
   }
 
   const products = await fetchProducts();

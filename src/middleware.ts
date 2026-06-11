@@ -35,7 +35,7 @@ export default clerkMiddleware(async (auth, request) => {
   if (isAdminRoute(request)) {
     const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
     const tier = metadata?.tier;
-    if (tier !== 'admin') {
+    if (tier !== 'admin' && tier !== 'SUPER_ADMIN') {
       // Non-admins get redirected to their dashboard
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
@@ -45,8 +45,8 @@ export default clerkMiddleware(async (auth, request) => {
   if (isRestauranteRoute(request)) {
     const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
     const tier = metadata?.tier;
-    if (tier !== 'Restaurantes' && tier !== 'admin') {
-      return NextResponse.redirect(new URL('/shop?error=access_denied_b2b', request.url));
+    if (tier !== 'Restaurantes' && tier !== 'admin' && tier !== 'SUPER_ADMIN') {
+      return NextResponse.redirect(new URL('/?error=access_denied_b2b', request.url));
     }
   }
 
@@ -54,8 +54,8 @@ export default clerkMiddleware(async (auth, request) => {
   if (isMicromercadoRoute(request)) {
     const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
     const tier = metadata?.tier;
-    if (tier !== 'Micromercados' && tier !== 'admin') {
-      return NextResponse.redirect(new URL('/shop?error=access_denied_b2b', request.url));
+    if (tier !== 'Micromercados' && tier !== 'admin' && tier !== 'SUPER_ADMIN') {
+      return NextResponse.redirect(new URL('/?error=access_denied_b2b', request.url));
     }
   }
 
@@ -67,7 +67,7 @@ export default clerkMiddleware(async (auth, request) => {
     let targetPath = '/retail';
     if (tier === 'Micromercados') targetPath = '/micromercado';
     if (tier === 'Restaurantes') targetPath = '/restaurante';
-    if (tier === 'admin') targetPath = '/admin';
+    if (tier === 'admin' || tier === 'SUPER_ADMIN') targetPath = '/admin';
 
     return NextResponse.redirect(new URL(targetPath, request.url));
   }

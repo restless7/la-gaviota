@@ -12,7 +12,7 @@ export default async function MicromercadoDashboard() {
 
   const user = await currentUser();
   if (user?.publicMetadata?.tier !== 'Micromercados') {
-    redirect('/shop?error=unauthorized-tier');
+    redirect('/?error=unauthorized-tier');
   }
 
   const products = await fetchProducts();
@@ -27,7 +27,6 @@ export default async function MicromercadoDashboard() {
       <MicromercadoClient 
         bulkPicks={bulkPicks}
         lastOrder={lastOrder}
-        allOrders={allOrders}
       />
       <div id="order-history">
         <CustomerOrderHistory />
