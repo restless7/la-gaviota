@@ -136,10 +136,10 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
       )}
 
       <div className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out shadow-xl
+        fixed inset-y-0 left-0 z-50 w-64 flex flex-col bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out shadow-xl
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        <div className="flex items-center justify-center p-6 border-b border-gray-100 relative overflow-hidden">
+        <div className="flex-none flex items-center justify-center p-6 border-b border-gray-100 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-[#E30613]"></div>
           <div className="relative w-32 h-10">
              {/* Fallback layout logo text */}
@@ -153,7 +153,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
           </button>
         </div>
 
-        <nav className="mt-4 px-3 h-[calc(100vh-200px)] overflow-y-auto">
+        <nav className="flex-1 mt-4 px-3 overflow-y-auto mb-4">
           {navigation.map((item) => {
             const canView = isSuperAdmin ? true : (isCommercial && item.roles.includes('COMMERCIAL'));
             if (!canView) return null;
@@ -234,7 +234,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
           })}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 border-t border-gray-100 bg-gray-50/80">
+        <div className="flex-none border-t border-gray-100 bg-gray-50/80">
           {user && (
             <div className="p-4">
               <div className="flex items-center gap-3 mb-3">

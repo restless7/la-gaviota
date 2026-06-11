@@ -36,7 +36,7 @@ export async function toggleInventoryTracking(newValue: boolean) {
     throw new Error('Failed to toggle tracking');
   }
 
-  revalidatePath('/admin/catalog/inventory');
+  revalidatePath('/admin/catalog/product-management');
   revalidatePath('/shop');
   return { success: true };
 }

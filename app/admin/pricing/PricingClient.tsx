@@ -15,6 +15,91 @@ interface EditableProduct {
   priceRestaurant: number;
 }
 
+const ProductRow = ({
+  product,
+  onCostBlur,
+  onPriceBlur
+}: {
+  product: EditableProduct;
+  onCostBlur: (val: number) => void;
+  onPriceBlur: (field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', val: number) => void;
+}) => {
+  const [localCost, setLocalCost] = useState(product.cost.toString());
+  const [localRetail, setLocalRetail] = useState(product.priceRetail.toString());
+  const [localMicro, setLocalMicro] = useState(product.priceMicro.toString());
+  const [localRestaurant, setLocalRestaurant] = useState(product.priceRestaurant.toString());
+
+  // Sync with parent state if it changes externally (e.g. macro update or dynamic margin applied)
+  React.useEffect(() => {
+    setLocalCost(product.cost.toString());
+    setLocalRetail(product.priceRetail.toString());
+    setLocalMicro(product.priceMicro.toString());
+    setLocalRestaurant(product.priceRestaurant.toString());
+  }, [product]);
+
+  return (
+    <tr className="hover:bg-indigo-50/30 transition-colors text-sm">
+      <td className="p-3 border-r border-gray-100 font-bold text-slate-800">
+         {product.name}
+         <span className="block text-[10px] text-gray-400 font-normal mt-0.5">/ {product.unit}</span>
+      </td>
+      <td className="p-3 text-center border-r border-gray-100 text-xs font-medium text-gray-500">
+         {product.category}
+      </td>
+      <td className="p-3 text-right border-r border-gray-100 bg-slate-50">
+         <input
+          type="number"
+          value={localCost}
+          onChange={(e) => setLocalCost(e.target.value)}
+          onBlur={(e) => {
+            const val = parseInt(e.target.value);
+            if (!isNaN(val) && val !== product.cost) {
+              onCostBlur(val);
+            }
+          }}
+          className="w-24 text-right px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-medium"
+         />
+      </td>
+      <td className="p-3 text-center border-r border-gray-100 bg-red-50/20">
+         <input
+          type="number"
+          value={localRetail}
+          onChange={(e) => setLocalRetail(e.target.value)}
+          onBlur={(e) => {
+            const val = parseInt(e.target.value);
+            if (!isNaN(val) && val !== product.priceRetail) onPriceBlur('priceRetail', val);
+          }}
+          className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#E30613]"
+         />
+      </td>
+      <td className="p-3 text-center border-r border-gray-100 bg-green-50/20">
+         <input
+          type="number"
+          value={localMicro}
+          onChange={(e) => setLocalMicro(e.target.value)}
+          onBlur={(e) => {
+            const val = parseInt(e.target.value);
+            if (!isNaN(val) && val !== product.priceMicro) onPriceBlur('priceMicro', val);
+          }}
+          className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#218524]"
+         />
+      </td>
+      <td className="p-3 text-center bg-yellow-50/20">
+         <input
+          type="number"
+          value={localRestaurant}
+          onChange={(e) => setLocalRestaurant(e.target.value)}
+          onBlur={(e) => {
+            const val = parseInt(e.target.value);
+            if (!isNaN(val) && val !== product.priceRestaurant) onPriceBlur('priceRestaurant', val);
+          }}
+          className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#a87405]"
+         />
+      </td>
+    </tr>
+  );
+};
+
 export default function PricingClient({ initialProducts }: { initialProducts: Product[] }) {
   const [retailMargin, setRetailMargin] = useState(25);
   const [microMargin, setMicroMargin] = useState(15);
@@ -48,21 +133,6 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
     });
   }, [editableProducts, searchTerm, selectedCategory]);
 
-  const handleCostChange = async (id: string, newCost: number) => {
-    try {
-      // Optimistic update
-      setEditableProducts(prev =>
-        prev.map(p => p.id === id ? { ...p, cost: newCost } : p)
-      );
-
-      // Save to DB
-      await updateProductPricing(id, newCost); 
-    } catch (error) {
-      console.error('Failed to update cost', error);
-      alert('Error guardando el costo base.');
-    }
-  };
-
   const handlePriceChange = async (id: string, field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', newValue: number) => {
     try {
       setEditableProducts(prev => prev.map(p => p.id === id ? { ...p, [field]: newValue } : p));
@@ -80,6 +150,29 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
     } catch (error) {
       console.error('Failed to update specific price', error);
       alert('Error actualizando el precio específico.');
+    }
+  };
+
+  const handleCostAndMarginChange = async (id: string, newCost: number) => {
+    try {
+      const newRetail = Math.round(newCost * (1 + retailMargin / 100));
+      const newMicro = Math.round(newCost * (1 + microMargin / 100));
+      const newRestaurant = Math.round(newCost * (1 + restaurantMargin / 100));
+
+      setEditableProducts(prev =>
+        prev.map(p => p.id === id ? { 
+          ...p, 
+          cost: newCost,
+          priceRetail: newRetail,
+          priceMicro: newMicro,
+          priceRestaurant: newRestaurant
+        } : p)
+      );
+
+      await updateProductPricing(id, newCost, newRetail, newMicro, newRestaurant);
+    } catch (error) {
+      console.error('Failed to update cost and margins', error);
+      alert('Error guardando el costo base y actualizando precios.');
     }
   };
 
@@ -231,61 +324,12 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
                </thead>
                <tbody className="divide-y divide-gray-100">
                   {filteredProducts.map(p => (
-                     <tr key={p.id} className="hover:bg-indigo-50/30 transition-colors text-sm">
-                        <td className="p-3 border-r border-gray-100 font-bold text-slate-800">
-                           {p.name}
-                           <span className="block text-[10px] text-gray-400 font-normal mt-0.5">/ {p.unit}</span>
-                        </td>
-                        <td className="p-3 text-center border-r border-gray-100 text-xs font-medium text-gray-500">
-                           {p.category}
-                        </td>
-                        <td className="p-3 text-right border-r border-gray-100 bg-slate-50">
-                           <input
-                            type="number"
-                            defaultValue={p.cost}
-                            onBlur={(e) => {
-                              const val = parseInt(e.target.value);
-                              if (!isNaN(val) && val !== p.cost) {
-                                handleCostChange(p.id, val);
-                              }
-                            }}
-                            className="w-24 text-right px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-medium"
-                           />
-                        </td>
-                        <td className="p-3 text-center border-r border-gray-100 bg-red-50/20">
-                           <input
-                            type="number"
-                            defaultValue={p.priceRetail}
-                            onBlur={(e) => {
-                              const val = parseInt(e.target.value);
-                              if (!isNaN(val) && val !== p.priceRetail) handlePriceChange(p.id, 'priceRetail', val);
-                            }}
-                            className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#E30613]"
-                           />
-                        </td>
-                        <td className="p-3 text-center border-r border-gray-100 bg-green-50/20">
-                           <input
-                            type="number"
-                            defaultValue={p.priceMicro}
-                            onBlur={(e) => {
-                              const val = parseInt(e.target.value);
-                              if (!isNaN(val) && val !== p.priceMicro) handlePriceChange(p.id, 'priceMicro', val);
-                            }}
-                            className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#218524]"
-                           />
-                        </td>
-                        <td className="p-3 text-center bg-yellow-50/20">
-                           <input
-                            type="number"
-                            defaultValue={p.priceRestaurant}
-                            onBlur={(e) => {
-                              const val = parseInt(e.target.value);
-                              if (!isNaN(val) && val !== p.priceRestaurant) handlePriceChange(p.id, 'priceRestaurant', val);
-                            }}
-                            className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#a87405]"
-                           />
-                        </td>
-                     </tr>
+                     <ProductRow
+                       key={p.id}
+                       product={p}
+                       onCostBlur={(newCost) => handleCostAndMarginChange(p.id, newCost)}
+                       onPriceBlur={(field, val) => handlePriceChange(p.id, field, val)}
+                     />
                   ))}
                </tbody>
             </table>
