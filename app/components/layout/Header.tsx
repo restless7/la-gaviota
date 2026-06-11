@@ -32,7 +32,7 @@ export default function Header() {
 
   const handleCategoryClick = (cat: string) => {
     setIsMenuOpen(false);
-    router.push(`/shop?category=${encodeURIComponent(cat)}`);
+    router.push(`/?category=${encodeURIComponent(cat)}`);
   };
 
   return (
@@ -62,8 +62,8 @@ export default function Header() {
         
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-gray-700">
-           <Link href="/" className="hover:text-[#E30613] transition-colors pb-1">Inicio</Link>
-           <Link href="/shop" className="hover:text-[#E30613] transition-colors pb-1 font-bold">Tienda</Link>
+           <Link href="/" className="hover:text-[#E30613] transition-colors pb-1 font-bold">Tienda General</Link>
+           <Link href="/nosotros" className="hover:text-[#E30613] transition-colors pb-1">Nuestra Granja</Link>
            <Link href="/sobre-nosotros" className="hover:text-[#E30613] transition-colors pb-1">Nosotros</Link>
            
            <SignedIn>
@@ -160,8 +160,8 @@ export default function Header() {
               <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-6">
                  {/* Main Navigation */}
                  <nav className="flex flex-col gap-2">
-                    <Link onClick={() => setIsMenuOpen(false)} href="/" className="text-lg font-bold text-slate-700 py-2 hover:text-[#E30613]">Inicio</Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/shop" className="text-lg font-bold text-slate-700 py-2 hover:text-[#E30613]">Tienda General</Link>
+                    <Link onClick={() => setIsMenuOpen(false)} href="/" className="text-lg font-bold text-slate-700 py-2 hover:text-[#E30613]">Tienda General</Link>
+                    <Link onClick={() => setIsMenuOpen(false)} href="/nosotros" className="text-lg font-bold text-slate-700 py-2 hover:text-[#E30613]">Nuestra Granja</Link>
                     <Link onClick={() => setIsMenuOpen(false)} href="/sobre-nosotros" className="text-lg font-bold text-slate-700 py-2 hover:text-[#E30613]">Sobre Nosotros</Link>
                  </nav>
                  

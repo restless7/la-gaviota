@@ -16,7 +16,7 @@ export default function CartPage() {
       return (
          <div className="max-w-4xl mx-auto px-4 py-24 text-center">
             <h1 className="text-3xl font-black mb-6">Tu carrito está vacío</h1>
-            <Link href="/shop" className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] font-bold py-3 px-8 rounded-full">
+            <Link href="/" className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] font-bold py-3 px-8 rounded-full">
                Comprar Productos
             </Link>
          </div>

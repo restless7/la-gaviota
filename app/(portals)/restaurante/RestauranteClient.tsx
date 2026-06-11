@@ -137,7 +137,7 @@ export default function RestauranteClient({
       {/* Suggested Products */}
       <div className="mb-6 flex justify-between items-end">
          <h2 className="text-2xl font-black text-slate-800 font-serif">Catálogo Mayorista Relevante</h2>
-         <a href="/shop" className="text-sm font-bold text-blue-600 hover:text-blue-800 underline">Ir a compras</a>
+         <a href="/" className="text-sm font-bold text-blue-600 hover:text-blue-800 underline">Ir a compras</a>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
          {wholesalePicks.map(p => (

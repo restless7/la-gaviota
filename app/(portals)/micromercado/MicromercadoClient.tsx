@@ -95,7 +95,7 @@ export default function MicromercadoClient({
       {/* Suggested Products */}
       <div className="mb-6 flex justify-between items-end">
          <h2 className="text-2xl font-black text-slate-800 font-serif">Sugeridos para Inventario</h2>
-         <a href="/shop" className="text-sm font-bold text-yellow-600 hover:text-yellow-700 underline">Ver todo el catálogo</a>
+         <a href="/" className="text-sm font-bold text-yellow-600 hover:text-yellow-700 underline">Ver todo el catálogo</a>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
          {bulkPicks.map(p => (

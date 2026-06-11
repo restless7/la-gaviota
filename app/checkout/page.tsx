@@ -81,7 +81,7 @@ export default function CheckoutPage() {
          <div className="max-w-3xl mx-auto px-4 py-32 text-center text-slate-800">
             <span className="text-6xl mb-6 block">💳</span>
             <h1 className="text-3xl font-black font-serif mb-4">No hay pedido por finalizar</h1>
-            <a href="/shop" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Volver a la tienda</a>
+            <a href="/" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Volver a la tienda</a>
          </div>
       );
    }
@@ -96,7 +96,7 @@ export default function CheckoutPage() {
             <h1 className="text-3xl font-black font-serif mb-4">No se ha alcanzado el pedido mínimo</h1>
             <p className="text-gray-500 mb-6">El pedido mínimo para tu perfil (Micromercados) es de {formatPrice(minOrderMicromercados)}.</p>
             <p className="font-bold text-yellow-600 mb-8">Faltan {formatPrice(minOrderMicromercados - cartTotal)} para poder proceder.</p>
-            <a href="/shop" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</a>
+            <a href="/" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</a>
          </div>
       );
    }
@@ -108,7 +108,7 @@ export default function CheckoutPage() {
             <h1 className="text-3xl font-black font-serif mb-4">No se ha alcanzado el pedido mínimo</h1>
             <p className="text-gray-500 mb-6">El pedido mínimo para tu perfil (Restaurantes) es de {formatPrice(minOrderRestaurantes)}.</p>
             <p className="font-bold text-green-600 mb-8">Faltan {formatPrice(minOrderRestaurantes - cartTotal)} para poder proceder.</p>
-            <a href="/shop" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</a>
+            <a href="/" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</a>
          </div>
       );
    }

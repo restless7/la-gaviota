@@ -62,7 +62,7 @@ export default function HeroBanner() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="pointer-events-auto"
         >
-          <Link href="/shop" className="bg-[#E30613] hover:bg-red-700 text-white font-black py-4 px-10 rounded-full text-lg shadow-[0_10px_30px_rgba(227,6,19,0.5)] transition-all transform hover:scale-105 active:scale-95 flex items-center gap-3 border-2 border-white/20">
+          <Link href="/" className="bg-[#E30613] hover:bg-red-700 text-white font-black py-4 px-10 rounded-full text-lg shadow-[0_10px_30px_rgba(227,6,19,0.5)] transition-all transform hover:scale-105 active:scale-95 flex items-center gap-3 border-2 border-white/20">
             Comprar Ahora
             <span className="text-2xl">→</span>
           </Link>

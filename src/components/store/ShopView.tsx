@@ -255,6 +255,17 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
              <DeliveryScheduler />
            </div>
 
+           {/* Subtle Partnership Banner */}
+           <div className="mb-6 w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                 <h4 className="text-sm font-bold text-slate-800">¿Compras grandes volúmenes para tu negocio?</h4>
+                 <p className="text-xs text-gray-500 mt-0.5">Aplica a nuestro programa de aliados y obtén tarifas mayoristas exclusivas.</p>
+              </div>
+              <a href="/aplicar-negocio" className="text-xs font-black text-white bg-slate-800 hover:bg-slate-900 px-5 py-2.5 rounded-full shadow-sm transition-colors whitespace-nowrap">
+                 Aplicar para Negocio
+              </a>
+           </div>
+
            <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                  <h1 className="text-3xl lg:text-4xl font-black text-slate-800 font-serif leading-tight">

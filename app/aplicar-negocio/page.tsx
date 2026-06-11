@@ -123,7 +123,7 @@ export default function AplicarNegocioPage() {
             <p className="font-bold text-slate-700 mb-1">¿Qué sigue?</p>
             <p>Una vez aprobada, tu cuenta se actualizará automáticamente con los precios especiales de tu tier. Podrás ver el cambio reflejado inmediatamente al iniciar sesión.</p>
           </div>
-          <a href="/shop" className="inline-flex items-center gap-2 bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] px-8 py-3 rounded-full font-bold shadow-lg transition-all">
+          <a href="/" className="inline-flex items-center gap-2 bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] px-8 py-3 rounded-full font-bold shadow-lg transition-all">
             Seguir comprando <ArrowRight className="w-4 h-4" />
           </a>
         </div>

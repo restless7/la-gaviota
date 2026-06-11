@@ -98,7 +98,7 @@ export default function Footer() {
               Explora
             </h3>
             <ul className="space-y-4 text-sm text-gray-400">
-              <li><Link href="/shop" className="hover:text-white transition-colors flex items-center gap-2 group"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Tienda Online</Link></li>
+              <li><Link href="/" className="hover:text-white transition-colors flex items-center gap-2 group"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Tienda Online</Link></li>
               <li><Link href="/categoria/frutas" className="hover:text-white transition-colors flex items-center gap-2 group"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Frutas Frescas</Link></li>
               <li><Link href="/categoria/verduras-y-hortalizas" className="hover:text-white transition-colors flex items-center gap-2 group"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Verduras</Link></li>
               <li><Link href="/comunidad" className="hover:text-white transition-colors flex items-center gap-2 group"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Comunidad Gaviota</Link></li>
