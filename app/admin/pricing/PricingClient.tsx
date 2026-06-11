@@ -17,10 +17,12 @@ interface EditableProduct {
 
 const ProductRow = React.memo(({
   product,
+  margins,
   onCostBlur,
   onPriceBlur
 }: {
   product: EditableProduct;
+  margins: { retail: number; micro: number; restaurant: number };
   onCostBlur: (id: string, val: number) => void;
   onPriceBlur: (id: string, field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', val: number) => void;
 }) => {
@@ -50,7 +52,16 @@ const ProductRow = React.memo(({
          <input
           type="number"
           value={localCost}
-          onChange={(e) => setLocalCost(e.target.value)}
+          onChange={(e) => {
+            const valStr = e.target.value;
+            setLocalCost(valStr);
+            const val = parseInt(valStr);
+            if (!isNaN(val)) {
+              setLocalRetail(Math.round(val * (1 + margins.retail / 100)).toString());
+              setLocalMicro(Math.round(val * (1 + margins.micro / 100)).toString());
+              setLocalRestaurant(Math.round(val * (1 + margins.restaurant / 100)).toString());
+            }
+          }}
           onBlur={(e) => {
             const val = parseInt(e.target.value);
             if (!isNaN(val) && val !== product.cost) {
@@ -348,6 +359,7 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
                      <ProductRow
                        key={p.id}
                        product={p}
+                       margins={{ retail: retailMargin, micro: microMargin, restaurant: restaurantMargin }}
                        onCostBlur={handleCostAndMarginChange}
                        onPriceBlur={handlePriceChange}
                      />
