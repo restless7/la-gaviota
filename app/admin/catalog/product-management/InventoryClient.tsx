@@ -119,7 +119,7 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
            </div>
 
            <Link 
-              href="/admin/catalog/inventory/new"
+              href="/admin/catalog/product-management/new"
               className="bg-slate-800 hover:bg-slate-900 text-white px-6 py-2 rounded-lg font-bold shadow-md transition-all flex items-center gap-2"
            >
               <span className="text-xl">+</span> Registrar Producto
@@ -185,11 +185,16 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
                               {emoji}
                            </div>
                            <div>
-                             <p className="font-bold text-slate-800">{p.name}</p>
+                             <Link href={`/admin/catalog/product-management/${p.id}`} className="font-bold text-[#E30613] hover:underline">
+                               {p.name}
+                             </Link>
                              <p className="text-[10px] text-gray-400">{p.unit}</p>
                            </div>
                         </td>
-                        <td className="p-4 text-center text-sm font-medium text-gray-500">{p.category}</td>
+                        <td className="p-4 text-center text-sm font-medium text-gray-500">
+                          {p.category}
+                          {p.subcategory && <div className="text-[10px] text-gray-400 uppercase">{p.subcategory}</div>}
+                        </td>
                         <td className="p-4 text-right">
                            <div className="flex items-center justify-end gap-2">
                               {isLowStock && <AlertTriangle className="h-4 w-4 text-[#E30613]" />}
@@ -218,14 +223,21 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
                              </span>
                            </label>
                         </td>
-                        <td className="p-4 text-center">
+                        <td className="p-4 text-center flex items-center justify-center gap-2">
                            <button
                              onClick={() => handleSave(p)}
                              disabled={isSaving}
                              className={`font-bold text-sm transition-all ${isSaved ? 'text-green-600' : isSaving ? 'text-gray-400' : 'text-[#4CAF50] hover:text-green-700 hover:underline decoration-2'}`}
                            >
-                              {isSaved ? '✓ Guardado' : isSaving ? 'Guardando...' : 'Guardar'}
+                              {isSaved ? '✓ Guardado' : isSaving ? 'Guardando...' : 'Guardar Stock'}
                            </button>
+                           <span className="text-gray-300">|</span>
+                           <Link
+                             href={`/admin/catalog/product-management/${p.id}`}
+                             className="text-gray-500 hover:text-gray-800 text-sm font-bold underline"
+                           >
+                             Editar
+                           </Link>
                         </td>
                      </tr>
                   )})}

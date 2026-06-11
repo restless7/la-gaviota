@@ -3,6 +3,14 @@
 import React from 'react';
 import { ProductCard } from '@/src/components/store/ProductCard';
 import { useCart } from '@/src/contexts/CartContext';
+import { initializeWompiBalancePayment } from '@/src/actions/wompi';
+import Script from 'next/script';
+
+declare global {
+  interface Window {
+    WidgetCheckout: any;
+  }
+}
 
 export default function RestauranteClient({ 
   wholesalePicks, 
@@ -17,7 +25,7 @@ export default function RestauranteClient({
 }) {
   const { addToCart } = useCart();
 
-  const handlePayWithWompi = () => {
+  const handlePayWithWompi = async () => {
     // Redirect to Bold / Wompi integration with the balance
     // In our ecosystem, we have the Wompi payment flow.
     const amount = creditProfile?.credit_balance || 0;
@@ -25,8 +33,31 @@ export default function RestauranteClient({
       alert('No tiene saldo pendiente de pago.');
       return;
     }
-    // We would initiate the Wompi flow here. For now, redirecting to a payment processor stub or firing event.
-    alert(`Iniciando flujo de pago Wompi por $${amount.toLocaleString()} COP...`);
+    
+    try {
+      const wompiData = await initializeWompiBalancePayment(amount);
+      const widget = new window.WidgetCheckout({
+        currency: wompiData.currency,
+        amountInCents: wompiData.amountInCents,
+        reference: wompiData.reference,
+        publicKey: wompiData.publicKey,
+        signature: { integrity: wompiData.signature },
+        customerData: wompiData.customerData
+      });
+
+      widget.open((result: any) => {
+        const transaction = result.transaction;
+        if (transaction.status === 'APPROVED') {
+           alert(`¡Pago de saldo aprobado! Referencia #${wompiData.reference}.`);
+           // Here we could trigger a revalidation or redirect
+        } else {
+           alert(`El pago no fue aprobado. Estado: ${transaction.status}.`);
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      alert('Error inicializando el pago de saldo.');
+    }
   };
 
   const handleAddTemplateToCart = (template: any) => {
@@ -44,6 +75,7 @@ export default function RestauranteClient({
 
   return (
     <div className="animate-fade-in">
+      <Script src="https://checkout.wompi.co/widget.js" strategy="lazyOnload" />
       {/* Welcome & Restaurantes Banner */}
       <div className="flex flex-col md:flex-row items-center bg-slate-900 rounded-3xl p-8 lg:p-12 shadow-xl mb-10 overflow-hidden relative border border-slate-800">
         <div className="absolute top-0 left-0 w-full h-full bg-[url('/IMAGES/carnes-banner.jpg')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>

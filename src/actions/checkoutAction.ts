@@ -10,7 +10,8 @@ export interface CheckoutItem {
 }
 
 export async function submitCheckoutOrder(formData: FormData, items: CheckoutItem[], totalAmount: number) {
-  const { userId } = await auth();
+  try {
+    const { userId } = await auth();
   
   const firstName = formData.get('firstName') as string;
   const lastName = formData.get('lastName') as string;
@@ -62,4 +63,8 @@ export async function submitCheckoutOrder(formData: FormData, items: CheckoutIte
     orderId: result.orderId,
     timestamp: new Date().toISOString()
   };
+  } catch (error: any) {
+    console.error('[CheckoutAction] Error:', error);
+    throw new Error(error.message || 'Error interno procesando la orden. Por favor intente de nuevo.');
+  }
 }

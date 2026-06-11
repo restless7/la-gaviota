@@ -6,6 +6,8 @@ import { CATEGORIES } from '@/src/constants/productConstants';
 import { ProductCard } from './ProductCard';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState as useStateReact } from 'react';
 
 const CATEGORY_BANNERS: Record<string, string> = {
   'Frutas': '/IMAGES/frutas-banner.jpeg',
@@ -20,6 +22,16 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
    const [sortOrder, setSortOrder] = useState<'asc'|'desc'|null>(null);
    const { role } = useUserRole();
+   const searchParams = useSearchParams();
+   const [showToast, setShowToast] = useState(false);
+
+   useEffect(() => {
+     if (searchParams?.get('error') === 'unauthorized-tier') {
+       setShowToast(true);
+       const timer = setTimeout(() => setShowToast(false), 8000);
+       return () => clearTimeout(timer);
+     }
+   }, [searchParams]);
 
    const filteredProducts = useMemo(() => {
      const filtered = initialProducts.filter(p => {
@@ -40,8 +52,22 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
    }, [initialProducts, search, selectedCategory, sortOrder, role]);
 
    return (
-     <div className="w-full flex flex-col pb-24">
+     <div className="w-full flex flex-col pb-24 relative">
        
+       {/* Unauthorized Toast */}
+       {showToast && (
+         <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-5 fade-in duration-300">
+           <div className="bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-slate-700 flex items-start gap-4 max-w-sm">
+             <div className="text-[#FFCC00] mt-0.5">⚠️</div>
+             <div className="flex-1">
+               <h4 className="font-bold mb-1">Acceso Denegado</h4>
+               <p className="text-sm text-gray-300 leading-tight">Esta sección es exclusiva para comercios verificados. Si tienes un negocio, solicita tus precios mayoristas en tu perfil.</p>
+             </div>
+             <button onClick={() => setShowToast(false)} className="text-gray-400 hover:text-white">✕</button>
+           </div>
+         </div>
+       )}
+
        {/* Full Width Category Banner */}
        {selectedCategory && CATEGORY_BANNERS[selectedCategory] && (
          <div className="w-full relative aspect-video overflow-hidden">

@@ -52,7 +52,7 @@ const navigation = [
     group: 'catalog',
     roles: ['SUPER_ADMIN', 'ADMIN'],
     subItems: [
-      { name: 'Inventario General', href: '/admin/catalog/inventory' },
+      { name: 'Inventario General', href: '/admin/catalog/product-management' },
       { name: 'Gestión de Precios por Tier', href: '/admin/pricing' },
       { name: 'Kits y Promociones', href: '/admin/catalog/kits' },
     ]

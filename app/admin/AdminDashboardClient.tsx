@@ -225,7 +225,7 @@ export default function AdminDashboardClient({
           icon={AlertTriangle}
           color="text-[#FFCC00]"
           bgColor="bg-[#FFCC00]"
-          href="/admin/catalog/inventory"
+          href="/admin/catalog/product-management"
         />
       </div>
 
@@ -259,7 +259,7 @@ export default function AdminDashboardClient({
                  <QuickAction
                    title="Catálogo Base"
                    description="Crear nuevos productos, asignar imágenes y categorías."
-                   href="/admin/catalog/inventory"
+                   href="/admin/catalog/product-management"
                    icon={Globe}
                  />
                </div>
@@ -333,7 +333,7 @@ export default function AdminDashboardClient({
                           <p className="font-bold text-slate-800 text-sm">{item.name}</p>
                           <p className={`text-[10px] font-bold uppercase ${item.severity === 'critical' ? 'text-red-600' : 'text-yellow-700'}`}>Quedan {item.stock} {item.unit}</p>
                        </div>
-                       <Link href="/admin/catalog/inventory" className={`text-white text-[10px] px-2 py-1.5 rounded-lg font-bold ${item.severity === 'critical' ? 'bg-red-600 hover:bg-red-700' : 'bg-yellow-600 hover:bg-yellow-700'}`}>
+                       <Link href="/admin/catalog/product-management" className={`text-white text-[10px] px-2 py-1.5 rounded-lg font-bold ${item.severity === 'critical' ? 'bg-red-600 hover:bg-red-700' : 'bg-yellow-600 hover:bg-yellow-700'}`}>
                          {item.severity === 'critical' ? 'Reabastecer' : 'Aviso Prov.'}
                        </Link>
                     </div>

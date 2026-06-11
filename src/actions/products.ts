@@ -16,6 +16,7 @@ export interface Product {
   id: string;
   name: string;
   category: string;
+  subcategory: string | null;
   unit: string;
   baseCost: number;
   priceRetail: number;
@@ -55,6 +56,7 @@ export async function fetchProducts(): Promise<Product[]> {
     id: p.id,
     name: p.name,
     category: p.category,
+    subcategory: p.subcategory || null,
     unit: p.unit,
     baseCost: p.base_cost,
     priceRetail: p.price_retail,
@@ -72,6 +74,7 @@ export async function fetchProducts(): Promise<Product[]> {
     id: k.id,
     name: k.name,
     category: 'Kits Negocios',
+    subcategory: null,
     unit: 'Combo',
     baseCost: Number(k.fixed_price),
     priceRetail: Number(k.fixed_price),
@@ -100,7 +103,7 @@ export async function updateProductStock(id: string, newStock: number) {
     throw new Error('Failed to update stock');
   }
   
-  revalidatePath('/admin/catalog/inventory');
+  revalidatePath('/admin/catalog/product-management');
   revalidatePath('/shop');
   return { success: true };
 }
@@ -116,7 +119,7 @@ export async function updateProductSeasonStatus(id: string, inSeason: boolean) {
     throw new Error('Failed to update season status');
   }
 
-  revalidatePath('/admin/catalog/inventory');
+  revalidatePath('/admin/catalog/product-management');
   revalidatePath('/shop');
   return { success: true };
 }
@@ -256,6 +259,7 @@ export async function createProduct(product: Omit<Product, 'id'>) {
       id: newId,
       name: product.name,
       category: product.category,
+      subcategory: product.subcategory,
       unit: product.unit,
       base_cost: product.baseCost,
       price_retail: product.priceRetail,
@@ -281,7 +285,88 @@ export async function createProduct(product: Omit<Product, 'id'>) {
     newId
   );
 
-  revalidatePath('/admin/catalog/inventory');
+  revalidatePath('/admin/catalog/product-management');
   revalidatePath('/shop');
   return { success: true, id: newId };
+}
+
+export async function updateProduct(id: string, product: Omit<Product, 'id'>) {
+  const { error } = await supabase
+    .from('products')
+    .update({
+      name: product.name,
+      category: product.category,
+      subcategory: product.subcategory,
+      unit: product.unit,
+      base_cost: product.baseCost,
+      price_retail: product.priceRetail,
+      price_micro: product.priceMicro,
+      price_restaurant: product.priceRestaurant,
+      stock_quantity: product.stockQuantity,
+      is_active: product.isActive,
+      is_in_season: product.isInSeason,
+      image_url: product.imageUrl,
+      description: product.description
+    })
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error updating product:', error);
+    throw new Error('Failed to update product');
+  }
+
+  await logAdminAction(
+    'SUPPLIER',
+    'Actualización de Producto',
+    `Producto ID: ${id} actualizado.`,
+    id
+  );
+
+  revalidatePath('/admin/catalog/product-management');
+  revalidatePath('/shop');
+  return { success: true };
+}
+
+export async function deleteProduct(id: string) {
+  // First get the product to delete its image if it exists
+  const { data: product, error: fetchError } = await supabase
+    .from('products')
+    .select('image_url')
+    .eq('id', id)
+    .single();
+
+  if (!fetchError && product?.image_url) {
+    try {
+      // The image_url is usually a public URL, we need to extract the path
+      // Example: https://<project>.supabase.co/storage/v1/object/public/product-images/product-123.jpg
+      const urlParts = product.image_url.split('/product-images/');
+      if (urlParts.length > 1) {
+        const path = urlParts[1];
+        await supabase.storage.from('product-images').remove([path]);
+      }
+    } catch (e) {
+      console.error('Error deleting image:', e);
+    }
+  }
+
+  const { error } = await supabase
+    .from('products')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting product:', error);
+    throw new Error('Failed to delete product');
+  }
+
+  await logAdminAction(
+    'SUPPLIER',
+    'Eliminación de Producto',
+    `Producto ID: ${id} eliminado del sistema.`,
+    id
+  );
+
+  revalidatePath('/admin/catalog/product-management');
+  revalidatePath('/shop');
+  return { success: true };
 }

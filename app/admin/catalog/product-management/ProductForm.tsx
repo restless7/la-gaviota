@@ -1,36 +1,66 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Package, ArrowLeft, Save, Loader2, Image as ImageIcon } from 'lucide-react';
+import { Package, ArrowLeft, Save, Loader2, Image as ImageIcon, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { createProduct } from '@/src/actions/products';
+import { createProduct, updateProduct, deleteProduct, Product } from '@/src/actions/products';
 import { createClient } from '@supabase/supabase-js';
+import { CATEGORIES, SUBCATEGORIES } from '@/src/constants/productConstants';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
-import { CATEGORIES } from '@/src/constants/productConstants';
 
-export default function NewProductPage() {
+interface ProductFormProps {
+  initialData?: Product;
+}
+
+export default function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const isEditing = !!initialData;
+  
   const [formData, setFormData] = useState({
-    name: '',
-    category: CATEGORIES[0],
-    unit: 'Kg',
-    baseCost: 0,
-    priceRetail: 0,
-    priceMicro: 0,
-    priceRestaurant: 0,
-    stockQuantity: 100,
-    isActive: true,
-    isInSeason: true,
-    imageUrl: '',
-    description: ''
+    name: initialData?.name || '',
+    category: initialData?.category || CATEGORIES[0],
+    subcategory: initialData?.subcategory || '',
+    unit: initialData?.unit || 'Kg',
+    baseCost: initialData?.baseCost || 0,
+    priceRetail: initialData?.priceRetail || 0,
+    priceMicro: initialData?.priceMicro || 0,
+    priceRestaurant: initialData?.priceRestaurant || 0,
+    stockQuantity: initialData?.stockQuantity || 100,
+    isActive: initialData?.isActive ?? true,
+    isInSeason: initialData?.isInSeason ?? true,
+    imageUrl: initialData?.imageUrl || '',
+    description: initialData?.description || ''
   });
+
+  const availableSubcategories = SUBCATEGORIES[formData.category] || [];
+
+  // Reset subcategory if category changes and the new category doesn't have the current subcategory
+  useEffect(() => {
+    if (availableSubcategories.length > 0 && !availableSubcategories.includes(formData.subcategory)) {
+      setFormData(prev => ({ ...prev, subcategory: availableSubcategories[0] }));
+    } else if (availableSubcategories.length === 0) {
+      setFormData(prev => ({ ...prev, subcategory: '' }));
+    }
+  }, [formData.category, availableSubcategories]);
+
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageUrl || null);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const slugify = (text: string) => {
+    return text.toString().toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,29 +69,59 @@ export default function NewProductPage() {
       let finalImageUrl = formData.imageUrl;
       
       if (imageFile) {
+        setIsUploading(true);
         const fileExt = imageFile.name.split('.').pop();
-        const fileName = `product-${Date.now()}.${fileExt}`;
+        const slugName = slugify(formData.name) || 'product';
+        const fileName = `${slugName}-${Date.now()}.${fileExt}`;
+        
         const { data, error } = await supabase.storage
           .from('product-images')
-          .upload(fileName, imageFile);
+          .upload(fileName, imageFile, { upsert: true });
           
         if (error) {
           console.error("Error uploading image:", error);
-          // Fallback to what we have if error
+          alert('Error al subir la imagen.');
         } else if (data) {
           const { data: publicData } = supabase.storage.from('product-images').getPublicUrl(data.path);
           finalImageUrl = publicData.publicUrl;
         }
+        setIsUploading(false);
       }
 
-      await createProduct({ ...formData, imageUrl: finalImageUrl });
-      router.push('/admin/catalog/inventory');
+      const productPayload = { ...formData, imageUrl: finalImageUrl };
+
+      if (isEditing) {
+        await updateProduct(initialData.id, productPayload);
+      } else {
+        await createProduct(productPayload);
+      }
+
+      router.push('/admin/catalog/product-management');
       router.refresh();
     } catch (error) {
-      console.error('Failed to create product:', error);
-      alert('Error al crear el producto.');
+      console.error('Failed to save product:', error);
+      alert('Error al guardar el producto.');
     } finally {
       setIsSubmitting(false);
+      setIsUploading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!isEditing) return;
+    
+    if (window.confirm('¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer y eliminará la imagen asociada.')) {
+      setIsDeleting(true);
+      try {
+        await deleteProduct(initialData.id);
+        router.push('/admin/catalog/product-management');
+        router.refresh();
+      } catch (error) {
+        console.error('Failed to delete product:', error);
+        alert('Error al eliminar el producto.');
+      } finally {
+        setIsDeleting(false);
+      }
     }
   };
 
@@ -85,21 +145,37 @@ export default function NewProductPage() {
 
   return (
     <div className="p-8 max-w-[1000px] mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-center gap-4">
-        <Link 
-          href="/admin/catalog/inventory"
-          className="p-2 hover:bg-slate-100 rounded-full transition-colors text-gray-500"
-        >
-          <ArrowLeft className="h-6 w-6" />
-        </Link>
-        <div>
-          <h1 className="text-3xl font-black text-slate-800 font-serif">Registrar Nuevo Producto</h1>
-          <p className="text-gray-500 font-medium">Añada un nuevo ítem al catálogo general de La Gaviota.</p>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Link 
+            href="/admin/catalog/product-management"
+            className="p-2 hover:bg-slate-100 rounded-full transition-colors text-gray-500"
+          >
+            <ArrowLeft className="h-6 w-6" />
+          </Link>
+          <div>
+            <h1 className="text-3xl font-black text-slate-800 font-serif">
+              {isEditing ? 'Editar Producto' : 'Registrar Nuevo Producto'}
+            </h1>
+            <p className="text-gray-500 font-medium">
+              {isEditing ? `Modificando: ${initialData.name}` : 'Añada un nuevo ítem al catálogo general de La Gaviota.'}
+            </p>
+          </div>
         </div>
+        {isEditing && (
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg font-bold transition-colors"
+          >
+            {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+            Eliminar Producto
+          </button>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Left Column: Basic Info */}
         <div className="md:col-span-2 space-y-6">
           <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
             <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
@@ -135,6 +211,21 @@ export default function NewProductPage() {
                     ))}
                   </select>
                 </div>
+                {availableSubcategories.length > 0 && (
+                  <div>
+                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Subcategoría</label>
+                    <select
+                      name="subcategory"
+                      value={formData.subcategory}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#4CAF50] outline-none transition-all font-medium bg-white"
+                    >
+                      {availableSubcategories.map(sub => (
+                        <option key={sub} value={sub}>{sub}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
                 <div>
                   <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Unidad de Medida</label>
                   <input
@@ -217,7 +308,6 @@ export default function NewProductPage() {
           </div>
         </div>
 
-        {/* Right Column: Status & Media */}
         <div className="space-y-6">
           <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
             <h2 className="text-xl font-bold text-slate-800">Estado</h2>
@@ -275,7 +365,13 @@ export default function NewProductPage() {
                   <p className="text-[10px] text-gray-400 mt-1">JPG o PNG (máx 2MB)</p>
                 </>
               )}
-              <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+              {isUploading && (
+                <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col items-center justify-center">
+                  <Loader2 className="h-8 w-8 text-[#4CAF50] animate-spin mb-2" />
+                  <span className="text-sm font-bold text-[#4CAF50]">Subiendo...</span>
+                </div>
+              )}
+              <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} disabled={isUploading} />
             </label>
             <input
               type="text"
@@ -289,11 +385,11 @@ export default function NewProductPage() {
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isUploading}
             className="w-full bg-[#E30613] hover:bg-red-700 text-white h-16 rounded-2xl font-black text-xl shadow-[0_8px_20px_rgba(227,6,19,0.3)] hover:shadow-[0_12px_24px_rgba(227,6,19,0.4)] transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
           >
             {isSubmitting ? <Loader2 className="h-6 w-6 animate-spin" /> : <Save className="h-6 w-6" />}
-            {isSubmitting ? 'Guardando...' : 'Publicar Producto'}
+            {isSubmitting ? 'Guardando...' : (isEditing ? 'Actualizar Producto' : 'Publicar Producto')}
           </button>
         </div>
       </form>

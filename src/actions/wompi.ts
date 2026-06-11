@@ -11,7 +11,8 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function initializeWompiTransaction(formData: FormData, items: CheckoutItem[]) {
-  const { userId } = await auth();
+  try {
+    const { userId } = await auth();
   
   if (!userId) {
     throw new Error("Usuario no autenticado");
@@ -123,4 +124,43 @@ export async function initializeWompiTransaction(formData: FormData, items: Chec
       phonePrefix: '+57',
     }
   };
+  } catch (error: any) {
+    console.error('[WompiAction] Error:', error);
+    throw new Error(error.message || 'Error inicializando el pago. Por favor intente de nuevo.');
+  }
+}
+
+export async function initializeWompiBalancePayment(amount: number) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Usuario no autenticado");
+
+    const client = await clerkClient();
+    const user = await client.users.getUser(userId);
+
+    // Ensure amount is valid
+    if (amount <= 0) throw new Error("Monto inválido");
+
+    // Generate a reference for balance payment
+    const reference = `BAL_${userId.substring(0,8)}_${Date.now()}`;
+    const amountInCents = formatToCents(amount);
+    const signature = generateIntegritySignature(reference, amountInCents, 'COP');
+
+    return {
+      publicKey: process.env.NEXT_PUBLIC_WOMPI_PUB_KEY,
+      currency: 'COP',
+      amountInCents,
+      reference,
+      signature,
+      customerData: {
+        email: user.emailAddresses[0]?.emailAddress || '',
+        fullName: `${user.firstName} ${user.lastName}`,
+        phoneNumber: '', // Not strictly required if not available
+        phonePrefix: '+57',
+      }
+    };
+  } catch (error: any) {
+    console.error('[WompiBalancePayment] Error:', error);
+    throw new Error(error.message || 'Error inicializando el pago de saldo.');
+  }
 }

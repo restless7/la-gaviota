@@ -21,7 +21,7 @@ export async function fetchAuditLogs(): Promise<AuditLog[]> {
   const { data, error } = await supabase
     .from('audit_logs')
     .select('*')
-    .order('created_at', { ascending: false })
+    .order('timestamp', { ascending: false })
     .limit(50);
 
   if (error) {
