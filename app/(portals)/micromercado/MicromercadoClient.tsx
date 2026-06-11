@@ -1,24 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { ProductCard } from '@/src/components/store/ProductCard';
 import { useCart } from '@/src/contexts/CartContext';
 import { useRouter } from 'next/navigation';
-import { X } from 'lucide-react';
 
 export default function MicromercadoClient({ 
   bulkPicks, 
-  lastOrder,
-  allOrders
+  lastOrder
 }: { 
   bulkPicks: any[]; 
   lastOrder: any;
-  allOrders: any[];
 }) {
   const { addToCart } = useCart();
   const router = useRouter();
-  const [showInvoices, setShowInvoices] = useState(false);
 
   const handleQuickReorder = () => {
     if (!lastOrder || !lastOrder.order_items) {
@@ -49,6 +45,13 @@ export default function MicromercadoClient({
     }
   };
 
+  const scrollToHistory = () => {
+    const el = document.getElementById('order-history');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="animate-fade-in relative">
       {/* Welcome & Wholesale Banner */}
@@ -75,7 +78,7 @@ export default function MicromercadoClient({
             <h3 className="font-bold text-slate-800 text-lg mb-1">Pedidos Rápidos</h3>
             <p className="text-xs text-gray-500">Repita su última compra al instante.</p>
          </div>
-         <div onClick={() => setShowInvoices(true)} className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col items-center text-center hover:border-yellow-400 hover:shadow-lg transition-all cursor-pointer group">
+         <div onClick={scrollToHistory} className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col items-center text-center hover:border-yellow-400 hover:shadow-lg transition-all cursor-pointer group">
             <span className="text-4xl mb-4 group-hover:scale-110 transition-transform">📊</span>
             <h3 className="font-bold text-slate-800 text-lg mb-1">Mis Facturas</h3>
             <p className="text-xs text-gray-500">Historial y comprobantes de compra.</p>
@@ -99,38 +102,6 @@ export default function MicromercadoClient({
             <ProductCard key={p.id} product={p} />
          ))}
       </div>
-
-      {/* Invoices Modal */}
-      {showInvoices && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden shadow-2xl animate-fade-in">
-            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-slate-50">
-              <h2 className="text-xl font-bold text-slate-800 font-serif">Mis Facturas y Órdenes</h2>
-              <button onClick={() => setShowInvoices(false)} className="p-2 hover:bg-gray-200 rounded-full transition-colors">
-                <X className="w-5 h-5 text-gray-500" />
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              {allOrders.length === 0 ? (
-                <p className="text-center text-gray-500 py-10">No hay órdenes registradas.</p>
-              ) : (
-                allOrders.map(order => (
-                  <div key={order.id} className="border border-gray-200 rounded-xl p-4 flex justify-between items-center hover:border-yellow-400 transition-colors">
-                    <div>
-                      <p className="font-bold text-slate-800">Orden #{order.id.slice(0,8).toUpperCase()}</p>
-                      <p className="text-sm text-gray-500">{new Date(order.created_at).toLocaleDateString()} • {order.order_items?.length || 0} ítems</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-black text-slate-800">${Number(order.total_amount).toLocaleString()} COP</p>
-                      <span className="text-xs font-bold text-white bg-[#4CAF50] px-2 py-1 rounded-sm mt-1 inline-block">{order.status}</span>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { getB2BProfile, getMonthlySpend, getBuyingTemplates } from '@/src/action
 import RestauranteClient from './RestauranteClient';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { CustomerOrderHistory } from '@/src/components/portals/CustomerOrderHistory';
 
 export default async function RestauranteDashboard() {
   const { userId } = await auth();
@@ -25,11 +26,16 @@ export default async function RestauranteDashboard() {
   const wholesalePicks = products.slice(0, 4);
 
   return (
-    <RestauranteClient 
-      wholesalePicks={wholesalePicks}
-      monthlySpend={monthlySpend}
-      creditProfile={creditProfile}
-      templates={templates}
-    />
+    <div className="space-y-12">
+      <RestauranteClient 
+        wholesalePicks={wholesalePicks}
+        monthlySpend={monthlySpend}
+        creditProfile={creditProfile}
+        templates={templates}
+      />
+      <div id="order-history">
+        <CustomerOrderHistory />
+      </div>
+    </div>
   );
 }

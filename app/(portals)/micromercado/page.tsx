@@ -4,6 +4,7 @@ import { getLastOrder, getB2BOrders } from '@/src/actions/b2b';
 import MicromercadoClient from './MicromercadoClient';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { CustomerOrderHistory } from '@/src/components/portals/CustomerOrderHistory';
 
 export default async function MicromercadoDashboard() {
   const { userId } = await auth();
@@ -22,10 +23,15 @@ export default async function MicromercadoDashboard() {
   const bulkPicks = products.filter(p => p.category === 'Verduras Y Hortalizas' || p.category === 'Kits Negocios').slice(0, 4);
 
   return (
-    <MicromercadoClient 
-      bulkPicks={bulkPicks}
-      lastOrder={lastOrder}
-      allOrders={allOrders}
-    />
+    <div className="space-y-12">
+      <MicromercadoClient 
+        bulkPicks={bulkPicks}
+        lastOrder={lastOrder}
+        allOrders={allOrders}
+      />
+      <div id="order-history">
+        <CustomerOrderHistory />
+      </div>
+    </div>
   );
 }
