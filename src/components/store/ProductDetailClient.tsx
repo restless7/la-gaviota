@@ -41,7 +41,9 @@ export default function ProductDetailClient({ product, relatedProducts }: { prod
             {/* Product Info Setup */}
             <div className="w-full md:w-1/2 flex flex-col">
                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-xs font-extrabold text-gray-400 tracking-widest uppercase">{product.category}</span>
+                  <span className="text-xs font-extrabold text-gray-400 tracking-widest uppercase">
+                    {product.category} {product.subcategory ? `> ${product.subcategory}` : ''}
+                  </span>
                   <span className="text-gray-300">•</span>
                   <span className="text-xs font-bold text-[#E30613] bg-[#E30613]/10 px-2 py-0.5 rounded-md">Stock Verificado</span>
                </div>

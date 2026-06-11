@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Product } from '@/src/actions/products';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { useCart } from '@/src/contexts/CartContext';
+import Image from 'next/image';
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
   'Frutas': 'from-orange-400 to-red-400',
@@ -51,17 +52,31 @@ export function ProductCard({ product }: { product: Product }) {
        onMouseEnter={() => setIsHovered(true)}
        onMouseLeave={() => setIsHovered(false)}
     >
-       {/* Image Section — Dynamic Category Placeholder */}
+       {/* Image Section — Dynamic Category Placeholder or Actual Image */}
        <div className={`aspect-[4/3] w-full relative bg-gradient-to-br ${gradient} overflow-hidden flex items-center justify-center`}>
-          {/* Large emoji background */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-20">
-            <span className="text-[120px] select-none">{emoji}</span>
-          </div>
-          {/* Product initial */}
-          <div className="relative z-10 flex flex-col items-center gap-1">
-            <span className="text-6xl font-black text-white/90 drop-shadow-lg">{initial}</span>
-            <span className="text-white/70 text-xs font-bold uppercase tracking-widest">{product.category.split(' ')[0]}</span>
-          </div>
+          {product.imageUrl ? (
+             <Image 
+                src={product.imageUrl} 
+                alt={product.name} 
+                fill 
+                className="object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+             />
+          ) : (
+             <>
+                {/* Large emoji background */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                  <span className="text-[120px] select-none">{emoji}</span>
+                </div>
+                {/* Product initial */}
+                <div className="relative z-10 flex flex-col items-center gap-1">
+                  <span className="text-6xl font-black text-white/90 drop-shadow-lg">{initial}</span>
+                  <span className="text-white/70 text-xs font-bold uppercase tracking-widest text-center px-2">
+                    {product.subcategory || product.category.split(' ')[0]}
+                  </span>
+                </div>
+             </>
+          )}
 
           {/* Quick Add Overlay */}
           <div className={`absolute bottom-4 left-0 right-0 flex justify-center opacity-0 transform translate-y-4 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : ''}`}>
@@ -96,7 +111,9 @@ export function ProductCard({ product }: { product: Product }) {
        {/* Content Section */}
        <div className="p-5 flex flex-col flex-1">
           <div className="flex justify-between items-start mb-2">
-             <span className="text-[10px] font-bold uppercase tracking-wider text-[#4CAF50] bg-[#4CAF50]/10 px-2 py-0.5 rounded-md">{product.category}</span>
+             <span className="text-[10px] font-bold uppercase tracking-wider text-[#4CAF50] bg-[#4CAF50]/10 px-2 py-0.5 rounded-md truncate max-w-full">
+               {product.category} {product.subcategory ? `> ${product.subcategory}` : ''}
+             </span>
           </div>
           <h3 className="font-bold text-slate-800 text-base leading-snug mb-3 line-clamp-2 min-h-[2.5rem]">
              {product.name}

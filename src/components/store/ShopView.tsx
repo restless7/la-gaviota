@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Product } from '@/src/actions/products';
-import { CATEGORIES } from '@/src/constants/productConstants';
+import { CATEGORIES, SUBCATEGORIES } from '@/src/constants/productConstants';
 import { ProductCard } from './ProductCard';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import Image from 'next/image';
@@ -20,6 +20,7 @@ import { DeliveryScheduler } from '@/src/components/checkout/DeliveryScheduler';
 export default function ShopView({ initialProducts }: { initialProducts: Product[] }) {
    const [search, setSearch] = useState('');
    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
    const [sortOrder, setSortOrder] = useState<'asc'|'desc'|null>(null);
    const { role } = useUserRole();
    const searchParams = useSearchParams();
@@ -35,10 +36,11 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
 
    const filteredProducts = useMemo(() => {
      const filtered = initialProducts.filter(p => {
-        const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-        const matchCategory = selectedCategory ? p.category === selectedCategory : true;
-        return matchSearch && matchCategory;
-     });
+         const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+         const matchCategory = selectedCategory ? p.category === selectedCategory : true;
+         const matchSubcategory = selectedSubcategory ? p.subcategory === selectedSubcategory : true;
+         return matchSearch && matchCategory && matchSubcategory;
+      });
 
      if (sortOrder) {
          filtered.sort((a, b) => {
@@ -49,7 +51,12 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
      }
 
      return filtered;
-   }, [initialProducts, search, selectedCategory, sortOrder, role]);
+   }, [initialProducts, search, selectedCategory, selectedSubcategory, sortOrder, role]);
+
+   const handleCategorySelect = (cat: string | null) => {
+      setSelectedCategory(cat);
+      setSelectedSubcategory(null); // Reset subcategory when category changes
+   };
 
    return (
      <div className="w-full flex flex-col pb-24 relative">
@@ -91,7 +98,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
            <div className="max-w-7xl mx-auto w-full px-4 sm:px-6">
              <div className="flex flex-row overflow-x-auto no-scrollbar gap-2 pb-1">
                  <button 
-                    onClick={() => setSelectedCategory(null)}
+                    onClick={() => handleCategorySelect(null)}
                     className={`whitespace-nowrap text-xs py-1.5 px-4 rounded-full transition-all font-bold border ${selectedCategory === null ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}
                  >
                    Todos
@@ -99,13 +106,32 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                  {CATEGORIES.map(cat => (
                     <button 
                        key={cat}
-                       onClick={() => setSelectedCategory(cat)}
+                       onClick={() => handleCategorySelect(cat)}
                        className={`whitespace-nowrap text-xs py-1.5 px-4 rounded-full transition-all font-bold border ${selectedCategory === cat ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 shadow-sm'}`}
                     >
                        {cat}
                     </button>
                  ))}
              </div>
+             {selectedCategory && SUBCATEGORIES[selectedCategory] && SUBCATEGORIES[selectedCategory].length > 0 && (
+               <div className="flex flex-row overflow-x-auto no-scrollbar gap-2 pt-2 pb-1 border-t border-gray-100 mt-1">
+                 <button 
+                    onClick={() => setSelectedSubcategory(null)}
+                    className={`whitespace-nowrap text-[11px] py-1 px-3 rounded-full transition-all font-bold border ${selectedSubcategory === null ? 'bg-slate-800 border-slate-800 text-white' : 'bg-slate-50 border-gray-200 text-gray-500 hover:bg-slate-100'}`}
+                 >
+                   Todo en {selectedCategory}
+                 </button>
+                 {SUBCATEGORIES[selectedCategory].map(sub => (
+                    <button 
+                       key={sub}
+                       onClick={() => setSelectedSubcategory(sub)}
+                       className={`whitespace-nowrap text-[11px] py-1 px-3 rounded-full transition-all font-bold border ${selectedSubcategory === sub ? 'bg-slate-800 border-slate-800 text-white' : 'bg-slate-50 border-gray-200 text-gray-500 hover:bg-slate-100'}`}
+                    >
+                       {sub}
+                    </button>
+                 ))}
+               </div>
+             )}
            </div>
        </div>
 
@@ -116,9 +142,9 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
           <div className="sticky top-28 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
              <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-xl text-slate-800 font-serif">Filtros</h2>
-                { (search || selectedCategory || sortOrder) && (
+                { (search || selectedCategory || sortOrder || selectedSubcategory) && (
                    <button 
-                      onClick={() => { setSearch(''); setSelectedCategory(null); setSortOrder(null); }}
+                      onClick={() => { setSearch(''); handleCategorySelect(null); setSortOrder(null); }}
                       className="text-xs font-bold text-[#E30613] hover:underline"
                    >
                      Limpiar
@@ -165,7 +191,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4 block">Categorías</label>
                 <div className="flex flex-col gap-1.5">
                    <button 
-                      onClick={() => setSelectedCategory(null)}
+                      onClick={() => handleCategorySelect(null)}
                       className={`text-left text-sm py-2 px-3 rounded-lg transition-all font-medium border-transparent border ${selectedCategory === null ? 'bg-[#4CAF50] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 border-transparent hover:border-gray-200'}`}
                    >
                      Todos los productos
@@ -173,7 +199,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                    {CATEGORIES.map(cat => (
                       <button 
                          key={cat}
-                         onClick={() => setSelectedCategory(cat)}
+                         onClick={() => handleCategorySelect(cat)}
                          className={`text-left text-sm py-2 px-3 rounded-lg transition-all font-medium border-transparent border ${selectedCategory === cat ? 'bg-[#4CAF50] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 border-transparent hover:border-gray-200'}`}
                       >
                          {cat}
@@ -181,6 +207,30 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                    ))}
                 </div>
              </div>
+
+             {/* Subcategories (Desktop only) */}
+             {selectedCategory && SUBCATEGORIES[selectedCategory] && SUBCATEGORIES[selectedCategory].length > 0 && (
+                <div className="hidden lg:block mb-8 border-t border-gray-100 pt-6">
+                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4 block">Subcategorías</label>
+                   <div className="flex flex-col gap-1.5">
+                      <button 
+                         onClick={() => setSelectedSubcategory(null)}
+                         className={`text-left text-sm py-1.5 px-3 rounded-lg transition-all font-medium border-transparent border ${selectedSubcategory === null ? 'bg-slate-800 text-white shadow-sm' : 'text-gray-500 hover:bg-slate-50 border-transparent hover:border-gray-200'}`}
+                      >
+                        Todo en {selectedCategory}
+                      </button>
+                      {SUBCATEGORIES[selectedCategory].map(sub => (
+                         <button 
+                            key={sub}
+                            onClick={() => setSelectedSubcategory(sub)}
+                            className={`text-left text-sm py-1.5 px-3 rounded-lg transition-all font-medium border-transparent border ${selectedSubcategory === sub ? 'bg-slate-800 text-white shadow-sm' : 'text-gray-500 hover:bg-slate-50 border-transparent hover:border-gray-200'}`}
+                         >
+                            {sub}
+                         </button>
+                      ))}
+                   </div>
+                </div>
+             )}
 
            </div>
         </aside>
@@ -196,7 +246,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
            <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                  <h1 className="text-3xl lg:text-4xl font-black text-slate-800 font-serif leading-tight">
-                   {selectedCategory ? selectedCategory : "Catálogo Fresco"}
+                   {selectedSubcategory ? selectedSubcategory : selectedCategory ? selectedCategory : "Catálogo Fresco"}
                  </h1>
                  <p className="text-sm text-gray-500 mt-2 font-medium">Mostrando los precios especiales para tu nivel.</p>
               </div>
@@ -210,7 +260,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                  <span className="text-7xl mb-6">🔍</span>
                  <h3 className="text-2xl font-black text-slate-800 mb-3">No hay coincidencias</h3>
                  <p className="text-gray-500 text-base max-w-sm mx-auto">No encontramos productos ajustados a tu búsqueda en esta categoría.</p>
-                 <button onClick={() => { setSearch(''); setSelectedCategory(null); }} className="mt-8 bg-[#4CAF50] hover:bg-[#3d8c40] text-white px-8 py-3 rounded-full font-bold shadow-md transition-all hover:-translate-y-1">
+                 <button onClick={() => { setSearch(''); handleCategorySelect(null); }} className="mt-8 bg-[#4CAF50] hover:bg-[#3d8c40] text-white px-8 py-3 rounded-full font-bold shadow-md transition-all hover:-translate-y-1">
                     Reiniciar filtros
                  </button>
               </div>
