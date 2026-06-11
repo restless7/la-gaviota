@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -69,9 +69,19 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [crmOpen, setCrmOpen] = useState(false);
   const [opsOpen, setOpsOpen] = useState(false);
+  const [currentDate, setCurrentDate] = useState<string>('');
   const pathname = usePathname();
   const { user, loading, isSuperAdmin, isCommercial, isAdminAreaUser } = useRBAC();
   const { logout } = useAuth(); // Import from original useAuth Context
+
+  useEffect(() => {
+    setCurrentDate(new Date().toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }));
+  }, []);
 
   if (loading) {
     return (
@@ -276,13 +286,8 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
             </button>
 
             <div className="flex items-center gap-4 ml-auto">
-              <div className="text-sm text-gray-500 font-medium bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
-                {new Date().toLocaleDateString('es-ES', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
+              <div className="text-sm text-gray-500 font-medium bg-gray-50 px-4 py-2 rounded-full border border-gray-100 min-w-[200px] text-center">
+                {currentDate || 'Cargando fecha...'}
               </div>
             </div>
           </div>

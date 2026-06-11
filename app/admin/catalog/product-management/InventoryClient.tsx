@@ -28,14 +28,31 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
   const [isToggling, setIsToggling] = useState(false);
 
   const CATEGORIES = useMemo(() => Array.from(new Set(initialProducts.map(p => p.category))), [initialProducts]);
+  const availableSubcategories = useMemo(() => {
+    if (!selectedCategory) return [];
+    const subcats = new Set<string>();
+    localProducts.forEach(p => {
+      if (p.category === selectedCategory && p.subcategory) {
+        subcats.add(p.subcategory);
+      }
+    });
+    return Array.from(subcats);
+  }, [selectedCategory, localProducts]);
+
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    setSelectedSubcategory(null);
+  }, [selectedCategory]);
 
   const filtered = useMemo(() => {
     return localProducts.filter(p => {
       const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = selectedCategory ? p.category === selectedCategory : true;
-      return matchesSearch && matchesCategory;
+      const matchesSubcategory = selectedSubcategory ? p.subcategory === selectedSubcategory : true;
+      return matchesSearch && matchesCategory && matchesSubcategory;
     });
-  }, [localProducts, searchTerm, selectedCategory]);
+  }, [localProducts, searchTerm, selectedCategory, selectedSubcategory]);
 
   const handleStockChange = (id: string, newStock: number) => {
     setLocalProducts(prev => prev.map(p => p.id === id ? { ...p, stockQuantity: newStock } : p));
@@ -141,19 +158,35 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg outline-none focus:border-[#4CAF50] focus:ring-1 focus:ring-[#4CAF50] transition-all bg-slate-50"
             />
          </div>
-         <div className="relative">
+          <div className="relative">
            <select
              value={selectedCategory || ''}
              onChange={(e) => setSelectedCategory(e.target.value || null)}
              className="appearance-none bg-white border border-gray-200 rounded-lg pl-4 pr-10 py-2 font-medium text-slate-700 outline-none focus:border-[#4CAF50] cursor-pointer"
            >
-             <option value="">Todas</option>
+             <option value="">Todas las Categorías</option>
              {CATEGORIES.map(cat => (
                <option key={cat} value={cat}>{cat}</option>
              ))}
            </select>
            <ChevronDown className="h-4 w-4 absolute right-3 top-3 text-gray-400 pointer-events-none" />
          </div>
+
+         {availableSubcategories.length > 0 && (
+           <div className="relative">
+             <select
+               value={selectedSubcategory || ''}
+               onChange={(e) => setSelectedSubcategory(e.target.value || null)}
+               className="appearance-none bg-white border border-gray-200 rounded-lg pl-4 pr-10 py-2 font-medium text-slate-700 outline-none focus:border-[#4CAF50] cursor-pointer"
+             >
+               <option value="">Todas las Subcategorías</option>
+               {availableSubcategories.map(sub => (
+                 <option key={sub} value={sub}>{sub}</option>
+               ))}
+             </select>
+             <ChevronDown className="h-4 w-4 absolute right-3 top-3 text-gray-400 pointer-events-none" />
+           </div>
+         )}
          <span className="text-sm font-bold text-gray-400 whitespace-nowrap">
            {filtered.length} resultados
          </span>
