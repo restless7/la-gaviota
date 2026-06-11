@@ -121,7 +121,7 @@ export async function initializeWompiTransaction(formData: FormData, items: Chec
       email,
       fullName: `${firstName} ${lastName}`,
       phoneNumber: phone,
-      phonePrefix: '+57',
+      phoneNumberPrefix: '+57',
     }
   };
   } catch (error: any) {
@@ -156,7 +156,7 @@ export async function initializeWompiBalancePayment(amount: number) {
         email: user.emailAddresses[0]?.emailAddress || '',
         fullName: `${user.firstName} ${user.lastName}`,
         phoneNumber: '', // Not strictly required if not available
-        phonePrefix: '+57',
+        phoneNumberPrefix: '+57',
       }
     };
   } catch (error: any) {
