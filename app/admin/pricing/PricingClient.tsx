@@ -15,14 +15,14 @@ interface EditableProduct {
   priceRestaurant: number;
 }
 
-const ProductRow = ({
+const ProductRow = React.memo(({
   product,
   onCostBlur,
   onPriceBlur
 }: {
   product: EditableProduct;
-  onCostBlur: (val: number) => void;
-  onPriceBlur: (field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', val: number) => void;
+  onCostBlur: (id: string, val: number) => void;
+  onPriceBlur: (id: string, field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', val: number) => void;
 }) => {
   const [localCost, setLocalCost] = useState(product.cost.toString());
   const [localRetail, setLocalRetail] = useState(product.priceRetail.toString());
@@ -54,7 +54,7 @@ const ProductRow = ({
           onBlur={(e) => {
             const val = parseInt(e.target.value);
             if (!isNaN(val) && val !== product.cost) {
-              onCostBlur(val);
+              onCostBlur(product.id, val);
             }
           }}
           className="w-24 text-right px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-medium"
@@ -67,7 +67,7 @@ const ProductRow = ({
           onChange={(e) => setLocalRetail(e.target.value)}
           onBlur={(e) => {
             const val = parseInt(e.target.value);
-            if (!isNaN(val) && val !== product.priceRetail) onPriceBlur('priceRetail', val);
+            if (!isNaN(val) && val !== product.priceRetail) onPriceBlur(product.id, 'priceRetail', val);
           }}
           className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#E30613]"
          />
@@ -79,7 +79,7 @@ const ProductRow = ({
           onChange={(e) => setLocalMicro(e.target.value)}
           onBlur={(e) => {
             const val = parseInt(e.target.value);
-            if (!isNaN(val) && val !== product.priceMicro) onPriceBlur('priceMicro', val);
+            if (!isNaN(val) && val !== product.priceMicro) onPriceBlur(product.id, 'priceMicro', val);
           }}
           className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#218524]"
          />
@@ -91,14 +91,14 @@ const ProductRow = ({
           onChange={(e) => setLocalRestaurant(e.target.value)}
           onBlur={(e) => {
             const val = parseInt(e.target.value);
-            if (!isNaN(val) && val !== product.priceRestaurant) onPriceBlur('priceRestaurant', val);
+            if (!isNaN(val) && val !== product.priceRestaurant) onPriceBlur(product.id, 'priceRestaurant', val);
           }}
           className="w-24 text-center px-2 py-1 outline-none border border-transparent hover:border-gray-300 focus:border-slate-800 rounded bg-transparent font-mono font-bold text-[#a87405]"
          />
       </td>
     </tr>
   );
-};
+});
 
 export default function PricingClient({ initialProducts }: { initialProducts: Product[] }) {
   const [retailMargin, setRetailMargin] = useState(25);
@@ -133,17 +133,22 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
     });
   }, [editableProducts, searchTerm, selectedCategory]);
 
-  const handlePriceChange = async (id: string, field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', newValue: number) => {
+  const handlePriceChange = React.useCallback(async (id: string, field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', newValue: number) => {
     try {
-      setEditableProducts(prev => prev.map(p => p.id === id ? { ...p, [field]: newValue } : p));
+      let currentProduct: EditableProduct | undefined;
       
-      const product = editableProducts.find(p => p.id === id);
-      if (!product) return;
+      setEditableProducts(prev => {
+        currentProduct = prev.find(p => p.id === id);
+        return prev.map(p => p.id === id ? { ...p, [field]: newValue } : p);
+      });
+      
+      // Delay slightly if state hasn't updated yet, but we already have currentProduct synchronously
+      if (!currentProduct) return;
       
       const newPrices = {
-        retail: field === 'priceRetail' ? newValue : product.priceRetail,
-        micro: field === 'priceMicro' ? newValue : product.priceMicro,
-        restaurant: field === 'priceRestaurant' ? newValue : product.priceRestaurant,
+        retail: field === 'priceRetail' ? newValue : currentProduct.priceRetail,
+        micro: field === 'priceMicro' ? newValue : currentProduct.priceMicro,
+        restaurant: field === 'priceRestaurant' ? newValue : currentProduct.priceRestaurant,
       };
 
       await updateProductPrices(id, newPrices);
@@ -151,9 +156,9 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
       console.error('Failed to update specific price', error);
       alert('Error actualizando el precio específico.');
     }
-  };
+  }, []);
 
-  const handleCostAndMarginChange = async (id: string, newCost: number) => {
+  const handleCostAndMarginChange = React.useCallback(async (id: string, newCost: number) => {
     try {
       const newRetail = Math.round(newCost * (1 + retailMargin / 100));
       const newMicro = Math.round(newCost * (1 + microMargin / 100));
@@ -174,7 +179,23 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
       console.error('Failed to update cost and margins', error);
       alert('Error guardando el costo base y actualizando precios.');
     }
-  };
+  }, [retailMargin, microMargin, restaurantMargin]);
+
+  // Sync state if initialProducts changes due to server revalidation
+  React.useEffect(() => {
+    setEditableProducts(
+      initialProducts.map(p => ({
+        id: p.id,
+        name: p.name,
+        category: p.category,
+        unit: p.unit,
+        cost: p.baseCost || Math.round(p.priceRetail * 0.65),
+        priceRetail: p.priceRetail,
+        priceMicro: p.priceMicro,
+        priceRestaurant: p.priceRestaurant,
+      }))
+    );
+  }, [initialProducts]);
 
   const handleApplyMacro = async () => {
     setIsApplying(true);
@@ -327,8 +348,8 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
                      <ProductRow
                        key={p.id}
                        product={p}
-                       onCostBlur={(newCost) => handleCostAndMarginChange(p.id, newCost)}
-                       onPriceBlur={(field, val) => handlePriceChange(p.id, field, val)}
+                       onCostBlur={handleCostAndMarginChange}
+                       onPriceBlur={handlePriceChange}
                      />
                   ))}
                </tbody>

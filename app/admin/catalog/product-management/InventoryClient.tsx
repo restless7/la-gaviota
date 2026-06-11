@@ -216,8 +216,12 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
                      return (
                      <tr key={p.id} className="hover:bg-slate-50 transition-colors">
                         <td className="p-4 flex items-center gap-3">
-                           <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-100 relative bg-slate-100 flex items-center justify-center text-xl">
-                              {emoji}
+                           <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-100 relative bg-slate-100 flex items-center justify-center text-xl shrink-0">
+                              {p.imageUrl ? (
+                                <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
+                              ) : (
+                                emoji
+                              )}
                            </div>
                            <div>
                              <Link href={`/admin/catalog/product-management/${p.id}`} className="font-bold text-[#E30613] hover:underline">
