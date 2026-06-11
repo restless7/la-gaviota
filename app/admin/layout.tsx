@@ -147,7 +147,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
 
       <div className={`
         fixed inset-y-0 left-0 z-50 w-64 flex flex-col bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out shadow-xl
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} print:hidden
       `}>
         <div className="flex-none flex items-center justify-center p-6 border-b border-gray-100 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-[#E30613]"></div>
@@ -275,8 +275,8 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
         </div>
       </div>
 
-      <div className="lg:pl-64 flex flex-col flex-1 min-h-screen">
-        <div className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm z-10 relative">
+      <div className="lg:pl-64 flex flex-col flex-1 min-h-screen print:pl-0">
+        <div className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm z-10 relative print:hidden">
           <div className="flex items-center justify-between">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -293,7 +293,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
           </div>
         </div>
 
-        <main className="p-6">
+        <main className="p-6 print:p-0 print:bg-white print:m-0">
           {children}
         </main>
       </div>

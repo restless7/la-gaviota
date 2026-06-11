@@ -46,6 +46,20 @@ export async function fetchOrders(): Promise<Order[]> {
   return data || [];
 }
 
+export async function fetchOrderById(orderId: string): Promise<Order | null> {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*, order_items(*)')
+    .eq('id', orderId)
+    .single();
+
+  if (error) {
+    console.error('Error fetching order by id:', error);
+    return null;
+  }
+  return data;
+}
+
 export async function updateOrderStatus(orderId: string, newStatus: Order['status']) {
   const { error } = await supabase
     .from('orders')

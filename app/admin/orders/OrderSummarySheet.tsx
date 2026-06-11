@@ -75,9 +75,14 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
                <span className="text-gray-500 font-bold">Total a Facturar</span>
                <span className="text-2xl font-black text-[#E30613]">${order.total_amount.toLocaleString('es-CO')}</span>
             </div>
-            <button className="w-full bg-[#4CAF50] hover:bg-[#3d8c40] text-white font-black py-4 rounded-xl shadow-lg transition-all text-sm uppercase tracking-wide">
+            <a 
+               href={`/admin/orders/invoice/${order.id}`}
+               target="_blank"
+               rel="noopener noreferrer"
+               className="w-full bg-[#4CAF50] hover:bg-[#3d8c40] text-white font-black py-4 rounded-xl shadow-lg transition-all text-sm uppercase tracking-wide flex items-center justify-center text-center"
+            >
                Generar Factura & Remisión
-            </button>
+            </a>
          </div>
       </div>
     </>
