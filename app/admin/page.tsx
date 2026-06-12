@@ -1,7 +1,7 @@
 import React from 'react';
 import AdminDashboardClient from './AdminDashboardClient';
 import { fetchProducts } from '@/src/actions/products';
-import { fetchOrders } from '@/src/actions/orders';
+import { getLiveOperationalOrders as fetchOrders } from '@/src/actions/orders';
 
 import { fetchDashboardMetrics } from '@/src/actions/dashboard';
 
