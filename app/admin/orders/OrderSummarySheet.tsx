@@ -2,7 +2,7 @@
 
 import React, { useState, useTransition } from 'react';
 import { Order, flagOrderConflict, updateOrderStatus, cancelAndRefundOrder, confirmCashPayment } from '@/src/actions/orders';
-import { X, MapPin, Calendar, Package, AlertTriangle, ArrowRight } from 'lucide-react';
+import { X, MapPin, Calendar, Package, AlertTriangle, ArrowRight, Phone } from 'lucide-react';
 
 const CONFLICT_REASONS = [
   'Pedido Duplicado / Fallo de Pago',
@@ -180,6 +180,13 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
                      <div>
                         <p className="text-xs text-gray-500 font-medium">Dirección de Entrega</p>
                         <p className="font-bold text-slate-800 text-sm">{order.delivery_address}, {order.delivery_municipality}</p>
+                     </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                     <div className="bg-slate-100 p-2 rounded-full text-slate-500"><Phone className="w-4 h-4" /></div>
+                     <div>
+                        <p className="text-xs text-gray-500 font-medium">Teléfono</p>
+                        <p className="font-bold text-slate-800 text-sm">{order.customer_phone}</p>
                      </div>
                   </div>
                   <div className="flex items-center gap-3">
