@@ -72,8 +72,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
-    // Parche B: Idempotencia Inmutable (Backend in English)
-    if (['PAID', 'SHIPPED', 'DELIVERED', 'En Preparación', 'En Ruta', 'Entregado'].includes(orderData.status)) {
+    // Parche B: Idempotencia Inmutable
+    if (['Pendiente', 'En Preparación', 'En Ruta', 'Entregado', 'ARCHIVED_DELIVERED'].includes(orderData.status)) {
       console.log(`[Idempotencia] Orden ${orderId} ya procesada con estado ${orderData.status}. Abortando duplicado.`);
       return NextResponse.json({ received: true }, { status: 200 });
     }
@@ -92,7 +92,7 @@ export async function POST(req: Request) {
     
     switch (mappedWompiStatus) {
       case 'APPROVED':
-        dbStatus = 'En Preparación'; 
+        dbStatus = 'Pendiente'; 
         break;
       case 'DECLINED':
       case 'FAILED':

@@ -25,7 +25,7 @@ export interface Order {
   delivery_address: string;
   delivery_municipality: string;
   total_amount: number;
-  status: 'Pendiente' | 'En Preparación' | 'En Ruta' | 'Entregado' | 'Cancelado' | 'ARCHIVED_DELIVERED';
+  status: 'Pago Pendiente' | 'Pendiente' | 'En Preparación' | 'En Ruta' | 'Entregado' | 'Cancelado' | 'ARCHIVED_DELIVERED';
   payment_method: string;
   notes: string | null;
   created_at: string;
@@ -83,7 +83,7 @@ export async function updateOrderStatus(orderId: string, newStatus: Order['statu
   return { success: true };
 }
 
-export async function createOrder(orderData: Omit<Order, 'id' | 'created_at' | 'order_items'>, items: Omit<OrderItem, 'id' | 'order_id'>[]) {
+export async function createOrder(orderData: Omit<Order, 'id' | 'created_at' | 'order_items'>, items: Omit<OrderItem, 'id' | 'order_id'>[], incrementLTV: boolean = false) {
   // 1. Insert order
   const { data: order, error: orderError } = await supabase
     .from('orders')
@@ -111,10 +111,8 @@ export async function createOrder(orderData: Omit<Order, 'id' | 'created_at' | '
     throw new Error('Failed to create order items');
   }
 
-  // 3. Update customer stats if clerk_user_id exists
-  if (orderData.clerk_user_id) {
-    // We use a simplified approach: just incrementing. 
-    // In a more robust system, we might want to recalculate from all orders.
+  // 3. Update customer stats if requested (Two-Phase Commit for Wompi)
+  if (incrementLTV && orderData.clerk_user_id) {
     const { data: customer } = await supabase
       .from('customers')
       .select('total_orders, total_spent')

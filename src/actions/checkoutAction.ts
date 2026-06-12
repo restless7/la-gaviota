@@ -56,7 +56,7 @@ export async function submitCheckoutOrder(formData: FormData, items: CheckoutIte
   // For now, let's just use a placeholder or calculate if we have the role.
   // Actually, let's just update the interface to include the price at purchase.
 
-  const result = await createOrder(orderData, orderItems);
+  const result = await createOrder(orderData, orderItems, true);
   
   return {
     success: true,

@@ -96,13 +96,14 @@ export async function initializeWompiTransaction(formData: FormData, items: Chec
     delivery_address: fullAddress,
     delivery_municipality: city,
     total_amount: finalServerTotal,
-    status: 'Pendiente' as const, // Pending payment confirmation
+    status: 'Pago Pendiente' as const, // Pending payment confirmation via Webhook
     payment_method: 'wompi',
     notes: notes,
   };
 
   // We save the order to Supabase first to get the official ID
-  const orderResult = await createOrder(orderData, orderItemsData);
+  // Notice we pass false for incrementLTV, leaving that for the Phase-2 Webhook.
+  const orderResult = await createOrder(orderData, orderItemsData, false);
   const reference = orderResult.orderId;
   
   const amountInCents = formatToCents(finalServerTotal);
