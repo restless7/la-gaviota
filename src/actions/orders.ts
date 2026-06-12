@@ -25,22 +25,29 @@ export interface Order {
   delivery_address: string;
   delivery_municipality: string;
   total_amount: number;
-  status: 'Pendiente' | 'En Preparación' | 'En Ruta' | 'Entregado' | 'Cancelado';
+  status: 'Pendiente' | 'En Preparación' | 'En Ruta' | 'Entregado' | 'Cancelado' | 'ARCHIVED_DELIVERED';
   payment_method: string;
   notes: string | null;
   created_at: string;
+  scheduled_delivery_date?: string;
+  is_conflicted?: boolean;
+  conflict_reason?: string | null;
   order_items?: OrderItem[];
 }
 
-export async function fetchOrders(): Promise<Order[]> {
+export async function getLiveOperationalOrders(): Promise<Order[]> {
+  const today = new Date().toISOString().split('T')[0];
+
   const { data, error } = await supabase
     .from('orders')
     .select('*, order_items(*)')
+    .neq('status', 'ARCHIVED_DELIVERED')
+    .eq('scheduled_delivery_date', today)
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching orders:', error);
-    throw new Error('Failed to fetch orders');
+    console.error('Error fetching live operational orders:', error);
+    throw new Error('Failed to fetch live orders');
   }
 
   return data || [];
@@ -184,4 +191,128 @@ export async function fetchOrderConsolidation(statuses: string[] = ['Pendiente',
   }
 
   return consolidatedList.map(c => ({ ...c, stock: 0, unit: 'Und', deficit: c.quantity }));
+}
+
+export async function flagOrderConflict(orderId: string, reason: string) {
+  const { error } = await supabase
+    .from('orders')
+    .update({ 
+      is_conflicted: true, 
+      conflict_reason: reason,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', orderId);
+
+  if (error) {
+    console.error('Error flagging order conflict:', error);
+    throw new Error('Failed to flag order conflict');
+  }
+
+  revalidatePath('/admin/orders');
+  return { success: true };
+}
+
+export async function closeOperationalDay(date: string, userId: string) {
+  // 1. Fetch active orders for the date
+  const { data: activeOrders, error: fetchError } = await supabase
+    .from('orders')
+    .select('id, status, is_conflicted, total_amount')
+    .eq('scheduled_delivery_date', date)
+    .neq('status', 'ARCHIVED_DELIVERED')
+    .neq('status', 'Cancelado');
+
+  if (fetchError) throw new Error('Failed to fetch active orders for closure');
+
+  // Verify there are no pending normal orders
+  const pendingNormalOrders = activeOrders?.filter(
+    (o) => !o.is_conflicted && ['Pendiente', 'En Preparación', 'En Ruta'].includes(o.status)
+  ) || [];
+
+  if (pendingNormalOrders.length > 0) {
+    throw new Error('No se puede cerrar el día con órdenes activas sin entregar o sin conflicto reportado.');
+  }
+
+  // 2. Postpone conflicted orders
+  const conflictedOrders = activeOrders?.filter(o => o.is_conflicted) || [];
+  if (conflictedOrders.length > 0) {
+    const nextDay = new Date(date);
+    nextDay.setDate(nextDay.getDate() + 1);
+    const nextDayStr = nextDay.toISOString().split('T')[0];
+
+    const { error: postponeError } = await supabase
+      .from('orders')
+      .update({ 
+        scheduled_delivery_date: nextDayStr, 
+        is_conflicted: false, // Reset conflict for the new day
+        conflict_reason: null,
+        status: 'Pendiente' // Send back to pending
+      })
+      .in('id', conflictedOrders.map(o => o.id));
+
+    if (postponeError) throw new Error('Failed to postpone conflicted orders');
+  }
+
+  // 3. Calculate revenue and total orders delivered
+  const deliveredOrders = activeOrders?.filter(o => o.status === 'Entregado') || [];
+  const totalRevenue = deliveredOrders.reduce((acc, o) => acc + Number(o.total_amount), 0);
+  const totalProcessed = deliveredOrders.length;
+
+  // 4. Archive delivered orders
+  if (deliveredOrders.length > 0) {
+    const { error: archiveError } = await supabase
+      .from('orders')
+      .update({ status: 'ARCHIVED_DELIVERED' })
+      .in('id', deliveredOrders.map(o => o.id));
+
+    if (archiveError) throw new Error('Failed to archive delivered orders');
+  }
+
+  // 5. Insert operational ledger
+  const { error: ledgerError } = await supabase
+    .from('daily_operational_ledgers')
+    .insert({
+      operational_date: date,
+      total_orders_processed: totalProcessed,
+      total_revenue_collected: totalRevenue,
+      closed_by_user: userId
+    });
+
+  if (ledgerError) {
+    if (ledgerError.code === '23505') {
+      throw new Error('El libro diario de esta fecha ya fue cerrado.');
+    }
+    console.error('Ledger error:', ledgerError);
+    throw new Error('Failed to insert daily ledger');
+  }
+
+  revalidatePath('/admin/orders');
+  return { success: true, postponedCount: conflictedOrders.length, archivedCount: deliveredOrders.length };
+}
+export async function getHistoricLedgers() {
+  const { data, error } = await supabase
+    .from('daily_operational_ledgers')
+    .select('*')
+    .order('operational_date', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching ledgers:', error);
+    throw new Error('Failed to fetch historical ledgers');
+  }
+  return data || [];
+}
+
+export async function fetchHistoricOrdersByDate(date: string): Promise<Order[]> {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*, order_items(*)')
+    .eq('scheduled_delivery_date', date)
+    .eq('status', 'ARCHIVED_DELIVERED')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching historic orders for date:', error);
+    throw new Error('Failed to fetch historic orders');
+  }
+
+  return data || [];
 }

@@ -5,6 +5,8 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Order } from '@/src/actions/orders';
 
+import { AlertTriangle } from 'lucide-react';
+
 export function OrderCard({ order, onClick }: { order: Order; onClick: () => void }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: order.id,
@@ -28,22 +30,33 @@ export function OrderCard({ order, onClick }: { order: Order; onClick: () => voi
       {...attributes}
       {...listeners}
       onClick={onClick}
-      className={`bg-white p-4 rounded-xl shadow-sm border border-gray-100 cursor-grab active:cursor-grabbing mb-3 group hover:border-[#E30613] transition-colors ${
+      className={`bg-white p-4 rounded-xl shadow-sm border cursor-grab active:cursor-grabbing mb-3 group transition-colors ${
+        order.is_conflicted ? 'border-red-500 bg-red-50/10' : 'border-gray-100 hover:border-[#E30613]'
+      } ${
         isDragging ? 'opacity-50 ring-2 ring-[#E30613] ring-offset-2' : ''
       }`}
     >
       <div className="flex justify-between items-start mb-2">
         <span className="text-[10px] font-black text-gray-400">{order.id.slice(0, 8)}</span>
-        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getTierColor(order.clerk_user_id)}`}>
-          {order.clerk_user_id ? 'Wholesale' : 'Retail'}
-        </span>
+        <div className="flex items-center gap-2">
+          {order.is_conflicted && (
+            <span title={order.conflict_reason || 'Conflicto'} className="text-red-500">
+              <AlertTriangle className="w-3.5 h-3.5" />
+            </span>
+          )}
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getTierColor(order.clerk_user_id)}`}>
+            {order.clerk_user_id ? 'Wholesale' : 'Retail'}
+          </span>
+        </div>
       </div>
-      <h4 className="font-bold text-slate-800 text-sm mb-1">{order.customer_name}</h4>
+      <h4 className="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
+        {order.customer_name}
+      </h4>
       <div className="flex justify-between items-end mt-4">
         <span className="text-[10px] text-gray-500 font-medium">
-          {new Date(order.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+          {order.scheduled_delivery_date || new Date(order.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
         </span>
-        <span className="font-black text-[#4CAF50]">${order.total_amount.toLocaleString('es-CO')}</span>
+        <span className="font-black text-[#4CAF50]">${Number(order.total_amount).toLocaleString('es-CO')}</span>
       </div>
     </div>
   );

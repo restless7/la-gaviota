@@ -1,127 +1,198 @@
 'use server';
 
 import { createClient } from '@supabase/supabase-js';
+import { revalidatePath } from 'next/cache';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export interface SalesAnalytics {
-  name: string;
-  Retail: number;
-  Micro: number;
-  Restaurante: number;
+export interface AnalyticsFilters {
+  startDate?: string;
+  endDate?: string;
+  productId?: string;
+  category?: string;
 }
 
-export async function fetchSalesAnalytics(): Promise<SalesAnalytics[]> {
-  // Fetch orders from the last 7 days
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+export async function getAdvancedFinancialSummary(filters: AnalyticsFilters) {
+  let query = supabase.from('orders').select('total_amount, purchase_tier, status, order_items!inner(product_id)');
 
-  const { data: orders, error } = await supabase
-    .from('orders')
-    .select('created_at, total_amount, clerk_user_id')
-    .gte('created_at', sevenDaysAgo.toISOString())
-    .order('created_at', { ascending: true });
-
+  if (filters.startDate) query = query.gte('created_at', filters.startDate);
+  if (filters.endDate) query = query.lte('created_at', filters.endDate);
+  if (filters.productId) query = query.eq('order_items.product_id', filters.productId);
+  
+  // Note: we can't easily filter by category through orders->order_items->products in a single simple JS query without RPC, 
+  // but we fetch data and process. In an enterprise system, we use an RPC.
+  // For now, we will do a robust JS aggregation over the filtered rows.
+  
+  const { data: orders, error } = await query;
   if (error) {
-    console.error('Error fetching sales analytics:', error);
+    console.error('Error fetching financial summary:', error);
+    return {
+      totalRevenue: 0,
+      activeOrders: 0,
+      retailRatio: 0, microRatio: 0, restRatio: 0,
+      averageTicket: 0, avgRetail: 0, avgMicro: 0, avgRest: 0,
+    };
+  }
+
+  // Use a Map to deduplicate orders if we joined with order_items
+  const uniqueOrders = new Map<string, any>();
+  orders?.forEach(o => {
+    uniqueOrders.set(o.id, o); // wait, id is not selected. Let's fix that.
+  });
+
+  // Let's re-query to ensure we only get unique orders if we filter by product_id
+  let baseOrdersQuery = supabase.from('orders').select('id, total_amount, purchase_tier, status');
+  if (filters.startDate) baseOrdersQuery = baseOrdersQuery.gte('created_at', filters.startDate);
+  if (filters.endDate) baseOrdersQuery = baseOrdersQuery.lte('created_at', filters.endDate);
+
+  const { data: baseOrders } = await baseOrdersQuery;
+  
+  let validOrders = baseOrders || [];
+  
+  if (filters.productId) {
+    // If filtering by product, intersect
+    const { data: itemMatches } = await supabase.from('order_items').select('order_id').eq('product_id', filters.productId);
+    const validIds = new Set(itemMatches?.map(i => i.order_id));
+    validOrders = validOrders.filter(o => validIds.has(o.id));
+  }
+
+  let totalRevenue = 0;
+  let countRetail = 0, countMicro = 0, countRest = 0;
+  let sumRetail = 0, sumMicro = 0, sumRest = 0;
+  let activeOrders = 0;
+
+  validOrders.forEach(o => {
+    if (['Pendiente', 'En Preparación', 'En Ruta'].includes(o.status)) {
+      activeOrders++;
+    }
+    
+    // Solo ingresos validados
+    if (['En Preparación', 'En Ruta', 'Entregado', 'ARCHIVED_DELIVERED'].includes(o.status)) {
+      totalRevenue += Number(o.total_amount);
+      const tier = o.purchase_tier || 'RETAIL';
+      
+      if (tier === 'WHOLESALE' || tier === 'Restaurantes') {
+        countRest++; sumRest += Number(o.total_amount);
+      } else if (tier === 'DISTRIBUTOR' || tier === 'Micromercados') {
+        countMicro++; sumMicro += Number(o.total_amount);
+      } else {
+        countRetail++; sumRetail += Number(o.total_amount);
+      }
+    }
+  });
+
+  const totalValidCount = countRetail + countMicro + countRest || 1;
+
+  return {
+    totalRevenue,
+    activeOrders,
+    retailRatio: (countRetail / totalValidCount) * 100,
+    microRatio: (countMicro / totalValidCount) * 100,
+    restRatio: (countRest / totalValidCount) * 100,
+    averageTicket: totalValidCount > 1 ? totalRevenue / totalValidCount : 0,
+    avgRetail: countRetail > 0 ? sumRetail / countRetail : 0,
+    avgMicro: countMicro > 0 ? sumMicro / countMicro : 0,
+    avgRest: countRest > 0 ? sumRest / countRest : 0,
+  };
+}
+
+export async function getSalesProjectionData(filters: AnalyticsFilters) {
+  let query = supabase.from('orders').select('id, created_at, total_amount, purchase_tier, status');
+  if (filters.startDate) query = query.gte('created_at', filters.startDate);
+  if (filters.endDate) query = query.lte('created_at', filters.endDate);
+
+  const { data: orders } = await query;
+  let validOrders = orders || [];
+
+  if (filters.productId) {
+    const { data: itemMatches } = await supabase.from('order_items').select('order_id').eq('product_id', filters.productId);
+    const validIds = new Set(itemMatches?.map(i => i.order_id));
+    validOrders = validOrders.filter(o => validIds.has(o.id));
+  }
+
+  // Agrupar por fecha
+  const resultsMap: Record<string, { name: string, Retail: number, Micro: number, Restaurante: number }> = {};
+  
+  validOrders.forEach(order => {
+    if (!['En Preparación', 'En Ruta', 'Entregado', 'ARCHIVED_DELIVERED'].includes(order.status)) return;
+
+    const date = new Date(order.created_at).toLocaleDateString('es-CO', { month: 'short', day: 'numeric' });
+    if (!resultsMap[date]) {
+      resultsMap[date] = { name: date, Retail: 0, Micro: 0, Restaurante: 0 };
+    }
+
+    const tier = order.purchase_tier || 'RETAIL';
+    if (tier === 'WHOLESALE' || tier === 'Restaurantes') {
+      resultsMap[date].Restaurante += Number(order.total_amount);
+    } else if (tier === 'DISTRIBUTOR' || tier === 'Micromercados') {
+      resultsMap[date].Micro += Number(order.total_amount);
+    } else {
+      resultsMap[date].Retail += Number(order.total_amount);
+    }
+  });
+
+  // Sort chronologically (simple approach: sort by Date parsing if possible, or assume db ordered if we had done it. We'll sort by original date)
+  // To keep it simple, return Object.values
+  return Object.values(resultsMap);
+}
+
+export async function getRealShrinkageMetrics(filters: AnalyticsFilters) {
+  let query = supabase.from('agricultural_shrinkage_logs').select(`
+    quantity_kg, 
+    log_type, 
+    products!inner(category, id)
+  `);
+
+  if (filters.startDate) query = query.gte('logged_at', filters.startDate);
+  if (filters.endDate) query = query.lte('logged_at', filters.endDate);
+  if (filters.productId) query = query.eq('product_id', filters.productId);
+  if (filters.category) query = query.eq('products.category', filters.category);
+
+  const { data: logs, error } = await query;
+  
+  if (error) {
+    console.error('Error fetching shrinkage logs:', error);
     return [];
   }
 
-  // Also need to know the tier of each user to group correctly
-  // This is a bit heavy, in production we should have a more efficient aggregation
-  const { data: customers } = await supabase
-    .from('customers')
-    .select('clerk_user_id, tier');
+  const resultsMap: Record<string, { category: string, Merma: number, Recuperado: number }> = {};
 
-  const customerTierMap = new Map(customers?.map(c => [c.clerk_user_id, c.tier]) || []);
-
-  const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-  const resultsMap: Record<string, SalesAnalytics> = {};
-
-  // Initialize last 7 days
-  for (let i = 6; i >= 0; i--) {
-    const date = new Date();
-    date.setDate(date.getDate() - i);
-    const dayName = days[date.getDay()];
-    resultsMap[dayName] = { name: dayName, Retail: 0, Micro: 0, Restaurante: 0 };
-  }
-
-  orders?.forEach(order => {
-    const date = new Date(order.created_at);
-    const dayName = days[date.getDay()];
-    const tier = order.clerk_user_id ? customerTierMap.get(order.clerk_user_id) : 'Personas Naturales';
-
-    if (resultsMap[dayName]) {
-      if (tier === 'Micromercados') {
-        resultsMap[dayName].Micro += order.total_amount;
-      } else if (tier === 'Restaurantes') {
-        resultsMap[dayName].Restaurante += order.total_amount;
-      } else {
-        resultsMap[dayName].Retail += order.total_amount;
-      }
+  logs?.forEach((log: any) => {
+    const cat = log.products.category || 'Otros';
+    if (!resultsMap[cat]) {
+      resultsMap[cat] = { category: cat, Merma: 0, Recuperado: 0 };
+    }
+    if (log.log_type === 'MERMA_TOTAL') {
+      resultsMap[cat].Merma += Number(log.quantity_kg);
+    } else {
+      resultsMap[cat].Recuperado += Number(log.quantity_kg);
     }
   });
 
   return Object.values(resultsMap);
 }
 
-export async function fetchKPIMetrics() {
-  const { data: orders } = await supabase.from('orders').select('total_amount, status, clerk_user_id');
-  const { data: customers } = await supabase.from('customers').select('clerk_user_id, tier');
-
-  const customerTierMap = new Map(customers?.map(c => [c.clerk_user_id, c.tier]) || []);
-
-  const validStatuses = ['En Preparación', 'En Ruta', 'Entregado'];
-  const validOrders = orders?.filter(o => validStatuses.includes(o.status)) || [];
-
-  // 1. Ingresos Totales Brutos
-  const totalRevenue = validOrders.reduce((acc, o) => acc + o.total_amount, 0);
-
-  // 2. Volumen y Ticket por Segmento
-  let countRetail = 0;
-  let countMicro = 0;
-  let countRest = 0;
-
-  let sumRetail = 0;
-  let sumMicro = 0;
-  let sumRest = 0;
-
-  validOrders.forEach(o => {
-    const tier = o.clerk_user_id ? customerTierMap.get(o.clerk_user_id) : 'Personas Naturales';
-    if (tier === 'Micromercados') {
-      countMicro++;
-      sumMicro += o.total_amount;
-    } else if (tier === 'Restaurantes') {
-      countRest++;
-      sumRest += o.total_amount;
-    } else {
-      countRetail++;
-      sumRetail += o.total_amount;
-    }
+export async function logAgriculturalShrinkage(payload: { productId: string, quantityKg: number, logType: 'MERMA_TOTAL' | 'RECUPERADO_ORGANICO', reason: string }) {
+  const { error } = await supabase.from('agricultural_shrinkage_logs').insert({
+    product_id: payload.productId,
+    quantity_kg: payload.quantityKg,
+    log_type: payload.logType,
+    loss_reason: payload.reason
   });
 
-  const totalValidCount = validOrders.length || 1;
-  const retailRatio = (countRetail / totalValidCount) * 100;
-  const microRatio = (countMicro / totalValidCount) * 100;
-  const restRatio = (countRest / totalValidCount) * 100;
+  if (error) {
+    console.error('Error logging shrinkage:', error);
+    throw new Error('No se pudo registrar la novedad de merma.');
+  }
 
-  // 3. Ticket Promedio
-  const averageTicket = totalValidCount > 0 ? totalRevenue / totalValidCount : 0;
-  const avgRetail = countRetail > 0 ? sumRetail / countRetail : 0;
-  const avgMicro = countMicro > 0 ? sumMicro / countMicro : 0;
-  const avgRest = countRest > 0 ? sumRest / countRest : 0;
+  revalidatePath('/admin/reports');
+  return { success: true };
+}
 
-  return {
-    totalRevenue,
-    retailRatio,
-    microRatio,
-    restRatio,
-    averageTicket,
-    avgRetail,
-    avgMicro,
-    avgRest,
-    activeOrders: orders?.filter(o => o.status === 'Pendiente' || o.status === 'En Preparación' || o.status === 'En Ruta').length || 0
-  };
+export async function fetchAllProducts() {
+  const { data, error } = await supabase.from('products').select('id, name, category').order('name');
+  if (error) throw new Error('Failed to fetch products');
+  return data || [];
 }

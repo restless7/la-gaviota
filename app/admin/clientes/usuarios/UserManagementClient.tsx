@@ -96,13 +96,18 @@ export default function UserManagementClient({ initialUsers }: UserManagementCli
                         onChange={e => setEditForm({ ...editForm, role: e.target.value })}
                       >
                         <option value="USER">USER (Cliente Normal)</option>
+                        <option value="OPERARIO">OPERARIO (Bodega/Pedidos)</option>
+                        <option value="ADMIN">ADMIN (Administración)</option>
                         <option value="SUPER_ADMIN">SUPER_ADMIN (Acceso Total)</option>
                       </select>
                     ) : (
                       <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
-                        user.role === 'SUPER_ADMIN' ? 'bg-[#E30613]/10 text-[#E30613]' : 'bg-gray-100 text-gray-600'
+                        user.role === 'SUPER_ADMIN' ? 'bg-[#E30613]/10 text-[#E30613]' : 
+                        user.role === 'ADMIN' ? 'bg-orange-50 text-orange-600' :
+                        user.role === 'OPERARIO' ? 'bg-blue-50 text-blue-600' :
+                        'bg-gray-100 text-gray-600'
                       }`}>
-                        {user.role === 'SUPER_ADMIN' ? <Shield className="w-3 h-3" /> : <UserCheck className="w-3 h-3" />}
+                        {(user.role === 'SUPER_ADMIN' || user.role === 'ADMIN') ? <Shield className="w-3 h-3" /> : <UserCheck className="w-3 h-3" />}
                         {user.role}
                       </span>
                     )}

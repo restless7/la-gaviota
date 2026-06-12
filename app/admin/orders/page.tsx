@@ -1,13 +1,16 @@
 import React from 'react';
 import { OrderKanbanBoard } from './OrderKanbanBoard';
-import { fetchOrders } from '@/src/actions/orders';
+import { getLiveOperationalOrders, getHistoricLedgers } from '@/src/actions/orders';
 
 export default async function AdminOrdersPage() {
-  const orders = await fetchOrders();
+  const [orders, ledgers] = await Promise.all([
+    getLiveOperationalOrders(),
+    getHistoricLedgers()
+  ]);
   
   return (
     <div className="w-full">
-      <OrderKanbanBoard initialOrders={orders} />
+      <OrderKanbanBoard initialOrders={orders} historicLedgers={ledgers} />
     </div>
   );
 }

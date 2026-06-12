@@ -63,3 +63,20 @@ export async function updateSupplierStatus(id: string, status: Supplier['status'
   revalidatePath('/admin/suppliers');
   return { success: true };
 }
+
+export async function updateSupplier(id: string, supplier: Partial<Omit<Supplier, 'id' | 'created_at'>>) {
+  const { data, error } = await supabase
+    .from('suppliers')
+    .update({ ...supplier, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating supplier:', error);
+    throw new Error('Failed to update supplier');
+  }
+
+  revalidatePath('/admin/suppliers');
+  return { success: true, data };
+}

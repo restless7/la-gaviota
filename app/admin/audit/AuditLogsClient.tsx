@@ -33,17 +33,24 @@ export function AuditLogsClient({ initialLogs }: { initialLogs: AuditLog[] }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   const filtered = initialLogs.filter(ev => {
+    const evAction = ev.action_type || ev.action || '';
+    const evTarget = ev.reference_id || ev.target || '';
+    const evDetails = ev.description || ev.details || '';
+    
     const matchesCategory = filterCategory ? ev.category === filterCategory : true;
     const matchesSearch = searchTerm
-      ? ev.action_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (ev.reference_id && ev.reference_id.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        ev.description.toLowerCase().includes(searchTerm.toLowerCase())
+      ? evAction.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        evTarget.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        evDetails.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
     return matchesCategory && matchesSearch;
   });
 
-  const formatTimestamp = (ts: string) => {
+  const formatTimestamp = (ts: string | undefined) => {
+    if (!ts) return 'Fecha desconocida';
     const d = new Date(ts);
+    if (isNaN(d.getTime())) return 'Fecha inválida';
+    
     const now = new Date();
     const diffMs = now.getTime() - d.getTime();
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -99,43 +106,52 @@ export function AuditLogsClient({ initialLogs }: { initialLogs: AuditLog[] }) {
              <p className="text-gray-400 font-medium italic">No se han registrado eventos aún.</p>
           </div>
         ) : (
-          filtered.map((event, index) => (
-            <div key={event.id} className="flex gap-4 relative">
-              {/* Timeline Line */}
-              <div className="flex flex-col items-center w-8 flex-shrink-0">
-                <div className={`w-3 h-3 rounded-full ${CATEGORY_DOT[event.category]} mt-5 z-10 ring-4 ring-white`}></div>
-                {index < filtered.length - 1 && (
-                  <div className="w-0.5 flex-1 bg-gray-200"></div>
-                )}
-              </div>
+          filtered.map((event, index) => {
+            const evTimestamp = event.created_at || event.timestamp;
+            const evAction = event.action_type || event.action || 'Acción desconocida';
+            const evActor = event.actor_name || event.actor || 'Sistema';
+            const evDetails = event.description || event.details || '';
+            const evTarget = event.reference_id || event.target || 'Global';
+            const dateObj = evTimestamp ? new Date(evTimestamp) : null;
+            
+            return (
+              <div key={event.id} className="flex gap-4 relative">
+                {/* Timeline Line */}
+                <div className="flex flex-col items-center w-8 flex-shrink-0">
+                  <div className={`w-3 h-3 rounded-full ${CATEGORY_DOT[event.category] || 'bg-slate-400'} mt-5 z-10 ring-4 ring-white`}></div>
+                  {index < filtered.length - 1 && (
+                    <div className="w-0.5 flex-1 bg-gray-200"></div>
+                  )}
+                </div>
 
-              {/* Event Card */}
-              <div className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm p-5 mb-3 hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase border ${CATEGORY_COLORS[event.category]}`}>
-                        {CATEGORY_ICONS[event.category]}
-                        {event.category}
-                      </span>
-                      <span className="text-xs text-gray-400 font-medium">{formatTimestamp(event.created_at)}</span>
+                {/* Event Card */}
+                <div className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm p-5 mb-3 hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase border ${CATEGORY_COLORS[event.category] || 'bg-slate-50 text-slate-600 border-slate-200'}`}>
+                          {CATEGORY_ICONS[event.category] || <Settings className="w-4 h-4" />}
+                          {event.category}
+                        </span>
+                        <span className="text-xs text-gray-400 font-medium">{formatTimestamp(evTimestamp)}</span>
+                      </div>
+                      <p className="font-bold text-slate-800 text-sm">{evAction}</p>
+                      <p className="text-gray-500 text-xs mt-1">{evDetails} — <span className="text-slate-400 italic">{evTarget}</span></p>
                     </div>
-                    <p className="font-bold text-slate-800 text-sm">{event.action_type}</p>
-                    <p className="text-gray-500 text-xs mt-1">{event.description} — <span className="text-slate-400 italic">{event.reference_id || 'Global'}</span></p>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <div className="flex items-center gap-1.5 text-xs text-gray-400 justify-end">
-                      <User className="w-3 h-3" />
-                      {event.actor_name}
+                    <div className="text-right flex-shrink-0">
+                      <div className="flex items-center gap-1.5 text-xs text-gray-400 justify-end">
+                        <User className="w-3 h-3" />
+                        {evActor}
+                      </div>
+                      <p className="text-[10px] text-gray-300 mt-1 font-mono">
+                        {dateObj && !isNaN(dateObj.getTime()) ? dateObj.toLocaleString('es-CO', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' }) : '—'}
+                      </p>
                     </div>
-                    <p className="text-[10px] text-gray-300 mt-1 font-mono">
-                      {new Date(event.created_at).toLocaleString('es-CO', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' })}
-                    </p>
                   </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </>

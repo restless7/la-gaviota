@@ -1,12 +1,28 @@
 import React from 'react';
 import ReportsClient from './ReportsClient';
-import { fetchSalesAnalytics, fetchKPIMetrics } from '@/src/actions/analytics';
+import { getAdvancedFinancialSummary, getSalesProjectionData, getRealShrinkageMetrics, fetchAllProducts } from '@/src/actions/analytics';
 
-export default async function AdminReportsPage() {
-  const salesData = await fetchSalesAnalytics();
-  const kpis = await fetchKPIMetrics();
+export default async function AdminReportsPage({ searchParams }: { searchParams: { [key: string]: string | undefined } }) {
+  const filters = {
+    startDate: searchParams.startDate,
+    endDate: searchParams.endDate,
+    productId: searchParams.productId,
+  };
+
+  const [summary, salesData, shrinkageData, products] = await Promise.all([
+    getAdvancedFinancialSummary(filters),
+    getSalesProjectionData(filters),
+    getRealShrinkageMetrics(filters),
+    fetchAllProducts()
+  ]);
 
   return (
-    <ReportsClient salesData={salesData} kpis={kpis} />
+    <ReportsClient 
+      summary={summary} 
+      salesData={salesData} 
+      shrinkageData={shrinkageData} 
+      products={products}
+      currentFilters={filters}
+    />
   );
 }

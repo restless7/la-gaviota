@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchBusinessApplications, approveApplication, rejectApplication } from '@/src/actions/businessApplications';
 import { Building2, CheckCircle2, XCircle, Clock, Search, ChevronDown, Loader2, Store, ChefHat, Eye } from 'lucide-react';
+import { useUser } from '@clerk/nextjs';
 import type { BusinessApplication } from '@/src/lib/supabase';
 
 const STATUS_CONFIG = {
@@ -27,12 +28,18 @@ const STATUS_CONFIG = {
 };
 
 export default function SolicitudesNegocioPage() {
+  const { user } = useUser();
   const [applications, setApplications] = useState<BusinessApplication[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const getAdminName = () => {
+    if (!user) return 'Admin La Gaviota';
+    return `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.primaryEmailAddress?.emailAddress || 'Admin';
+  };
 
   const loadApplications = async () => {
     setLoading(true);
@@ -49,11 +56,12 @@ export default function SolicitudesNegocioPage() {
 
   const handleApprove = async (app: BusinessApplication) => {
     setProcessingId(app.id);
-    const { approveClientTier } = await import('@/src/actions/customers');
-    const result = await approveClientTier(
+    const result = await approveApplication(
+      app.id,
       app.clerk_user_id,
       app.business_type,
-      app.id
+      app.business_name,
+      getAdminName()
     );
     if (result.success) {
       await loadApplications();
@@ -63,7 +71,7 @@ export default function SolicitudesNegocioPage() {
 
   const handleReject = async (app: BusinessApplication) => {
     setProcessingId(app.id);
-    const result = await rejectApplication(app.id, 'Admin La Gaviota');
+    const result = await rejectApplication(app.id, getAdminName());
     if (result.success) {
       await loadApplications();
     }
