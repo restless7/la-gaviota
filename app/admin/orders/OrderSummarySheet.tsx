@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from 'react';
-import { Order, flagOrderConflict, updateOrderStatus, cancelAndRefundOrder } from '@/src/actions/orders';
+import { Order, flagOrderConflict, updateOrderStatus, cancelAndRefundOrder, confirmCashPayment } from '@/src/actions/orders';
 import { X, MapPin, Calendar, Package, AlertTriangle, ArrowRight } from 'lucide-react';
 
 const CONFLICT_REASONS = [
@@ -40,6 +40,19 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
     });
   };
 
+  const handleConfirmPayment = () => {
+    if (!confirm('¿Confirmar que el pago en efectivo fue recibido? Esta acción sumará el valor a las métricas del cliente.')) return;
+    startTransition(async () => {
+      try {
+        await confirmCashPayment(order.id);
+        alert('Pago confirmado exitosamente.');
+        onClose();
+      } catch (error: any) {
+        alert(error.message || 'Error al confirmar el pago.');
+      }
+    });
+  };
+
   const handleCancelOrder = () => {
     if (!confirm('¿Seguro que deseas cancelar este pedido? Se descontará del historial del cliente si aplica.')) return;
     startTransition(async () => {
@@ -66,6 +79,11 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
                  {order.is_conflicted && (
                    <span className="bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
                      <AlertTriangle className="w-3 h-3" /> Novedad
+                   </span>
+                 )}
+                 {order.notes?.includes('[PAGO CONFIRMADO]') && (
+                   <span className="bg-blue-600 text-white text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
+                     Pagado
                    </span>
                  )}
                </div>
@@ -197,14 +215,27 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
                <span className="text-gray-500 font-bold">Total a Facturar</span>
                <span className="text-2xl font-black text-[#E30613]">${Number(order.total_amount).toLocaleString('es-CO')}</span>
             </div>
-            <a 
-               href={`/admin/orders/invoice/${order.id}`}
-               target="_blank"
-               rel="noopener noreferrer"
-               className="w-full bg-[#4CAF50] hover:bg-[#3d8c40] text-white font-black py-4 rounded-xl shadow-lg transition-all text-sm uppercase tracking-wide flex items-center justify-center text-center"
-            >
-               Generar Factura & Remisión
-            </a>
+            
+            <div className="flex flex-col gap-3">
+              {order.payment_method === 'cash' && !order.notes?.includes('[PAGO CONFIRMADO]') && (
+                <button 
+                  onClick={handleConfirmPayment}
+                  disabled={isPending}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg transition-all text-sm uppercase tracking-wide flex items-center justify-center text-center disabled:opacity-50"
+                >
+                  Confirmar Pago en Efectivo
+                </button>
+              )}
+              
+              <a 
+                 href={`/admin/orders/invoice/${order.id}`}
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="w-full bg-[#4CAF50] hover:bg-[#3d8c40] text-white font-black py-4 rounded-xl shadow-lg transition-all text-sm uppercase tracking-wide flex items-center justify-center text-center"
+              >
+                 Generar Factura & Remisión
+              </a>
+            </div>
          </div>
       </div>
     </>

@@ -261,6 +261,60 @@ export async function cancelAndRefundOrder(orderId: string, reason: string) {
   return { success: true };
 }
 
+export async function confirmCashPayment(orderId: string) {
+  const { data: order, error: orderError } = await supabase
+    .from('orders')
+    .select('total_amount, clerk_user_id, payment_method, notes')
+    .eq('id', orderId)
+    .single();
+
+  if (orderError || !order) {
+    console.error('Error fetching order:', orderError);
+    throw new Error('Failed to fetch order details');
+  }
+
+  const currentNotes = order.notes || '';
+  if (currentNotes.includes('[PAGO CONFIRMADO]')) {
+    throw new Error('El pago de esta orden ya ha sido confirmado anteriormente.');
+  }
+
+  if (order.clerk_user_id) {
+    const { data: customer } = await supabase
+      .from('customers')
+      .select('total_orders, total_spent')
+      .eq('clerk_user_id', order.clerk_user_id)
+      .single();
+
+    if (customer) {
+      await supabase
+        .from('customers')
+        .update({
+          total_orders: (customer.total_orders || 0) + 1,
+          total_spent: (customer.total_spent || 0) + order.total_amount,
+          updated_at: new Date().toISOString()
+        })
+        .eq('clerk_user_id', order.clerk_user_id);
+    }
+  }
+
+  const { error } = await supabase
+    .from('orders')
+    .update({ 
+      notes: currentNotes + '\n[PAGO CONFIRMADO]',
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', orderId);
+
+  if (error) {
+    console.error('Error confirming payment:', error);
+    throw new Error('Failed to confirm payment');
+  }
+
+  revalidatePath('/admin/orders');
+  revalidatePath('/admin/clientes');
+  return { success: true };
+}
+
 export async function closeOperationalDay(date: string, userId: string) {
   // 1. Fetch active orders for the date
   const { data: activeOrders, error: fetchError } = await supabase
