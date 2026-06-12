@@ -212,6 +212,57 @@ export async function flagOrderConflict(orderId: string, reason: string) {
   return { success: true };
 }
 
+export async function cancelAndRefundOrder(orderId: string, reason: string) {
+  const { data: order, error: orderError } = await supabase
+    .from('orders')
+    .select('total_amount, clerk_user_id')
+    .eq('id', orderId)
+    .single();
+
+  if (orderError || !order) {
+    console.error('Error fetching order to cancel:', orderError);
+    throw new Error('Failed to fetch order details');
+  }
+
+  if (order.clerk_user_id) {
+    const { data: customer } = await supabase
+      .from('customers')
+      .select('total_orders, total_spent')
+      .eq('clerk_user_id', order.clerk_user_id)
+      .single();
+
+    if (customer) {
+      await supabase
+        .from('customers')
+        .update({
+          total_orders: Math.max(0, (customer.total_orders || 0) - 1),
+          total_spent: Math.max(0, (customer.total_spent || 0) - order.total_amount),
+          updated_at: new Date().toISOString()
+        })
+        .eq('clerk_user_id', order.clerk_user_id);
+    }
+  }
+
+  const { error } = await supabase
+    .from('orders')
+    .update({ 
+      status: 'Cancelado',
+      is_conflicted: true,
+      conflict_reason: reason,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', orderId);
+
+  if (error) {
+    console.error('Error canceling order:', error);
+    throw new Error('Failed to cancel order');
+  }
+
+  revalidatePath('/admin/orders');
+  revalidatePath('/admin/clientes');
+  return { success: true };
+}
+
 export async function closeOperationalDay(date: string, userId: string) {
   // 1. Fetch active orders for the date
   const { data: activeOrders, error: fetchError } = await supabase

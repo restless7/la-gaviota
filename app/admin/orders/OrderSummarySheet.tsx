@@ -1,22 +1,38 @@
 "use client";
 
 import React, { useState, useTransition } from 'react';
-import { Order, flagOrderConflict, updateOrderStatus } from '@/src/actions/orders';
+import { Order, flagOrderConflict, updateOrderStatus, cancelAndRefundOrder } from '@/src/actions/orders';
 import { X, MapPin, Calendar, Package, AlertTriangle, ArrowRight } from 'lucide-react';
+
+const CONFLICT_REASONS = [
+  'Pedido Duplicado / Fallo de Pago',
+  'Devolución Parcial o Faltantes',
+  'Cliente no recibió el pedido',
+  'Error en dirección de entrega',
+  'Producto Dañado o Vencido',
+  'Otro'
+];
 
 export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: () => void }) {
   const [isPending, startTransition] = useTransition();
   const [isReporting, setIsReporting] = useState(false);
-  const [conflictReason, setConflictReason] = useState('');
+  const [conflictReason, setConflictReason] = useState(CONFLICT_REASONS[0]);
+  const [customReason, setCustomReason] = useState('');
 
   const handleFlagConflict = () => {
-    if (!conflictReason.trim()) return;
+    const finalReason = conflictReason === 'Otro' ? customReason : conflictReason;
+    if (!finalReason.trim()) return;
+
     startTransition(async () => {
       try {
-        await flagOrderConflict(order.id, conflictReason);
+        if (conflictReason === 'Pedido Duplicado / Fallo de Pago') {
+          await cancelAndRefundOrder(order.id, finalReason);
+          alert('Pedido cancelado y métricas del cliente revertidas con éxito.');
+        } else {
+          await flagOrderConflict(order.id, finalReason);
+          alert('Novedad reportada correctamente.');
+        }
         setIsReporting(false);
-        setConflictReason('');
-        alert('Novedad reportada correctamente.');
         onClose();
       } catch (error) {
         alert('Error reportando novedad.');
@@ -25,11 +41,11 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
   };
 
   const handleCancelOrder = () => {
-    if (!confirm('¿Seguro que deseas cancelar este pedido?')) return;
+    if (!confirm('¿Seguro que deseas cancelar este pedido? Se descontará del historial del cliente si aplica.')) return;
     startTransition(async () => {
       try {
-        await updateOrderStatus(order.id, 'Cancelado');
-        alert('Pedido cancelado por novedad.');
+        await cancelAndRefundOrder(order.id, 'Cancelado por administrador');
+        alert('Pedido cancelado.');
         onClose();
       } catch (error) {
         alert('Error al cancelar el pedido.');
@@ -97,17 +113,36 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
 
             {isReporting && (
               <div className="mb-6 bg-orange-50 p-4 rounded-xl border border-orange-200">
-                <h4 className="font-bold text-orange-800 text-sm mb-2">Describa la novedad:</h4>
-                <textarea 
+                <h4 className="font-bold text-orange-800 text-sm mb-2">Clasificar novedad:</h4>
+                <select 
                   value={conflictReason}
                   onChange={(e) => setConflictReason(e.target.value)}
-                  placeholder="Ej. Dirección errónea, cliente no responde, producto faltante..."
-                  className="w-full p-2 border border-orange-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-orange-500 outline-none"
-                  rows={3}
-                />
-                <div className="mt-3 flex gap-2">
-                  <button onClick={() => setIsReporting(false)} className="flex-1 py-2 text-orange-600 font-bold text-xs uppercase hover:bg-orange-100 rounded-lg">Cancelar</button>
-                  <button onClick={handleFlagConflict} disabled={isPending || !conflictReason.trim()} className="flex-1 py-2 bg-orange-500 text-white font-bold text-xs uppercase rounded-lg hover:bg-orange-600 disabled:opacity-50">Guardar</button>
+                  className="w-full p-2.5 mb-3 border border-orange-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-orange-500 outline-none text-slate-700 font-medium"
+                >
+                  {CONFLICT_REASONS.map(reason => (
+                    <option key={reason} value={reason}>{reason}</option>
+                  ))}
+                </select>
+
+                {conflictReason === 'Otro' && (
+                  <textarea 
+                    value={customReason}
+                    onChange={(e) => setCustomReason(e.target.value)}
+                    placeholder="Describa el motivo..."
+                    className="w-full p-2 border border-orange-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-orange-500 outline-none mb-3"
+                    rows={2}
+                  />
+                )}
+
+                {conflictReason === 'Pedido Duplicado / Fallo de Pago' && (
+                  <div className="bg-red-50 p-3 rounded-lg border border-red-100 mb-3 text-xs text-red-600 font-medium">
+                    ⚠️ Esta acción cancelará el pedido y restará el valor automáticamente del historial y saldo del cliente.
+                  </div>
+                )}
+
+                <div className="mt-2 flex gap-2">
+                  <button onClick={() => setIsReporting(false)} className="flex-1 py-2 text-orange-600 font-bold text-xs uppercase hover:bg-orange-100 rounded-lg transition-colors">Cancelar</button>
+                  <button onClick={handleFlagConflict} disabled={isPending || (conflictReason === 'Otro' && !customReason.trim())} className="flex-1 py-2 bg-orange-500 text-white font-bold text-xs uppercase rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 shadow-md">Confirmar</button>
                 </div>
               </div>
             )}
