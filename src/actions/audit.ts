@@ -27,13 +27,8 @@ export async function fetchAuditLogs(): Promise<AuditLog[]> {
   const { data, error } = await supabase
     .from('audit_logs')
     .select('*')
-    // We order by created_at since it's the production column. Fallback to timestamp just in case
-    .order('created_at', { ascending: false, nullsFirst: false })
-    .limit(100)
-    .catch(async () => {
-        // Fallback for mock DB
-        return await supabase.from('audit_logs').select('*').order('timestamp', { ascending: false }).limit(100);
-    });
+    .order('timestamp', { ascending: false })
+    .limit(100);
 
   if (error || !data) {
     console.error('Error fetching audit logs:', error);

@@ -15,7 +15,7 @@ export interface AnalyticsFilters {
 }
 
 export async function getAdvancedFinancialSummary(filters: AnalyticsFilters) {
-  let query = supabase.from('orders').select('total_amount, purchase_tier, status, order_items!inner(product_id)');
+  let query = supabase.from('orders').select('id, total_amount, purchase_tier, status, order_items!inner(product_id)');
 
   if (filters.startDate) query = query.gte('created_at', filters.startDate);
   if (filters.endDate) query = query.lte('created_at', filters.endDate);
