@@ -38,20 +38,31 @@ export interface Order {
 export async function getLiveOperationalOrders(): Promise<Order[]> {
   const today = new Date().toISOString().split('T')[0];
 
-  const { data, error } = await supabase
-    .from('orders')
-    .select('*, order_items(*)')
-    .neq('status', 'ARCHIVED_DELIVERED')
-    .neq('status', 'Cancelado')
-    .or(`scheduled_delivery_date.lte.${today},scheduled_delivery_date.is.null`)
-    .order('created_at', { ascending: false });
+  const [{ data: ordersData, error }, { data: ledgersData }] = await Promise.all([
+    supabase
+      .from('orders')
+      .select('*, order_items(*)')
+      .neq('status', 'Cancelado')
+      .or(`scheduled_delivery_date.lte.${today},scheduled_delivery_date.is.null`)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('daily_operational_ledgers')
+      .select('operational_date')
+  ]);
 
   if (error) {
     console.error('Error fetching live operational orders:', error);
     throw new Error('Failed to fetch live orders');
   }
 
-  return data || [];
+  const closedDates = ledgersData?.map(l => l.operational_date) || [];
+  
+  // Filter out orders that are 'Entregado' AND their date is already closed
+  const liveOrders = ordersData?.filter(o => 
+    !(o.status === 'Entregado' && closedDates.includes(o.scheduled_delivery_date))
+  ) || [];
+
+  return liveOrders;
 }
 
 export async function fetchOrderById(orderId: string): Promise<Order | null> {
@@ -317,15 +328,24 @@ export async function confirmCashPayment(orderId: string) {
 }
 
 export async function closeOperationalDay(date: string, userId: string) {
-  // 1. Fetch active orders for the date
-  const { data: activeOrders, error: fetchError } = await supabase
-    .from('orders')
-    .select('id, status, is_conflicted, total_amount, scheduled_delivery_date')
-    .or(`scheduled_delivery_date.lte.${date},scheduled_delivery_date.is.null`)
-    .neq('status', 'ARCHIVED_DELIVERED')
-    .neq('status', 'Cancelado');
+  // 1. Fetch active orders and closed ledgers
+  const [{ data: activeOrdersRaw, error: fetchError }, { data: ledgersData }] = await Promise.all([
+    supabase
+      .from('orders')
+      .select('id, status, is_conflicted, total_amount, scheduled_delivery_date')
+      .or(`scheduled_delivery_date.lte.${date},scheduled_delivery_date.is.null`)
+      .neq('status', 'Cancelado'),
+    supabase
+      .from('daily_operational_ledgers')
+      .select('operational_date')
+  ]);
 
   if (fetchError) throw new Error('Failed to fetch active orders for closure');
+
+  const closedDates = ledgersData?.map(l => l.operational_date) || [];
+  const activeOrders = activeOrdersRaw?.filter(o => 
+    !(o.status === 'Entregado' && closedDates.includes(o.scheduled_delivery_date))
+  ) || [];
 
   // Verify there are no pending normal orders
   const pendingNormalOrders = activeOrders?.filter(
@@ -361,16 +381,7 @@ export async function closeOperationalDay(date: string, userId: string) {
   const totalRevenue = deliveredOrders.reduce((acc, o) => acc + Number(o.total_amount), 0);
   const totalProcessed = deliveredOrders.length;
 
-  // 4. Archive delivered orders
-  if (deliveredOrders.length > 0) {
-    const { error: archiveError } = await supabase
-      .from('orders')
-      .update({ status: 'ARCHIVED_DELIVERED' })
-      .in('id', deliveredOrders.map(o => o.id));
-
-    if (archiveError) throw new Error('Failed to archive delivered orders');
-  }
-
+  // 4. Archive is implicit: The orders remain 'Entregado' but their scheduled_delivery_date is now matched to a closed ledger.
   // 5. Insert or Update operational ledgers grouped by scheduled_delivery_date
   if (deliveredOrders.length > 0) {
     const ledgersByDate: Record<string, { orders: number, revenue: number }> = {};
@@ -441,7 +452,7 @@ export async function fetchHistoricOrdersByDate(date: string): Promise<Order[]> 
     .from('orders')
     .select('*, order_items(*)')
     .eq('scheduled_delivery_date', date)
-    .eq('status', 'ARCHIVED_DELIVERED')
+    .eq('status', 'Entregado')
     .order('created_at', { ascending: false });
 
   if (error) {
