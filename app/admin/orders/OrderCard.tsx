@@ -23,6 +23,8 @@ export function OrderCard({ order, onClick }: { order: Order; onClick: () => voi
     return 'bg-blue-50 text-blue-700 border-blue-200';
   };
 
+  const isPastDue = order.scheduled_delivery_date && order.scheduled_delivery_date < new Date().toISOString().split('T')[0];
+
   return (
     <div
       ref={setNodeRef}
@@ -31,7 +33,7 @@ export function OrderCard({ order, onClick }: { order: Order; onClick: () => voi
       {...listeners}
       onClick={onClick}
       className={`bg-white p-4 rounded-xl shadow-sm border cursor-grab active:cursor-grabbing mb-3 group transition-colors ${
-        order.is_conflicted ? 'border-red-500 bg-red-50/10' : 'border-gray-100 hover:border-[#E30613]'
+        order.is_conflicted ? 'border-red-500 bg-red-50/10' : (isPastDue ? 'border-orange-400 bg-orange-50/20' : 'border-gray-100 hover:border-[#E30613]')
       } ${
         isDragging ? 'opacity-50 ring-2 ring-[#E30613] ring-offset-2' : ''
       }`}
@@ -39,6 +41,11 @@ export function OrderCard({ order, onClick }: { order: Order; onClick: () => voi
       <div className="flex justify-between items-start mb-2">
         <span className="text-[10px] font-black text-gray-400">{order.id.slice(0, 8)}</span>
         <div className="flex items-center gap-2">
+          {isPastDue && !order.is_conflicted && (
+            <span className="text-[9px] font-black bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded-full uppercase">
+              Atrasado
+            </span>
+          )}
           {order.is_conflicted && (
             <span title={order.conflict_reason || 'Conflicto'} className="text-red-500">
               <AlertTriangle className="w-3.5 h-3.5" />
