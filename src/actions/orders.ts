@@ -320,7 +320,7 @@ export async function closeOperationalDay(date: string, userId: string) {
   // 1. Fetch active orders for the date
   const { data: activeOrders, error: fetchError } = await supabase
     .from('orders')
-    .select('id, status, is_conflicted, total_amount')
+    .select('id, status, is_conflicted, total_amount, scheduled_delivery_date')
     .or(`scheduled_delivery_date.lte.${date},scheduled_delivery_date.is.null`)
     .neq('status', 'ARCHIVED_DELIVERED')
     .neq('status', 'Cancelado');
@@ -371,22 +371,53 @@ export async function closeOperationalDay(date: string, userId: string) {
     if (archiveError) throw new Error('Failed to archive delivered orders');
   }
 
-  // 5. Insert operational ledger
-  const { error: ledgerError } = await supabase
-    .from('daily_operational_ledgers')
-    .insert({
-      operational_date: date,
-      total_orders_processed: totalProcessed,
-      total_revenue_collected: totalRevenue,
-      closed_by_user: userId
+  // 5. Insert or Update operational ledgers grouped by scheduled_delivery_date
+  if (deliveredOrders.length > 0) {
+    const ledgersByDate: Record<string, { orders: number, revenue: number }> = {};
+    
+    deliveredOrders.forEach(o => {
+      // Fallback to the current closing date if somehow missing
+      const orderDate = o.scheduled_delivery_date || date;
+      if (!ledgersByDate[orderDate]) {
+        ledgersByDate[orderDate] = { orders: 0, revenue: 0 };
+      }
+      ledgersByDate[orderDate].orders += 1;
+      ledgersByDate[orderDate].revenue += Number(o.total_amount);
     });
 
-  if (ledgerError) {
-    if (ledgerError.code === '23505') {
-      throw new Error('El libro diario de esta fecha ya fue cerrado.');
+    for (const [opDate, metrics] of Object.entries(ledgersByDate)) {
+      // Try to fetch existing ledger for this date
+      const { data: existingLedger } = await supabase
+        .from('daily_operational_ledgers')
+        .select('id, total_orders_processed, total_revenue_collected')
+        .eq('operational_date', opDate)
+        .single();
+
+      if (existingLedger) {
+        // Append to existing closed day (Retroactive correction)
+        const { error: updateError } = await supabase
+          .from('daily_operational_ledgers')
+          .update({
+            total_orders_processed: existingLedger.total_orders_processed + metrics.orders,
+            total_revenue_collected: existingLedger.total_revenue_collected + metrics.revenue
+          })
+          .eq('id', existingLedger.id);
+          
+        if (updateError) throw new Error(`Failed to update ledger for ${opDate}`);
+      } else {
+        // Create new closed day
+        const { error: insertError } = await supabase
+          .from('daily_operational_ledgers')
+          .insert({
+            operational_date: opDate,
+            total_orders_processed: metrics.orders,
+            total_revenue_collected: metrics.revenue,
+            closed_by_user: userId
+          });
+          
+        if (insertError) throw new Error(`Failed to insert ledger for ${opDate}`);
+      }
     }
-    console.error('Ledger error:', ledgerError);
-    throw new Error('Failed to insert daily ledger');
   }
 
   revalidatePath('/admin/orders');
