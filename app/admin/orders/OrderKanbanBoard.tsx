@@ -20,7 +20,14 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
   const [isClosingDay, startClosingDay] = useTransition();
   const [selectedLedgerDate, setSelectedLedgerDate] = useState<string | null>(null);
   const [historicOrders, setHistoricOrders] = useState<Order[]>([]);
+  const [filterText, setFilterText] = useState('');
   const { user } = useUser();
+
+  const filteredOrders = orders.filter(o => 
+    o.customer_name.toLowerCase().includes(filterText.toLowerCase()) || 
+    o.id.toLowerCase().includes(filterText.toLowerCase()) ||
+    o.delivery_address.toLowerCase().includes(filterText.toLowerCase())
+  );
 
   React.useEffect(() => {
     setOrders(initialOrders);
@@ -144,26 +151,39 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
          </div>
       </div>
 
-      <div className="flex gap-4 mb-4 border-b border-gray-200">
-        <button
-          onClick={() => setActiveTab('ACTIVE')}
-          className={`pb-2 px-4 font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === 'ACTIVE' ? 'text-[#E30613] border-b-2 border-[#E30613]' : 'text-gray-400 hover:text-gray-600'}`}
-        >
-          Tablero Activo
-        </button>
-        <button
-          onClick={() => setActiveTab('HISTORIC')}
-          className={`pb-2 px-4 font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === 'HISTORIC' ? 'text-[#E30613] border-b-2 border-[#E30613]' : 'text-gray-400 hover:text-gray-600'}`}
-        >
-          Historial de Cierres
-        </button>
+      <div className="flex items-center justify-between mb-4 border-b border-gray-200">
+        <div className="flex gap-4">
+          <button
+            onClick={() => setActiveTab('ACTIVE')}
+            className={`pb-2 px-4 font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === 'ACTIVE' ? 'text-[#E30613] border-b-2 border-[#E30613]' : 'text-gray-400 hover:text-gray-600'}`}
+          >
+            Tablero Activo
+          </button>
+          <button
+            onClick={() => setActiveTab('HISTORIC')}
+            className={`pb-2 px-4 font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === 'HISTORIC' ? 'text-[#E30613] border-b-2 border-[#E30613]' : 'text-gray-400 hover:text-gray-600'}`}
+          >
+            Historial de Cierres
+          </button>
+        </div>
+        {activeTab === 'ACTIVE' && (
+          <div className="mb-2">
+            <input 
+              type="text" 
+              placeholder="Buscar por cliente, ID o dirección..." 
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:border-[#1C2059] focus:ring-1 focus:ring-[#1C2059] w-72"
+            />
+          </div>
+        )}
       </div>
 
       {activeTab === 'ACTIVE' ? (
         <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
           <div className="flex gap-4 h-full overflow-x-auto pb-4">
             {COLUMNS.map((status) => {
-              const columnOrders = orders.filter((o) => o.status === status);
+              const columnOrders = filteredOrders.filter((o) => o.status === status);
               return (
                 <SortableContext key={status} id={status} items={columnOrders.map(o => o.id)}>
                   <KanbanColumn

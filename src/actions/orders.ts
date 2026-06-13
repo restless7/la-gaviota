@@ -42,7 +42,8 @@ export async function getLiveOperationalOrders(): Promise<Order[]> {
     .from('orders')
     .select('*, order_items(*)')
     .neq('status', 'ARCHIVED_DELIVERED')
-    .eq('scheduled_delivery_date', today)
+    .neq('status', 'Cancelado')
+    .or(`scheduled_delivery_date.lte.${today},scheduled_delivery_date.is.null`)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -320,7 +321,7 @@ export async function closeOperationalDay(date: string, userId: string) {
   const { data: activeOrders, error: fetchError } = await supabase
     .from('orders')
     .select('id, status, is_conflicted, total_amount')
-    .eq('scheduled_delivery_date', date)
+    .or(`scheduled_delivery_date.lte.${date},scheduled_delivery_date.is.null`)
     .neq('status', 'ARCHIVED_DELIVERED')
     .neq('status', 'Cancelado');
 
