@@ -22,6 +22,9 @@ export interface Product {
   priceRetail: number;
   priceMicro: number;
   priceRestaurant: number;
+  previousPriceRetail: number | null;
+  previousPriceMicro: number | null;
+  previousPriceRestaurant: number | null;
   stockQuantity: number;
   isActive: boolean;
   isInSeason: boolean;
@@ -62,6 +65,9 @@ export async function fetchProducts(): Promise<Product[]> {
     priceRetail: p.price_retail,
     priceMicro: p.price_micro,
     priceRestaurant: p.price_restaurant,
+    previousPriceRetail: p.previous_price_retail,
+    previousPriceMicro: p.previous_price_micro,
+    previousPriceRestaurant: p.previous_price_restaurant,
     stockQuantity: p.stock_quantity,
     isActive: p.is_active,
     isInSeason: p.is_in_season,
@@ -80,6 +86,9 @@ export async function fetchProducts(): Promise<Product[]> {
     priceRetail: Number(k.fixed_price),
     priceMicro: Number(k.fixed_price),
     priceRestaurant: Number(k.fixed_price),
+    previousPriceRetail: Number(k.fixed_price),
+    previousPriceMicro: Number(k.fixed_price),
+    previousPriceRestaurant: Number(k.fixed_price),
     stockQuantity: 999, // Kits are virtually unlimited based on underlying stock
     isActive: true,
     isInSeason: true,

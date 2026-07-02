@@ -566,6 +566,9 @@ export type Database = {
           price_micro: number
           price_restaurant: number
           price_retail: number
+          previous_price_micro: number | null
+          previous_price_restaurant: number | null
+          previous_price_retail: number | null
           stock_quantity: number
           subcategory: string | null
           unit: string
@@ -584,6 +587,9 @@ export type Database = {
           price_micro?: number
           price_restaurant?: number
           price_retail?: number
+          previous_price_micro?: number | null
+          previous_price_restaurant?: number | null
+          previous_price_retail?: number | null
           stock_quantity?: number
           subcategory?: string | null
           unit: string
@@ -602,6 +608,9 @@ export type Database = {
           price_micro?: number
           price_restaurant?: number
           price_retail?: number
+          previous_price_micro?: number | null
+          previous_price_restaurant?: number | null
+          previous_price_retail?: number | null
           stock_quantity?: number
           subcategory?: string | null
           unit?: string
