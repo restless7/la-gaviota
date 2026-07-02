@@ -16,7 +16,6 @@ const TIERS = [
     benefits: [
       'Precios 15-20% menores que detal',
       'Cantidades sugeridas x5, x10, x20',
-      'Crédito a 15 días con buen historial',
       'Ruta de entrega preferencial',
     ],
     color: 'from-yellow-400 to-amber-500',
@@ -33,7 +32,6 @@ const TIERS = [
     benefits: [
       'Los mejores precios del mercado mayorista',
       'Plantillas de compra recurrente',
-      'Crédito a 30 días aprobado',
       'Asesor comercial dedicado',
       'Entrega prioritaria antes de las 6 AM',
     ],
@@ -146,7 +144,7 @@ export default function AplicarNegocioPage() {
             su Negocio
           </h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Únase al programa de negocios de La Gaviota y acceda a precios especiales, crédito y entregas prioritarias para su establecimiento.
+            Únase al programa de negocios de La Gaviota y acceda a precios especiales y entregas prioritarias para su establecimiento.
           </p>
         </div>
       </div>
@@ -221,8 +219,8 @@ export default function AplicarNegocioPage() {
               </div>
               <div className="bg-white border border-gray-100 rounded-xl p-5 text-center">
                 <Shield className="w-8 h-8 text-[#FFCC00] mx-auto mb-2" />
-                <h4 className="font-bold text-slate-800 text-sm">Crédito Aprobado</h4>
-                <p className="text-xs text-gray-500 mt-1">15-30 días según historial</p>
+                <h4 className="font-bold text-slate-800 text-sm">Calidad Garantizada</h4>
+                <p className="text-xs text-gray-500 mt-1">Productos siempre frescos del campo</p>
               </div>
             </div>
 

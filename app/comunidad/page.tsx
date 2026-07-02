@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Users, Heart, Star, ShoppingBag } from 'lucide-react';
 
 export default function ComunidadPage() {
@@ -52,15 +53,25 @@ export default function ComunidadPage() {
 
         <div className="bg-[#4CAF50] rounded-3xl overflow-hidden shadow-2xl relative">
            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
-           <div className="relative z-10 px-8 py-16 md:p-20 text-center">
-              <span className="text-white/80 font-bold tracking-widest uppercase text-sm mb-3 block">Programa de Beneficios</span>
-              <h2 className="text-3xl md:text-5xl font-black text-white font-serif mb-6 leading-tight">Club del Buen Sabor</h2>
-              <p className="text-green-50 text-lg md:text-xl max-w-3xl mx-auto mb-10 opacity-90">
-                 Acumula gaviotas (puntos) con cada compra de vegetales frescos y canjéalos por Kits Chéveres, domicilios gratis, o dona tus gaviotas a bancos de alimentos locales.
-              </p>
-              <button className="bg-white text-[#4CAF50] font-black px-10 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all text-lg tracking-wide">
-                 Únete Completamente Gratis
-              </button>
+           <div className="relative z-10 flex flex-col md:flex-row items-center">
+              <div className="px-8 py-12 md:p-16 text-center md:text-left md:w-1/2">
+                 <span className="text-white/80 font-bold tracking-widest uppercase text-sm mb-3 block">Programa de Beneficios</span>
+                 <h2 className="text-3xl md:text-5xl font-black text-white font-serif mb-6 leading-tight">Club del Buen Sabor</h2>
+                 <p className="text-green-50 text-lg md:text-xl mb-10 opacity-90">
+                    Acumula gaviotas (puntos) con cada compra de vegetales frescos y canjéalos por Kits Chéveres, domicilios gratis, o dona tus gaviotas a bancos de alimentos locales.
+                 </p>
+                 <Link href="/sign-up" className="inline-block bg-white text-[#4CAF50] font-black px-10 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all text-lg tracking-wide">
+                    Únete Completamente Gratis
+                 </Link>
+              </div>
+              <div className="relative w-full md:w-1/2 h-64 md:h-auto min-h-[400px]">
+                 <Image 
+                   src="/IMAGES/mascota.jpeg" 
+                   alt="Comunidad Gaviota" 
+                   fill 
+                   className="object-cover"
+                 />
+              </div>
            </div>
         </div>
       </section>

@@ -15,9 +15,12 @@ import {
   Truck,
   Leaf
 } from 'lucide-react';
+import { useUser } from '@clerk/nextjs';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { user } = useUser();
+  const isAdmin = user?.publicMetadata?.role === 'admin';
 
   return (
     <footer className="bg-slate-950 text-white relative overflow-hidden border-t border-white/5">
@@ -116,7 +119,9 @@ export default function Footer() {
               <li><Link href="/aplicar-negocio" className="hover:text-white transition-colors flex items-center gap-2 group font-bold text-gaviota-yellow/80"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Programa Aliados</Link></li>
               <li><Link href="/restaurante" className="hover:text-white transition-colors flex items-center gap-2 group"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Para Restaurantes</Link></li>
               <li><Link href="/micromercado" className="hover:text-white transition-colors flex items-center gap-2 group"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Para Micromercados</Link></li>
-              <li><Link href="/admin" className="hover:text-white transition-colors flex items-center gap-2 group"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Portal Administrativo</Link></li>
+              {isAdmin && (
+                <li><Link href="/admin" className="hover:text-white transition-colors flex items-center gap-2 group"><ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -ml-5 transition-all" /> Portal Administrativo</Link></li>
+              )}
             </ul>
           </div>
 
