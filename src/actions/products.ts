@@ -114,6 +114,7 @@ export async function updateProductStock(id: string, newStock: number) {
   
   revalidatePath('/admin/catalog/product-management');
   revalidatePath('/shop');
+  revalidatePath('/');
   return { success: true };
 }
 
@@ -174,6 +175,7 @@ export async function updateProductPricing(
 
   revalidatePath('/admin/pricing');
   revalidatePath('/shop');
+  revalidatePath('/');
   return { success: true };
 }
 
@@ -209,6 +211,7 @@ export async function updateProductPrices(productId: string, prices: { retail: n
 
   revalidatePath('/admin/pricing');
   revalidatePath('/shop');
+  revalidatePath('/');
   return { success: true };
 }
 
@@ -250,10 +253,11 @@ export async function applyMacroMargins(
 
   revalidatePath('/admin/pricing');
   revalidatePath('/shop');
+  revalidatePath('/');
   return { success: true, count: updatedProducts.length };
 }
 
-export async function createProduct(product: Omit<Product, 'id'>) {
+export async function createProduct(product: Omit<Product, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
   // Generate a simple ID like prd_XXXX
   const { data: countData } = await supabase
     .from('products')
@@ -296,10 +300,11 @@ export async function createProduct(product: Omit<Product, 'id'>) {
 
   revalidatePath('/admin/catalog/product-management');
   revalidatePath('/shop');
+  revalidatePath('/');
   return { success: true, id: newId };
 }
 
-export async function updateProduct(id: string, product: Omit<Product, 'id'>) {
+export async function updateProduct(id: string, product: Omit<Product, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
   const { error } = await supabase
     .from('products')
     .update({
@@ -333,6 +338,7 @@ export async function updateProduct(id: string, product: Omit<Product, 'id'>) {
 
   revalidatePath('/admin/catalog/product-management');
   revalidatePath('/shop');
+  revalidatePath('/');
   return { success: true };
 }
 
@@ -377,5 +383,6 @@ export async function deleteProduct(id: string) {
 
   revalidatePath('/admin/catalog/product-management');
   revalidatePath('/shop');
+  revalidatePath('/');
   return { success: true };
 }
