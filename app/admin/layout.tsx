@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   BarChart3,
@@ -156,10 +157,9 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
       `}>
         <div className="flex-none flex items-center justify-center p-6 border-b border-gray-100 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-[#E30613]"></div>
-          <div className="relative w-32 h-10">
-             {/* Fallback layout logo text */}
-             <span className="font-serif text-2xl font-black text-[#E30613] italic tracking-tight">La Gaviota</span>
-          </div>
+          <Link href="/" className="relative w-40 h-12 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80">
+            <Image src="/IMAGES/logo.jpeg" alt="La Gaviota Logo" fill className="object-contain" priority />
+          </Link>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden absolute right-4 text-gray-400 hover:text-gray-800"
