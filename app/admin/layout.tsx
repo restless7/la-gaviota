@@ -157,7 +157,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
       `}>
         <div className="flex-none flex items-center justify-center p-6 border-b border-gray-100 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-[#E30613]"></div>
-          <Link href="/" className="relative w-40 h-12 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80">
+          <Link href="/" className="relative w-56 h-24 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 transform scale-110">
             <Image src="/IMAGES/logo.jpeg" alt="La Gaviota Logo" fill className="object-contain" priority />
           </Link>
           <button
