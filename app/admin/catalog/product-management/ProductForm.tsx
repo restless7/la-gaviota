@@ -127,12 +127,20 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    const val = type === 'number' ? parseFloat(value) || 0 : (e.target as HTMLInputElement).checked ?? value;
     
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : val
-    }));
+    setFormData(prev => {
+      let newValue: any = value;
+      if (type === 'number') {
+        newValue = parseFloat(value) || 0;
+      } else if (type === 'checkbox') {
+        newValue = (e.target as HTMLInputElement).checked;
+      }
+      
+      return {
+        ...prev,
+        [name]: newValue
+      };
+    });
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
