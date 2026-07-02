@@ -10,6 +10,7 @@ export function MiniCartDropdown({ onClose }: { onClose: () => void }) {
   const { items, updateQuantity, removeFromCart, cartTotal, remainingForFreeShipping, progressPercent } = useCart();
   const { role } = useUserRole();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [randomEmptyImage, setRandomEmptyImage] = React.useState('/IMAGES/empty-cart-seagull.jpeg');
 
   const formatPrice = (p: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(p);
 
@@ -20,6 +21,16 @@ export function MiniCartDropdown({ onClose }: { onClose: () => void }) {
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
+    
+    // Pick random empty image
+    const emptyImages = [
+       '/IMAGES/empty-cart-seagull.jpeg',
+       '/IMAGES/empty-cart-seagull1.jpeg',
+       '/IMAGES/empty-cart-seagull2.jpeg',
+       '/IMAGES/empty-cart-seagull3.jpeg'
+    ];
+    setRandomEmptyImage(emptyImages[Math.floor(Math.random() * emptyImages.length)]);
+    
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
@@ -33,9 +44,19 @@ export function MiniCartDropdown({ onClose }: { onClose: () => void }) {
          <button onClick={onClose} className="text-gray-400 hover:text-red-500 font-bold p-1">✕</button>
       </div>
 
-      <div className="max-h-[300px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-200">
+      <div className="max-h-[350px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-200">
          {items.length === 0 ? (
-            <p className="text-center text-gray-400 py-6 font-bold">No hay productos en tu carrito.</p>
+            <div className="flex flex-col items-center justify-center py-8">
+               <div className="relative w-32 h-32 mb-4">
+                  <Image 
+                     src={randomEmptyImage} 
+                     alt="Carrito Vacío" 
+                     fill 
+                     className="object-contain drop-shadow-md"
+                  />
+               </div>
+               <p className="text-center text-gray-400 font-bold">No hay productos en tu carrito.</p>
+            </div>
          ) : (
             items.map(item => {
                const price = role === 'Restaurantes' ? item.product.priceRestaurant : role === 'Micromercados' ? item.product.priceMicro : item.product.priceRetail;
