@@ -132,127 +132,140 @@ export default function AplicarNegocioPage() {
     );
   }
 
+  const activeTierObj = TIERS.find(t => t.id === selectedTier);
+
   return (
-    <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen">
-      {/* Hero Banner */}
-      <div className="relative bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#E30613]/30 to-[#4CAF50]/20"></div>
-        <div className="absolute -bottom-1 left-0 right-0 h-8 bg-slate-50" style={{ clipPath: 'ellipse(55% 100% at 50% 100%)' }}></div>
-        <div className="max-w-4xl mx-auto px-4 py-16 md:py-20 relative z-10 text-center">
-          <span className="inline-block bg-[#FFCC00] text-slate-900 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
-            Programa Exclusivo para Negocios
-          </span>
-          <h1 className="text-4xl md:text-5xl font-black font-serif mb-4 leading-tight">
-            Precios <span className="text-[#FFCC00]">Mayoristas</span> para<br />
-            su Negocio
-          </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Únase al programa de negocios de La Gaviota y acceda a precios especiales y entregas prioritarias para su establecimiento.
-          </p>
+    <div className={`relative min-h-screen ${step === 1 ? 'bg-gradient-to-b from-slate-50 to-white' : 'bg-slate-900'}`}>
+      {/* Dynamic Background for Steps 2 and 3 */}
+      {step > 1 && activeTierObj?.image && (
+        <div className="fixed inset-0 z-0 animate-fade-in">
+          <Image src={activeTierObj.image} alt="Background" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-md"></div>
         </div>
-      </div>
+      )}
 
-      <div className="max-w-4xl mx-auto px-4 -mt-4 pb-20">
-        {/* Step Indicator */}
-        <div className="flex items-center justify-center gap-2 mb-12">
-          {[1, 2, 3].map(s => (
-            <React.Fragment key={s}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-sm transition-all ${step >= s ? 'bg-[#E30613] text-white shadow-lg scale-110' : 'bg-gray-200 text-gray-400'}`}>
-                {step > s ? '✓' : s}
-              </div>
-              {s < 3 && (
-                <div className={`w-12 sm:w-20 h-1 rounded-full transition-colors ${step > s ? 'bg-[#E30613]' : 'bg-gray-200'}`}></div>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-
-        {/* ── STEP 1: Select Tier ── */}
+      <div className="relative z-10">
+        {/* Hero Banner */}
         {step === 1 && (
-          <div className="animate-fade-in">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-black text-slate-800 font-serif">¿Qué tipo de negocio tiene?</h2>
-              <p className="text-gray-500 mt-2">Seleccione su categoría para ver los beneficios y precios disponibles.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-              {TIERS.map(tier => {
-                const Icon = tier.icon;
-                const isSelected = selectedTier === tier.id;
-                return (
-                  <button
-                    key={tier.id}
-                    onClick={() => setSelectedTier(tier.id)}
-                    className={`text-left rounded-2xl border-2 overflow-hidden transition-all flex flex-col ${isSelected ? `${tier.border} shadow-xl scale-[1.02]` : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'}`}
-                  >
-                    {tier.image && (
-                      <div className="w-full h-48 relative">
-                        <Image src={tier.image} alt={tier.title} fill className="object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                        <div className={`absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-gradient-to-br ${tier.color} flex items-center justify-center shadow-md border-2 border-white`}>
-                          <Icon className="w-6 h-6 text-white" />
-                        </div>
-                      </div>
-                    )}
-                    <div className="p-8 pt-6 flex-1">
-                      <h3 className="text-xl font-black text-slate-800 mb-1">{tier.title}</h3>
-                    <p className="text-sm text-gray-500 mb-4">{tier.description}</p>
-                    <p className="text-xs font-bold text-gray-400 uppercase mb-3">Pedido mínimo: {tier.minOrder}</p>
-                    <ul className="space-y-2">
-                      {tier.benefits.map(b => (
-                        <li key={b} className="flex items-start gap-2 text-sm text-gray-600">
-                          <CheckCircle2 className={`w-4 h-4 ${tier.text} flex-shrink-0 mt-0.5`} />
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
-                    {isSelected && (
-                      <div className={`mt-4 inline-block ${tier.bg} ${tier.text} text-xs font-black uppercase px-3 py-1 rounded-full`}>
-                        ✓ Seleccionado
-                      </div>
-                    )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Benefits Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-              <div className="bg-white border border-gray-100 rounded-xl p-5 text-center">
-                <Percent className="w-8 h-8 text-[#E30613] mx-auto mb-2" />
-                <h4 className="font-bold text-slate-800 text-sm">Precios Exclusivos</h4>
-                <p className="text-xs text-gray-500 mt-1">Hasta 30% menos que precio al detal</p>
-              </div>
-              <div className="bg-white border border-gray-100 rounded-xl p-5 text-center">
-                <Truck className="w-8 h-8 text-[#4CAF50] mx-auto mb-2" />
-                <h4 className="font-bold text-slate-800 text-sm">Entrega Prioritaria</h4>
-                <p className="text-xs text-gray-500 mt-1">Antes de las 6 AM en su negocio</p>
-              </div>
-              <div className="bg-white border border-gray-100 rounded-xl p-5 text-center">
-                <Shield className="w-8 h-8 text-[#FFCC00] mx-auto mb-2" />
-                <h4 className="font-bold text-slate-800 text-sm">Calidad Garantizada</h4>
-                <p className="text-xs text-gray-500 mt-1">Productos siempre frescos del campo</p>
-              </div>
-            </div>
-
-            <div className="flex justify-end">
-              <button
-                onClick={() => selectedTier && setStep(2)}
-                disabled={!selectedTier}
-                className="bg-[#E30613] hover:bg-[#c90510] disabled:opacity-40 disabled:cursor-not-allowed text-[#FFCC00] px-8 py-3 rounded-full font-bold shadow-lg flex items-center gap-2 transition-all"
-              >
-                Continuar <ArrowRight className="w-4 h-4" />
-              </button>
+          <div className="relative bg-slate-900 text-white overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#E30613]/30 to-[#4CAF50]/20"></div>
+            <div className="absolute -bottom-1 left-0 right-0 h-8 bg-slate-50" style={{ clipPath: 'ellipse(55% 100% at 50% 100%)' }}></div>
+            <div className="max-w-4xl mx-auto px-4 py-16 md:py-20 relative z-10 text-center">
+              <span className="inline-block bg-[#FFCC00] text-slate-900 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+                Programa Exclusivo para Negocios
+              </span>
+              <h1 className="text-4xl md:text-5xl font-black font-serif mb-4 leading-tight">
+                Precios <span className="text-[#FFCC00]">Mayoristas</span> para<br />
+                su Negocio
+              </h1>
+              <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+                Únase al programa de negocios de La Gaviota y acceda a precios especiales y entregas prioritarias para su establecimiento.
+              </p>
             </div>
           </div>
         )}
 
+        <div className={`max-w-4xl mx-auto px-4 pb-20 ${step === 1 ? '-mt-4' : 'pt-16'}`}>
+          {/* Step Indicator */}
+          <div className="flex items-center justify-center gap-2 mb-12">
+            {[1, 2, 3].map(s => (
+              <React.Fragment key={s}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-sm transition-all ${step >= s ? 'bg-[#E30613] text-white shadow-lg scale-110' : 'bg-gray-200/20 text-gray-400'}`}>
+                  {step > s ? '✓' : s}
+                </div>
+                {s < 3 && (
+                  <div className={`w-12 sm:w-20 h-1 rounded-full transition-colors ${step > s ? 'bg-[#E30613]' : 'bg-gray-200/20'}`}></div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+
+          {/* ── STEP 1: Select Tier ── */}
+          {step === 1 && (
+            <div className="animate-fade-in">
+              <div className="text-center mb-10">
+                <h2 className="text-2xl font-black text-slate-800 font-serif">¿Qué tipo de negocio tiene?</h2>
+                <p className="text-gray-500 mt-2">Seleccione su categoría para ver los beneficios y precios disponibles.</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                {TIERS.map(tier => {
+                  const Icon = tier.icon;
+                  const isSelected = selectedTier === tier.id;
+                  return (
+                    <button
+                      key={tier.id}
+                      onClick={() => setSelectedTier(tier.id)}
+                      className={`text-left rounded-2xl border-2 overflow-hidden transition-all flex flex-col bg-white ${isSelected ? `${tier.border} shadow-xl scale-[1.02]` : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'}`}
+                    >
+                      {tier.image && (
+                        <div className="w-full h-72 relative">
+                          <Image src={tier.image} alt={tier.title} fill className="object-cover" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                          <div className={`absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-gradient-to-br ${tier.color} flex items-center justify-center shadow-md border-2 border-white`}>
+                            <Icon className="w-6 h-6 text-white" />
+                          </div>
+                        </div>
+                      )}
+                      <div className="p-8 pt-6 flex-1">
+                        <h3 className="text-2xl font-black text-slate-800 mb-1">{tier.title}</h3>
+                        <p className="text-sm text-gray-500 mb-4">{tier.description}</p>
+                        <p className="text-xs font-bold text-gray-400 uppercase mb-3">Pedido mínimo: {tier.minOrder}</p>
+                        <ul className="space-y-2">
+                          {tier.benefits.map(b => (
+                            <li key={b} className="flex items-start gap-2 text-sm text-gray-600">
+                              <CheckCircle2 className={`w-4 h-4 ${tier.text} flex-shrink-0 mt-0.5`} />
+                              {b}
+                            </li>
+                          ))}
+                        </ul>
+                        {isSelected && (
+                          <div className={`mt-4 inline-block ${tier.bg} ${tier.text} text-xs font-black uppercase px-3 py-1 rounded-full`}>
+                            ✓ Seleccionado
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Benefits Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+                <div className="bg-white border border-gray-100 rounded-xl p-5 text-center shadow-sm">
+                  <Percent className="w-8 h-8 text-[#E30613] mx-auto mb-2" />
+                  <h4 className="font-bold text-slate-800 text-sm">Precios Exclusivos</h4>
+                  <p className="text-xs text-gray-500 mt-1">Hasta 30% menos que precio al detal</p>
+                </div>
+                <div className="bg-white border border-gray-100 rounded-xl p-5 text-center shadow-sm">
+                  <Truck className="w-8 h-8 text-[#4CAF50] mx-auto mb-2" />
+                  <h4 className="font-bold text-slate-800 text-sm">Entrega Prioritaria</h4>
+                  <p className="text-xs text-gray-500 mt-1">Antes de las 6 AM en su negocio</p>
+                </div>
+                <div className="bg-white border border-gray-100 rounded-xl p-5 text-center shadow-sm">
+                  <Shield className="w-8 h-8 text-[#FFCC00] mx-auto mb-2" />
+                  <h4 className="font-bold text-slate-800 text-sm">Calidad Garantizada</h4>
+                  <p className="text-xs text-gray-500 mt-1">Productos siempre frescos del campo</p>
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  onClick={() => selectedTier && setStep(2)}
+                  disabled={!selectedTier}
+                  className="bg-[#E30613] hover:bg-[#c90510] disabled:opacity-40 disabled:cursor-not-allowed text-[#FFCC00] px-8 py-3 rounded-full font-bold shadow-lg flex items-center gap-2 transition-all"
+                >
+                  Continuar <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
         {/* ── STEP 2: Business Details Form ── */}
         {step === 2 && (
           <div className="animate-fade-in">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-black text-slate-800 font-serif">Datos de su Negocio</h2>
-              <p className="text-gray-500 mt-2">Complete la información para verificar su establecimiento.</p>
+            <div className="text-center mb-10 drop-shadow-md">
+              <h2 className="text-4xl font-black text-white font-serif">Datos de su Negocio</h2>
+              <p className="text-gray-300 mt-2 text-lg">Complete la información para verificar su establecimiento.</p>
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 max-w-2xl mx-auto space-y-6">
@@ -361,9 +374,9 @@ export default function AplicarNegocioPage() {
         {/* ── STEP 3: Review & Submit ── */}
         {step === 3 && (
           <div className="animate-fade-in">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-black text-slate-800 font-serif">Confirmar Solicitud</h2>
-              <p className="text-gray-500 mt-2">Revise su información antes de enviar.</p>
+            <div className="text-center mb-10 drop-shadow-md">
+              <h2 className="text-4xl font-black text-white font-serif">Confirmar Solicitud</h2>
+              <p className="text-gray-300 mt-2 text-lg">Revise su información antes de enviar.</p>
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 max-w-2xl mx-auto">
@@ -440,6 +453,7 @@ export default function AplicarNegocioPage() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }

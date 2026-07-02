@@ -1,0 +1,275 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model abandoned_carts {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerk_user_id  String?
+  customer_phone String?
+  customer_email String?
+  cart_data      Json
+  total_amount   Int       @default(0)
+  status         String    @default("abandoned")
+  last_active_at DateTime? @default(now()) @db.Timestamptz(6)
+  created_at     DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model agricultural_shrinkage_logs {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  product_id  String
+  quantity_kg Decimal   @db.Decimal(10, 2)
+  log_type    String
+  loss_reason String?
+  logged_at   DateTime? @default(now()) @db.Timestamptz(6)
+  products    products  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model audit_logs {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  timestamp DateTime? @default(now()) @db.Timestamptz(6)
+  actor     String
+  action    String
+  target    String
+  category  String
+  details   String?
+  metadata  Json?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model b2b_credit_profiles {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id               String    @unique
+  tier                  String
+  credit_limit          Decimal?  @default(0) @db.Decimal
+  credit_balance        Decimal?  @default(0) @db.Decimal
+  credit_days_remaining Int?      @default(0)
+  updated_at            DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([user_id], map: "idx_b2b_credit_profiles_user_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model business_applications {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerk_user_id   String
+  applicant_name  String
+  applicant_email String
+  business_name   String
+  business_type   String
+  nit             String?   @default("")
+  phone           String
+  address         String
+  municipality    String
+  monthly_volume  String?   @default("")
+  notes           String?   @default("")
+  status          String    @default("pending")
+  reviewed_by     String?
+  reviewed_at     DateTime? @db.Timestamptz(6)
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([clerk_user_id], map: "idx_applications_clerk_user")
+  @@index([created_at(sort: Desc)], map: "idx_applications_created")
+  @@index([status], map: "idx_applications_status")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model buying_templates {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id       String
+  template_name String
+  product_list  Json      @default("[]")
+  last_used_at  DateTime? @default(now()) @db.Timestamptz(6)
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([user_id], map: "idx_buying_templates_user_id")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model customers {
+  clerk_user_id   String    @id
+  full_name       String?
+  email           String?
+  phone           String?
+  address         String?
+  tier            String?   @default("Personas Naturales")
+  total_orders    Int?      @default(0)
+  total_spent     Int?      @default(0)
+  last_order_at   DateTime? @db.Timestamptz(6)
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
+  business_name   String?
+  nit             String?
+  credit_limit    Int?      @default(0)
+  current_balance Int?      @default(0)
+  payment_terms   String?   @default("Contado")
+  assigned_rep    String?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model daily_operational_ledgers {
+  id                      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  operational_date        DateTime  @unique @db.Date
+  total_orders_processed  Int       @default(0)
+  total_revenue_collected Decimal   @default(0) @db.Decimal(12, 2)
+  closed_at               DateTime? @default(now()) @db.Timestamptz(6)
+  closed_by_user          String
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model global_settings {
+  id              String    @id @default("default")
+  track_inventory Boolean   @default(false)
+  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model kit_items {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  kit_id     String?   @db.Uuid
+  product_id String?
+  quantity   Decimal   @default(1) @db.Decimal
+  kits       kits?     @relation(fields: [kit_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products   products? @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([kit_id, product_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model kits {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  slug        String      @unique
+  fixed_price Decimal     @db.Decimal
+  banner_url  String?
+  status      String?     @default("active")
+  created_at  DateTime?   @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime?   @default(now()) @db.Timestamptz(6)
+  kit_items   kit_items[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model marketing_leads {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  full_name     String
+  business_name String?
+  business_type String
+  phone         String
+  email         String?
+  source        String?   @default("Landing Page")
+  status        String    @default("Nuevo")
+  notes         String?   @default("")
+  assigned_to   String?
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model order_items {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  order_id          String    @db.Uuid
+  product_id        String
+  product_name      String
+  quantity          Int
+  price_at_purchase Int
+  created_at        DateTime? @default(now()) @db.Timestamptz(6)
+  orders            orders    @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model orders {
+  id                      String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerk_user_id           String?
+  customer_name           String
+  customer_email          String
+  customer_phone          String
+  delivery_address        String
+  delivery_municipality   String
+  total_amount            Int
+  status                  String        @default("Pendiente")
+  payment_method          String
+  notes                   String?       @default("")
+  created_at              DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime?     @default(now()) @db.Timestamptz(6)
+  scheduled_delivery_date DateTime?     @default(dbgenerated("CURRENT_DATE")) @db.Date
+  is_conflicted           Boolean?      @default(false)
+  conflict_reason         String?
+  purchase_tier           String?       @default("RETAIL")
+  order_items             order_items[]
+
+  @@index([clerk_user_id], map: "idx_orders_customer")
+  @@index([status], map: "idx_orders_status")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model products {
+  id                          String                        @id
+  name                        String
+  category                    String
+  unit                        String
+  base_cost                   Int                           @default(0)
+  price_retail                Int                           @default(0)
+  price_micro                 Int                           @default(0)
+  price_restaurant            Int                           @default(0)
+  previous_price_retail       Int?
+  previous_price_micro        Int?
+  previous_price_restaurant   Int?
+  stock_quantity              Int                           @default(100)
+  is_active                   Boolean                       @default(true)
+  is_in_season                Boolean                       @default(true)
+  image_url                   String?
+  created_at                  DateTime?                     @default(now()) @db.Timestamptz(6)
+  updated_at                  DateTime?                     @default(now()) @db.Timestamptz(6)
+  description                 String?
+  subcategory                 String?
+  agricultural_shrinkage_logs agricultural_shrinkage_logs[]
+  kit_items                   kit_items[]
+
+  @@index([category], map: "idx_products_category")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model suppliers {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                String
+  contact_name        String?
+  phone               String?
+  email               String?
+  farm_location       String?
+  supplied_categories String[]  @default([])
+  status              String    @default("Activo")
+  created_at          DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model system_settings {
+  id               String    @id @default("global")
+  business_name    String?   @default("Surtifruver La Gaviota")
+  nit              String?   @default("900.123.456-7")
+  address          String?   @default("Centro de Abastos - Bucaramanga")
+  phone            String?   @default("+57 315 XXX XXXX")
+  hours            String?   @default("Lunes a Sábado: 3:00 AM - 6:00 PM | Domingos: 4:00 AM - 2:00 PM")
+  delivery_zones   Json?     @default("[{\"name\": \"Bucaramanga Centro\", \"enabled\": true, \"minOrder\": 25000}, {\"name\": \"Floridablanca\", \"enabled\": true, \"minOrder\": 35000}, {\"name\": \"Girón\", \"enabled\": true, \"minOrder\": 40000}, {\"name\": \"Piedecuesta\", \"enabled\": true, \"minOrder\": 45000}, {\"name\": \"Lebrija\", \"enabled\": false, \"minOrder\": 80000}, {\"name\": \"San Gil\", \"enabled\": false, \"minOrder\": 100000}, {\"name\": \"Socorro\", \"enabled\": false, \"minOrder\": 120000}, {\"name\": \"Cúcuta\", \"enabled\": false, \"minOrder\": 200000}]")
+  notifications    Json?     @default("{\"dailyReport\": true, \"emailLowStock\": true, \"emailNewOrder\": true, \"whatsappDelivery\": true, \"whatsappNewOrder\": false}")
+  retail_margin    Decimal?  @default(25) @db.Decimal
+  micro_margin     Decimal?  @default(15) @db.Decimal
+  wholesale_margin Decimal?  @default(5) @db.Decimal
+  updated_at       DateTime? @default(now()) @db.Timestamptz(6)
+}

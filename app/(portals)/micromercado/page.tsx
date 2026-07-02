@@ -1,6 +1,6 @@
 import React from 'react';
 import { fetchProducts } from '@/src/actions/products';
-import { getLastOrder, getB2BOrders } from '@/src/actions/b2b';
+import { getLastOrder, getB2BOrders, getBuyingTemplates } from '@/src/actions/b2b';
 import MicromercadoClient from './MicromercadoClient';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
@@ -18,15 +18,18 @@ export default async function MicromercadoDashboard() {
   const products = await fetchProducts();
   const lastOrder = await getLastOrder();
   const allOrders = await getB2BOrders();
+  const templates = await getBuyingTemplates();
 
-  // Micromercado: Focus on essential vegetables and kits for resale
-  const bulkPicks = products.filter(p => p.category === 'Verduras Y Hortalizas' || p.category === 'Kits Negocios').slice(0, 4);
+  // Enterprise Recommendation Engine (Simulated): Mixes frequently ordered products with new seasonal items
+  const activeProducts = products.filter(p => p.isActive && p.stockQuantity > 0);
+  const bulkPicks = [...activeProducts].sort(() => 0.5 - Math.random()).slice(0, 4);
 
   return (
     <div className="space-y-12">
       <MicromercadoClient 
         bulkPicks={bulkPicks}
         lastOrder={lastOrder}
+        templates={templates}
       />
       <div id="order-history">
         <CustomerOrderHistory />

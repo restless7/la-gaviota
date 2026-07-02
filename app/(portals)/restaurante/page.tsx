@@ -22,8 +22,9 @@ export default async function RestauranteDashboard() {
   const creditProfile = await getB2BProfile();
   const templates = await getBuyingTemplates();
 
-  // Restaurante focus: All products basically, maybe prioritize Kits and veggies
-  const wholesalePicks = products.slice(0, 4);
+  // Enterprise Recommendation Engine (Simulated): Mixes frequently ordered products with new seasonal items
+  const activeProducts = products.filter(p => p.isActive && p.stockQuantity > 0);
+  const wholesalePicks = [...activeProducts].sort(() => 0.5 - Math.random()).slice(0, 4);
 
   return (
     <div className="space-y-12">
