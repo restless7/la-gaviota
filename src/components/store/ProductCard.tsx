@@ -33,6 +33,7 @@ export function ProductCard({ product }: { product: Product }) {
   const { role } = useUserRole();
   const { addToCart, setIsCartOpen } = useCart();
   const [isHovered, setIsHovered] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Dynamic Pricing Logic directly integrated via Context Switch
   const activePrice = role === 'Restaurantes'
@@ -51,11 +52,13 @@ export function ProductCard({ product }: { product: Product }) {
   const initial = product.name.charAt(0).toUpperCase();
 
   return (
-    <div
-       className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full relative"
-       onMouseEnter={() => setIsHovered(true)}
-       onMouseLeave={() => setIsHovered(false)}
-    >
+    <>
+      <div
+         className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full relative cursor-pointer"
+         onMouseEnter={() => setIsHovered(true)}
+         onMouseLeave={() => setIsHovered(false)}
+         onClick={() => setIsExpanded(true)}
+      >
        {/* Image Section — Dynamic Category Placeholder or Actual Image */}
        <div className={`aspect-square w-full relative bg-gradient-to-br ${gradient} overflow-hidden flex items-center justify-center`}>
           {product.imageUrl ? (
@@ -87,7 +90,7 @@ export function ProductCard({ product }: { product: Product }) {
 
               {role === 'Personas Naturales' ? (
                  <button
-                    onClick={handleAddToCart}
+                    onClick={(e) => { e.stopPropagation(); handleAddToCart(); }}
                     className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] hover:text-white px-3 py-2 rounded-full font-bold text-xs sm:text-sm shadow-lg hover:-translate-y-0.5 transition-all w-[90%] truncate flex items-center justify-center gap-1.5"
                  >
                     <svg className="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
@@ -96,13 +99,13 @@ export function ProductCard({ product }: { product: Product }) {
               ) : (
                  <div className="flex gap-1.5 w-[94%]">
                     <button
-                       onClick={handleAddToCart}
+                       onClick={(e) => { e.stopPropagation(); handleAddToCart(); }}
                        className="bg-white border border-[#83b745] text-[#83b745] hover:bg-[#83b745] hover:text-white px-1 sm:px-2 py-1.5 rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-xs shadow-md transition-all flex-1 text-center"
                     >
                        +1 {product.unit}
                     </button>
                     <button
-                       onClick={() => { addToCart(product, 10); setIsCartOpen(true); }}
+                       onClick={(e) => { e.stopPropagation(); addToCart(product, 10); setIsCartOpen(true); }}
                        className="bg-[#83b745] hover:bg-[#6c9c36] text-white px-1 sm:px-2 py-1.5 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-xs shadow-md transition-all flex-1 text-center truncate"
                     >
                        +10 (Caja)
@@ -141,7 +144,84 @@ export function ProductCard({ product }: { product: Product }) {
              )}
           </div>
        </div>
-    </div>
+     </div>
+
+     {/* Expanded Quick View Modal */}
+     {isExpanded && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+           <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsExpanded(false)}></div>
+           <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 p-6 md:p-10 flex flex-col md:flex-row gap-8">
+              <button onClick={() => setIsExpanded(false)} className="absolute top-4 right-4 text-gray-400 hover:text-red-500 font-bold w-10 h-10 flex items-center justify-center bg-slate-50 hover:bg-slate-100 rounded-full transition-colors z-10 text-xl">✕</button>
+              
+              <div className={`w-full md:w-1/2 aspect-square relative bg-gradient-to-br ${gradient} rounded-2xl overflow-hidden flex items-center justify-center shadow-inner`}>
+                 {product.imageUrl ? (
+                    <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
+                 ) : (
+                    <>
+                       <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                         <span className="text-[120px] select-none">{emoji}</span>
+                       </div>
+                       <div className="relative z-10 flex flex-col items-center gap-1">
+                         <span className="text-8xl font-black text-white/90 drop-shadow-lg">{initial}</span>
+                       </div>
+                    </>
+                 )}
+              </div>
+              
+              <div className="w-full md:w-1/2 flex flex-col justify-center">
+                 <span className="text-xs font-bold uppercase tracking-wider text-[#4CAF50] bg-[#4CAF50]/10 px-3 py-1.5 rounded-md mb-4 inline-block self-start">
+                   {product.category} {product.subcategory ? `> ${product.subcategory}` : ''}
+                 </span>
+                 <h2 className="text-3xl font-black text-slate-800 mb-3 leading-tight">{product.name}</h2>
+                 
+                 <div className="flex items-baseline gap-2 mb-6 pb-6 border-b border-gray-100">
+                    <span className="text-4xl font-black text-slate-900">{formatPrice(activePrice)}</span>
+                    <span className="text-sm font-semibold text-gray-500 uppercase">/ {product.unit}</span>
+                    {role !== 'Personas Naturales' && (
+                       <span className="ml-3 bg-[#FFCC00]/20 text-yellow-700 text-xs font-bold px-3 py-1 rounded-md">
+                          {role === 'Restaurantes' ? 'Tarifa Mayorista' : 'Tarifa Micro'}
+                       </span>
+                    )}
+                 </div>
+                 
+                 <div className="prose prose-sm text-gray-600 mb-8 max-h-[25vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-200 whitespace-pre-wrap">
+                    {product.description ? (
+                       <p className="leading-relaxed">{product.description}</p>
+                    ) : (
+                       <p className="italic text-gray-400">Producto fresco de primera calidad. Seleccionado cuidadosamente para cumplir con los estándares de La Gaviota.</p>
+                    )}
+                 </div>
+                 
+                 <div className="mt-auto">
+                    {role === 'Personas Naturales' ? (
+                       <button
+                          onClick={(e) => { e.stopPropagation(); handleAddToCart(); setIsExpanded(false); }}
+                          className="w-full bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] hover:text-white px-6 py-4 rounded-xl font-black text-lg shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+                       >
+                          <span>+</span> Añadir al Carrito
+                       </button>
+                    ) : (
+                       <div className="flex flex-col sm:flex-row gap-3">
+                          <button
+                             onClick={(e) => { e.stopPropagation(); handleAddToCart(); setIsExpanded(false); }}
+                             className="flex-1 bg-white border-2 border-[#83b745] text-[#83b745] hover:bg-[#83b745] hover:text-white px-4 py-4 rounded-xl font-black text-sm shadow-sm transition-all"
+                          >
+                             +1 {product.unit}
+                          </button>
+                          <button
+                             onClick={(e) => { e.stopPropagation(); addToCart(product, 10); setIsCartOpen(true); setIsExpanded(false); }}
+                             className="flex-1 bg-[#83b745] hover:bg-[#6c9c36] text-white px-4 py-4 rounded-xl font-black text-sm shadow-md transition-all"
+                          >
+                             Añadir Caja (+10)
+                          </button>
+                       </div>
+                    )}
+                 </div>
+              </div>
+           </div>
+        </div>
+     )}
+    </>
   );
 }
 

@@ -52,7 +52,7 @@ export function DeliveryScheduler() {
           </p>
           <h2 className="text-xl md:text-2xl font-black tracking-tight leading-none capitalize flex flex-col sm:flex-row sm:items-baseline gap-2">
              {nextDelivery} 
-             <span className="text-base font-semibold text-white/90 normal-case bg-black/10 px-2 py-0.5 rounded-md mt-1 sm:mt-0 inline-block">De 10:00 AM a 5:00 PM</span>
+             <span className="text-base font-semibold text-white/90 normal-case bg-black/10 px-2 py-0.5 rounded-md mt-1 sm:mt-0 inline-block">De 8:00 AM a 5:00 PM</span>
           </h2>
         </div>
       </div>
