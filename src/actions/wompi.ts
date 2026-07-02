@@ -67,13 +67,16 @@ export async function initializeWompiTransaction(formData: FormData, items: Chec
     };
   });
 
-  // Calculate delivery fee logic (matching frontend)
-  const deliveryCost = serverTotal >= 150000 && role === 'Personas Naturales' ? 0 : 
-                       (serverTotal >= 150000 ? 0 : 10000); // Generalized logic, adjust if necessary. 
-  // Wait, frontend logic is: remainingForFreeShipping = max(0, 150000 - total). If 0, delivery is 0. Else 10000.
-  // Actually, minOrder for Micromercados is 150000, and Restaurantes 300000, so they never pay delivery if they can checkout.
-  // So if order can be placed, and total >= 150000, it's 0. Else 10000 (only possible for Personas Naturales).
-  const finalServerTotal = serverTotal + (serverTotal >= 150000 ? 0 : 10000);
+  // Calculate delivery fee logic
+  let deliveryCost = 10000;
+  const city = formData.get('city') as string;
+  if (serverTotal >= 50000) {
+    deliveryCost = 0;
+  } else {
+    if (city === 'Bucaramanga') deliveryCost = 5000;
+    else if (city === 'Floridablanca' || city === 'Girón') deliveryCost = 8000;
+  }
+  const finalServerTotal = serverTotal + deliveryCost;
 
   // 5. Save order as Pending in Database
   const firstName = formData.get('firstName') as string;
@@ -83,7 +86,6 @@ export async function initializeWompiTransaction(formData: FormData, items: Chec
   const address = formData.get('address') as string;
   const apartment = formData.get('apartment') as string;
   const neighborhood = formData.get('neighborhood') as string;
-  const city = formData.get('city') as string;
   const notes = formData.get('notes') as string;
 
   const fullAddress = `${address}${apartment ? `, ${apartment}` : ''}${neighborhood ? `, ${neighborhood}` : ''}`;

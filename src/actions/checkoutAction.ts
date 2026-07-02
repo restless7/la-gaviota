@@ -1,6 +1,6 @@
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { createOrder } from './orders';
 import { Product } from './products';
 
@@ -12,6 +12,7 @@ export interface CheckoutItem {
 export async function submitCheckoutOrder(formData: FormData, items: CheckoutItem[], totalAmount: number) {
   try {
     const { userId } = await auth();
+    if (!userId) throw new Error("Usuario no autenticado");
   
   const firstName = formData.get('firstName') as string;
   const lastName = formData.get('lastName') as string;
@@ -27,6 +28,57 @@ export async function submitCheckoutOrder(formData: FormData, items: CheckoutIte
 
   const fullAddress = `${address}${apartment ? `, ${apartment}` : ''}${neighborhood ? `, ${neighborhood}` : ''}`;
 
+  // 1. Fetch user role to determine correct pricing
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  const role = (user.publicMetadata?.tier as string) || 'Personas Naturales';
+
+  // 2. Fetch fresh prices and stock from the database for anti-tampering
+  const { createClient } = await import('@supabase/supabase-js');
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const productIds = items.map(item => item.product.id);
+  const { data: dbProducts, error } = await supabase
+    .from('products')
+    .select('id, name, price_retail, price_micro, price_restaurant, stock_quantity')
+    .in('id', productIds);
+
+  if (error || !dbProducts) {
+    throw new Error('Error validando productos en la base de datos');
+  }
+
+  // Calculate true total
+  let serverTotal = 0;
+  const orderItems = items.map(clientItem => {
+    const dbProduct = dbProducts.find(p => p.id === clientItem.product.id);
+    if (!dbProduct) throw new Error(`Producto ${clientItem.product.id} no encontrado`);
+
+    let priceToUse = dbProduct.price_retail;
+    if (role === 'Micromercados') priceToUse = dbProduct.price_micro;
+    if (role === 'Restaurantes') priceToUse = dbProduct.price_restaurant;
+
+    serverTotal += priceToUse * clientItem.quantity;
+
+    return {
+      product_id: dbProduct.id,
+      product_name: dbProduct.name,
+      quantity: clientItem.quantity,
+      price_at_purchase: priceToUse,
+    };
+  });
+
+  // Calculate delivery fee logic
+  let deliveryCost = 10000;
+  if (serverTotal >= 50000) {
+    deliveryCost = 0;
+  } else {
+    if (city === 'Bucaramanga') deliveryCost = 5000;
+    else if (city === 'Floridablanca' || city === 'Girón') deliveryCost = 8000;
+  }
+  const finalServerTotal = serverTotal + deliveryCost;
+
   const orderData = {
     clerk_user_id: userId,
     customer_name: `${firstName} ${lastName}`,
@@ -34,27 +86,11 @@ export async function submitCheckoutOrder(formData: FormData, items: CheckoutIte
     customer_phone: phone,
     delivery_address: fullAddress,
     delivery_municipality: city,
-    total_amount: totalAmount,
+    total_amount: finalServerTotal,
     status: 'Pendiente' as const,
     payment_method: paymentMethod,
     notes: notes,
   };
-
-  const orderItems = items.map(item => ({
-    product_id: item.product.id,
-    product_name: item.product.name,
-    quantity: item.quantity,
-    price_at_purchase: 0, // We'll calculate this below
-  }));
-
-  // Calculate prices at purchase based on the same logic as the UI (for consistency)
-  // In a real scenario, you'd probably want to verify these on the server
-  // But for now we'll just pass the prices from the items if we had them.
-  // Let's assume the client passes the correct total.
-  
-  // To be safe, we should probably pass the unit price from the client too.
-  // For now, let's just use a placeholder or calculate if we have the role.
-  // Actually, let's just update the interface to include the price at purchase.
 
   const result = await createOrder(orderData, orderItems, false);
   

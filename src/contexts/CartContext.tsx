@@ -114,7 +114,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
 
   // Phase 5: Free shipping metrics
-  const freeShippingThreshold = 150000;
+  const freeShippingThreshold = 50000;
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - cartTotal);
   const progressPercent = Math.min(100, (cartTotal / freeShippingThreshold) * 100);
 

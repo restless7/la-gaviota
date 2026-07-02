@@ -20,12 +20,20 @@ export default function CheckoutPage() {
    const { role } = useUserRole();
    const [paymentMethod, setPaymentMethod] = useState<'wompi' | 'cash'>('wompi');
    const [isSubmitting, setIsSubmitting] = useState(false);
+   const [selectedCity, setSelectedCity] = useState('');
 
    const formatPrice = (price: number) => {
      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(price);
    };
 
-   const deliveryCost = items.length > 0 ? (remainingForFreeShipping === 0 ? 0 : 10000) : 0;
+   let deliveryCost = 10000;
+   if (items.length === 0 || remainingForFreeShipping === 0) {
+      deliveryCost = 0;
+   } else {
+      if (selectedCity === 'Bucaramanga') deliveryCost = 5000;
+      else if (selectedCity === 'Floridablanca' || selectedCity === 'Girón') deliveryCost = 8000;
+   }
+   
    const finalTotal = cartTotal + deliveryCost;
 
 
@@ -184,12 +192,14 @@ export default function CheckoutPage() {
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
                         <label className="text-[13px] font-bold text-slate-800">Localidad / Ciudad *</label>
-                        <select required name="city" className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745]">
+                        <select required name="city" value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745]">
                            <option value="">Elige una opción...</option>
-                           <option>Bucaramanga</option>
-                           <option>Floridablanca</option>
-                           <option>Bogotá Norte</option>
-                           <option>Bogotá Sur</option>
+                           <option value="Bucaramanga">Bucaramanga</option>
+                           <option value="Floridablanca">Floridablanca</option>
+                           <option value="Girón">Girón</option>
+                           <option value="Piedecuesta">Piedecuesta</option>
+                           <option value="Bogotá Norte">Bogotá Norte</option>
+                           <option value="Bogotá Sur">Bogotá Sur</option>
                         </select>
                      </div>
 
@@ -267,7 +277,7 @@ export default function CheckoutPage() {
                            </label>
                            <label className="flex items-center gap-2 text-[13px] text-slate-800 font-medium">
                               <input type="radio" readOnly checked={remainingForFreeShipping > 0} className="mt-0.5 accent-[#83b745]" />
-                              <span>Envío BGA y AMB: <span className="font-bold">{formatPrice(10000)}</span></span>
+                              <span>Envío Estimado {selectedCity ? `(${selectedCity})` : ''}: <span className="font-bold">{remainingForFreeShipping > 0 ? formatPrice(deliveryCost) : formatPrice(0)}</span></span>
                            </label>
                         </div>
                      </div>
