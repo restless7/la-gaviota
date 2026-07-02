@@ -305,6 +305,13 @@ export async function createProduct(product: Omit<Product, 'id' | 'previousPrice
 }
 
 export async function updateProduct(id: string, product: Omit<Product, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
+  // Fetch existing product to audit changes
+  const { data: oldProduct } = await supabase
+    .from('products')
+    .select('image_url, description')
+    .eq('id', id)
+    .single();
+
   const { error } = await supabase
     .from('products')
     .update({
@@ -329,10 +336,25 @@ export async function updateProduct(id: string, product: Omit<Product, 'id' | 'p
     throw new Error('Failed to update product');
   }
 
+  // Audit specific field changes
+  let auditAction = 'Actualización de Producto';
+  let auditDetails = `Producto ID: ${id} actualizado.`;
+
+  if (oldProduct) {
+    const changedFields = [];
+    if (oldProduct.image_url !== product.imageUrl) changedFields.push('Imagen');
+    if (oldProduct.description !== product.description) changedFields.push('Descripción');
+    
+    if (changedFields.length > 0) {
+      auditAction = `Actualización de Producto (${changedFields.join(', ')})`;
+      auditDetails = `Se actualizó: ${changedFields.join(', ')} para el producto ${product.name || id}.`;
+    }
+  }
+
   await logAdminAction(
     'SUPPLIER',
-    'Actualización de Producto',
-    `Producto ID: ${id} actualizado.`,
+    auditAction,
+    auditDetails,
     id
   );
 
