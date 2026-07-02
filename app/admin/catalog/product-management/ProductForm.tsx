@@ -136,10 +136,21 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         newValue = (e.target as HTMLInputElement).checked;
       }
       
-      return {
-        ...prev,
-        [name]: newValue
-      };
+      const updatedData = { ...prev, [name]: newValue };
+
+      // Auto-calculate prices based on margins (Retail: 25%, Micro: 15%, Restaurant: 5%)
+      if (name === 'baseCost') {
+        updatedData.priceRetail = Math.round(newValue * 1.25);
+        updatedData.priceMicro = Math.round(newValue * 1.15);
+        updatedData.priceRestaurant = Math.round(newValue * 1.05);
+      } else if (name === 'priceRetail') {
+        const calculatedBase = Math.round(newValue / 1.25);
+        updatedData.baseCost = calculatedBase;
+        updatedData.priceMicro = Math.round(calculatedBase * 1.15);
+        updatedData.priceRestaurant = Math.round(calculatedBase * 1.05);
+      }
+      
+      return updatedData;
     });
   };
 
