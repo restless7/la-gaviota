@@ -14,15 +14,27 @@ export interface TickerItem {
 export function LiveMarketTicker({ items }: { items: TickerItem[] }) {
   if (!items || items.length === 0) return null;
 
-  // Duplicate items to create infinite scroll effect seamlessly
-  const scrollItems = [...items, ...items, ...items, ...items];
+  // 1. Filtrar solo los productos que tuvieron variación de precio hoy
+  const activeItems = items.filter(item => item.delta !== 0);
+  
+  // 2. Si no hay ninguno (Fallback State), mostramos solo los primeros 10 para no saturar la pantalla
+  const displayItems = activeItems.length > 0 ? activeItems : items.slice(0, 15);
+
+  // 3. Duplicamos solo 1 vez (2 arrays) para el efecto infinito suave (-50% transform)
+  const scrollItems = [...displayItems, ...displayItems];
+
+  // 4. Velocidad dinámica constante (aprox 4 segundos de lectura por cada item mostrado)
+  const duration = displayItems.length * 4;
 
   return (
     <div className="w-full bg-slate-50 border-b border-gray-200 overflow-hidden relative flex items-center h-10 select-none">
       <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-slate-50 to-transparent z-10"></div>
       <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-50 to-transparent z-10"></div>
       
-      <div className="flex animate-marquee hover:[animation-play-state:paused] whitespace-nowrap w-max">
+      <div 
+        className="flex animate-marquee hover:[animation-play-state:paused] whitespace-nowrap w-max"
+        style={{ animationDuration: `${duration}s` }}
+      >
         {scrollItems.map((item, i) => {
           const isUp = item.delta > 0;
           const isDown = item.delta < 0;
