@@ -258,13 +258,20 @@ export async function applyMacroMargins(
 }
 
 export async function createProduct(product: Omit<Product, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
-  // Generate a simple ID like prd_XXXX
-  const { data: countData } = await supabase
+  // Generate a new ID like prd_XXXX based on the highest existing ID
+  const { data: lastProduct } = await supabase
     .from('products')
-    .select('id', { count: 'exact', head: true });
-  
-  const count = (countData as any)?.length || 0;
-  const newId = `prd_${String(count + 1).padStart(4, '0')}`;
+    .select('id')
+    .order('id', { ascending: false })
+    .limit(1)
+    .single();
+
+  let nextNum = 1;
+  if (lastProduct && lastProduct.id.startsWith('prd_')) {
+    const lastNum = parseInt(lastProduct.id.replace('prd_', ''));
+    if (!isNaN(lastNum)) nextNum = lastNum + 1;
+  }
+  const newId = `prd_${String(nextNum).padStart(4, '0')}`;
 
   const { error } = await supabase
     .from('products')
