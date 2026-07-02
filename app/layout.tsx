@@ -11,8 +11,66 @@ import ConditionalWrapper from "@/app/components/layout/ConditionalWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Surtifruver La Gaviota | La forma chévere de mercar",
-  description: "Mercado fresco directo del campo. Precios justos al detalle, descuentos para micromercados y tarifas mayoristas para restaurantes.",
+  title: {
+    template: '%s | La Gaviota Fruver',
+    default: 'Surtifruver La Gaviota | Verduras y Frutas Frescas a Domicilio en Bucaramanga',
+  },
+  description: 'Mercado fresco directo del campo. Proveedor mayorista de frutas y verduras frescas para restaurantes y hogares en Bucaramanga, Floridablanca y Girón. Envíos gratis desde $50.000.',
+  keywords: ['Fruver Bucaramanga', 'verduras a domicilio', 'proveedor restaurantes Bucaramanga', 'frutas al por mayor', 'mercado fresco Bucaramanga', 'fruver a domicilio', 'frutas y verduras Floridablanca'],
+  authors: [{ name: 'La Gaviota Fruver' }],
+  creator: 'La Gaviota Fruver',
+  publisher: 'La Gaviota Fruver',
+  alternates: {
+    canonical: 'https://www.lagaviotafruver.com',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'es_CO',
+    url: 'https://www.lagaviotafruver.com',
+    siteName: 'La Gaviota Fruver Bucaramanga',
+    title: 'Surtifruver La Gaviota | Frutas y Verduras a Domicilio',
+    description: 'Proveedor de frutas y verduras en Bucaramanga, Floridablanca y Girón. Mercado fresco directo del campo.',
+    images: [
+      {
+        url: 'https://www.lagaviotafruver.com/IMAGES/logo.jpeg',
+        width: 800,
+        height: 600,
+        alt: 'Surtifruver La Gaviota',
+      }
+    ]
+  }
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Surtifruver La Gaviota',
+  image: 'https://www.lagaviotafruver.com/IMAGES/logo.jpeg',
+  description: 'Proveedor mayorista de frutas y verduras frescas para restaurantes y hogares en Bucaramanga, Floridablanca y Girón.',
+  url: 'https://www.lagaviotafruver.com',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Bucaramanga',
+    addressRegion: 'Santander',
+    postalCode: '680001',
+    addressCountry: 'CO'
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 7.1193,
+    longitude: -73.1227
+  },
+  priceRange: 'COP',
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: [
+        'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+      ],
+      opens: '08:00',
+      closes: '20:00'
+    }
+  ]
 };
 
 export default function RootLayout({
@@ -42,6 +100,12 @@ export default function RootLayout({
       }}
     >
       <html lang="es">
+        <head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        </head>
         <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 text-slate-800`}>
           <UserRoleProvider>
             <CartProvider>
