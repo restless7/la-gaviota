@@ -97,7 +97,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
               className="object-cover object-top transition-all duration-1000 ease-in-out"
               priority
             />
-            <div className="absolute inset-0 z-10 flex flex-col justify-end py-12 bg-gradient-to-t from-black/60 to-transparent">
+            <div className="absolute inset-0 z-10 flex flex-col justify-end py-12">
                <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
                  <h2 className="text-4xl md:text-6xl font-black text-white font-serif drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] uppercase tracking-tight">{selectedCategory}</h2>
                </div>
