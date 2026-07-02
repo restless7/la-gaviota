@@ -54,18 +54,24 @@ export default function MicromercadoClient({
 
   return (
     <div className="animate-fade-in relative">
-      {/* Welcome & Wholesale Banner */}
-      <div className="flex flex-col md:flex-row items-center bg-white rounded-3xl p-8 lg:p-12 shadow-sm border border-gray-200 gap-8 mb-10 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFCC00]/20 rounded-full blur-3xl -mr-20 -mt-20 z-0"></div>
-        <div className="w-32 h-32 md:w-48 md:h-48 relative shrink-0 z-10 bg-slate-100 rounded-3xl overflow-hidden shadow-lg border border-gray-100">
-           <Image src="/images/frutas-banner.jpg" alt="Micromercado Banner" fill className="object-cover" />
+      {/* Welcome & Wholesale Banner Premium UI */}
+      <div className="w-full relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl mb-12 flex flex-col md:flex-row min-h-[300px]">
+        <div className="absolute inset-0 md:w-1/2 right-0 left-auto z-0 h-64 md:h-full">
+           <Image src="/IMAGES/mi-portal.jpeg" alt="Portal Micromercado" fill className="object-cover object-center" priority />
+           <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
+           <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent md:hidden"></div>
         </div>
-        <div className="flex-1 z-10 text-center md:text-left">
-           <span className="text-yellow-600 font-black tracking-widest uppercase text-xs sm:text-sm mb-2 block">Portal Bodega & Micromercados</span>
-           <h1 className="text-3xl lg:text-5xl font-black text-slate-800 font-serif mb-4 leading-tight">
+        
+        <div className="relative z-10 flex flex-col justify-center p-8 md:p-12 lg:p-16 md:w-2/3">
+           <div className="inline-flex items-center gap-2 mb-4">
+              <span className="bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 text-xs font-black tracking-widest uppercase px-4 py-1.5 rounded-full backdrop-blur-md">
+                 Portal Bodega & Micromercados
+              </span>
+           </div>
+           <h1 className="text-4xl lg:text-5xl font-black text-white font-serif mb-4 leading-tight drop-shadow-md">
              Surta su negocio <span className="text-yellow-600">con la mejor calidad</span>
            </h1>
-           <p className="text-gray-500 font-medium max-w-xl mx-auto md:mx-0">
+           <p className="text-gray-300 font-medium max-w-xl md:mx-0">
              Inventario fresco garantizado. Disfrute de su tarifa especial &quot;Micromercados&quot; en todos nuestros productos.
            </p>
         </div>

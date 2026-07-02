@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { ProductCard } from '@/src/components/store/ProductCard';
 import { useCart } from '@/src/contexts/CartContext';
 import { initializeWompiBalancePayment } from '@/src/actions/wompi';
@@ -76,19 +77,24 @@ export default function RestauranteClient({
   return (
     <div className="animate-fade-in">
       <Script src="https://checkout.wompi.co/widget.js" strategy="lazyOnload" />
-      {/* Welcome & Restaurantes Banner */}
-      <div className="flex flex-col md:flex-row items-center bg-slate-900 rounded-3xl p-8 lg:p-12 shadow-xl mb-10 overflow-hidden relative border border-slate-800">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('/IMAGES/carnes-banner.jpg')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
-        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-slate-900 to-transparent"></div>
+      {/* Welcome & Wholesale Banner Premium UI */}
+      <div className="w-full relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl mb-12 flex flex-col md:flex-row min-h-[300px]">
+        <div className="absolute inset-0 md:w-1/2 right-0 left-auto z-0 h-64 md:h-full">
+           <Image src="/IMAGES/mi-portal.jpeg" alt="Portal Restaurantes" fill className="object-cover object-center" priority />
+           <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
+           <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent md:hidden"></div>
+        </div>
         
-        <div className="flex-1 z-10 text-center md:text-left relative">
-           <span className="text-[#83b745] font-black tracking-widest uppercase text-xs sm:text-sm mb-3 border border-[#83b745] inline-block px-3 py-1 rounded-sm">
-              Dashboard Mayorista B2B
-           </span>
-           <h1 className="text-3xl lg:text-5xl font-black text-white font-serif mb-4 leading-tight">
+        <div className="relative z-10 flex flex-col justify-center p-8 md:p-12 lg:p-16 md:w-2/3">
+           <div className="inline-flex items-center gap-2 mb-4">
+              <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs font-black tracking-widest uppercase px-4 py-1.5 rounded-full backdrop-blur-md">
+                 Dashboard Mayorista B2B
+              </span>
+           </div>
+           <h1 className="text-4xl lg:text-5xl font-black text-white font-serif mb-4 leading-tight drop-shadow-md">
              Portal <span className="text-blue-400">Restaurantes</span>
            </h1>
-           <p className="text-gray-300 font-medium max-w-2xl mx-auto md:mx-0">
+           <p className="text-gray-300 font-medium max-w-xl md:mx-0">
              Gestione sus insumos diarios con la máxima eficiencia. Sus precios mayoristas ya han sido aplicados automáticamente a todo el catálogo.
            </p>
         </div>

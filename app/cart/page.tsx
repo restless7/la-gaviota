@@ -12,11 +12,33 @@ export default function CartPage() {
 
    const formatPrice = (p: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(p);
 
+   const [randomEmptyImage, setRandomEmptyImage] = React.useState('/IMAGES/empty-cart-seagull.jpeg');
+
+   React.useEffect(() => {
+      const emptyImages = [
+         '/IMAGES/empty-cart-seagull.jpeg',
+         '/IMAGES/empty-cart-seagull1.jpeg',
+         '/IMAGES/empty-cart-seagull2.jpeg',
+         '/IMAGES/empty-cart-seagull3.jpeg'
+      ];
+      setRandomEmptyImage(emptyImages[Math.floor(Math.random() * emptyImages.length)]);
+   }, []);
+
    if (items.length === 0) {
       return (
-         <div className="max-w-4xl mx-auto px-4 py-24 text-center">
-            <h1 className="text-3xl font-black mb-6">Tu carrito está vacío</h1>
-            <Link href="/" className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] font-bold py-3 px-8 rounded-full">
+         <div className="max-w-4xl mx-auto px-4 py-24 text-center flex flex-col items-center">
+            <div className="relative w-64 h-64 md:w-80 md:h-80 mb-8">
+               <Image 
+                 src={randomEmptyImage} 
+                 alt="Carrito Vacío" 
+                 fill 
+                 className="object-contain drop-shadow-xl"
+                 priority
+               />
+            </div>
+            <h1 className="text-3xl font-black mb-6 font-serif text-slate-800">Tu carrito está vacío</h1>
+            <p className="text-gray-500 mb-8 max-w-md mx-auto">¡Es hora de llenarlo con lo mejor del campo colombiano! Descubre nuestros vegetales y frutas más frescos.</p>
+            <Link href="/" className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all text-lg tracking-wide">
                Comprar Productos
             </Link>
          </div>
@@ -39,6 +61,13 @@ export default function CartPage() {
             
             {/* Left side: Cart Items */}
             <div className="w-full lg:w-2/3">
+               <div className="w-full h-48 md:h-64 relative rounded-3xl overflow-hidden mb-8 shadow-md">
+                  <Image src="/IMAGES/fill-cart.jpeg" alt="Tus Productos" fill className="object-cover object-center" priority />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6 md:p-8">
+                     <h2 className="text-3xl md:text-4xl font-black text-white font-serif drop-shadow-md">Tus Selecciones</h2>
+                  </div>
+               </div>
+
                <div className="flex justify-between border-b border-gray-200 pb-4 mb-6">
                   <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Producto</span>
                   <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total</span>

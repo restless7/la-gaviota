@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useUser, SignInButton } from '@clerk/nextjs';
+import Image from 'next/image';
 import { submitBusinessApplication } from '@/src/actions/businessApplications';
 import { Building2, Store, ChefHat, ArrowRight, ArrowLeft, CheckCircle2, Shield, Truck, Percent, Send, Loader2 } from 'lucide-react';
 import type { BusinessTier } from '@/src/lib/supabase';
@@ -22,6 +23,7 @@ const TIERS = [
     border: 'border-yellow-400',
     bg: 'bg-yellow-50',
     text: 'text-yellow-700',
+    image: '/IMAGES/aplicar-negocio-micromercado.jpeg'
   },
   {
     id: 'Restaurantes' as BusinessTier,
@@ -39,6 +41,7 @@ const TIERS = [
     border: 'border-green-500',
     bg: 'bg-green-50',
     text: 'text-green-700',
+    image: '/IMAGES/aplicar-negocio-restaurante.jpeg'
   },
 ];
 
@@ -179,12 +182,19 @@ export default function AplicarNegocioPage() {
                   <button
                     key={tier.id}
                     onClick={() => setSelectedTier(tier.id)}
-                    className={`text-left p-8 rounded-2xl border-2 transition-all ${isSelected ? `${tier.border} shadow-xl scale-[1.02]` : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'}`}
+                    className={`text-left rounded-2xl border-2 overflow-hidden transition-all flex flex-col ${isSelected ? `${tier.border} shadow-xl scale-[1.02]` : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'}`}
                   >
-                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${tier.color} flex items-center justify-center mb-4 shadow-md`}>
-                      <Icon className="w-7 h-7 text-white" />
-                    </div>
-                    <h3 className="text-xl font-black text-slate-800 mb-1">{tier.title}</h3>
+                    {tier.image && (
+                      <div className="w-full h-48 relative">
+                        <Image src={tier.image} alt={tier.title} fill className="object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div className={`absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-gradient-to-br ${tier.color} flex items-center justify-center shadow-md border-2 border-white`}>
+                          <Icon className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                    )}
+                    <div className="p-8 pt-6 flex-1">
+                      <h3 className="text-xl font-black text-slate-800 mb-1">{tier.title}</h3>
                     <p className="text-sm text-gray-500 mb-4">{tier.description}</p>
                     <p className="text-xs font-bold text-gray-400 uppercase mb-3">Pedido mínimo: {tier.minOrder}</p>
                     <ul className="space-y-2">
@@ -200,6 +210,7 @@ export default function AplicarNegocioPage() {
                         ✓ Seleccionado
                       </div>
                     )}
+                    </div>
                   </button>
                 );
               })}
