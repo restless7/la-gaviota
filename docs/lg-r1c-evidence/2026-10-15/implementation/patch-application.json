@@ -1,0 +1,28 @@
+{
+  "workspace": "/tmp/la-gaviota-lg-r1c-20261015/application",
+  "head": "49add73ae90b837c36553a0f2b535267c9610143",
+  "genuinely_independent_git": true,
+  "no_object_alternates": true,
+  "no_git_hardlinks_requested": true,
+  "no_origin_remote": true,
+  "no_production_env": true,
+  "patches": [
+    {
+      "patch": "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/docs/lg-r1b-evidence/2026-10-15/authorization/application-security-proposal.patch",
+      "sha256": "910b8fce50bc87dfa269a22969e463c52563eadd7ceb0dd7b58b7db6e852c3d1",
+      "check_exit": 0,
+      "apply_exit": 0
+    },
+    {
+      "patch": "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/docs/lg-r1b-evidence/2026-10-15/reproducibility/dependency-reconciliation.patch",
+      "sha256": "3eb6ac75f3211aa3a300026ecc44e46a4403395952bd4e0bdf111f7be90692ac",
+      "check_exit": 0,
+      "apply_exit": 0
+    }
+  ],
+  "applied_files": 55,
+  "app_overlay_hashes_match": 53,
+  "elapsed_seconds": 4.541,
+  "status": " M app/admin/catalog/kits/KitsClient.tsx\n M app/admin/catalog/kits/page.tsx\n M app/admin/catalog/product-management/InventoryClient.tsx\n M app/admin/catalog/product-management/ProductForm.tsx\n M app/admin/catalog/product-management/[id]/page.tsx\n M app/admin/catalog/product-management/page.tsx\n M app/admin/layout.tsx\n M app/admin/marketing/page.tsx\n M app/admin/page.tsx\n M app/admin/pricing/PricingClient.tsx\n M app/admin/pricing/page.tsx\n M app/api/marketing/abandoned-cart/sync/route.ts\n M app/api/marketing/abandoned-cart/trigger/route.ts\n M app/api/marketing/lead-capture/route.ts\n M app/api/marketing/loyalty/reorder/route.ts\n M app/cart/page.tsx\n M app/checkout/page.tsx\n M app/components/market/PriceDropPopup.tsx\n M app/page.tsx\n M app/product/[id]/page.tsx\n M middleware.ts\n M next.config.ts\n M package-lock.json\n M package.json\n M src/actions/analytics.ts\n M src/actions/audit.ts\n M src/actions/b2b.ts\n M src/actions/businessApplications.ts\n M src/actions/checkoutAction.ts\n M src/actions/customers.ts\n M src/actions/dashboard.ts\n M src/actions/kits.ts\n M src/actions/orders.ts\n M src/actions/products.ts\n M src/actions/settings.ts\n M src/actions/suppliers.ts\n M src/actions/systemSettings.ts\n M src/actions/users.ts\n M src/actions/wompi.ts\n M src/components/cart/CartDrawer.tsx\n M src/components/cart/MiniCartDropdown.tsx\n M src/components/portals/CustomerOrderHistory.tsx\n M src/components/portals/OrderHistoryClient.tsx\n M src/components/store/ProductCard.tsx\n M src/components/store/ProductDetailClient.tsx\n M src/components/store/ShopView.tsx\n M src/contexts/CartContext.tsx\n M src/hooks/useRBAC.ts\n M src/lib/audit.ts\n?? src/actions/media.ts\n?? src/lib/cartPersistence.ts\n?? src/lib/server/\n",
+  "owner_tier_decision": "EXPLICIT keep frozen ADMIN and SUPER_ADMIN tiers.manage"
+}

@@ -1,0 +1,122 @@
+{
+  "startedAt": "2026-10-15T18:54:03.092Z",
+  "layer": "ACTUAL_LOCAL_NEXT_HTTP_ANONYMOUS;SHARED_CONFIG_NO_LOGIN",
+  "routes": [
+    {
+      "route": "/dashboard",
+      "http": 307,
+      "location": {
+        "local": false,
+        "path": "/v1/client/handshake",
+        "hasRedirectParameter": true
+      },
+      "bodyBytes": 224,
+      "bodySha256": "51513297301368fd1a8145462c83d2b88e3686c821e91419ce1d04b6436cbdf8",
+      "status": "PASS"
+    },
+    {
+      "route": "/retail",
+      "http": 307,
+      "location": {
+        "local": false,
+        "path": "/v1/client/handshake",
+        "hasRedirectParameter": true
+      },
+      "bodyBytes": 221,
+      "bodySha256": "231096a861851d9246fb7f21c79ce30a27d2d037435d9711980bc2d659c49c53",
+      "status": "PASS"
+    },
+    {
+      "route": "/micromercado",
+      "http": 307,
+      "location": {
+        "local": false,
+        "path": "/v1/client/handshake",
+        "hasRedirectParameter": true
+      },
+      "bodyBytes": 227,
+      "bodySha256": "9ce1c09091a8b5e1f4640cc49a329bd47aa399c2d0e9ad287ab3adfd7d8e3d46",
+      "status": "PASS"
+    },
+    {
+      "route": "/restaurante",
+      "http": 307,
+      "location": {
+        "local": false,
+        "path": "/v1/client/handshake",
+        "hasRedirectParameter": true
+      },
+      "bodyBytes": 226,
+      "bodySha256": "1670400bdbb342b842f2181e98e964c044a1d99ecd91917d756810724283d49f",
+      "status": "PASS"
+    },
+    {
+      "route": "/admin",
+      "http": 307,
+      "location": {
+        "local": false,
+        "path": "/v1/client/handshake",
+        "hasRedirectParameter": true
+      },
+      "bodyBytes": 220,
+      "bodySha256": "19f2fa852a3d6f4a830e0d7bb490eda149a862aa8426ebd1b6d772d929d8ff58",
+      "status": "PASS"
+    },
+    {
+      "route": "/admin/clientes/usuarios",
+      "http": 307,
+      "location": {
+        "local": false,
+        "path": "/v1/client/handshake",
+        "hasRedirectParameter": true
+      },
+      "bodyBytes": 242,
+      "bodySha256": "5a470db6874b2f5d8a025b6c2332cda395ca43739b81d31f226f526b521e60d4",
+      "status": "PASS"
+    },
+    {
+      "route": "/admin/settings",
+      "http": 307,
+      "location": {
+        "local": false,
+        "path": "/v1/client/handshake",
+        "hasRedirectParameter": true
+      },
+      "bodyBytes": 231,
+      "bodySha256": "15a48941494a09180eaaebeaf4c1697a1942c235ff32b4fa995451a410465be2",
+      "status": "PASS"
+    },
+    {
+      "route": "/sign-in",
+      "http": 307,
+      "location": {
+        "local": false,
+        "path": "/v1/client/handshake",
+        "hasRedirectParameter": true
+      },
+      "bodyBytes": 222,
+      "bodySha256": "ac0267d68bc2b3bf8610cb48b78513afe49691d22191b695f649556b501edde0",
+      "status": "FAIL"
+    },
+    {
+      "route": "/sign-up",
+      "http": 307,
+      "location": {
+        "local": false,
+        "path": "/v1/client/handshake",
+        "hasRedirectParameter": true
+      },
+      "bodyBytes": 222,
+      "bodySha256": "387f26392673cf826f00e3f5600efc180b7c55362a472e1b1b5678125fcfc1b6",
+      "status": "FAIL"
+    }
+  ],
+  "actions": [],
+  "limits": [
+    "Protected redirects checked without following them; no login or remote authentication writes.",
+    "Only three read actions with first-statement requireCapability invoked; no mutating actions.",
+    "HTTP error response is framework-level evidence; zero target operations established separately with source mocks, not server network instrumentation."
+  ],
+  "status": "PARTIAL",
+  "endedAt": "2026-10-15T18:54:03.147Z"
+}

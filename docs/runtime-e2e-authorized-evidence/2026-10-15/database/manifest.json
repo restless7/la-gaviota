@@ -1,0 +1,21 @@
+{
+  "DATABASE_GATE.md": "871f6d26cd8c2e6e02022bf11f429ddd1eb723c46819054411690e950e2d60f2",
+  "baseline-fixture.sql": "018c98ae260d2ce4be0eeed798811c0ef3ca27f1f93895cd4e34d55f836528c9",
+  "baseline-storage-stub.sql": "47c79f48150f2997b4bc40b669e3cb44cd0b536885aeec2cbf287d763c2fa452",
+  "browser-cash-order-select.sql.txt": "4645ad0623e3001d50b8a2b4b1989733401a492ff4ba41046479e814b47afd20",
+  "browser-cash-order-verification.json": "4fa9ac6ee97c2ae23e4950518f483f688d35494be97ec4c2533c777e5d544068",
+  "browser-cash-orders-verification.json": "56e0e5f31483bbf1d554a14a883fb54232041768413c0ccefd3152c7df6c4378",
+  "browser-micro-cash-order-select.sql.txt": "fc730bae079cd693ed0fe967c7f9a785613c00b1a5414870672ab86855f1336d",
+  "browser-restaurant-cash-order-select.sql.txt": "0d2bdf039aa6b72d05bdd5945269fa279ee57519a8c11208fa00530719878623",
+  "cleanup.json": "48f8480f1f98567c69390f72b1e454b0ff2a04ebbf853264a89eb7a6ecf4363c",
+  "clerk-test-row-map.json": "b1bb16bf2003f60309438f670649e161a0b53ace60749181eb9a49e39c1d0b28",
+  "cluster-control.py": "6b2c6afe4cee7c973852e3a923525ef8dbf2e72df3317d23a4f923dc58a62f15",
+  "cluster-settings.json": "e77a835476ca0a9c310594ce0289e3656ce7a31f3f22ef40cd84e42662181ce4",
+  "current-checkout-pg.cjs": "cce51d5bbdf18e0caec1a5636bff1bd36978fceb8f7a3bb7123107efb16403db",
+  "current-checkout-results.json": "fac39ee64fa4581b14eb5fa130bb84ab4f6104b26d32a31562fd9c468230edca",
+  "handoff-state.json": "2528651755280b997b103e90d273c8284637d2d052c30dba887c67cd55aa9540",
+  "local-inventory.json": "9928c911b066afe9e32f3c8c30cdf12e29c6cf6d6c2c1b391dd081a4145e384b",
+  "policy-model.sql.txt": "88eff4933862913457e11e92474d4cf9d83501b8f9afcacb340e238cfb164def",
+  "seed-clerk-test-identities.sql": "1f89c400b5da7c802f7366877546f484d2ccd2502686e4f3035557d6740e9b66",
+  "seed-stable.sql": "c2acea05f27befc91459cfadd412680fe3c0e293f024b931c6b9eb23f31c7c11"
+}

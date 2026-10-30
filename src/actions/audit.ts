@@ -1,10 +1,10 @@
 'use server';
+import { requireCapability } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+
 
 export interface AuditLog {
   id: string;
@@ -24,6 +24,9 @@ export interface AuditLog {
 }
 
 export async function fetchAuditLogs(): Promise<AuditLog[]> {
+  const actor = await requireCapability('audit.read');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase
     .from('audit_logs')
     .select('*')

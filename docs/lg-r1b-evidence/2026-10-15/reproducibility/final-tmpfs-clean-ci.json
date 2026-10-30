@@ -1,0 +1,56 @@
+{
+  "command": [
+    "npm",
+    "ci",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+    "--strict-peer-deps"
+  ],
+  "cwd": "/tmp/la-gaviota-lg-r1b-20261015/candidate-final",
+  "exitcode": 0,
+  "aborted": null,
+  "started_utc": "2026-10-15T13:13:44.606344+00:00",
+  "elapsed_s": 12.918,
+  "resource_limits": {
+    "root_free_min": 536870912,
+    "tmpfs_free_min": 4294967296,
+    "memory_available_min": 4294967296,
+    "log_each_max": 10485760
+  },
+  "before": {
+    "root_free": 2302955520,
+    "tmpfs_free": 16499781632,
+    "memory_available": 15143706624
+  },
+  "minimum_observed": {
+    "root_free": 2302869504,
+    "tmpfs_free": 15162540032,
+    "memory_available": 12956307456
+  },
+  "after": {
+    "root_free": 2302906368,
+    "tmpfs_free": 15156363264,
+    "memory_available": 13664165888
+  },
+  "environment_keys": [
+    "CI",
+    "LANG",
+    "PATH",
+    "npm_config_audit",
+    "npm_config_cache",
+    "npm_config_engine_strict",
+    "npm_config_fund",
+    "npm_config_globalconfig",
+    "npm_config_ignore_scripts",
+    "npm_config_registry",
+    "npm_config_strict_peer_deps",
+    "npm_config_userconfig"
+  ],
+  "HOME_and_credentials": "omitted, not rebound",
+  "scripts_disabled": true,
+  "manifest_sha256": "7bcb5bf41cf599dffd487cb3c1032b1cb81350ace0e2f43bd009a0587b8e8c6b",
+  "lock_sha256": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157",
+  "fresh_node_modules_before": true,
+  "network": "npm public registry only; no app/SDK/start/build executed"
+}

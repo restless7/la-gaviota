@@ -1,0 +1,57 @@
+{
+  "checked_at_utc": "2026-10-15T13:40:35.286295+00:00",
+  "operation": "independent root read/hash/result review; no extra suite rerun",
+  "baseline_files": 398,
+  "unchanged_files": 396,
+  "authorized_doc_changes": 2,
+  "source_suite_author": {
+    "passed": 535,
+    "node": "v24.21.0",
+    "scope": "source VM synthetic; includes baseline/harness controls"
+  },
+  "source_suite_independent_replay": {
+    "node": "v24.13.0",
+    "total": 535,
+    "passed": 535,
+    "failed": 0
+  },
+  "independent_extra": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "sql": {
+    "cases": 315,
+    "unique_names": 315,
+    "passed": 315,
+    "tables_equal": 19,
+    "input_hashes_match": true,
+    "restarted_by_root": false
+  },
+  "patch_dryruns": {
+    "application": {
+      "exit": 0,
+      "operation": "git apply --check ONLY; NOT APPLIED",
+      "sha256": "910b8fce50bc87dfa269a22969e463c52563eadd7ceb0dd7b58b7db6e852c3d1"
+    },
+    "dependencies": {
+      "exit": 0,
+      "operation": "git apply --check ONLY; NOT APPLIED",
+      "sha256": "3eb6ac75f3211aa3a300026ecc44e46a4403395952bd4e0bdf111f7be90692ac"
+    }
+  },
+  "all53_overlay_archive_hashes_match": true,
+  "owner_handoff_manifests_match": true,
+  "final_manifest_lock_hashes_match": true,
+  "qa_hashes_match": true,
+  "postgres_process_alive": false,
+  "postgres_socket_entries": [],
+  "original_node_modules": false,
+  "tracked_diffs": [],
+  "dependency_install": "PASS candidate only",
+  "types": "PASS both baseline and candidate copies",
+  "lint": "FAIL inherited; no new normalized messages in matched scope; new6modules clean",
+  "production": "NO-GO; no changes or new queries",
+  "build_http_jwt_gateway_storage_real": "NOT_EXECUTED / BLOCKED",
+  "disclaimer": "No mock or SQL stub is production security proof. No aggregate test total across overlapping suites."
+}

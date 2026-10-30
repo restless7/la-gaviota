@@ -1,0 +1,211 @@
+{
+  "scope": "CURRENT_SOURCE_VM_FICTIONAL_OFFICIAL_SCHEMA_SHAPE_NOT_PROVIDER_SANDBOX",
+  "fixtureClock": "2026-10-15T12:00:00.000Z",
+  "loadedSources": {
+    "src/lib/wompi.ts": "ee58cfed2c3890d18bfe7f751dc2b84e982af646a8a53ce6ca8970392fef0c76",
+    "src/lib/checkoutValidation.ts": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+    "app/api/webhooks/wompi/route.ts": "6196efce9b86f25289646ed90dcb5c3f4836449d9d3deca79370095dac619ba7"
+  },
+  "sourceStable": true,
+  "forbiddenDependencies": 0,
+  "networkClientsLoaded": 0,
+  "cases": 10,
+  "safetyPassModel": 8,
+  "safetyFail": 2,
+  "notProven": [
+    "HTTP",
+    "Clerk/Supabase/Wompi SDKs",
+    "Wompi sandbox",
+    "real provider delivery/order lifecycle",
+    "DB triggers/RLS/transaction isolation"
+  ],
+  "results": [
+    {
+      "id": "AUTH-PAY-01-declined-terminal",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "orderStatus": "Cancelado",
+        "stock": 10,
+        "notifications": 0
+      }
+    },
+    {
+      "id": "AUTH-PAY-02-pending-then-approved",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "responses": [
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          },
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          }
+        ],
+        "orderStatus": "Pendiente",
+        "stock": 8,
+        "notifications": 1
+      }
+    },
+    {
+      "id": "AUTH-PAY-03-approved-then-late-pending",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "responses": [
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          },
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          }
+        ],
+        "orderStatus": "Pendiente",
+        "stock": 8,
+        "notifications": 1
+      }
+    },
+    {
+      "id": "AUTH-PAY-04-declined-then-late-pending",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "orderStatus": "Cancelado",
+        "stock": 10,
+        "notifications": 0
+      }
+    },
+    {
+      "id": "AUTH-PAY-05-approved-then-late-decline-preserves-terminal",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "orderStatus": "Pendiente",
+        "stock": 8,
+        "notifications": 1,
+        "limitation": "Does not establish authoritative ordering or valid provider lifecycle; observes stale terminal replay guard only"
+      }
+    },
+    {
+      "id": "AUTH-PAY-06-concurrent-opposite-transactions-same-unsigned-reference",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "responses": [
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          },
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          }
+        ],
+        "orderStatus": "Cancelado",
+        "stock": 8,
+        "notifications": 1,
+        "condition": "Two independently signed fictional transaction IDs directed at same unsigned order reference; not claim provider emits contradictory statuses for one transaction"
+      }
+    },
+    {
+      "id": "AUTH-PAY-07-transient-order-update-error-retry",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "first": {
+          "status": 500,
+          "body": {
+            "error": "Order update failed"
+          }
+        },
+        "second": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "orderStatus": "Cancelado",
+        "stock": 10
+      }
+    },
+    {
+      "id": "AUTH-PAY-08-amount-mismatch-mutates-order",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "orderStatus": "Cancelado",
+        "stock": 10,
+        "expected": "Reject mismatching transaction without mutating an unrelated pending order; covered by binding defect family"
+      }
+    },
+    {
+      "id": "AUTH-PAY-09-nonCOP-rejected-without-db",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "response": {
+          "status": 400,
+          "body": {
+            "error": "Invalid transaction"
+          }
+        },
+        "operations": 0
+      }
+    },
+    {
+      "id": "AUTH-PAY-10-missing-event-secret-no-db",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "response": {
+          "status": 401,
+          "body": {
+            "error": "Unauthorized"
+          }
+        },
+        "operations": 0
+      }
+    }
+  ]
+}

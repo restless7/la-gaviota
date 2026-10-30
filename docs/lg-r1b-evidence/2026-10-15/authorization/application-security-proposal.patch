@@ -1,0 +1,2187 @@
+diff --git a/app/admin/catalog/kits/KitsClient.tsx b/app/admin/catalog/kits/KitsClient.tsx
+--- a/app/admin/catalog/kits/KitsClient.tsx
++++ b/app/admin/catalog/kits/KitsClient.tsx
+@@ -2,13 +2,10 @@
+ 
+ import React, { useState } from 'react';
+ import { Gift, Plus, GripVertical, Settings2, Image as ImageIcon, Trash2, CheckCircle } from 'lucide-react';
+-import { Product } from '@/src/actions/products';
++import { AdminProduct as Product } from '@/src/actions/products';
+ import { createOrUpdateKit, KitPayload } from '@/src/actions/kits';
+-import { createClient } from '@supabase/supabase-js';
+-
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
++import { uploadCatalogMedia } from '@/src/actions/media';
++
+ 
+ export default function KitsClient({ initialProducts }: { initialProducts: Product[] }) {
+   const [searchTerm, setSearchTerm] = useState('');
+@@ -74,18 +71,8 @@
+       
+       // Upload Banner if exists
+       if (bannerFile) {
+-        const fileExt = bannerFile.name.split('.').pop();
+-        const fileName = `${kitSlug}-${Date.now()}.${fileExt}`;
+-        const { data, error } = await supabase.storage
+-          .from('kit-banners')
+-          .upload(fileName, bannerFile);
+-          
+-        if (error) {
+-          console.error("Error uploading banner:", error);
+-        } else if (data) {
+-          const { data: publicData } = supabase.storage.from('kit-banners').getPublicUrl(data.path);
+-          finalBannerUrl = publicData.publicUrl;
+-        }
++        const upload = new FormData(); upload.set('file', bannerFile);
++        finalBannerUrl = (await uploadCatalogMedia('kit', upload)).url;
+       }
+ 
+       const payload: KitPayload = {
+@@ -222,7 +209,7 @@
+                       <span className="text-xs mt-1 text-gray-400">Resolución recomendada: 1200x400px</span>
+                     </>
+                   )}
+-                  <input type="file" accept="image/*" className="hidden" onChange={handleBannerChange} />
++                  <input type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleBannerChange} />
+                </label>
+ 
+                {/* Dropped items area */}
+diff --git a/app/admin/catalog/kits/page.tsx b/app/admin/catalog/kits/page.tsx
+--- a/app/admin/catalog/kits/page.tsx
++++ b/app/admin/catalog/kits/page.tsx
+@@ -1,9 +1,9 @@
+ import React from 'react';
+ import KitsClient from './KitsClient';
+-import { fetchProducts } from '@/src/actions/products';
++import { fetchAdminProducts } from '@/src/actions/products';
+ 
+ export default async function KitsAndPromotionsPage() {
+-  const products = await fetchProducts();
++  const products = await fetchAdminProducts();
+   
+   return (
+     <KitsClient initialProducts={products} />
+diff --git a/app/admin/catalog/product-management/InventoryClient.tsx b/app/admin/catalog/product-management/InventoryClient.tsx
+--- a/app/admin/catalog/product-management/InventoryClient.tsx
++++ b/app/admin/catalog/product-management/InventoryClient.tsx
+@@ -3,7 +3,7 @@
+ import React, { useState, useMemo } from 'react';
+ import Link from 'next/link';
+ import { Package, Search, Filter, AlertTriangle, ChevronDown, Save } from 'lucide-react';
+-import { Product, updateProductStock, updateProductSeasonStatus } from '@/src/actions/products';
++import { AdminProduct as Product, updateProductStock, updateProductSeasonStatus } from '@/src/actions/products';
+ import { toggleInventoryTracking } from '@/src/actions/settings';
+ 
+ const CATEGORY_EMOJI: Record<string, string> = {
+diff --git a/app/admin/catalog/product-management/ProductForm.tsx b/app/admin/catalog/product-management/ProductForm.tsx
+--- a/app/admin/catalog/product-management/ProductForm.tsx
++++ b/app/admin/catalog/product-management/ProductForm.tsx
+@@ -4,13 +4,10 @@
+ import { useRouter } from 'next/navigation';
+ import { Package, ArrowLeft, Save, Loader2, Image as ImageIcon, Trash2 } from 'lucide-react';
+ import Link from 'next/link';
+-import { createProduct, updateProduct, deleteProduct, Product } from '@/src/actions/products';
+-import { createClient } from '@supabase/supabase-js';
++import { createProduct, updateProduct, deleteProduct, AdminProduct as Product } from '@/src/actions/products';
++import { uploadCatalogMedia } from '@/src/actions/media';
+ import { CATEGORIES, SUBCATEGORIES } from '@/src/constants/productConstants';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ interface ProductFormProps {
+   initialData?: Product;
+@@ -53,15 +50,6 @@
+   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageUrl || null);
+   const [isUploading, setIsUploading] = useState(false);
+ 
+-  const slugify = (text: string) => {
+-    return text.toString().toLowerCase()
+-      .replace(/\s+/g, '-')
+-      .replace(/[^\w\-]+/g, '')
+-      .replace(/\-\-+/g, '-')
+-      .replace(/^-+/, '')
+-      .replace(/-+$/, '');
+-  };
+-
+   const handleSubmit = async (e: React.FormEvent) => {
+     e.preventDefault();
+     setIsSubmitting(true);
+@@ -70,21 +58,8 @@
+       
+       if (imageFile) {
+         setIsUploading(true);
+-        const fileExt = imageFile.name.split('.').pop();
+-        const slugName = slugify(formData.name) || 'product';
+-        const fileName = `${slugName}-${Date.now()}.${fileExt}`;
+-        
+-        const { data, error } = await supabase.storage
+-          .from('product-images')
+-          .upload(fileName, imageFile, { upsert: true });
+-          
+-        if (error) {
+-          console.error("Error uploading image:", error);
+-          alert('Error al subir la imagen.');
+-        } else if (data) {
+-          const { data: publicData } = supabase.storage.from('product-images').getPublicUrl(data.path);
+-          finalImageUrl = publicData.publicUrl;
+-        }
++        const upload = new FormData(); upload.set('file', imageFile);
++        finalImageUrl = (await uploadCatalogMedia('product', upload)).url;
+         setIsUploading(false);
+       }
+ 
+@@ -381,7 +356,7 @@
+                 <>
+                   <ImageIcon className="h-8 w-8 mb-2 text-gray-400 group-hover:text-[#4CAF50]" />
+                   <p className="text-xs font-bold text-gray-500 px-4 group-hover:text-[#4CAF50]">Haga clic para subir una imagen</p>
+-                  <p className="text-[10px] text-gray-400 mt-1">JPG o PNG (máx 2MB)</p>
++                  <p className="text-[10px] text-gray-400 mt-1">JPG, PNG o WebP (máx 2MB)</p>
+                 </>
+               )}
+               {isUploading && (
+@@ -390,7 +365,7 @@
+                   <span className="text-sm font-bold text-[#4CAF50]">Subiendo...</span>
+                 </div>
+               )}
+-              <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} disabled={isUploading} />
++              <input type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleImageChange} disabled={isUploading} />
+             </label>
+             <input
+               type="text"
+diff --git a/app/admin/catalog/product-management/[id]/page.tsx b/app/admin/catalog/product-management/[id]/page.tsx
+--- a/app/admin/catalog/product-management/[id]/page.tsx
++++ b/app/admin/catalog/product-management/[id]/page.tsx
+@@ -1,13 +1,13 @@
+ export const dynamic = 'force-dynamic';
+ 
+ import React from 'react';
+-import { fetchProducts } from '@/src/actions/products';
++import { fetchAdminProducts } from '@/src/actions/products';
+ import ProductForm from '../ProductForm';
+ 
+ export default async function EditProductPage(props: { params: Promise<{ id: string }> }) {
+   const { id } = await props.params;
+   const decodedId = decodeURIComponent(id || '').trim();
+-  const products = await fetchProducts();
++  const products = await fetchAdminProducts();
+   const product = products.find(p => String(p.id).trim() === decodedId);
+ 
+   if (!product) {
+diff --git a/app/admin/catalog/product-management/page.tsx b/app/admin/catalog/product-management/page.tsx
+--- a/app/admin/catalog/product-management/page.tsx
++++ b/app/admin/catalog/product-management/page.tsx
+@@ -1,10 +1,10 @@
+ import React from 'react';
+ import InventoryClient from './InventoryClient';
+-import { fetchProducts } from '@/src/actions/products';
++import { fetchAdminProducts } from '@/src/actions/products';
+ import { getInventorySettings } from '@/src/actions/settings';
+ 
+ export default async function InventoryPage() {
+-  const products = await fetchProducts();
++  const products = await fetchAdminProducts();
+   const { track_inventory } = await getInventorySettings();
+   
+   return (
+diff --git a/app/admin/layout.tsx b/app/admin/layout.tsx
+--- a/app/admin/layout.tsx
++++ b/app/admin/layout.tsx
+@@ -73,7 +73,7 @@
+   const [opsOpen, setOpsOpen] = useState(false);
+   const [currentDate, setCurrentDate] = useState<string>('');
+   const pathname = usePathname();
+-  const { user, loading, isSuperAdmin, isCommercial, isAdminAreaUser } = useRBAC();
++  const { user, loading, isSuperAdmin, isAdminAreaUser } = useRBAC();
+   const { signOut } = useClerk();
+ 
+   const handleLogout = () => {
+@@ -170,7 +170,7 @@
+ 
+         <nav className="flex-1 mt-4 px-3 overflow-y-auto mb-4">
+           {navigation.map((item) => {
+-            const canView = isSuperAdmin ? true : (isCommercial && item.roles.includes('COMMERCIAL'));
++            const canView = isSuperAdmin || (!!user && item.roles.includes(user.role));
+             if (!canView) return null;
+ 
+             if (item.subItems) {
+diff --git a/app/admin/marketing/page.tsx b/app/admin/marketing/page.tsx
+--- a/app/admin/marketing/page.tsx
++++ b/app/admin/marketing/page.tsx
+@@ -1,12 +1,14 @@
++import { requireCapability } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ import React from 'react';
+-import { createClient } from '@supabase/supabase-js';
++
+ import MarketingClient from './MarketingClient';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
++
+ 
+ export default async function MarketingHubPage() {
++  const actor=await requireCapability('reports.read');
++  const supabase=getServerDatabase(actor);
+   // Try to fetch abandoned carts stats gracefully
+   let totalAbandoned = 0;
+   let totalRecoveredAmount = 0;
+diff --git a/app/admin/page.tsx b/app/admin/page.tsx
+--- a/app/admin/page.tsx
++++ b/app/admin/page.tsx
+@@ -1,13 +1,13 @@
+ import React from 'react';
+ import AdminDashboardClient from './AdminDashboardClient';
+-import { fetchProducts } from '@/src/actions/products';
++import { fetchAdminProducts } from '@/src/actions/products';
+ import { getLiveOperationalOrders as fetchOrders } from '@/src/actions/orders';
+ 
+ import { fetchDashboardMetrics } from '@/src/actions/dashboard';
+ 
+ export default async function AdminDashboardPage() {
+   const [products, orders, metrics] = await Promise.all([
+-    fetchProducts(),
++    fetchAdminProducts(),
+     fetchOrders(),
+     fetchDashboardMetrics()
+   ]);
+diff --git a/app/admin/pricing/PricingClient.tsx b/app/admin/pricing/PricingClient.tsx
+--- a/app/admin/pricing/PricingClient.tsx
++++ b/app/admin/pricing/PricingClient.tsx
+@@ -2,7 +2,7 @@
+ 
+ import React, { useState, useMemo } from 'react';
+ import { Calculator, Save, RefreshCw, Search, ChevronDown } from 'lucide-react';
+-import { Product, applyMacroMargins, updateProductPricing, updateProductPrices } from '@/src/actions/products';
++import { AdminProduct as Product, applyMacroMargins, updateProductPricing, updateProductPrices } from '@/src/actions/products';
+ 
+ interface EditableProduct {
+   id: string;
+diff --git a/app/admin/pricing/page.tsx b/app/admin/pricing/page.tsx
+--- a/app/admin/pricing/page.tsx
++++ b/app/admin/pricing/page.tsx
+@@ -1,9 +1,9 @@
+ import React from 'react';
+ import PricingClient from './PricingClient';
+-import { fetchProducts } from '@/src/actions/products';
++import { fetchAdminProducts } from '@/src/actions/products';
+ 
+ export default async function PricingPage() {
+-  const products = await fetchProducts();
++  const products = await fetchAdminProducts();
+   
+   return (
+     <PricingClient initialProducts={products} />
+diff --git a/app/api/marketing/abandoned-cart/sync/route.ts b/app/api/marketing/abandoned-cart/sync/route.ts
+--- a/app/api/marketing/abandoned-cart/sync/route.ts
++++ b/app/api/marketing/abandoned-cart/sync/route.ts
+@@ -1,14 +1,16 @@
++import { getActor } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ import { NextResponse } from 'next/server';
+-import { auth, clerkClient } from '@clerk/nextjs/server';
+-import { createClient } from '@supabase/supabase-js';
++import { clerkClient } from '@clerk/nextjs/server';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
++
+ 
+ export async function POST(req: Request) {
+   try {
+-    const { userId } = await auth();
++    const actor = await getActor();
++    const userId = actor.userId;
++    if (!userId) return NextResponse.json({error:'Unauthorized'},{status:401});
++    const supabase = getServerDatabase(actor);
+     const payload = await req.json();
+     const { items, cartTotal, phone, email, isCompleted } = payload;
+ 
+diff --git a/app/api/marketing/abandoned-cart/trigger/route.ts b/app/api/marketing/abandoned-cart/trigger/route.ts
+--- a/app/api/marketing/abandoned-cart/trigger/route.ts
++++ b/app/api/marketing/abandoned-cart/trigger/route.ts
+@@ -1,12 +1,14 @@
++import { getSchedulerDatabase } from '@/src/lib/server/database';
++import { requireScheduler } from '@/src/lib/server/scheduler';
+ import { NextResponse } from 'next/server';
+-import { createClient } from '@supabase/supabase-js';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
++
+ // Note: Requires service role key to bypass RLS in a cron, but we'll use anon for now if RLS allows it
+-const supabase = createClient(supabaseUrl, supabaseKey);
++
+ 
+ export async function POST(req: Request) {
++  try { requireScheduler(req); } catch { return NextResponse.json({error:'Unauthorized'},{status:401}); }
++  const supabase = getSchedulerDatabase(req);
+   try {
+     // 1. Authenticate the cron job (e.g. check a secret Bearer token from Vercel)
+     const authHeader = req.headers.get('Authorization');
+diff --git a/app/api/marketing/lead-capture/route.ts b/app/api/marketing/lead-capture/route.ts
+--- a/app/api/marketing/lead-capture/route.ts
++++ b/app/api/marketing/lead-capture/route.ts
+@@ -1,33 +1,24 @@
++import { insertPublicLead } from '@/src/lib/server/database';
+ import { NextResponse } from 'next/server';
+-import { createClient } from '@supabase/supabase-js';
++
+ import { triggerOrderNotification } from '@/src/lib/notifications';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
++
+ 
+ export async function POST(req: Request) {
+   try {
+-    const payload = await req.json();
+-    const { fullName, businessName, businessType, phone, email, source } = payload;
++    const raw = await req.text();
++    if (new TextEncoder().encode(raw).length > 8192) return NextResponse.json({error:'Payload too large'},{status:413});
++    const payload = JSON.parse(raw);
++    if (!payload || typeof payload !== 'object' || Array.isArray(payload) || Object.keys(payload).some(k => !['fullName','businessName','businessType','phone','email','source'].includes(k))) return NextResponse.json({error:'Invalid payload'},{status:400});
++    if (Object.values(payload).some(v => typeof v !== 'string' || v.length > 512)) return NextResponse.json({error:'Invalid field'},{status:400});
++    const { fullName, businessName, businessType, phone } = payload;
+ 
+     if (!fullName || !phone || !businessType) {
+       return NextResponse.json({ error: 'Faltan campos requeridos (nombre, telefono, tipo)' }, { status: 400 });
+     }
+ 
+-    const { data: lead, error } = await supabase
+-      .from('marketing_leads')
+-      .insert({
+-        full_name: fullName,
+-        business_name: businessName,
+-        business_type: businessType,
+-        phone: phone,
+-        email: email,
+-        source: source || 'Landing Page',
+-        status: 'Nuevo'
+-      })
+-      .select()
+-      .single();
++    const { data: lead, error } = await insertPublicLead(payload);
+ 
+     if (error) {
+       throw error;
+diff --git a/app/api/marketing/loyalty/reorder/route.ts b/app/api/marketing/loyalty/reorder/route.ts
+--- a/app/api/marketing/loyalty/reorder/route.ts
++++ b/app/api/marketing/loyalty/reorder/route.ts
+@@ -1,11 +1,13 @@
++import { getSchedulerDatabase } from '@/src/lib/server/database';
++import { requireScheduler } from '@/src/lib/server/scheduler';
+ import { NextResponse } from 'next/server';
+-import { createClient } from '@supabase/supabase-js';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
++
++
+ 
+ export async function POST(req: Request) {
++  try { requireScheduler(req); } catch { return NextResponse.json({error:'Unauthorized'},{status:401}); }
++  const supabase = getSchedulerDatabase(req);
+   try {
+     // 1. Validate Cron Secret (Skipped for demo but necessary for production)
+     // const authHeader = req.headers.get('Authorization');
+diff --git a/app/cart/page.tsx b/app/cart/page.tsx
+--- a/app/cart/page.tsx
++++ b/app/cart/page.tsx
+@@ -75,7 +75,7 @@
+ 
+                <div className="flex flex-col gap-8">
+                   {items.map(item => {
+-                     const price = role === 'Restaurantes' ? item.product.priceRestaurant : role === 'Micromercados' ? item.product.priceMicro : item.product.priceRetail;
++                     const price = role === 'Restaurantes' ? item.product.price : role === 'Micromercados' ? item.product.price : item.product.price;
+                      return (
+                         <div key={item.product.id} className="flex gap-6 border-b border-gray-100 pb-8 relative group">
+                            <div className="w-24 h-24 sm:w-32 sm:h-32 relative bg-slate-50 border border-gray-100 rounded-2xl overflow-hidden shrink-0">
+diff --git a/app/checkout/page.tsx b/app/checkout/page.tsx
+--- a/app/checkout/page.tsx
++++ b/app/checkout/page.tsx
+@@ -16,7 +16,7 @@
+ }
+ 
+ export default function CheckoutPage() {
+-   const { items, cartTotal, remainingForFreeShipping, clearCart } = useCart();
++   const { items, cartTotal, remainingForFreeShipping, clearCart, cartRestoreError } = useCart();
+    const { role } = useUserRole();
+    const [paymentMethod, setPaymentMethod] = useState<'wompi' | 'cash'>('wompi');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+@@ -84,6 +84,8 @@
+       }
+    };
+ 
++   if (cartRestoreError) return <div role="alert" className="p-8">{cartRestoreError}</div>;
++
+    if (items.length === 0) {
+       return (
+          <div className="max-w-3xl mx-auto px-4 py-32 text-center text-slate-800">
+@@ -247,7 +249,7 @@
+ 
+                      <div className="flex flex-col gap-4 mb-6 pb-6 border-b border-gray-200">
+                         {items.map(item => {
+-                           const price = role === 'Restaurantes' ? item.product.priceRestaurant : role === 'Micromercados' ? item.product.priceMicro : item.product.priceRetail;
++                           const price = role === 'Restaurantes' ? item.product.price : role === 'Micromercados' ? item.product.price : item.product.price;
+                            return (
+                               <div key={item.product.id} className="flex justify-between items-start gap-4">
+                                  <div className="text-[13px] text-gray-600 font-semibold leading-tight pr-6">
+diff --git a/app/components/market/PriceDropPopup.tsx b/app/components/market/PriceDropPopup.tsx
+--- a/app/components/market/PriceDropPopup.tsx
++++ b/app/components/market/PriceDropPopup.tsx
+@@ -62,7 +62,7 @@
+                 <div className="p-4 flex flex-col flex-1">
+                   <h3 className="font-bold text-slate-800 leading-tight mb-1">{product.name}</h3>
+                   <div className="font-black text-[#10b981] mb-3">
+-                    ${product.priceRetail.toLocaleString('es-CO')} <span className="text-xs text-gray-400 font-medium">/{product.unit}</span>
++                    ${product.price.toLocaleString('es-CO')} <span className="text-xs text-gray-400 font-medium">/{product.unit}</span>
+                   </div>
+                   <button
+                     onClick={() => {
+diff --git a/app/page.tsx b/app/page.tsx
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -15,8 +15,8 @@
+   const products = await fetchProducts();
+ 
+   const tickerItems = products.map(p => {
+-    const currentPrice = p.priceRetail;
+-    const previousPrice = p.previousPriceRetail || currentPrice;
++    const currentPrice = p.price;
++    const previousPrice = p.previousPrice || currentPrice;
+     const delta = currentPrice - previousPrice;
+     const percentage = previousPrice > 0 ? (delta / previousPrice) * 100 : 0;
+     return {
+@@ -30,8 +30,8 @@
+ 
+   const priceDrops = products
+     .map(p => {
+-      const currentPrice = p.priceRetail;
+-      const previousPrice = p.previousPriceRetail || currentPrice;
++      const currentPrice = p.price;
++      const previousPrice = p.previousPrice || currentPrice;
+       const percentageDrop = previousPrice > 0 ? ((previousPrice - currentPrice) / previousPrice) * 100 : 0;
+       return { ...p, percentageDrop: Number(percentageDrop.toFixed(1)) };
+     })
+diff --git a/app/product/[id]/page.tsx b/app/product/[id]/page.tsx
+--- a/app/product/[id]/page.tsx
++++ b/app/product/[id]/page.tsx
+@@ -61,7 +61,7 @@
+          '@type': 'Offer',
+          url: `https://www.lagaviotafruver.com/product/${product.id}`,
+          priceCurrency: 'COP',
+-         price: product.priceRetail,
++         price: product.price,
+          availability: product.stockQuantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          seller: {
+             '@type': 'Organization',
+diff --git a/middleware.ts b/middleware.ts
+--- a/middleware.ts
++++ b/middleware.ts
+@@ -1,5 +1,6 @@
+ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+ import { NextResponse } from 'next/server';
++import { getActor, hasCapability } from '@/src/lib/server/authorization';
+ 
+ const isPublicRoute = createRouteMatcher([
+   '/',
+@@ -29,14 +30,12 @@
+   }
+ 
+   // All other routes require authentication
+-  const session = await auth.protect();
++  await auth.protect();
+ 
+   // Admin routes — require admin role in metadata
+   if (isAdminRoute(request)) {
+-    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
+-    const tier = metadata?.tier;
+-    const role = metadata?.role;
+-    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
++    const actor = await getActor();
++    const isAdmin = hasCapability(actor, 'catalog.manage');
+     
+     if (!isAdmin) {
+       // Non-admins get redirected to their dashboard
+@@ -46,10 +45,9 @@
+ 
+   // Restaurante routes — require Restaurantes role
+   if (isRestauranteRoute(request)) {
+-    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
+-    const tier = metadata?.tier;
+-    const role = metadata?.role;
+-    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
++    const actor = await getActor();
++    const tier = actor.tier;
++    const isAdmin = hasCapability(actor, 'catalog.manage');
+     
+     if (tier !== 'Restaurantes' && !isAdmin) {
+       return NextResponse.redirect(new URL('/?error=access_denied_b2b', request.url));
+@@ -58,10 +56,9 @@
+ 
+   // Micromercado routes — require Micromercados role
+   if (isMicromercadoRoute(request)) {
+-    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
+-    const tier = metadata?.tier;
+-    const role = metadata?.role;
+-    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
++    const actor = await getActor();
++    const tier = actor.tier;
++    const isAdmin = hasCapability(actor, 'catalog.manage');
+     
+     if (tier !== 'Micromercados' && !isAdmin) {
+       return NextResponse.redirect(new URL('/?error=access_denied_b2b', request.url));
+@@ -70,10 +67,9 @@
+ 
+   // /dashboard — redirect to the correct portal based on role
+   if (url.pathname === '/dashboard') {
+-    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
+-    const tier = metadata?.tier || 'Personas Naturales';
+-    const role = metadata?.role;
+-    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
++    const actor = await getActor();
++    const tier = actor.tier;
++    const isAdmin = hasCapability(actor, 'catalog.manage');
+ 
+     let targetPath = '/retail';
+     if (tier === 'Micromercados') targetPath = '/micromercado';
+diff --git a/next.config.ts b/next.config.ts
+--- a/next.config.ts
++++ b/next.config.ts
+@@ -1,6 +1,7 @@
+ import type { NextConfig } from "next";
+ 
+ const nextConfig: NextConfig = {
++  experimental: { serverActions: { bodySizeLimit: '3mb' } },
+   images: {
+     remotePatterns: [
+       {
+diff --git a/src/actions/analytics.ts b/src/actions/analytics.ts
+--- a/src/actions/analytics.ts
++++ b/src/actions/analytics.ts
+@@ -1,11 +1,11 @@
+ 'use server';
+-
+-import { createClient } from '@supabase/supabase-js';
++import { requireCapability } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
++
++
++
+ import { revalidatePath } from 'next/cache';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export interface AnalyticsFilters {
+   startDate?: string;
+@@ -15,6 +15,9 @@
+ }
+ 
+ export async function getAdvancedFinancialSummary(filters: AnalyticsFilters) {
++  const actor = await requireCapability('reports.read');
++  const supabase = getServerDatabase(actor);
++
+   let query = supabase.from('orders').select('id, total_amount, purchase_tier, status, order_items!inner(product_id)');
+ 
+   if (filters.startDate) query = query.gte('created_at', filters.startDate);
+@@ -99,6 +102,9 @@
+ }
+ 
+ export async function getSalesProjectionData(filters: AnalyticsFilters) {
++  const actor = await requireCapability('reports.read');
++  const supabase = getServerDatabase(actor);
++
+   let query = supabase.from('orders').select('id, created_at, total_amount, purchase_tier, status');
+   if (filters.startDate) query = query.gte('created_at', filters.startDate);
+   if (filters.endDate) query = query.lte('created_at', filters.endDate);
+@@ -139,6 +145,9 @@
+ }
+ 
+ export async function getRealShrinkageMetrics(filters: AnalyticsFilters) {
++  const actor = await requireCapability('reports.read');
++  const supabase = getServerDatabase(actor);
++
+   let query = supabase.from('agricultural_shrinkage_logs').select(`
+     quantity_kg, 
+     log_type, 
+@@ -175,6 +184,9 @@
+ }
+ 
+ export async function logAgriculturalShrinkage(payload: { productId: string, quantityKg: number, logType: 'MERMA_TOTAL' | 'RECUPERADO_ORGANICO', reason: string }) {
++  const actor = await requireCapability('inventory.manage');
++  const supabase = getServerDatabase(actor);
++
+   const { error } = await supabase.from('agricultural_shrinkage_logs').insert({
+     product_id: payload.productId,
+     quantity_kg: payload.quantityKg,
+@@ -192,6 +204,9 @@
+ }
+ 
+ export async function fetchAllProducts() {
++  const actor = await requireCapability('reports.read');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase.from('products').select('id, name, category').order('name');
+   if (error) throw new Error('Failed to fetch products');
+   return data || [];
+diff --git a/src/actions/audit.ts b/src/actions/audit.ts
+--- a/src/actions/audit.ts
++++ b/src/actions/audit.ts
+@@ -1,10 +1,10 @@
+ 'use server';
++import { requireCapability } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ 
+-import { createClient } from '@supabase/supabase-js';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
++
++
+ 
+ export interface AuditLog {
+   id: string;
+@@ -24,6 +24,9 @@
+ }
+ 
+ export async function fetchAuditLogs(): Promise<AuditLog[]> {
++  const actor = await requireCapability('audit.read');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase
+     .from('audit_logs')
+     .select('*')
+diff --git a/src/actions/b2b.ts b/src/actions/b2b.ts
+--- a/src/actions/b2b.ts
++++ b/src/actions/b2b.ts
+@@ -1,16 +1,17 @@
+ 'use server';
+ 
+-import { createClient } from '@supabase/supabase-js';
++
+ import { auth } from '@clerk/nextjs/server';
++import { getActor } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+ // Fallback to service role if possible, else anon
+-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export async function getB2BProfile() {
+   const { userId } = await auth();
+   if (!userId) return null;
++  const actor = await getActor();
++  const supabase = getServerDatabase(actor);
+ 
+   const { data } = await supabase
+     .from('b2b_credit_profiles')
+@@ -24,6 +25,8 @@
+ export async function getBuyingTemplates() {
+   const { userId } = await auth();
+   if (!userId) return [];
++  const actor = await getActor();
++  const supabase = getServerDatabase(actor);
+ 
+   const { data } = await supabase
+     .from('buying_templates')
+@@ -37,6 +40,8 @@
+ export async function getMonthlySpend() {
+   const { userId } = await auth();
+   if (!userId) return 0;
++  const actor = await getActor();
++  const supabase = getServerDatabase(actor);
+ 
+   const startOfMonth = new Date();
+   startOfMonth.setDate(1);
+@@ -45,7 +50,7 @@
+   const { data, error } = await supabase
+     .from('orders')
+     .select('total_amount')
+-    .eq('customer_id', userId)
++    .eq('clerk_user_id', userId)
+     .in('status', ['PAID', 'SHIPPED', 'DELIVERED'])
+     .gte('created_at', startOfMonth.toISOString());
+ 
+@@ -57,11 +62,13 @@
+ export async function getLastOrder() {
+   const { userId } = await auth();
+   if (!userId) return null;
++  const actor = await getActor();
++  const supabase = getServerDatabase(actor);
+ 
+   const { data } = await supabase
+     .from('orders')
+-    .select('*, order_items(*, products(*))')
+-    .eq('customer_id', userId)
++    .select('id,total_amount,status,created_at,order_items(product_id,product_name,quantity,price_at_purchase)')
++    .eq('clerk_user_id', userId)
+     .order('created_at', { ascending: false })
+     .limit(1)
+     .single();
+@@ -72,11 +79,13 @@
+ export async function getB2BOrders() {
+   const { userId } = await auth();
+   if (!userId) return [];
++  const actor = await getActor();
++  const supabase = getServerDatabase(actor);
+ 
+   const { data } = await supabase
+     .from('orders')
+-    .select('*, order_items(*, products(*))')
+-    .eq('customer_id', userId)
++    .select('id,total_amount,status,created_at,order_items(product_id,product_name,quantity,price_at_purchase)')
++    .eq('clerk_user_id', userId)
+     .order('created_at', { ascending: false });
+ 
+   return data || [];
+diff --git a/src/actions/businessApplications.ts b/src/actions/businessApplications.ts
+--- a/src/actions/businessApplications.ts
++++ b/src/actions/businessApplications.ts
+@@ -1,6 +1,9 @@
+ 'use server';
++import { requireCapability, requireOwnedSubject, validateTier, assertTargetId } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ 
+-import { supabase } from '@/src/lib/supabase';
++
++
+ import { clerkClient } from '@clerk/nextjs/server';
+ import type { BusinessTier } from '@/src/lib/supabase';
+ 
+@@ -18,6 +21,10 @@
+   monthlyVolume: string;
+   notes: string;
+ }) {
++  const actor = await requireOwnedSubject(formData.clerkUserId);
++  const supabase = getServerDatabase(actor);
++  validateTier(formData.businessType);
++
+   try {
+     const { data, error } = await supabase
+       .from('business_applications')
+@@ -52,6 +59,9 @@
+ 
+ // ---------- Fetch All Applications (Admin) ----------
+ export async function fetchBusinessApplications() {
++  const actor = await requireCapability('customers.manage');
++  const supabase = getServerDatabase(actor);
++
+   try {
+     const { data, error } = await supabase
+       .from('business_applications')
+@@ -72,6 +82,13 @@
+ 
+ // ---------- Approve Application (Admin) ----------
+ export async function approveApplication(applicationId: string, clerkUserId: string, businessType: BusinessTier, businessName: string, adminName: string) {
++  const actor = await requireCapability('tiers.manage');
++  const supabase = getServerDatabase(actor);
++
++  void adminName; // Attribution comes from the issued actor, never the caller name.
++  assertTargetId(applicationId);
++  assertTargetId(clerkUserId);
++  validateTier(businessType);
+   try {
+     // 1. Update Clerk user metadata to grant the tier
+     const client = await clerkClient();
+@@ -88,7 +105,7 @@
+       .from('business_applications')
+       .update({
+         status: 'approved',
+-        reviewed_by: adminName,
++        reviewed_by: actor.userId,
+         reviewed_at: new Date().toISOString(),
+       })
+       .eq('id', applicationId);
+@@ -131,12 +148,17 @@
+ 
+ // ---------- Reject Application (Admin) ----------
+ export async function rejectApplication(applicationId: string, adminName: string) {
++  const actor = await requireCapability('tiers.manage');
++  const supabase = getServerDatabase(actor);
++
++  void adminName; // Attribution comes from the issued actor, never the caller name.
++  assertTargetId(applicationId);
+   try {
+     const { error } = await supabase
+       .from('business_applications')
+       .update({
+         status: 'rejected',
+-        reviewed_by: adminName,
++        reviewed_by: actor.userId,
+         reviewed_at: new Date().toISOString(),
+       })
+       .eq('id', applicationId);
+diff --git a/src/actions/checkoutAction.ts b/src/actions/checkoutAction.ts
+--- a/src/actions/checkoutAction.ts
++++ b/src/actions/checkoutAction.ts
+@@ -1,7 +1,9 @@
+ 'use server';
+ 
+ import { auth, clerkClient } from '@clerk/nextjs/server';
+-import { createOrder } from './orders';
++import { createOrder } from '@/src/lib/server/orderWriter';
++import { getActor } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ import { Product } from './products';
+ 
+ export interface CheckoutItem {
+@@ -34,10 +36,7 @@
+   const role = (user.publicMetadata?.tier as string) || 'Personas Naturales';
+ 
+   // 2. Fetch fresh prices and stock from the database for anti-tampering
+-  const { createClient } = await import('@supabase/supabase-js');
+-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-  const supabase = createClient(supabaseUrl, supabaseKey);
++  const supabase = getServerDatabase(await getActor());
+ 
+   const productIds = items.map(item => item.product.id);
+   const { data: dbProducts, error } = await supabase
+diff --git a/src/actions/customers.ts b/src/actions/customers.ts
+--- a/src/actions/customers.ts
++++ b/src/actions/customers.ts
+@@ -1,11 +1,11 @@
+ 'use server';
++import { requireCapability, hasCapability, requireOwnedSubject, validateTier, assertTargetId } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ 
+-import { createClient } from '@supabase/supabase-js';
++
++
+ import { revalidatePath } from 'next/cache';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export interface Customer {
+   clerk_user_id: string;
+@@ -27,6 +27,9 @@
+ }
+ 
+ export async function fetchCustomers(tier?: string): Promise<Customer[]> {
++  const actor = await requireCapability('customers.manage');
++  const supabase = getServerDatabase(actor);
++
+   let query = supabase
+     .from('customers')
+     .select('*')
+@@ -47,6 +50,10 @@
+ }
+ 
+ export async function ensureCustomer(clerkUserId: string, data: Partial<Customer>) {
++  const actor = await requireOwnedSubject(clerkUserId);
++  const supabase = getServerDatabase(actor);
++  if (data.tier !== undefined && !hasCapability(actor, 'tiers.manage')) throw new Error('TIER_FIELD_FORBIDDEN');
++
+   // Upsert customer profile
+   const { error } = await supabase
+     .from('customers')
+@@ -56,7 +63,7 @@
+       email: data.email,
+       phone: data.phone,
+       address: data.address,
+-      tier: data.tier || 'Personas Naturales',
++      ...(data.tier === undefined ? {} : { tier: validateTier(data.tier) }),
+       updated_at: new Date().toISOString()
+     });
+ 
+@@ -69,6 +76,11 @@
+ }
+ 
+ export async function approveClientTier(userId: string, requestedTier: string, applicationId?: string) {
++  const actor = await requireCapability('tiers.manage');
++  const supabase = getServerDatabase(actor);
++
++  assertTargetId(userId);
++  validateTier(requestedTier);
+   const { clerkClient, auth } = await import('@clerk/nextjs/server');
+   const { userId: adminId } = await auth();
+   
+diff --git a/src/actions/dashboard.ts b/src/actions/dashboard.ts
+--- a/src/actions/dashboard.ts
++++ b/src/actions/dashboard.ts
+@@ -1,10 +1,10 @@
+ 'use server';
++import { requireCapability } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ 
+-import { createClient } from '@supabase/supabase-js';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
++
++
+ 
+ export interface DashboardMetrics {
+   productCount: number;
+@@ -15,6 +15,9 @@
+ }
+ 
+ export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
++  const actor = await requireCapability('reports.read');
++  const supabase = getServerDatabase(actor);
++
+   const [
+     { count: productCount },
+     { count: orderCount },
+diff --git a/src/actions/kits.ts b/src/actions/kits.ts
+--- a/src/actions/kits.ts
++++ b/src/actions/kits.ts
+@@ -1,13 +1,13 @@
+ 'use server';
++import { requireCapability } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ 
+-import { createClient } from '@supabase/supabase-js';
++
++
+ import { revalidatePath } from 'next/cache';
+ import { auth } from '@clerk/nextjs/server';
+ import { logAdminAction } from '@/src/lib/audit';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export interface KitItemPayload {
+   product_id: string;
+@@ -24,6 +24,9 @@
+ }
+ 
+ export async function createOrUpdateKit(kitData: KitPayload) {
++  const actor = await requireCapability('catalog.manage');
++  const supabase = getServerDatabase(actor);
++
+   const { userId } = await auth();
+   if (!userId) throw new Error("Unauthorized");
+ 
+@@ -113,6 +116,9 @@
+ }
+ 
+ export async function fetchKits() {
++  const actor = await requireCapability('catalog.manage');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase
+     .from('kits')
+     .select(`
+diff --git a/src/actions/media.ts b/src/actions/media.ts
+new file mode 100644
+--- /dev/null
++++ b/src/actions/media.ts
+@@ -0,0 +1,62 @@
++'use server';
++import { randomUUID } from 'node:crypto';
++import { requireCapability, assertTargetId } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
++type Kind = 'product' | 'kit';
++function destination(kind: unknown) { if(kind !== 'product' && kind !== 'kit') throw new Error('INVALID_MEDIA_KIND'); return kind === 'product' ? {bucket:'product-images',table:'products',column:'image_url'} : {bucket:'kit-banners',table:'kits',column:'banner_url'}; }
++function managedPath(url: unknown, bucket: string): string {
++ if(typeof url !== 'string') throw new Error('INVALID_MEDIA_REFERENCE');
++ const configured = process.env.NEXT_PUBLIC_SUPABASE_URL;
++ if(!configured) throw new Error('SERVER_DATABASE_UNCONFIGURED');
++ const u = new URL(url), expected = new URL(configured), prefix='/storage/v1/object/public/'+bucket+'/';
++ if(u.origin!==expected.origin || u.search || u.hash || !u.pathname.startsWith(prefix)) throw new Error('INVALID_MEDIA_REFERENCE');
++ const key=u.pathname.slice(prefix.length);
++ if(!/^managed\/(product|kit)\/[0-9a-f-]+\.(png|jpg|webp)$/.test(key)) throw new Error('UNMANAGED_MEDIA_REQUIRES_REVIEW');
++ return key;
++}
++export async function uploadCatalogMedia(kind: Kind, form: FormData) {
++ const actor=await requireCapability('storage.manage');
++ const dest=destination(kind), file=form.get('file');
++ if(!(file instanceof File) || file.size<24 || file.size>2*1024*1024) throw new Error('INVALID_MEDIA_FILE');
++ const bytes=new Uint8Array(await file.arrayBuffer());
++ let ext:string, mime:string;
++ if(bytes[0]===0x89 && bytes[1]===0x50 && bytes[2]===0x4e && bytes[3]===0x47 && bytes[4]===13 && bytes[5]===10 && bytes[6]===26 && bytes[7]===10) {ext='png';mime='image/png';}
++ else if(bytes[0]===255 && bytes[1]===216 && bytes[2]===255) {ext='jpg';mime='image/jpeg';}
++ else if(String.fromCharCode(...bytes.slice(0,4))==='RIFF' && String.fromCharCode(...bytes.slice(8,12))==='WEBP') {ext='webp';mime='image/webp';}
++ else throw new Error('UNSUPPORTED_MEDIA_SIGNATURE');
++ if(file.type!==mime) throw new Error('MEDIA_TYPE_MISMATCH');
++ const key='managed/'+kind+'/'+randomUUID()+'.'+ext;
++ const db=getServerDatabase(actor);
++ const {error}=await db.storage.from(dest.bucket).upload(key,bytes,{upsert:false,contentType:mime});
++ if(error) throw new Error('MEDIA_UPLOAD_FAILED');
++ const {data}=db.storage.from(dest.bucket).getPublicUrl(key);
++ return {path:key,url:data.publicUrl};
++}
++export async function replaceCatalogMedia(kind: Kind,id:string,form:FormData) {
++ const actor=await requireCapability('storage.manage');assertTargetId(id);const dest=destination(kind);
++ const db=getServerDatabase(actor);
++ const existing=await db.from(dest.table).select('id').eq('id',id).single();
++ if(existing.error || !existing.data) throw new Error('MEDIA_TARGET_NOT_FOUND');
++ const uploaded=await uploadCatalogMedia(kind,form);
++ const {error}=await db.from(dest.table).update({[dest.column]:uploaded.url}).eq('id',id);
++ if(error) throw new Error('MEDIA_MAPPING_FAILED_RECOVERABLE_UPLOAD');
++ // Previous blob retained: no irreversible overwrite or automatic purge.
++ return uploaded;
++}
++export async function deleteCatalogMedia(kind:Kind,id:string) {
++ const actor=await requireCapability('storage.manage');assertTargetId(id);const dest=destination(kind);
++ const db=getServerDatabase(actor);
++ const {data,error}=await db.from(dest.table).select(dest.column).eq('id',id).single();
++ if(error || !data) throw new Error('MEDIA_TARGET_NOT_FOUND');
++ const url=(data as unknown as Record<string,unknown>)[dest.column], key=managedPath(url,dest.bucket);
++ const uses=await db.from(dest.table).select('id').eq(dest.column,url);
++ if(uses.error || uses.data?.length!==1) throw new Error('MEDIA_SHARED_OR_UNKNOWN_USAGE');
++ const other=dest.table==='products' ? {table:'kits',column:'banner_url'} : {table:'products',column:'image_url'};
++ const otherUses=await db.from(other.table).select('id').eq(other.column,url);
++ if(otherUses.error || !otherUses.data || otherUses.data.length) throw new Error('MEDIA_CROSS_TABLE_OR_UNKNOWN_USAGE');
++ const cleared=await db.from(dest.table).update({[dest.column]:null}).eq('id',id);
++ if(cleared.error) throw new Error('MEDIA_MAPPING_FAILED');
++ const removed=await db.storage.from(dest.bucket).remove([key]);
++ if(removed.error) throw new Error('MEDIA_BLOB_RETAINED_FOR_RECOVERY');
++ return {success:true};
++}
+diff --git a/src/actions/orders.ts b/src/actions/orders.ts
+--- a/src/actions/orders.ts
++++ b/src/actions/orders.ts
+@@ -1,11 +1,11 @@
+ 'use server';
+-
+-import { createClient } from '@supabase/supabase-js';
++import { requireCapability, getActor, hasCapability, assertTargetId } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
++
++
++
+ import { revalidatePath } from 'next/cache';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export interface OrderItem {
+   id: string;
+@@ -36,6 +36,9 @@
+ }
+ 
+ export async function getLiveOperationalOrders(): Promise<Order[]> {
++  const actor = await requireCapability('orders.manage');
++  const supabase = getServerDatabase(actor);
++
+   const today = new Date().toISOString().split('T')[0];
+ 
+   const [{ data: ordersData, error }, { data: ledgersData }] = await Promise.all([
+@@ -66,11 +69,14 @@
+ }
+ 
+ export async function fetchOrderById(orderId: string): Promise<Order | null> {
+-  const { data, error } = await supabase
+-    .from('orders')
+-    .select('*, order_items(*)')
+-    .eq('id', orderId)
+-    .single();
++  const actor = await getActor();
++  if (!actor.userId) throw new Error('UNAUTHORIZED');
++  assertTargetId(orderId);
++  const supabase = getServerDatabase(actor);
++
++  let query = supabase.from('orders').select('*, order_items(*)').eq('id', orderId);
++  if (!hasCapability(actor, 'orders.manage')) query = query.eq('clerk_user_id', actor.userId);
++  const { data, error } = await query.single();
+ 
+   if (error) {
+     console.error('Error fetching order by id:', error);
+@@ -80,6 +86,10 @@
+ }
+ 
+ export async function updateOrderStatus(orderId: string, newStatus: Order['status']) {
++  const actor = await requireCapability('orders.manage');
++  const supabase = getServerDatabase(actor);
++  assertTargetId(orderId);
++
+   const { error } = await supabase
+     .from('orders')
+     .update({ status: newStatus, updated_at: new Date().toISOString() })
+@@ -95,62 +105,11 @@
+   return { success: true };
+ }
+ 
+-export async function createOrder(orderData: Omit<Order, 'id' | 'created_at' | 'order_items'>, items: Omit<OrderItem, 'id' | 'order_id'>[], incrementLTV: boolean = false) {
+-  // 1. Insert order
+-  const { data: order, error: orderError } = await supabase
+-    .from('orders')
+-    .insert(orderData)
+-    .select()
+-    .single();
+-
+-  if (orderError) {
+-    console.error('Error creating order:', orderError);
+-    throw new Error('Failed to create order');
+-  }
+-
+-  // 2. Insert order items
+-  const itemsWithOrderId = items.map(item => ({
+-    ...item,
+-    order_id: order.id
+-  }));
+-
+-  const { error: itemsError } = await supabase
+-    .from('order_items')
+-    .insert(itemsWithOrderId);
+-
+-  if (itemsError) {
+-    console.error('Error creating order items:', itemsError);
+-    throw new Error('Failed to create order items');
+-  }
+-
+-  // 3. Update customer stats if requested (Two-Phase Commit for Wompi)
+-  if (incrementLTV && orderData.clerk_user_id) {
+-    const { data: customer } = await supabase
+-      .from('customers')
+-      .select('total_orders, total_spent')
+-      .eq('clerk_user_id', orderData.clerk_user_id)
+-      .single();
+-
+-    await supabase
+-      .from('customers')
+-      .upsert({
+-        clerk_user_id: orderData.clerk_user_id,
+-        full_name: orderData.customer_name,
+-        email: orderData.customer_email,
+-        phone: orderData.customer_phone,
+-        address: orderData.delivery_address,
+-        total_orders: (customer?.total_orders || 0) + 1,
+-        total_spent: (customer?.total_spent || 0) + orderData.total_amount,
+-        last_order_at: new Date().toISOString(),
+-        updated_at: new Date().toISOString()
+-      });
+-  }
+-
+-  revalidatePath('/admin/orders');
+-  revalidatePath('/admin/clientes');
+-  return { success: true, orderId: order.id };
+-}
++
+ export async function fetchOrderConsolidation(statuses: string[] = ['Pendiente', 'En Preparación']) {
++  const actor = await requireCapability('orders.manage');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase
+     .from('order_items')
+     .select(`
+@@ -204,6 +163,10 @@
+ }
+ 
+ export async function flagOrderConflict(orderId: string, reason: string) {
++  const actor = await requireCapability('orders.manage');
++  assertTargetId(orderId);
++  const supabase = getServerDatabase(actor);
++
+   const { error } = await supabase
+     .from('orders')
+     .update({ 
+@@ -223,6 +186,10 @@
+ }
+ 
+ export async function cancelAndRefundOrder(orderId: string, reason: string) {
++  const actor = await requireCapability('payments.manage');
++  assertTargetId(orderId);
++  const supabase = getServerDatabase(actor);
++
+   const { data: order, error: orderError } = await supabase
+     .from('orders')
+     .select('total_amount, clerk_user_id')
+@@ -274,6 +241,10 @@
+ }
+ 
+ export async function confirmCashPayment(orderId: string) {
++  const actor = await requireCapability('payments.manage');
++  assertTargetId(orderId);
++  const supabase = getServerDatabase(actor);
++
+   const { data: order, error: orderError } = await supabase
+     .from('orders')
+     .select('total_amount, clerk_user_id, payment_method, notes')
+@@ -328,6 +299,10 @@
+ }
+ 
+ export async function closeOperationalDay(date: string, userId: string) {
++  void userId; // Legacy call signature retained; attribution uses the issued actor.
++  const actor = await requireCapability('payments.manage');
++  const supabase = getServerDatabase(actor);
++
+   // 1. Fetch active orders and closed ledgers
+   const [{ data: activeOrdersRaw, error: fetchError }, { data: ledgersData }] = await Promise.all([
+     supabase
+@@ -423,7 +398,7 @@
+             operational_date: opDate,
+             total_orders_processed: metrics.orders,
+             total_revenue_collected: metrics.revenue,
+-            closed_by_user: userId
++            closed_by_user: actor.userId
+           });
+           
+         if (insertError) throw new Error(`Failed to insert ledger for ${opDate}`);
+@@ -435,6 +410,9 @@
+   return { success: true, postponedCount: conflictedOrders.length, archivedCount: deliveredOrders.length };
+ }
+ export async function getHistoricLedgers() {
++  const actor = await requireCapability('reports.read');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase
+     .from('daily_operational_ledgers')
+     .select('*')
+@@ -448,6 +426,9 @@
+ }
+ 
+ export async function fetchHistoricOrdersByDate(date: string): Promise<Order[]> {
++  const actor = await requireCapability('reports.read');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase
+     .from('orders')
+     .select('*, order_items(*)')
+diff --git a/src/actions/products.ts b/src/actions/products.ts
+--- a/src/actions/products.ts
++++ b/src/actions/products.ts
+@@ -1,4 +1,7 @@
+ 'use server';
++import { requireCapability, getActor, assertTargetId } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
++
+ 
+ import { createClient } from '@supabase/supabase-js';
+ import { revalidatePath } from 'next/cache';
+@@ -10,9 +13,8 @@
+ // We initialize the Supabase client here for server actions
+ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+-
+-export interface Product {
++
++export interface AdminProduct {
+   id: string;
+   name: string;
+   category: string;
+@@ -32,7 +34,10 @@
+   description: string | null;
+ }
+ 
+-export async function fetchProducts(): Promise<Product[]> {
++export async function fetchAdminProducts(): Promise<AdminProduct[]> {
++  const actor = await requireCapability('catalog.manage');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase
+     .from('products')
+     .select('*')
+@@ -102,6 +107,10 @@
+ 
+ 
+ export async function updateProductStock(id: string, newStock: number) {
++  const actor = await requireCapability('inventory.manage');
++  const supabase = getServerDatabase(actor);
++  assertTargetId(id);
++
+   const { error } = await supabase
+     .from('products')
+     .update({ stock_quantity: newStock })
+@@ -119,6 +128,10 @@
+ }
+ 
+ export async function updateProductSeasonStatus(id: string, inSeason: boolean) {
++  const actor = await requireCapability('catalog.manage');
++  const supabase = getServerDatabase(actor);
++  assertTargetId(id);
++
+   const { error } = await supabase
+     .from('products')
+     .update({ is_in_season: inSeason })
+@@ -141,6 +154,10 @@
+   price_micro?: number, 
+   price_restaurant?: number
+ ) {
++  const actor = await requireCapability('pricing.manage');
++  assertTargetId(id);
++  const supabase = getServerDatabase(actor);
++
+   // Enforce auth
+   const { userId } = await auth();
+   if (!userId) throw new Error("Unauthorized");
+@@ -180,6 +197,10 @@
+ }
+ 
+ export async function updateProductPrices(productId: string, prices: { retail: number, micro: number, restaurant: number }) {
++  const actor = await requireCapability('pricing.manage');
++  const supabase = getServerDatabase(actor);
++  assertTargetId(productId);
++
+   const { userId } = await auth();
+   if (!userId) throw new Error("Unauthorized");
+ 
+@@ -220,6 +241,9 @@
+   microMargin: number, 
+   restaurantMargin: number
+ ) {
++  const actor = await requireCapability('pricing.manage');
++  const supabase = getServerDatabase(actor);
++
+   // To avoid hitting edge limits, we fetch all, calculate, and do a batch upsert
+   const { data: products, error: fetchError } = await supabase
+     .from('products')
+@@ -257,7 +281,10 @@
+   return { success: true, count: updatedProducts.length };
+ }
+ 
+-export async function createProduct(product: Omit<Product, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
++export async function createProduct(product: Omit<AdminProduct, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
++  const actor = await requireCapability('catalog.manage');
++  const supabase = getServerDatabase(actor);
++
+   // Generate a new ID like prd_XXXX based on the highest existing ID
+   const { data: lastProduct } = await supabase
+     .from('products')
+@@ -311,7 +338,11 @@
+   return { success: true, id: newId };
+ }
+ 
+-export async function updateProduct(id: string, product: Omit<Product, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
++export async function updateProduct(id: string, product: Omit<AdminProduct, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
++  const actor = await requireCapability('catalog.manage');
++  const supabase = getServerDatabase(actor);
++  assertTargetId(id);
++
+   // Fetch existing product to audit changes
+   const { data: oldProduct } = await supabase
+     .from('products')
+@@ -372,27 +403,11 @@
+ }
+ 
+ export async function deleteProduct(id: string) {
+-  // First get the product to delete its image if it exists
+-  const { data: product, error: fetchError } = await supabase
+-    .from('products')
+-    .select('image_url')
+-    .eq('id', id)
+-    .single();
+-
+-  if (!fetchError && product?.image_url) {
+-    try {
+-      // The image_url is usually a public URL, we need to extract the path
+-      // Example: https://<project>.supabase.co/storage/v1/object/public/product-images/product-123.jpg
+-      const urlParts = product.image_url.split('/product-images/');
+-      if (urlParts.length > 1) {
+-        const path = urlParts[1];
+-        await supabase.storage.from('product-images').remove([path]);
+-      }
+-    } catch (e) {
+-      console.error('Error deleting image:', e);
+-    }
+-  }
+-
++  const actor = await requireCapability('catalog.manage');
++  assertTargetId(id);
++  const supabase = getServerDatabase(actor);
++
++  // Retain historical/shared blobs; managed media deletion is a separate guarded action.
+   const { error } = await supabase
+     .from('products')
+     .delete()
+@@ -415,3 +430,34 @@
+   revalidatePath('/');
+   return { success: true };
+ }
++
++export interface Product {
++ id: string; name: string; category: string; subcategory: string | null; unit: string;
++ price: number; previousPrice: number | null; stockQuantity: number; isActive: boolean; isInSeason: boolean; imageUrl: string | null; description: string | null;
++}
++
++// Public DTO never contains costs or non-entitled tier prices.
++export async function fetchProducts(): Promise<Product[]> {
++ const actor = await getActor();
++ const publicDb = createClient(supabaseUrl, supabaseKey);
++ const { data, error } = await publicDb.from('catalog_public').select('*');
++ if (error) throw new Error('CATALOG_UNAVAILABLE');
++ const { data: kits, error: kitsError } = await publicDb.from('kits_public').select('*');
++ if (kitsError) throw new Error('KITS_UNAVAILABLE');
++ const tierPrices = new Map<string, { price: number; previous: number | null }>();
++ if (actor.userId && actor.tier !== 'Personas Naturales') {
++   const db = getServerDatabase(actor);
++   const column = actor.tier === 'Restaurantes' ? 'price_restaurant' : 'price_micro';
++   const previous = actor.tier === 'Restaurantes' ? 'previous_price_restaurant' : 'previous_price_micro';
++   const result = await db.from('products').select('id,' + column + ',' + previous).in('id', (data || []).map(p => p.id));
++   if (result.error) throw new Error('ENTITLED_PRICE_UNAVAILABLE');
++   for (const row of (result.data || []) as unknown as Record<string, unknown>[]) {
++     if (typeof row.id !== 'string' || typeof row[column] !== 'number' || row[previous] !== null && typeof row[previous] !== 'number') throw new Error('INVALID_ENTITLED_PRICE');
++     tierPrices.set(row.id, { price: row[column] as number, previous: row[previous] as number | null });
++   }
++ }
++ if (actor.userId && actor.tier !== 'Personas Naturales' && (data || []).some(p => !tierPrices.has(p.id))) throw new Error('ENTITLED_PRICE_MISSING');
++ const products: Product[] = (data || []).map(p => ({ id:p.id, name:p.name, category:p.category, subcategory:p.subcategory, unit:p.unit, price:tierPrices.get(p.id)?.price ?? p.price_retail, previousPrice:tierPrices.has(p.id) ? tierPrices.get(p.id)!.previous : p.previous_price_retail, stockQuantity:p.stock_quantity, isActive:p.is_active, isInSeason:p.is_in_season, imageUrl:p.image_url, description:p.description }));
++ const combos: Product[] = (kits || []).map(k => ({ id:k.id, name:k.name, category:'Kits Negocios', subcategory:null, unit:'Combo', price:Number(k.fixed_price), previousPrice:null, stockQuantity:999, isActive:true, isInSeason:true, imageUrl:k.banner_url || null, description:'Combo mayorista: ' + k.name }));
++ return [...products, ...combos].sort((a,b) => a.name.localeCompare(b.name));
++}
+diff --git a/src/actions/settings.ts b/src/actions/settings.ts
+--- a/src/actions/settings.ts
++++ b/src/actions/settings.ts
+@@ -1,28 +1,23 @@
+ 'use server';
++import { readPublicInventoryFlag } from '@/src/lib/server/database';
+ 
+-import { createClient } from '@supabase/supabase-js';
++import { requireCapability } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
++
++
++
+ import { revalidatePath } from 'next/cache';
+ import { auth } from '@clerk/nextjs/server';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export async function getInventorySettings() {
+-  const { data, error } = await supabase
+-    .from('global_settings')
+-    .select('track_inventory')
+-    .eq('id', 'default')
+-    .single();
+-
+-  if (error || !data) {
+-    // Return default false if table doesn't exist yet
+-    return { track_inventory: false };
+-  }
+-  return data;
++  return readPublicInventoryFlag();
+ }
+ 
+ export async function toggleInventoryTracking(newValue: boolean) {
++  const actor = await requireCapability('settings.manage');
++  const supabase = getServerDatabase(actor);
++
+   const { userId } = await auth();
+   if (!userId) throw new Error("Unauthorized");
+ 
+diff --git a/src/actions/suppliers.ts b/src/actions/suppliers.ts
+--- a/src/actions/suppliers.ts
++++ b/src/actions/suppliers.ts
+@@ -1,11 +1,11 @@
+ 'use server';
++import { requireCapability, assertTargetId } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ 
+-import { createClient } from '@supabase/supabase-js';
++
++
+ import { revalidatePath } from 'next/cache';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export interface Supplier {
+   id: string;
+@@ -20,6 +20,9 @@
+ }
+ 
+ export async function fetchSuppliers(): Promise<Supplier[]> {
++  const actor = await requireCapability('suppliers.manage');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase
+     .from('suppliers')
+     .select('*')
+@@ -34,6 +37,9 @@
+ }
+ 
+ export async function createSupplier(supplier: Omit<Supplier, 'id' | 'created_at'>) {
++  const actor = await requireCapability('suppliers.manage');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase
+     .from('suppliers')
+     .insert(supplier)
+@@ -50,6 +56,10 @@
+ }
+ 
+ export async function updateSupplierStatus(id: string, status: Supplier['status']) {
++  const actor = await requireCapability('suppliers.manage');
++  const supabase = getServerDatabase(actor);
++  assertTargetId(id);
++
+   const { error } = await supabase
+     .from('suppliers')
+     .update({ status, updated_at: new Date().toISOString() })
+@@ -65,6 +75,10 @@
+ }
+ 
+ export async function updateSupplier(id: string, supplier: Partial<Omit<Supplier, 'id' | 'created_at'>>) {
++  const actor = await requireCapability('suppliers.manage');
++  const supabase = getServerDatabase(actor);
++  assertTargetId(id);
++
+   const { data, error } = await supabase
+     .from('suppliers')
+     .update({ ...supplier, updated_at: new Date().toISOString() })
+diff --git a/src/actions/systemSettings.ts b/src/actions/systemSettings.ts
+--- a/src/actions/systemSettings.ts
++++ b/src/actions/systemSettings.ts
+@@ -1,12 +1,12 @@
+ 'use server';
++import { requireCapability } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ 
+-import { createClient } from '@supabase/supabase-js';
++
++
+ import { revalidatePath } from 'next/cache';
+-import { auth, currentUser } from '@clerk/nextjs/server';
++import { currentUser } from '@clerk/nextjs/server';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export interface DeliveryZone {
+   name: string;
+@@ -35,6 +35,9 @@
+ }
+ 
+ export async function fetchSystemSettings(): Promise<SystemSettings> {
++  const actor = await requireCapability('settings.read');
++  const supabase = getServerDatabase(actor);
++
+   const { data, error } = await supabase
+     .from('system_settings')
+     .select('*')
+@@ -74,13 +77,8 @@
+ }
+ 
+ export async function updateSystemSettings(settings: Partial<SystemSettings>): Promise<{ success: boolean; error?: string }> {
+-  const { sessionClaims } = await auth();
+-  
+-  // Strict RBAC: Only ADMIN or SUPER_ADMIN can modify system settings
+-  const userRole = (sessionClaims?.metadata as any)?.role;
+-  if (userRole !== 'ADMIN' && userRole !== 'SUPER_ADMIN') {
+-    throw new Error("Unauthorized. Se requieren privilegios de Administrador para realizar esta acción.");
+-  }
++  const actor = await requireCapability('settings.manage');
++  const supabase = getServerDatabase(actor);
+ 
+   const user = await currentUser();
+   const actorName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.emailAddresses[0]?.emailAddress || 'Admin' : 'System Admin';
+diff --git a/src/actions/users.ts b/src/actions/users.ts
+--- a/src/actions/users.ts
++++ b/src/actions/users.ts
+@@ -1,4 +1,7 @@
+ 'use server';
++import { requireCapability, validateTier, validateRole, assertTargetId } from '@/src/lib/server/authorization';
++
++
+ 
+ import { clerkClient } from '@clerk/nextjs/server';
+ import { revalidatePath } from 'next/cache';
+@@ -14,6 +17,8 @@
+ }
+ 
+ export async function fetchSystemUsers(): Promise<SystemUser[]> {
++  await requireCapability('identity.read');
++
+   try {
+     const client = await clerkClient();
+     const response = await client.users.getUserList({
+@@ -39,16 +44,24 @@
+ }
+ 
+ export async function updateUserRoleAndTier(userId: string, role: string, tier: string) {
++  const actor = await requireCapability('identity.manage');
++
++
++  assertTargetId(userId);
++  const safeRole = validateRole(role);
++  const safeTier = validateTier(tier);
++  if (userId === actor.userId) throw new Error('SELF_ROLE_CHANGE_REQUIRES_SEPARATE_FLOW');
+   try {
+     const client = await clerkClient();
+     const user = await client.users.getUser(userId);
+     const existingMetadata = user.publicMetadata || {};
++    if (existingMetadata.role === 'SUPER_ADMIN' && safeRole !== 'SUPER_ADMIN') throw new Error('SUPER_ADMIN_DOWNGRADE_REQUIRES_SEPARATE_FLOW');
+ 
+     await client.users.updateUserMetadata(userId, {
+       publicMetadata: {
+         ...existingMetadata,
+-        role,
+-        tier,
++        role: safeRole,
++        tier: safeTier,
+       }
+     });
+ 
+diff --git a/src/actions/wompi.ts b/src/actions/wompi.ts
+--- a/src/actions/wompi.ts
++++ b/src/actions/wompi.ts
+@@ -1,14 +1,13 @@
+ 'use server';
+ 
+ import { auth, clerkClient } from '@clerk/nextjs/server';
+-import { createClient } from '@supabase/supabase-js';
++
+ import { generateIntegritySignature, formatToCents } from '@/src/lib/wompi';
+-import { createOrder } from './orders';
++import { createOrder } from '@/src/lib/server/orderWriter';
++import { getActor, assertIssuedActor } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ import { CheckoutItem } from './checkoutAction';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export async function initializeWompiTransaction(formData: FormData, items: CheckoutItem[]) {
+   try {
+@@ -18,6 +17,7 @@
+     throw new Error("Usuario no autenticado");
+   }
+ 
++  const supabase = getServerDatabase(await getActor());
+   // 1. Fetch user role to determine correct pricing
+   const client = await clerkClient();
+   const user = await client.users.getUser(userId);
+@@ -134,6 +134,7 @@
+ }
+ 
+ export async function initializeWompiBalancePayment(amount: number) {
++  assertIssuedActor(await getActor());
+   try {
+     const { userId } = await auth();
+     if (!userId) throw new Error("Usuario no autenticado");
+diff --git a/src/components/cart/CartDrawer.tsx b/src/components/cart/CartDrawer.tsx
+--- a/src/components/cart/CartDrawer.tsx
++++ b/src/components/cart/CartDrawer.tsx
+@@ -67,7 +67,7 @@
+            ) : (
+               <ul className="space-y-4">
+                  {items.map(item => {
+-                    const price = role === 'Restaurantes' ? item.product.priceRestaurant : role === 'Micromercados' ? item.product.priceMicro : item.product.priceRetail;
++                    const price = role === 'Restaurantes' ? item.product.price : role === 'Micromercados' ? item.product.price : item.product.price;
+                     return (
+                        <li key={item.product.id} className="flex gap-4 border border-gray-100 rounded-xl p-3 shadow-sm bg-slate-50/50">
+                           <div className="w-20 h-20 relative bg-white rounded-lg overflow-hidden border border-gray-100 flex-shrink-0">
+diff --git a/src/components/cart/MiniCartDropdown.tsx b/src/components/cart/MiniCartDropdown.tsx
+--- a/src/components/cart/MiniCartDropdown.tsx
++++ b/src/components/cart/MiniCartDropdown.tsx
+@@ -59,7 +59,7 @@
+             </div>
+          ) : (
+             items.map(item => {
+-               const price = role === 'Restaurantes' ? item.product.priceRestaurant : role === 'Micromercados' ? item.product.priceMicro : item.product.priceRetail;
++               const price = role === 'Restaurantes' ? item.product.price : role === 'Micromercados' ? item.product.price : item.product.price;
+                return (
+                   <div key={item.product.id} className="flex gap-4 border-b border-gray-100 py-4 relative group">
+                      <button onClick={() => removeFromCart(item.product.id)} className="absolute top-4 right-0 w-6 h-6 flex justify-center items-center rounded-full border border-gray-200 text-gray-400 hover:border-red-500 hover:text-red-500 text-xs font-bold transition-all">
+diff --git a/src/components/portals/CustomerOrderHistory.tsx b/src/components/portals/CustomerOrderHistory.tsx
+--- a/src/components/portals/CustomerOrderHistory.tsx
++++ b/src/components/portals/CustomerOrderHistory.tsx
+@@ -1,16 +1,17 @@
++import { getActor } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
+ import React from 'react';
+ import { auth } from '@clerk/nextjs/server';
+-import { createClient } from '@supabase/supabase-js';
++
+ import { OrderHistoryClient } from './OrderHistoryClient';
+ import { fetchProducts } from '@/src/actions/products';
+ 
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-const supabase = createClient(supabaseUrl, supabaseKey);
+ 
+ export async function CustomerOrderHistory() {
+   const { userId } = await auth();
+   if (!userId) return null;
++  const actor = await getActor();
++  const supabase = getServerDatabase(actor);
+ 
+   const { data: orders, error } = await supabase
+     .from('orders')
+diff --git a/src/components/portals/OrderHistoryClient.tsx b/src/components/portals/OrderHistoryClient.tsx
+--- a/src/components/portals/OrderHistoryClient.tsx
++++ b/src/components/portals/OrderHistoryClient.tsx
+@@ -49,9 +49,7 @@
+       const productToAdd = fullProduct || {
+         id: item.product_id,
+         name: item.product_name,
+-        priceRetail: item.price_at_purchase,
+-        priceMicro: item.price_at_purchase,
+-        priceRestaurant: item.price_at_purchase,
++        price: item.price_at_purchase,
+         imageUrl: '',
+         unit: 'Und'
+       };
+diff --git a/src/components/store/ProductCard.tsx b/src/components/store/ProductCard.tsx
+--- a/src/components/store/ProductCard.tsx
++++ b/src/components/store/ProductCard.tsx
+@@ -37,10 +37,10 @@
+ 
+   // Dynamic Pricing Logic directly integrated via Context Switch
+   const activePrice = role === 'Restaurantes'
+-        ? product.priceRestaurant
++        ? product.price
+         : role === 'Micromercados'
+-           ? product.priceMicro
+-           : product.priceRetail;
++           ? product.price
++           : product.price;
+ 
+   const handleAddToCart = () => {
+      addToCart(product, 1);
+diff --git a/src/components/store/ProductDetailClient.tsx b/src/components/store/ProductDetailClient.tsx
+--- a/src/components/store/ProductDetailClient.tsx
++++ b/src/components/store/ProductDetailClient.tsx
+@@ -12,7 +12,7 @@
+    const [qty, setQty] = useState(1);
+    const [activeTab, setActiveTab] = useState('info'); // info, nutrition, reviews
+ 
+-   const activePrice = role === 'Restaurantes' ? product.priceRestaurant : role === 'Micromercados' ? product.priceMicro : product.priceRetail;
++   const activePrice = role === 'Restaurantes' ? product.price : role === 'Micromercados' ? product.price : product.price;
+ 
+    const formatPrice = (price: number) => {
+      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(price);
+diff --git a/src/components/store/ShopView.tsx b/src/components/store/ShopView.tsx
+--- a/src/components/store/ShopView.tsx
++++ b/src/components/store/ShopView.tsx
+@@ -56,8 +56,8 @@
+ 
+      if (sortOrder) {
+          filtered.sort((a, b) => {
+-             const priceA = role === 'Restaurantes' ? a.priceRestaurant : role === 'Micromercados' ? a.priceMicro : a.priceRetail;
+-             const priceB = role === 'Restaurantes' ? b.priceRestaurant : role === 'Micromercados' ? b.priceMicro : b.priceRetail;
++             const priceA = role === 'Restaurantes' ? a.price : role === 'Micromercados' ? a.price : a.price;
++             const priceB = role === 'Restaurantes' ? b.price : role === 'Micromercados' ? b.price : b.price;
+              return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+          });
+      }
+diff --git a/src/contexts/CartContext.tsx b/src/contexts/CartContext.tsx
+--- a/src/contexts/CartContext.tsx
++++ b/src/contexts/CartContext.tsx
+@@ -1,7 +1,8 @@
+ 'use client';
+ 
+ import React, { createContext, useContext, useState, useEffect } from 'react';
+-import { Product } from '@/src/actions/products';
++import { Product, fetchProducts } from '@/src/actions/products';
++import { parseCartDraft, reconcileCartDraft } from '@/src/lib/cartPersistence';
+ import { useUserRole } from './UserRoleContext';
+ 
+ export interface CartItem {
+@@ -18,6 +19,7 @@
+   clearCart: () => void;
+   isCartOpen: boolean;
+   setIsCartOpen: (isOpen: boolean) => void;
++  cartRestoreError: string | null;
+   cartTotal: number;
+   itemCount: number;
+   freeShippingThreshold: number;
+@@ -31,33 +33,47 @@
+   const [items, setItems] = useState<CartItem[]>([]);
+   const [isCartOpen, setIsCartOpen] = useState(false);
+   const [isInitialized, setIsInitialized] = useState(false);
++  const [cartRestoreError, setCartRestoreError] = useState<string | null>(null);
+   const { role } = useUserRole();
+ 
+   useEffect(() => {
+-    // Load from local storage
+-    const saved = localStorage.getItem('gaviota_cart');
+-    if (saved) {
++    let cancelled = false;
++    async function restore() {
++      await Promise.resolve();
++      if (cancelled) return;
++      setIsInitialized(false);
+       try {
+-        // eslint-disable-next-line react-hooks/set-state-in-effect
+-        setItems(JSON.parse(saved));
+-      } catch (e) {
+-        console.error('Failed to parse cart');
++        const saved = localStorage.getItem('gaviota_cart');
++        if (!saved) { if (!cancelled) { setCartRestoreError(null); setIsInitialized(true); } return; }
++        const draft = parseCartDraft(saved);
++        // Strip legacy costs/prices before fetching; never overwrite this draft on failure.
++        localStorage.setItem('gaviota_cart', JSON.stringify(draft));
++        const catalog = await fetchProducts();
++        if (cancelled) return;
++        const restored = reconcileCartDraft(draft, catalog, Date.now());
++        setItems(restored.items);
++        if (restored.rejected.length) { setCartRestoreError('Hay productos que requieren revisión. Tu selección se conserva; actualiza para reintentar.'); return; }
++        setCartRestoreError(null);
++        setIsInitialized(true);
++      } catch {
++        if (!cancelled) setCartRestoreError('No pudimos verificar tu carrito. Tu selección se conserva; actualiza para reintentar.');
+       }
+     }
+-    setIsInitialized(true);
+-  }, []);
++    void restore();
++    return () => { cancelled = true; };
++  }, [role]);
+ 
+   useEffect(() => {
+     if (isInitialized) {
+-      localStorage.setItem('gaviota_cart', JSON.stringify(items));
++      localStorage.setItem('gaviota_cart', JSON.stringify({ version: 2, items: items.map(item => ({ id: item.product.id, quantity: item.quantity })) }));
+       
+       // Sync with Abandoned Cart Backend
+       const cartTotal = items.reduce((total, item) => {
+         const activePrice = role === 'Restaurantes' 
+-          ? item.product.priceRestaurant 
++          ? item.product.price 
+           : role === 'Micromercados' 
+-            ? item.product.priceMicro 
+-            : item.product.priceRetail;
++            ? item.product.price 
++            : item.product.price;
+         return total + (activePrice * item.quantity);
+       }, 0);
+ 
+@@ -74,6 +90,7 @@
+   }, [items, isInitialized, role]);
+ 
+   const addToCart = (product: Product, quantity = 1) => {
++    if (!isInitialized || cartRestoreError) return;
+     setItems(prev => {
+       const existing = prev.find(item => item.product.id === product.id);
+       if (existing) {
+@@ -93,6 +110,7 @@
+   };
+ 
+   const updateQuantity = (productId: string, quantity: number) => {
++    if (!isInitialized || cartRestoreError) return;
+     if (quantity < 1) return;
+     setItems(prev => prev.map(item => 
+       item.product.id === productId ? { ...item, quantity } : item
+@@ -104,10 +122,10 @@
+   // Calculate totals relying on UserRole dynamic pricing
+   const cartTotal = items.reduce((total, item) => {
+     const activePrice = role === 'Restaurantes' 
+-      ? item.product.priceRestaurant 
++      ? item.product.price 
+       : role === 'Micromercados' 
+-        ? item.product.priceMicro 
+-        : item.product.priceRetail;
++        ? item.product.price 
++        : item.product.price;
+     return total + (activePrice * item.quantity);
+   }, 0);
+ 
+@@ -121,9 +139,10 @@
+   return (
+     <CartContext.Provider value={{
+       items, addToCart, removeFromCart, updateQuantity, clearCart,
+-      isCartOpen, setIsCartOpen, cartTotal, itemCount,
++      isCartOpen, setIsCartOpen, cartRestoreError, cartTotal, itemCount,
+       freeShippingThreshold, remainingForFreeShipping, progressPercent
+     }}>
++      {cartRestoreError && <div role="alert" className="p-4 bg-amber-50 text-amber-900">{cartRestoreError}</div>}
+       {children}
+     </CartContext.Provider>
+   );
+diff --git a/src/hooks/useRBAC.ts b/src/hooks/useRBAC.ts
+--- a/src/hooks/useRBAC.ts
++++ b/src/hooks/useRBAC.ts
+@@ -2,7 +2,7 @@
+ 
+ import { useUser } from '@clerk/nextjs';
+ 
+-export type UserRole = 'SUPER_ADMIN' | 'COMMERCIAL' | 'CLIENT' | 'USER';
++export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'OPERARIO' | 'COMMERCIAL' | 'CLIENT' | 'USER';
+ 
+ export function useRBAC() {
+   const { user: clerkUser, isLoaded } = useUser();
+@@ -14,8 +14,12 @@
+   
+   // Reconcile logic: Check explicitly for the 'role' field first, then fallback to implicit admin from 'tier'
+   let mappedRole: UserRole = 'USER';
+-  if (rawRole === 'ADMIN' || rawRole === 'SUPER_ADMIN' || tier === 'admin' || tier === 'SUPER_ADMIN') {
++  if (rawRole === 'SUPER_ADMIN') {
+     mappedRole = 'SUPER_ADMIN';
++  } else if (rawRole === 'ADMIN') {
++    mappedRole = 'ADMIN';
++  } else if (rawRole === 'OPERARIO') {
++    mappedRole = 'OPERARIO';
+   } else if (rawRole === 'COMMERCIAL') {
+     mappedRole = 'COMMERCIAL';
+   } else if (rawRole === 'CLIENT' || tier === 'Restaurantes' || tier === 'Micromercados') {
+@@ -25,17 +29,10 @@
+   const isSuperAdmin = mappedRole === 'SUPER_ADMIN';
+   const isCommercial = mappedRole === 'COMMERCIAL';
+   const isClient = mappedRole === 'CLIENT';
+-  const isAdminAreaUser = isSuperAdmin || isCommercial;
++  const isAdminAreaUser = isSuperAdmin || mappedRole === 'ADMIN';
+ 
+   // Function to check if the current commercial user owns a resource
+-  const canAccessResource = (ownerId?: string, assignedTo?: string) => {
+-    if (isSuperAdmin) return true;
+-    if (isCommercial) {
+-      if (!clerkUser?.id) return false;
+-      return clerkUser.id === ownerId || clerkUser.id === assignedTo;
+-    }
+-    return false;
+-  };
++  const canAccessResource = (_ownerId?: string, _assignedTo?: string) => { void _ownerId; void _assignedTo; return isSuperAdmin || mappedRole === 'ADMIN'; };
+ 
+   // Create a compatible user object for the admin layout to consume
+   const user = clerkUser ? {
+diff --git a/src/lib/audit.ts b/src/lib/audit.ts
+--- a/src/lib/audit.ts
++++ b/src/lib/audit.ts
+@@ -1,11 +1,8 @@
+-import { createClient } from '@supabase/supabase-js';
++import 'server-only';
++import { requireCapability } from '@/src/lib/server/authorization';
++import { getServerDatabase } from '@/src/lib/server/database';
++
+ import { auth, clerkClient } from '@clerk/nextjs/server';
+-
+-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+-// Use service role for audit logs to bypass RLS, or ensure admin token is used. We use ANON for now as RLS is "true" for admins, 
+-// but to securely write server-side without a custom jwt, we should use the service role if available, or just anon if policies allow.
+-const supabase = createClient(supabaseUrl, process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseKey);
+ 
+ type AuditCategory = 'PRICING' | 'KITS' | 'SUPPLIER' | 'ORDERS' | 'SYSTEM';
+ 
+@@ -16,6 +13,8 @@
+   reference_id?: string
+ ) {
+   try {
++    const actor = await requireCapability('audit.write');
++    const supabase = getServerDatabase(actor);
+     const { userId } = await auth();
+     if (!userId) {
+       console.warn('[Audit Log] Failed to log action: No authenticated user.');
+@@ -31,12 +30,12 @@
+     const { error } = await supabase
+       .from('audit_logs')
+       .insert({
+-        user_id: userId,
+-        actor_name: actorName,
++        actor: actorName,
++        action: action_type,
++        target: reference_id || 'System',
+         category,
+-        action_type,
+-        description,
+-        reference_id: reference_id || null
++        details: description,
++        metadata: { actor_clerk_id: userId }
+       });
+ 
+     if (error) {
+diff --git a/src/lib/cartPersistence.ts b/src/lib/cartPersistence.ts
+new file mode 100644
+--- /dev/null
++++ b/src/lib/cartPersistence.ts
+@@ -0,0 +1,30 @@
++import type { Product } from '@/src/actions/products';
++export interface CartDraft { version: 2; items: { id: string; quantity: number }[] }
++export function parseCartDraft(raw: string): CartDraft {
++  if (raw.length > 1048576) throw new Error('CART_RESTORE_OVERSIZED');
++  const value: unknown = JSON.parse(raw);
++  const rows = Array.isArray(value) ? value : value && typeof value === 'object' && 'version' in value && value.version === 2 && 'items' in value ? value.items : null;
++  if (!Array.isArray(rows) || rows.length > 300) throw new Error('CART_RESTORE_INVALID');
++  const items: CartDraft['items'] = [];
++  for (const row of rows) {
++    if (!row || typeof row !== 'object') throw new Error('CART_RESTORE_INVALID');
++    const record = row as Record<string, unknown>;
++    const product = record.product;
++    const id = typeof record.id === 'string' ? record.id : product && typeof product === 'object' && 'id' in product ? product.id : null;
++    const quantity = record.quantity;
++    if (typeof id !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(id) || typeof quantity !== 'number' || !Number.isFinite(quantity) || quantity <= 0 || quantity > 1000000) throw new Error('CART_RESTORE_INVALID');
++    if (items.some(item => item.id === id)) throw new Error('CART_RESTORE_DUPLICATE');
++    items.push({ id, quantity });
++  }
++  return { version: 2, items };
++}
++export function reconcileCartDraft(draft: CartDraft, catalog: Product[], now: number) {
++  const items: { product: Product; quantity: number; addedAt: number }[] = [];
++  const rejected: string[] = [];
++  for (const line of draft.items) {
++    const product = catalog.find(p => p.id === line.id);
++    if (!product || !product.isActive || !Number.isFinite(product.price) || product.price < 0) { rejected.push(line.id); continue; }
++    items.push({ product, quantity: line.quantity, addedAt: now });
++  }
++  return { items, rejected };
++}
+diff --git a/src/lib/server/authorization.ts b/src/lib/server/authorization.ts
+new file mode 100644
+--- /dev/null
++++ b/src/lib/server/authorization.ts
+@@ -0,0 +1,33 @@
++import 'server-only';
++import { auth, clerkClient } from '@clerk/nextjs/server';
++export type Role = 'GUEST' | 'USER' | 'ADMIN' | 'SUPER_ADMIN' | 'OPERARIO' | 'COMMERCIAL' | 'INVALID';
++export type Tier = 'Personas Naturales' | 'Micromercados' | 'Restaurantes';
++export type Capability = 'identity.read' | 'identity.manage' | 'catalog.manage' | 'pricing.manage' | 'inventory.manage' | 'customers.manage' | 'tiers.manage' | 'orders.manage' | 'payments.manage' | 'reports.read' | 'audit.read' | 'settings.read' | 'settings.manage' | 'suppliers.manage' | 'storage.manage' | 'audit.write';
++export interface Actor { readonly userId: string | null; readonly role: Role; readonly tier: Tier }
++const issued = new WeakSet<object>();
++const staff: Capability[] = ['catalog.manage','pricing.manage','inventory.manage','customers.manage','tiers.manage','orders.manage','payments.manage','reports.read','settings.read','settings.manage','suppliers.manage','storage.manage','audit.write'];
++const knownCapabilities: Capability[] = [...staff, 'identity.read', 'identity.manage', 'audit.read'];
++const tiers: Tier[] = ['Personas Naturales','Micromercados','Restaurantes'];
++export function assertTargetId(value: unknown): asserts value is string { if (typeof value !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(value)) throw new Error('INVALID_TARGET'); }
++export function validateTier(value: unknown): Tier { if (!tiers.includes(value as Tier)) throw new Error('INVALID_TIER'); return value as Tier; }
++export function validateRole(value: unknown): Exclude<Role,'GUEST'|'INVALID'> { if (!['USER','ADMIN','SUPER_ADMIN','OPERARIO','COMMERCIAL'].includes(value as string)) throw new Error('INVALID_ROLE'); return value as Exclude<Role,'GUEST'|'INVALID'>; }
++export async function getActor(): Promise<Actor> {
++ const { userId } = await auth();
++ if (!userId) { const guest: Actor = Object.freeze({userId:null,role:'GUEST',tier:'Personas Naturales'}); issued.add(guest); return guest; }
++ assertTargetId(userId);
++ const user = await (await clerkClient()).users.getUser(userId);
++ if (!user || user.id !== userId || user.banned || user.locked) throw new Error('INVALID_ACTOR');
++ const meta = user.publicMetadata || {};
++ const raw = meta.role;
++ const role: Role = raw == null || raw === 'USER' || raw === 'CLIENT' ? 'USER' : ['ADMIN','SUPER_ADMIN','OPERARIO','COMMERCIAL'].includes(raw as string) ? raw as Role : 'INVALID';
++ // Tier is never a source of privileged role elevation. Unknown pricing tier is retail.
++ const tier: Tier = role !== 'INVALID' && tiers.includes(meta.tier as Tier) ? meta.tier as Tier : 'Personas Naturales';
++ const actor: Actor = Object.freeze({ userId, role, tier }); issued.add(actor); return actor;
++}
++export function assertIssuedActor(actor: Actor): void { if (!issued.has(actor) || !actor.userId || actor.role === 'INVALID') throw new Error('INVALID_ACTOR'); }
++export function hasCapability(actor: Actor, capability: Capability): boolean {
++ if (!issued.has(actor) || !knownCapabilities.includes(capability)) return false;
++ return actor.role === 'SUPER_ADMIN' || actor.role === 'ADMIN' && staff.includes(capability);
++}
++export async function requireCapability(capability: Capability): Promise<Actor> { const actor = await getActor(); if (!hasCapability(actor, capability)) throw new Error('FORBIDDEN'); return actor; }
++export async function requireOwnedSubject(subject: unknown): Promise<Actor> { const actor = await getActor(); assertIssuedActor(actor); assertTargetId(subject); if (subject !== actor.userId && !hasCapability(actor,'customers.manage')) throw new Error('FORBIDDEN_OWNER'); return actor; }
+diff --git a/src/lib/server/database.ts b/src/lib/server/database.ts
+new file mode 100644
+--- /dev/null
++++ b/src/lib/server/database.ts
+@@ -0,0 +1,39 @@
++import { requireScheduler } from './scheduler';
++import 'server-only';
++import { createClient } from '@supabase/supabase-js';
++import { assertIssuedActor, type Actor } from './authorization';
++// Service role bypasses RLS: guards and scoped queries are the trusted boundary.
++// No anonymous-key fallback. Secret is read only after a validated actor is supplied.
++export function getServerDatabase(actor: Actor) {
++ assertIssuedActor(actor);
++ const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
++ const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
++ if (!url || !key) throw new Error('SERVER_DATABASE_UNCONFIGURED');
++ return createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
++}
++
++// Scheduler credentials are considered a capability only after constant-time verification.
++export function getSchedulerDatabase(req: Request) {
++ requireScheduler(req);
++ return configuredServiceDatabase();
++}
++function configuredServiceDatabase() {
++ const url=process.env.NEXT_PUBLIC_SUPABASE_URL, key=process.env.SUPABASE_SERVICE_ROLE_KEY;
++ if(!url || !key) throw new Error('SERVER_DATABASE_UNCONFIGURED');
++ return createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
++}
++// Intentionally public insertion boundary; validation and fixed projection occur before credentials.
++export async function insertPublicLead(payload: Record<string,unknown>) {
++ const allowed=['fullName','businessName','businessType','phone','email','source'];
++ if(Object.keys(payload).some(k=>!allowed.includes(k)) || Object.values(payload).some(v=>typeof v!=='string'||v.length>512) || !payload.fullName || !payload.phone || !payload.businessType) throw new Error('INVALID_LEAD');
++ const db=configuredServiceDatabase();
++ return db.from('marketing_leads').insert({full_name:payload.fullName,business_name:payload.businessName,business_type:payload.businessType,phone:payload.phone,email:payload.email,source:payload.source||'Landing Page',status:'Nuevo'}).select('id').single();
++}
++
++// Public fixed projection; no caller-supplied table or select and no fail-open false.
++export async function readPublicInventoryFlag() {
++ const db=configuredServiceDatabase();
++ const {data,error}=await db.from('global_settings').select('track_inventory').eq('id','default').single();
++ if(error || !data || typeof data.track_inventory!=='boolean') throw new Error('INVENTORY_SETTING_UNAVAILABLE');
++ return {track_inventory:data.track_inventory};
++}
+diff --git a/src/lib/server/orderWriter.ts b/src/lib/server/orderWriter.ts
+new file mode 100644
+--- /dev/null
++++ b/src/lib/server/orderWriter.ts
+@@ -0,0 +1,63 @@
++import 'server-only';
++import type { Order, OrderItem } from '@/src/actions/orders';
++import { revalidatePath } from 'next/cache';
++import { requireOwnedSubject } from './authorization';
++import { getServerDatabase } from './database';
++
++export async function createOrder(orderData: Omit<Order, 'id' | 'created_at' | 'order_items'>, items: Omit<OrderItem, 'id' | 'order_id'>[], incrementLTV: boolean = false) {
++  const actor = await requireOwnedSubject(orderData.clerk_user_id);
++  const supabase = getServerDatabase(actor);
++  // 1. Insert order
++  const { data: order, error: orderError } = await supabase
++    .from('orders')
++    .insert(orderData)
++    .select()
++    .single();
++
++  if (orderError) {
++    console.error('Error creating order:', orderError);
++    throw new Error('Failed to create order');
++  }
++
++  // 2. Insert order items
++  const itemsWithOrderId = items.map(item => ({
++    ...item,
++    order_id: order.id
++  }));
++
++  const { error: itemsError } = await supabase
++    .from('order_items')
++    .insert(itemsWithOrderId);
++
++  if (itemsError) {
++    console.error('Error creating order items:', itemsError);
++    throw new Error('Failed to create order items');
++  }
++
++  // 3. Update customer stats if requested (Two-Phase Commit for Wompi)
++  if (incrementLTV && orderData.clerk_user_id) {
++    const { data: customer } = await supabase
++      .from('customers')
++      .select('total_orders, total_spent')
++      .eq('clerk_user_id', orderData.clerk_user_id)
++      .single();
++
++    await supabase
++      .from('customers')
++      .upsert({
++        clerk_user_id: orderData.clerk_user_id,
++        full_name: orderData.customer_name,
++        email: orderData.customer_email,
++        phone: orderData.customer_phone,
++        address: orderData.delivery_address,
++        total_orders: (customer?.total_orders || 0) + 1,
++        total_spent: (customer?.total_spent || 0) + orderData.total_amount,
++        last_order_at: new Date().toISOString(),
++        updated_at: new Date().toISOString()
++      });
++  }
++
++  revalidatePath('/admin/orders');
++  revalidatePath('/admin/clientes');
++  return { success: true, orderId: order.id };
++}
+diff --git a/src/lib/server/scheduler.ts b/src/lib/server/scheduler.ts
+new file mode 100644
+--- /dev/null
++++ b/src/lib/server/scheduler.ts
+@@ -0,0 +1,9 @@
++import 'server-only';
++import { timingSafeEqual } from 'node:crypto';
++export function requireScheduler(req: Request): void {
++ const secret = process.env.CRON_SECRET;
++ const supplied = req.headers.get('authorization');
++ if (!secret || secret.length < 32 || !supplied) throw new Error('SCHEDULER_UNAUTHORIZED');
++ const expected = Buffer.from('Bearer ' + secret), actual = Buffer.from(supplied);
++ if (actual.length !== expected.length || !timingSafeEqual(actual,expected)) throw new Error('SCHEDULER_UNAUTHORIZED');
++}

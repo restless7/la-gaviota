@@ -1,0 +1,31 @@
+{
+  "phase": "LG-RUNTIME-E2E",
+  "scope": "synthetic SQL model + actual current source with explicit mocks; no remote writes/customer queries; NOT full E2E",
+  "sql": {
+    "executed": 322,
+    "passed": 322,
+    "failed": 0,
+    "proposalSha256": "88eff4933862913457e11e92474d4cf9d83501b8f9afcacb340e238cfb164def",
+    "ownedPgStopped": true,
+    "cleanup": {
+      "started": true,
+      "pid": 482867,
+      "listen_addresses_configured": "",
+      "socket_directory": "/tmp/la-gaviota-runtime-e2e-20261015/security/private-pg/socket",
+      "preserved": true,
+      "stop_exit": 0,
+      "pid_alive": false,
+      "socket_entries_after": [],
+      "postmaster_pid_exists_after": false
+    }
+  },
+  "sourceModel": {
+    "executed": 118,
+    "passed": 118,
+    "failed": 0,
+    "sourceUnchanged": true
+  },
+  "remoteMetadata": "NOT_EXECUTED_PENDING_DESIGNATED_TEST_RESOURCE_AND_OWNER_AUTHORIZATION",
+  "remoteJWTStoragePolicies": "NOT_ATTESTED",
+  "releaseAuthorized": false
+}

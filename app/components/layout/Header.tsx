@@ -1,191 +1,77 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { SignedIn, UserButton } from '@clerk/nextjs';
+import { Menu, X, ShoppingBag, UserRound } from 'lucide-react';
 import { useCart } from '@/src/contexts/CartContext';
-import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { MiniCartDropdown } from '@/src/components/cart/MiniCartDropdown';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/nextjs';
-import { Menu, X } from 'lucide-react';
 import { CATEGORIES } from '@/src/constants/productConstants';
-import { useRouter } from 'next/navigation';
-
-const TIER_BADGES: Record<string, { label: string; color: string; bg: string }> = {
-  'Personas Naturales': { label: 'Detal', color: 'text-[#E30613]', bg: 'bg-red-50 border-red-200' },
-  'Micromercados': { label: 'Micro ✓', color: 'text-[#ca8a04]', bg: 'bg-yellow-50 border-yellow-200' },
-  'Restaurantes': { label: 'Mayorista ✓', color: 'text-[#4CAF50]', bg: 'bg-green-50 border-green-200' },
-};
+import { categoryHref } from '@/src/lib/categories';
 
 export default function Header() {
   const { itemCount, isCartOpen, setIsCartOpen } = useCart();
-  const { role, isSignedIn } = useUserRole();
   const pathname = usePathname();
-  const router = useRouter();
-  const badge = TIER_BADGES[role];
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  if (pathname?.startsWith('/admin')) {
-    return null;
-  }
-
-  const handleCategoryClick = (cat: string) => {
-    setIsMenuOpen(false);
-    router.push(`/?category=${encodeURIComponent(cat)}`);
-  };
+  const menuRef = useRef<HTMLDialogElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const closeMenu = () => { menuRef.current?.close(); setMenuOpen(false); };
+  if (pathname?.startsWith('/admin')) return null;
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md transition-all shadow-sm border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-0.5 flex items-center justify-between">
-          {/* Left Side: Hamburger & Logo */}
-        <div className="flex items-center gap-2 sm:gap-4">
-           <button 
-             className="md:hidden p-2 text-gray-700 hover:text-[#E30613] transition-colors"
-             onClick={() => setIsMenuOpen(true)}
-           >
-             <Menu className="w-6 h-6" />
-           </button>
-           <Link href="/" className="flex items-center gap-2">
-              <div className="relative w-[180px] sm:w-[420px] md:w-[510px] h-[70px] sm:h-[100px] md:h-[144px] flex items-center">
-                 <Image 
-                   src="/IMAGES/logo.jpeg" 
-                   alt="La Gaviota Logo" 
-                   fill
-                   className="object-contain object-left md:object-center"
-                   priority
-                 />
-              </div>
-           </Link>
-        </div>
-        
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-gray-700">
-           <Link href="/" className="hover:text-[#E30613] transition-colors pb-1 font-bold">Tienda General</Link>
-           <Link href="/nosotros" className="hover:text-[#E30613] transition-colors pb-1">Nuestra Granja</Link>
-           <Link href="/sobre-nosotros" className="hover:text-[#E30613] transition-colors pb-1">Nosotros</Link>
-           
-           <SignedIn>
-             <Link href={role === 'Micromercados' ? '/micromercado' : role === 'Restaurantes' ? '/restaurante' : '/retail'} className="text-[#83b745] hover:text-[#6c9c36] font-black transition-colors pb-1 flex items-center gap-1 bg-[#83b745]/10 px-3 py-1.5 rounded-full shadow-sm">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                Mi Portal
-             </Link>
-           </SignedIn>
-           
-           <SignedOut>
-             <Link href="/aplicar-negocio" className="text-[#FFCC00] bg-slate-800 hover:bg-slate-900 font-bold px-4 py-1.5 rounded-full transition-colors text-sm">
-                Precios Negocio
-             </Link>
-           </SignedOut>
-        </nav>
-
-        {/* Actions Menu */}
-        <div className="flex items-center gap-3">
-          {/* Tier Badge */}
-          <SignedIn>
-            {badge && (
-              <span className={`hidden sm:inline-flex text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border ${badge.bg} ${badge.color}`}>
-                {badge.label}
-              </span>
-            )}
-          </SignedIn>
-
-          {/* Cart */}
-          <div className="relative">
-             <button 
-               onClick={() => setIsCartOpen(!isCartOpen)}
-               className="flex items-center justify-center p-2 text-gray-700 hover:text-[#E30613] transition-colors relative"
-             >
-               <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
-                 <path d="M3 6h18"/>
-                 <path d="M16 10a4 4 0 0 1-8 0"/>
-               </svg>
-               {itemCount > 0 && (
-                 <span className="absolute -top-1 -right-1 bg-[#FFCC00] text-[#E30613] text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-sm border border-white">
-                   {itemCount}
-                 </span>
-               )}
-             </button>
-
-             {isCartOpen && (
-                <div className="hidden md:block">
-                   <MiniCartDropdown onClose={() => setIsCartOpen(false)} />
-                </div>
-             )}
+      <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur-md">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
+          <div className="flex min-w-0 items-center gap-1 sm:gap-3">
+            <button type="button" aria-label="Abrir menú" aria-haspopup="dialog" aria-controls="gaviota-menu" aria-expanded={menuOpen} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-red-600 xl:hidden" onClick={() => { menuRef.current?.showModal(); setMenuOpen(true); }}>
+              <Menu aria-hidden="true" size={24} />
+            </button>
+            <Link href="/" aria-label="La Gaviota, ir a la tienda" className="relative block h-16 w-[104px] shrink-0 sm:w-40 xl:w-44">
+              <Image src="/IMAGES/logo.jpeg" alt="La Gaviota" fill sizes="(max-width: 639px) 104px, 176px" priority className="object-contain" />
+            </Link>
           </div>
 
-          {/* Auth Buttons */}
-          <SignedIn>
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: 'w-9 h-9 ring-2 ring-[#E30613]/20',
-                }
-              }}
-            />
-          </SignedIn>
-          
-          <SignedOut>
-            <SignInButton mode="modal">
-              <button className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] px-4 py-2 rounded-full font-bold text-sm shadow-md transition-all hover:-translate-y-0.5">
-                Ingresar
+          <nav aria-label="Navegación principal" className="hidden items-center gap-5 whitespace-nowrap text-sm font-semibold text-slate-700 xl:flex">
+            <Link href="/" className="py-3 hover:text-red-700">Tienda</Link>
+            <Link href="/nosotros" className="py-3 hover:text-red-700">Nuestra Granja</Link>
+            <Link href="/sobre-nosotros" className="py-3 hover:text-red-700">Nosotros</Link>
+            <Link href="/aplicar-negocio" className="rounded-full bg-slate-800 px-4 py-3 text-yellow-300 hover:bg-slate-900">Precios Negocio</Link>
+          </nav>
+
+          <div className="flex shrink-0 items-center gap-1 sm:gap-3">
+            <Link href="/dashboard" className="flex min-h-11 items-center gap-1.5 whitespace-nowrap rounded-xl px-2 text-xs font-bold text-red-700 hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-red-600 sm:px-3 sm:text-sm" data-testid="account-link">
+              <UserRound size={19} aria-hidden="true" className="hidden sm:block" /> Mi Cuenta / Portal
+            </Link>
+            <div className="relative">
+              <button type="button" data-testid="cart-toggle" aria-label={`Abrir carrito, ${itemCount} unidades`} aria-expanded={isCartOpen} onClick={() => setIsCartOpen(!isCartOpen)} className="relative flex h-11 w-11 items-center justify-center rounded-xl text-slate-700 hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-red-600">
+                <ShoppingBag size={25} aria-hidden="true" />
+                {itemCount > 0 && <span aria-hidden="true" className="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full border border-white bg-yellow-300 px-1 text-[10px] font-black text-red-700">{itemCount}</span>}
               </button>
-            </SignInButton>
-          </SignedOut>
+              {isCartOpen && <div className="hidden md:block"><MiniCartDropdown onClose={() => setIsCartOpen(false)} /></div>}
+            </div>
+            <div className="hidden sm:block"><SignedIn><UserButton /></SignedIn></div>
+          </div>
         </div>
-      </div>
       </header>
 
-      {/* Mobile Drawer */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-[100] flex md:hidden">
-           {/* Overlay */}
-           <div 
-             className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
-             onClick={() => setIsMenuOpen(false)}
-           />
-           {/* Panel */}
-           <div className="relative w-4/5 max-w-sm bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-left duration-300">
-              <div className="flex items-center justify-between p-4 border-b border-gray-100">
-                 <span className="font-black text-xl text-slate-800">Menú</span>
-                 <button 
-                   onClick={() => setIsMenuOpen(false)}
-                   className="p-2 text-gray-400 hover:text-red-500 bg-gray-50 rounded-full"
-                 >
-                   <X className="w-5 h-5" />
-                 </button>
-              </div>
-              <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-6">
-                 {/* Main Navigation */}
-                 <nav className="flex flex-col gap-2">
-                    <Link onClick={() => setIsMenuOpen(false)} href="/" className="text-lg font-bold text-slate-700 py-2 hover:text-[#E30613]">Tienda General</Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/nosotros" className="text-lg font-bold text-slate-700 py-2 hover:text-[#E30613]">Nuestra Granja</Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/sobre-nosotros" className="text-lg font-bold text-slate-700 py-2 hover:text-[#E30613]">Sobre Nosotros</Link>
-                 </nav>
-                 
-                 <div className="h-px w-full bg-gray-100" />
-                 
-                 {/* Categories */}
-                 <div>
-                    <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Categorías</h3>
-                    <div className="flex flex-col gap-1">
-                       {CATEGORIES.map(cat => (
-                          <button 
-                             key={cat}
-                             onClick={() => handleCategoryClick(cat)}
-                             className="text-left text-sm font-bold text-gray-600 py-2 hover:text-[#4CAF50] transition-colors"
-                          >
-                             {cat}
-                          </button>
-                       ))}
-                    </div>
-                 </div>
-              </div>
-           </div>
+      <dialog id="gaviota-menu" ref={menuRef} aria-labelledby="gaviota-menu-title" onClose={() => setMenuOpen(false)} onClick={event => { if (event.target === event.currentTarget) closeMenu(); }} className="fixed inset-y-0 left-0 m-0 h-dvh max-h-none w-[min(88vw,22rem)] max-w-full border-0 bg-white p-0 shadow-2xl backdrop:bg-slate-900/60">
+        <div className="flex h-full flex-col">
+          <div className="flex items-center justify-between border-b p-4">
+            <h2 id="gaviota-menu-title" className="text-xl font-black text-slate-800">La Gaviota</h2>
+            <button type="button" aria-label="Cerrar menú" onClick={closeMenu} className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-50 text-slate-700"><X aria-hidden="true" size={22} /></button>
+          </div>
+          <nav aria-label="Menú de la tienda" className="flex flex-1 flex-col gap-1 overflow-y-auto p-4 text-sm font-semibold text-slate-700">
+            <Link href="/dashboard" onClick={closeMenu} className="mb-3 rounded-xl bg-red-50 px-4 py-3 font-bold text-red-700">Mi Cuenta · Mis pedidos</Link>
+            <Link href="/" onClick={closeMenu} className="rounded-lg px-3 py-3 hover:bg-slate-50">Tienda General</Link>
+            <Link href="/nosotros" onClick={closeMenu} className="rounded-lg px-3 py-3 hover:bg-slate-50">Nuestra Granja</Link>
+            <Link href="/sobre-nosotros" onClick={closeMenu} className="rounded-lg px-3 py-3 hover:bg-slate-50">Nosotros</Link>
+            <Link href="/aplicar-negocio" onClick={closeMenu} className="rounded-lg px-3 py-3 hover:bg-slate-50">Precios para Negocios</Link>
+            <h3 className="mb-1 mt-5 px-3 text-xs font-black uppercase tracking-wide text-slate-500">Categorías</h3>
+            {CATEGORIES.map(category => <Link key={category} href={categoryHref(category)} onClick={closeMenu} className="rounded-lg px-3 py-3 text-xs hover:bg-green-50">{category}</Link>)}
+          </nav>
         </div>
-      )}
+      </dialog>
     </>
   );
 }

@@ -1,0 +1,767 @@
+{
+  "date": "2026-10-15 America/Bogota",
+  "evidence_boundary": "Assessment only; no production non-GET requests, credentials, DB/private rows or business writes. Browser scripts block all non-GET/HEAD and service workers. Temporary mock harness independently rerun by root.",
+  "tooling": {
+    "typescript": "5.9.3 shared",
+    "eslint": "9.39.2 shared",
+    "eslint_config_next": "16.1.6 shared; intended16.2.1",
+    "prisma": "5.22 shared; intended7.8"
+  },
+  "lint": {
+    "files": 143,
+    "errors": 86,
+    "warnings": 60,
+    "app_src_files": 121,
+    "app_src_errors": 75,
+    "app_src_warnings": 53,
+    "rules": {
+      "@typescript-eslint/no-unused-vars": 54,
+      "@typescript-eslint/no-explicit-any": 53,
+      "@next/next/no-html-link-for-pages": 7,
+      "react-hooks/purity": 4,
+      "react-hooks/set-state-in-effect": 5,
+      "react/no-unescaped-entities": 2,
+      "@next/next/no-img-element": 4,
+      "react-hooks/exhaustive-deps": 2,
+      "@typescript-eslint/no-require-imports": 10,
+      "react/display-name": 1,
+      "prefer-const": 1,
+      "@typescript-eslint/ban-ts-comment": 3
+    },
+    "findings": [
+      {
+        "file": "app/(portals)/layout.tsx",
+        "errors": 0,
+        "warnings": 2
+      },
+      {
+        "file": "app/(portals)/micromercado/MicromercadoClient.tsx",
+        "errors": 8,
+        "warnings": 0
+      },
+      {
+        "file": "app/(portals)/micromercado/page.tsx",
+        "errors": 1,
+        "warnings": 1
+      },
+      {
+        "file": "app/(portals)/restaurante/RestauranteClient.tsx",
+        "errors": 8,
+        "warnings": 0
+      },
+      {
+        "file": "app/(portals)/restaurante/page.tsx",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "file": "app/admin/AdminDashboardClient.tsx",
+        "errors": 1,
+        "warnings": 1
+      },
+      {
+        "file": "app/admin/audit/AuditLogsClient.tsx",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "app/admin/catalog/kits/KitsClient.tsx",
+        "errors": 2,
+        "warnings": 2
+      },
+      {
+        "file": "app/admin/catalog/product-management/InventoryClient.tsx",
+        "errors": 0,
+        "warnings": 3
+      },
+      {
+        "file": "app/admin/catalog/product-management/ProductForm.tsx",
+        "errors": 2,
+        "warnings": 3
+      },
+      {
+        "file": "app/admin/clientes/restaurantes/page.tsx",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "app/admin/layout.tsx",
+        "errors": 2,
+        "warnings": 8
+      },
+      {
+        "file": "app/admin/marketing/MarketingClient.tsx",
+        "errors": 3,
+        "warnings": 1
+      },
+      {
+        "file": "app/admin/marketing/page.tsx",
+        "errors": 4,
+        "warnings": 0
+      },
+      {
+        "file": "app/admin/orders/OrderKanbanBoard.tsx",
+        "errors": 5,
+        "warnings": 1
+      },
+      {
+        "file": "app/admin/orders/OrderSummarySheet.tsx",
+        "errors": 1,
+        "warnings": 4
+      },
+      {
+        "file": "app/admin/orders/ProcurementSheet.tsx",
+        "errors": 0,
+        "warnings": 2
+      },
+      {
+        "file": "app/admin/pricing/PricingClient.tsx",
+        "errors": 1,
+        "warnings": 2
+      },
+      {
+        "file": "app/admin/reports/ReportsClient.tsx",
+        "errors": 4,
+        "warnings": 0
+      },
+      {
+        "file": "app/admin/reports/consolidation/page.tsx",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "app/admin/settings/SettingsClient.tsx",
+        "errors": 3,
+        "warnings": 1
+      },
+      {
+        "file": "app/admin/solicitudes/page.tsx",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "file": "app/admin/suppliers/SupplierTable.tsx",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "app/api/marketing/lead-capture/route.ts",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "app/api/marketing/loyalty/reorder/route.ts",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "app/aplicar-negocio/page.tsx",
+        "errors": 1,
+        "warnings": 1
+      },
+      {
+        "file": "app/categoria/[slug]/page.tsx",
+        "errors": 1,
+        "warnings": 1
+      },
+      {
+        "file": "app/checkout/page.tsx",
+        "errors": 5,
+        "warnings": 0
+      },
+      {
+        "file": "app/components/layout/Header.tsx",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "app/components/store/ProductGrid.tsx",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "file": "app/contacto/page.tsx",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "app/pqrs/page.tsx",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "file": "inspect_edward.ts",
+        "errors": 0,
+        "warnings": 2
+      },
+      {
+        "file": "scripts/migrate-categories.ts",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "scripts/seed-gaviota.ts",
+        "errors": 3,
+        "warnings": 0
+      },
+      {
+        "file": "scripts/seedSuppliers.js",
+        "errors": 3,
+        "warnings": 1
+      },
+      {
+        "file": "scripts/test-fetch2.ts",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "scripts/test-webhook-fraud.js",
+        "errors": 4,
+        "warnings": 1
+      },
+      {
+        "file": "scripts/test.js",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "file": "src/actions/analytics.ts",
+        "errors": 2,
+        "warnings": 0
+      },
+      {
+        "file": "src/actions/checkoutAction.ts",
+        "errors": 1,
+        "warnings": 2
+      },
+      {
+        "file": "src/actions/orders.ts",
+        "errors": 1,
+        "warnings": 2
+      },
+      {
+        "file": "src/actions/products.ts",
+        "errors": 1,
+        "warnings": 2
+      },
+      {
+        "file": "src/actions/systemSettings.ts",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "file": "src/actions/users.ts",
+        "errors": 2,
+        "warnings": 0
+      },
+      {
+        "file": "src/actions/wompi.ts",
+        "errors": 2,
+        "warnings": 0
+      },
+      {
+        "file": "src/components/RoleSwitcher.tsx",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "src/components/cart/MiniCartDropdown.tsx",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "file": "src/components/checkout/CheckoutUpsell.tsx",
+        "errors": 0,
+        "warnings": 2
+      },
+      {
+        "file": "src/components/portals/OrderHistoryClient.tsx",
+        "errors": 5,
+        "warnings": 0
+      },
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "errors": 1,
+        "warnings": 1
+      },
+      {
+        "file": "src/contexts/CartContext.tsx",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "file": "src/lib/metaCapi.ts",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "file": "src/lib/wompi.ts",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "file": "test_single.ts",
+        "errors": 0,
+        "warnings": 1
+      }
+    ]
+  },
+  "typecheck": {
+    "status": "BLOCKED_SHARED_DEPENDENCY_MISMATCH",
+    "diagnostic": "prisma.config.ts(4,30): error TS2307: Cannot find module 'prisma/config' or its corresponding type declarations."
+  },
+  "npm_ci_dry_run": {
+    "status": "BLOCKED_OFFLINE_METADATA_NOT_CACHED",
+    "installed": false
+  },
+  "npm_advisories": {
+    "scope": "Incomplete checked-in lock, not all declared dependencies; registry lookup only",
+    "metadata": {
+      "vulnerabilities": {
+        "info": 0,
+        "low": 1,
+        "moderate": 1,
+        "high": 12,
+        "critical": 1,
+        "total": 15
+      },
+      "dependencies": {
+        "prod": 95,
+        "dev": 321,
+        "optional": 82,
+        "peer": 0,
+        "peerOptional": 0,
+        "total": 478
+      }
+    },
+    "packages": {
+      "@babel/core": {
+        "severity": "low",
+        "isDirect": false,
+        "range": "<=7.29.0",
+        "advisories": [
+          {
+            "title": "@babel/core: Arbitrary File Read via sourceMappingURL Comment",
+            "url": "https://github.com/advisories/GHSA-4x5r-pxfx-6jf8",
+            "range": "<=7.29.0"
+          }
+        ]
+      },
+      "@next/eslint-plugin-next": {
+        "severity": "high",
+        "isDirect": false,
+        "range": ">=14.3.0-canary.0",
+        "advisories": []
+      },
+      "baseline-browser-mapping": {
+        "severity": "moderate",
+        "isDirect": false,
+        "range": ">=2.0.0 <2.11.0",
+        "advisories": [
+          {
+            "title": "baseline-browser-mapping process termination on invalid input causes denial of service",
+            "url": "https://github.com/advisories/GHSA-w5vr-8v7q-w6rv",
+            "range": ">=2.0.0 <2.11.0"
+          }
+        ]
+      },
+      "brace-expansion": {
+        "severity": "high",
+        "isDirect": false,
+        "range": "<=1.1.20 || 3.0.0 - 5.0.11",
+        "advisories": [
+          {
+            "title": "brace-expansion: Large numeric range defeats documented `max` DoS protection",
+            "url": "https://github.com/advisories/GHSA-jxxr-4gwj-5jf2",
+            "range": ">=5.0.0 <5.0.6"
+          },
+          {
+            "title": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+            "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+            "range": "<1.1.16"
+          },
+          {
+            "title": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+            "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+            "range": ">=3.0.0 <5.0.7"
+          },
+          {
+            "title": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+            "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+            "range": "<1.1.17"
+          },
+          {
+            "title": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+            "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+            "range": ">=4.0.0 <5.0.8"
+          },
+          {
+            "title": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+            "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+            "range": ">=4.0.0 <5.0.9"
+          },
+          {
+            "title": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+            "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+            "range": "<1.1.18"
+          },
+          {
+            "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+            "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+            "range": "<1.1.21"
+          },
+          {
+            "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+            "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+            "range": ">=4.0.0 <5.0.12"
+          },
+          {
+            "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+            "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+            "range": "<1.1.20"
+          },
+          {
+            "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+            "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+            "range": ">=4.0.0 <5.0.11"
+          },
+          {
+            "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+            "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+            "range": "<1.1.19"
+          },
+          {
+            "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+            "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+            "range": ">=4.0.0 <5.0.10"
+          }
+        ]
+      },
+      "braces": {
+        "severity": "high",
+        "isDirect": false,
+        "range": "*",
+        "advisories": [
+          {
+            "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+            "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+            "range": "<=3.0.3"
+          }
+        ]
+      },
+      "browserslist": {
+        "severity": "high",
+        "isDirect": false,
+        "range": "<=4.28.6",
+        "advisories": [
+          {
+            "title": "Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM",
+            "url": "https://github.com/advisories/GHSA-c83g-rgw3-j3cx",
+            "range": "<=4.28.6"
+          },
+          {
+            "title": "Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)",
+            "url": "https://github.com/advisories/GHSA-73wf-gq98-2v4g",
+            "range": "<=4.28.6"
+          }
+        ]
+      },
+      "eslint-config-next": {
+        "severity": "high",
+        "isDirect": true,
+        "range": ">=14.3.0-canary.0",
+        "advisories": []
+      },
+      "fast-glob": {
+        "severity": "high",
+        "isDirect": false,
+        "range": "*",
+        "advisories": []
+      },
+      "js-yaml": {
+        "severity": "high",
+        "isDirect": false,
+        "range": "4.0.0 - 4.3.1",
+        "advisories": [
+          {
+            "title": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+            "url": "https://github.com/advisories/GHSA-h67p-54hq-rp68",
+            "range": ">=4.0.0 <=4.1.1"
+          },
+          {
+            "title": "js-yaml: YAML merge-key chains can force quadratic CPU consumption",
+            "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m",
+            "range": ">=4.0.0 <4.3.0"
+          },
+          {
+            "title": "JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) \u2014 CVE-2026-59870 fix not backported",
+            "url": "https://github.com/advisories/GHSA-5p4m-2wfm-xmqj",
+            "range": ">=4.0.0 <4.3.1"
+          },
+          {
+            "title": "js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources",
+            "url": "https://github.com/advisories/GHSA-2883-xcg3-v3hh",
+            "range": ">=4.0.0 <4.3.2"
+          }
+        ]
+      },
+      "micromatch": {
+        "severity": "high",
+        "isDirect": false,
+        "range": ">=0.2.0",
+        "advisories": []
+      },
+      "nanoid": {
+        "severity": "high",
+        "isDirect": false,
+        "range": "<=3.3.17",
+        "advisories": [
+          {
+            "title": "nanoid: non-secure generators can loop indefinitely with negative size",
+            "url": "https://github.com/advisories/GHSA-28wg-ghj8-5hjv",
+            "range": "<3.3.16"
+          },
+          {
+            "title": "nanoid: custom generators can loop indefinitely when size is zero",
+            "url": "https://github.com/advisories/GHSA-2v37-7h3g-55p8",
+            "range": "<3.3.18"
+          },
+          {
+            "title": "nanoid: Integer Overflow or Wraparound",
+            "url": "https://github.com/advisories/GHSA-xwg4-73v4-xw9w",
+            "range": "<3.3.12"
+          }
+        ]
+      },
+      "next": {
+        "severity": "critical",
+        "isDirect": true,
+        "range": "9.3.4-canary.0 - 16.3.7",
+        "advisories": [
+          {
+            "title": "Next.js has a Denial of Service with Server Components",
+            "url": "https://github.com/advisories/GHSA-q4gf-8mx6-v5v3",
+            "range": ">=16.0.0-beta.0 <16.2.3"
+          },
+          {
+            "title": "Next.js Vulnerable to Denial of Service with Server Components",
+            "url": "https://github.com/advisories/GHSA-8h8q-6873-q5fj",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js has a Middleware / Proxy bypass in App Router applications via segment-prefetch routes - Incomplete Fix Follow-Up",
+            "url": "https://github.com/advisories/GHSA-26hh-7cqf-hhc6",
+            "range": ">=16.0.0 <16.2.6"
+          },
+          {
+            "title": "Next.js's Middleware / Proxy redirects can be cache-poisoned",
+            "url": "https://github.com/advisories/GHSA-3g8h-86w9-wvmq",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js vulnerable to cross-site scripting in App Router applications using CSP nonces",
+            "url": "https://github.com/advisories/GHSA-ffhc-5mcf-pf4q",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js vulnerable to cache poisoning via collisions in React Server Component cache-busting",
+            "url": "https://github.com/advisories/GHSA-vfv6-92ff-j949",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js has cross-site scripting in beforeInteractive scripts with untrusted input",
+            "url": "https://github.com/advisories/GHSA-gx5p-jg67-6x7h",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js vulnerable to Denial of Service via connection exhaustion in applications using Cache Components",
+            "url": "https://github.com/advisories/GHSA-mg66-mrh9-m8jx",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js has a Denial of Service in the Image Optimization API",
+            "url": "https://github.com/advisories/GHSA-h64f-5h5j-jqjh",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js vulnerable to server-side request forgery in applications using WebSocket upgrades",
+            "url": "https://github.com/advisories/GHSA-c4j6-fc7j-m34r",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js has a Middleware / Proxy bypass through dynamic route parameter injection",
+            "url": "https://github.com/advisories/GHSA-492v-c6pp-mqqv",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js vulnerable to cache poisoning in React Server Component responses",
+            "url": "https://github.com/advisories/GHSA-wfc6-r584-vfw7",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js has a Middleware / Proxy bypass in App Router applications via segment-prefetch routes",
+            "url": "https://github.com/advisories/GHSA-267c-6grr-h53f",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js has a Middleware / Proxy bypass in Pages Router applications using i18n",
+            "url": "https://github.com/advisories/GHSA-36qx-fr4f-26g5",
+            "range": ">=16.0.0 <16.2.5"
+          },
+          {
+            "title": "Next.js: Middleware / Proxy bypass in App Router applications using Turbopack and single locale",
+            "url": "https://github.com/advisories/GHSA-6gpp-xcg3-4w24",
+            "range": ">=16.0.0 <16.2.11"
+          },
+          {
+            "title": "Next.js: Denial of Service in App Router using Server Actions",
+            "url": "https://github.com/advisories/GHSA-m99w-x7hq-7vfj",
+            "range": ">=16.0.0 <16.2.11"
+          },
+          {
+            "title": "Next.js: Server-Side Request Forgery in Server Actions on custom servers",
+            "url": "https://github.com/advisories/GHSA-89xv-2m56-2m9x",
+            "range": ">=16.0.0 <16.2.11"
+          },
+          {
+            "title": "Next.js: Cache confusion of response bodies for requests with bodies",
+            "url": "https://github.com/advisories/GHSA-68g3-v927-f742",
+            "range": ">=16.0.0 <16.2.11"
+          },
+          {
+            "title": "Next.js: Cache confusion of response bodies for requests with bodies containing invalid UTF-8 byte sequences",
+            "url": "https://github.com/advisories/GHSA-4633-3j49-mh5q",
+            "range": ">=16.0.0 <16.2.11"
+          },
+          {
+            "title": "Next.js: Unbounded Server Action payload in Edge runtime",
+            "url": "https://github.com/advisories/GHSA-4c39-4ccg-62r3",
+            "range": ">=16.0.0 <16.2.11"
+          },
+          {
+            "title": "Next.js: Server-Side Request Forgery in rewrites via attacker-controlled destination hostname",
+            "url": "https://github.com/advisories/GHSA-p9j2-gv94-2wf4",
+            "range": ">=16.0.0 <16.2.11"
+          },
+          {
+            "title": "Next.js: Denial of Service in the Image Optimization API using SVGs",
+            "url": "https://github.com/advisories/GHSA-q8wf-6r8g-63ch",
+            "range": ">=16.0.0 <16.2.11"
+          },
+          {
+            "title": "Next.js: Unauthenticated disclosure of internal Server Function endpoints",
+            "url": "https://github.com/advisories/GHSA-955p-x3mx-jcvp",
+            "range": ">=16.0.0 <16.2.11"
+          },
+          {
+            "title": "Next.js: Unauthenticated Remote Code Execution on windows-hosted servers",
+            "url": "https://github.com/advisories/GHSA-p293-qw3h-jr36",
+            "range": ">=16.0.0 <16.3.3"
+          },
+          {
+            "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used",
+            "url": "https://github.com/advisories/GHSA-2xp9-vwfh-vxw4",
+            "range": ">=16.0.0 <16.3.3"
+          },
+          {
+            "title": "Next.js: Remote Code Execution in next/og ImageResponse",
+            "url": "https://github.com/advisories/GHSA-vcvr-r3jv-pc5j",
+            "range": ">=16.2.0 <16.3.6"
+          },
+          {
+            "title": "Next.js has cache poisoning of SSG and ISR pages in self-hosted applications",
+            "url": "https://github.com/advisories/GHSA-4jqv-mc3x-m676",
+            "range": ">=16.0.0 <16.3.8"
+          },
+          {
+            "title": "Next.js has information disclosure in development server's Model Context Protocol endpoint",
+            "url": "https://github.com/advisories/GHSA-39w2-rjm5-chcv",
+            "range": ">=16.0.0 <16.3.8"
+          },
+          {
+            "title": "Next.js has information disclosure in App Router metadata image routes via dynamicParams bypass",
+            "url": "https://github.com/advisories/GHSA-f87g-xv8r-7p7x",
+            "range": ">=16.0.0 <16.3.8"
+          },
+          {
+            "title": "Next.js has cache poisoning in SSG/ISR rendering that leads to cross-user content substitution and persistent denial of service",
+            "url": "https://github.com/advisories/GHSA-mcj8-r9mp-w47p",
+            "range": ">=16.0.0 <16.3.8"
+          },
+          {
+            "title": "Next.js has Server-Side Request Forgery in Image Optimization",
+            "url": "https://github.com/advisories/GHSA-cjq9-62q9-8jv4",
+            "range": ">=16.0.0 <16.3.8"
+          }
+        ]
+      },
+      "postcss": {
+        "severity": "high",
+        "isDirect": false,
+        "range": "<=8.5.22",
+        "advisories": [
+          {
+            "title": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output",
+            "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+            "range": "<8.5.10"
+          },
+          {
+            "title": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments",
+            "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+            "range": "<=8.5.11"
+          },
+          {
+            "title": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q \u2014 attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset",
+            "url": "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+            "range": "<=8.5.22"
+          },
+          {
+            "title": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+            "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+            "range": "<=8.5.17"
+          }
+        ]
+      },
+      "sharp": {
+        "severity": "high",
+        "isDirect": false,
+        "range": "<=0.35.5-rc.1",
+        "advisories": [
+          {
+            "title": "sharp inherited vulnerabilities in libvips: CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591",
+            "url": "https://github.com/advisories/GHSA-f88m-g3jw-g9cj",
+            "range": "<0.35.0"
+          },
+          {
+            "title": "sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545",
+            "url": "https://github.com/advisories/GHSA-rgj7-g3m4-5g8c",
+            "range": "<0.35.4"
+          },
+          {
+            "title": "sharp : Vulnerability in librsvg dependency CVE-2026-96889",
+            "url": "https://github.com/advisories/GHSA-wq5f-xc86-pv6w",
+            "range": "<0.35.5"
+          }
+        ]
+      },
+      "source-map-js": {
+        "severity": "high",
+        "isDirect": false,
+        "range": "1.0.0 - 1.2.1",
+        "advisories": [
+          {
+            "title": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+            "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+            "range": ">=1.0.0 <1.2.2"
+          }
+        ]
+      }
+    }
+  },
+  "tokens_tier_cost": "UNAVAILABLE; no estimates or fabricated accounting"
+}

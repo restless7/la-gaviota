@@ -1,0 +1,158 @@
+[
+  {
+    "package": "@clerk/localizations",
+    "from": "^4.6.2",
+    "to": "4.6.2",
+    "classification": "reproducibility restoration: missing direct package"
+  },
+  {
+    "package": "@clerk/nextjs",
+    "from": "^6.37.0",
+    "to": "6.39.7",
+    "classification": "required security correction; Clerk entry also restored from missing lock"
+  },
+  {
+    "package": "@dnd-kit/core",
+    "from": "^6.3.1",
+    "to": "6.3.1",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "@dnd-kit/sortable",
+    "from": "^8.0.0",
+    "to": "8.0.0",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "@dnd-kit/utilities",
+    "from": "^3.2.2",
+    "to": "3.2.2",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "@prisma/client",
+    "from": "^7.8.0",
+    "to": "7.8.0",
+    "classification": "reproducibility restoration: missing direct package"
+  },
+  {
+    "package": "@supabase/ssr",
+    "from": "^0.7.0",
+    "to": "0.7.0",
+    "classification": "reproducibility restoration: missing direct package"
+  },
+  {
+    "package": "@supabase/supabase-js",
+    "from": "^2.106.2",
+    "to": "2.106.2",
+    "classification": "reproducibility restoration: missing direct package"
+  },
+  {
+    "package": "@tailwindcss/postcss",
+    "from": "^4.0.0",
+    "to": "4.2.4",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "autoprefixer",
+    "from": "^10.4.20",
+    "to": "10.5.0",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "embla-carousel-autoplay",
+    "from": "^8.6.0",
+    "to": "8.6.0",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "embla-carousel-react",
+    "from": "^8.6.0",
+    "to": "8.6.0",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "framer-motion",
+    "from": "^11.18.2",
+    "to": "11.18.2",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "lucide-react",
+    "from": "^0.525.0",
+    "to": "0.525.0",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "next",
+    "from": "16.2.1",
+    "to": "16.4.1",
+    "classification": "required security correction; Clerk entry also restored from missing lock"
+  },
+  {
+    "package": "react",
+    "from": "19.2.4",
+    "to": "19.2.4",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "react-dom",
+    "from": "19.2.4",
+    "to": "19.2.4",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "recharts",
+    "from": "^2.15.4",
+    "to": "2.15.4",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "tailwindcss",
+    "from": "^4.0.0",
+    "to": "4.2.4",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "@types/node",
+    "from": "^20",
+    "to": "20.19.39",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "@types/react",
+    "from": "^19",
+    "to": "19.3.0",
+    "classification": "compatibility correction: PrismaStudio/Radix optional peer resolution requires coherent19.3 type pair under strict resolution; runtimeReact19.2 unchanged"
+  },
+  {
+    "package": "@types/react-dom",
+    "from": "^19",
+    "to": "19.3.0",
+    "classification": "compatibility correction: PrismaStudio/Radix optional peer resolution requires coherent19.3 type pair under strict resolution; runtimeReact19.2 unchanged"
+  },
+  {
+    "package": "eslint",
+    "from": "^9",
+    "to": "9.39.4",
+    "classification": "reproducibility restoration: pin existing version"
+  },
+  {
+    "package": "eslint-config-next",
+    "from": "16.2.1",
+    "to": "16.4.1",
+    "classification": "required security correction; Clerk entry also restored from missing lock"
+  },
+  {
+    "package": "prisma",
+    "from": "^7.8.0",
+    "to": "7.8.0",
+    "classification": "reproducibility restoration: missing direct package"
+  },
+  {
+    "package": "typescript",
+    "from": "^5",
+    "to": "5.9.3",
+    "classification": "reproducibility restoration: pin existing version"
+  }
+]

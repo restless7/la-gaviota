@@ -1,9 +1,9 @@
 import React from 'react';
 import PricingClient from './PricingClient';
-import { fetchProducts } from '@/src/actions/products';
+import { fetchAdminProducts } from '@/src/actions/products';
 
 export default async function PricingPage() {
-  const products = await fetchProducts();
+  const products = await fetchAdminProducts();
   
   return (
     <PricingClient initialProducts={products} />

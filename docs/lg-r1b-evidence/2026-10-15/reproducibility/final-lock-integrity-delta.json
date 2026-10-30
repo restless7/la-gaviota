@@ -1,0 +1,54 @@
+{
+  "candidate_lock_sha256": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157",
+  "counts": {
+    "packages": 616,
+    "integrity": 610,
+    "resolved_registry": 610,
+    "has_install_script": 7,
+    "optional": 94,
+    "dev": 324
+  },
+  "problems": [],
+  "added_paths": 138,
+  "removed_paths": 0,
+  "changed_version_paths": 146,
+  "candidate_overrides_present": false,
+  "direct_versions": {
+    "node_modules/next": "16.4.1",
+    "node_modules/postcss": "8.5.30",
+    "node_modules/prisma": "7.8.0",
+    "node_modules/react": "19.2.4",
+    "node_modules/react-dom": "19.2.4",
+    "node_modules/sharp": "0.35.5"
+  },
+  "bundled_entries_covered_by_parent_tarball_integrity": [
+    {
+      "key": "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/core",
+      "problem": "missing-sha512-integrity"
+    },
+    {
+      "key": "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/runtime",
+      "problem": "missing-sha512-integrity"
+    },
+    {
+      "key": "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/wasi-threads",
+      "problem": "missing-sha512-integrity"
+    },
+    {
+      "key": "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@napi-rs/wasm-runtime",
+      "problem": "missing-sha512-integrity"
+    },
+    {
+      "key": "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@tybys/wasm-util",
+      "problem": "missing-sha512-integrity"
+    },
+    {
+      "key": "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/tslib",
+      "problem": "missing-sha512-integrity"
+    }
+  ],
+  "parent_bundle": {
+    "path": "node_modules/@tailwindcss/oxide-wasm32-wasi",
+    "integrity": "sha512-FQsqApeor8Fo6gUEklzmaa9994orJZZDBAlQpK2Mq+DslRKFJeD6AjHpBQ0kZFQohVr8o85PPh8eOy86VlSCmw=="
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "beforeMutations": true,
+  "applicationsObserved": 4,
+  "currentLocalMatchedExistingLaGaviota": true,
+  "existingDevelopmentIndependentVerified": false,
+  "unrelatedBusinessApplications": 3,
+  "existingUsersRead": 0,
+  "remoteMutationsAtInventory": 0,
+  "doctor": {
+    "exit": 1,
+    "checks": [
+      {
+        "name": "Host execution",
+        "status": "pass"
+      },
+      {
+        "name": "CLI version",
+        "status": "warn"
+      },
+      {
+        "name": "Logged in",
+        "status": "pass"
+      },
+      {
+        "name": "Authentication valid",
+        "status": "pass"
+      },
+      {
+        "name": "Project linked",
+        "status": "fail"
+      },
+      {
+        "name": "Application reachable",
+        "status": "warn"
+      },
+      {
+        "name": "Instance IDs",
+        "status": "warn"
+      },
+      {
+        "name": "Environment variables",
+        "status": "pass"
+      },
+      {
+        "name": "CLI configuration",
+        "status": "pass"
+      },
+      {
+        "name": "Shell completion",
+        "status": "warn"
+      }
+    ],
+    "stderrPresent": true,
+    "hostWarning": false
+  }
+}

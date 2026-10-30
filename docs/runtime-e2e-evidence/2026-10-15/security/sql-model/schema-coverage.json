@@ -1,0 +1,318 @@
+[
+  {
+    "table": "public.abandoned_carts",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "clerk_user_id",
+      "customer_phone",
+      "customer_email",
+      "cart_data",
+      "total_amount",
+      "status",
+      "last_active_at",
+      "created_at",
+      "updated_at"
+    ],
+    "candidate_access": "server only, no anon/user grant",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.agricultural_shrinkage_logs",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "product_id",
+      "quantity_kg",
+      "log_type",
+      "loss_reason",
+      "logged_at"
+    ],
+    "candidate_access": "server only, no anon/user grant",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.audit_logs",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "timestamp",
+      "actor",
+      "action",
+      "target",
+      "category",
+      "details",
+      "metadata"
+    ],
+    "candidate_access": "server only, no anon/user grant",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.b2b_credit_profiles",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "user_id",
+      "tier",
+      "credit_limit",
+      "credit_balance",
+      "credit_days_remaining",
+      "updated_at"
+    ],
+    "candidate_access": "owned SELECT columns only",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.business_applications",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "clerk_user_id",
+      "applicant_name",
+      "applicant_email",
+      "business_name",
+      "business_type",
+      "nit",
+      "phone",
+      "address",
+      "municipality",
+      "monthly_volume",
+      "notes",
+      "status",
+      "reviewed_by",
+      "reviewed_at",
+      "created_at"
+    ],
+    "candidate_access": "owned SELECT columns only",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.buying_templates",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "user_id",
+      "template_name",
+      "product_list",
+      "last_used_at",
+      "created_at"
+    ],
+    "candidate_access": "owned SELECT columns only",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.customers",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "clerk_user_id",
+      "full_name",
+      "email",
+      "phone",
+      "address",
+      "tier",
+      "total_orders",
+      "total_spent",
+      "last_order_at",
+      "created_at",
+      "updated_at",
+      "business_name",
+      "nit",
+      "credit_limit",
+      "current_balance",
+      "payment_terms",
+      "assigned_rep"
+    ],
+    "candidate_access": "owned SELECT columns only",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.daily_operational_ledgers",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "operational_date",
+      "total_orders_processed",
+      "total_revenue_collected",
+      "closed_at",
+      "closed_by_user"
+    ],
+    "candidate_access": "server only, no anon/user grant",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.global_settings",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "track_inventory",
+      "updated_at"
+    ],
+    "candidate_access": "server only, no anon/user grant",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.kit_items",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "kit_id",
+      "product_id",
+      "quantity"
+    ],
+    "candidate_access": "server only, no anon/user grant",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.kits",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "name",
+      "slug",
+      "fixed_price",
+      "banner_url",
+      "status",
+      "created_at",
+      "updated_at"
+    ],
+    "candidate_access": "public safe projection",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.marketing_leads",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "full_name",
+      "business_name",
+      "business_type",
+      "phone",
+      "email",
+      "source",
+      "status",
+      "notes",
+      "assigned_to",
+      "created_at",
+      "updated_at"
+    ],
+    "candidate_access": "server only, no anon/user grant",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.order_items",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "order_id",
+      "product_id",
+      "product_name",
+      "quantity",
+      "price_at_purchase",
+      "created_at"
+    ],
+    "candidate_access": "owned SELECT columns only",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.orders",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "clerk_user_id",
+      "customer_name",
+      "customer_email",
+      "customer_phone",
+      "delivery_address",
+      "delivery_municipality",
+      "total_amount",
+      "status",
+      "payment_method",
+      "notes",
+      "created_at",
+      "updated_at",
+      "scheduled_delivery_date",
+      "is_conflicted",
+      "conflict_reason",
+      "purchase_tier"
+    ],
+    "candidate_access": "owned SELECT columns only",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.products",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "name",
+      "category",
+      "unit",
+      "base_cost",
+      "price_retail",
+      "price_micro",
+      "price_restaurant",
+      "previous_price_retail",
+      "previous_price_micro",
+      "previous_price_restaurant",
+      "stock_quantity",
+      "is_active",
+      "is_in_season",
+      "image_url",
+      "created_at",
+      "updated_at",
+      "description",
+      "subcategory"
+    ],
+    "candidate_access": "public safe projection",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.suppliers",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "name",
+      "contact_name",
+      "phone",
+      "email",
+      "farm_location",
+      "supplied_categories",
+      "status",
+      "created_at",
+      "updated_at"
+    ],
+    "candidate_access": "server only, no anon/user grant",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "public.system_settings",
+    "source": "prisma/schema.prisma",
+    "fixture_columns": [
+      "id",
+      "business_name",
+      "nit",
+      "address",
+      "phone",
+      "hours",
+      "delivery_zones",
+      "notifications",
+      "retail_margin",
+      "micro_margin",
+      "wholesale_margin",
+      "updated_at"
+    ],
+    "candidate_access": "server only, no anon/user grant",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "storage.objects",
+    "source": "synthetic stub + existing bucket policy source",
+    "candidate_access": "public bucket operation-aware get only; no listing/private",
+    "writes": "guarded server service_role ONLY; bypassRLS explicit"
+  },
+  {
+    "table": "storage.buckets",
+    "source": "synthetic stub",
+    "candidate_access": "no direct anon/auth metadata access",
+    "writes": "guarded server service_role only"
+  }
+]

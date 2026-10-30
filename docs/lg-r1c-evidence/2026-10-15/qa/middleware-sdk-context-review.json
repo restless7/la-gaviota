@@ -1,0 +1,99 @@
+{
+  "sdk_version": "@clerk/nextjs6.39.7/Next16.4.1",
+  "classification": "SOURCE_CONFIRMED_CALL_CHAIN; runtime signed-in impact INFERRED_UNVERIFIED",
+  "hypothesis": "getActor global auth inside middleware callback reads raw requestStore before verified Clerk AuthStatus decoration; callback auth uses verified requestState directly",
+  "facts": {
+    "app-router/server/auth.js": {
+      "sha256": "b568092b9453031c1a2487421d590e487c4d7672277bf2d10f29eca50dd88176",
+      "locations": [
+        {
+          "term": "const request = await",
+          "line": 48
+        },
+        {
+          "term": "createAsyncGetAuth",
+          "line": 61
+        }
+      ]
+    },
+    "app-router/server/utils.js": {
+      "sha256": "df3cf34a8b570f3da0aaefc681ac73ee7fb12da83097faa8e0933e4eb3e034a7",
+      "locations": [
+        {
+          "term": "async function buildRequestLike",
+          "line": 48
+        },
+        {
+          "term": "await headers()",
+          "line": 51
+        }
+      ]
+    },
+    "server/clerkMiddleware.js": {
+      "sha256": "1b86c9e063b251c8465807d5e4706b9b73069ef42d553da2b29637fb2fd300bb",
+      "locations": [
+        {
+          "term": "handler(authHandler",
+          "line": 128
+        },
+        {
+          "term": "decorateRequest",
+          "line": 170
+        }
+      ]
+    },
+    "server/createGetAuth.js": {
+      "sha256": "cfa7fcc4afd9d2031b6c79862a3aaa43c4032b2e0429999c28dad8f25748c57d",
+      "locations": [
+        {
+          "term": "detectClerkMiddleware",
+          "line": 52
+        },
+        {
+          "term": "assertAuthStatus",
+          "line": 54
+        }
+      ]
+    },
+    "server/middleware-storage.js": {
+      "sha256": "27e7c46b6d10f7957bcfa9821f58b4bd893bb6003d0c8e5562b4a19e81510088",
+      "locations": [
+        {
+          "term": "new Map",
+          "line": 26
+        },
+        {
+          "term": "AsyncLocalStorage",
+          "line": 27
+        }
+      ]
+    },
+    "server/clerkClient.js": {
+      "sha256": "42f2a829def9e062fb95b7241c861755748b5f1e2c872ed5c2e3e72dad5bdcff",
+      "locations": [
+        {
+          "term": "clerkMiddlewareRequestDataStorage.getStore()",
+          "line": 42
+        }
+      ]
+    },
+    "next/dist/server/web/adapter.js": {
+      "locations": [
+        {
+          "term": "createRequestStoreForAPI",
+          "line": 237
+        },
+        {
+          "term": "workUnitAsyncStorage.run(requestStore",
+          "line": 273
+        }
+      ]
+    }
+  },
+  "not_proven": [
+    "real signed-in middleware behavior",
+    "gateway auth/injection",
+    "live exploitability"
+  ],
+  "recommendation": "narrow reviewed internal actor-resolution boundary from verified middleware callback result, retain fresh Clerk user lookup and issued actors, no untrusted caller subject input"
+}

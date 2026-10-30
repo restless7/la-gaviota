@@ -1,0 +1,83 @@
+[
+  {
+    "url": "https://www.lagaviotafruver.com/IMAGES/verduras-banner.jpeg",
+    "method": "GET",
+    "authenticated": false,
+    "status": 404,
+    "content_type": "text/html; charset=utf-8",
+    "elapsed_seconds": 0.521
+  },
+  {
+    "url": "https://www.lagaviotafruver.com/IMAGES/verduras-banner1.jpeg",
+    "method": "GET",
+    "authenticated": false,
+    "status": 200,
+    "content_type": "image/jpeg",
+    "bytes": 693432,
+    "sha256": "81c68f2887e59cc29cb3f0b824a99202558e10c298f577bbce84f3d4ca145fdc",
+    "final_url": "https://www.lagaviotafruver.com/IMAGES/verduras-banner1.jpeg",
+    "cache_control": "public, max-age=0, must-revalidate",
+    "etag": "\"03e17091257aa4f15940daf12d7899ba\"",
+    "elapsed_seconds": 0.767
+  },
+  {
+    "url": "https://www.lagaviotafruver.com/IMAGES/frutas-banner.jpeg",
+    "method": "GET",
+    "authenticated": false,
+    "status": 200,
+    "content_type": "image/jpeg",
+    "bytes": 828715,
+    "sha256": "0a6ad46dfda27b0b9b123b493a84e1ee531049da22d586cedd719f756092d103",
+    "final_url": "https://www.lagaviotafruver.com/IMAGES/frutas-banner.jpeg",
+    "cache_control": "public, max-age=0, must-revalidate",
+    "etag": "\"f62a5b1282f0df6b549d97956363e2b7\"",
+    "elapsed_seconds": 0.763
+  },
+  {
+    "url": "https://www.lagaviotafruver.com/IMAGES/carnes-banner1.jpeg",
+    "method": "GET",
+    "authenticated": false,
+    "status": 200,
+    "content_type": "image/jpeg",
+    "bytes": 740807,
+    "sha256": "533c2f72d417bbf1182850d4b463ccdc6b2a8a9f6222c774667783034dfcd65b",
+    "final_url": "https://www.lagaviotafruver.com/IMAGES/carnes-banner1.jpeg",
+    "cache_control": "public, max-age=0, must-revalidate",
+    "etag": "\"3c6bb4b28f93c20244e9bb1fb1f668d3\"",
+    "elapsed_seconds": 0.763
+  },
+  {
+    "url": "https://www.lagaviotafruver.com/IMAGES/placeholder.png",
+    "method": "GET",
+    "authenticated": false,
+    "status": 404,
+    "content_type": "text/html; charset=utf-8",
+    "elapsed_seconds": 0.39
+  },
+  {
+    "url": "https://www.lagaviotafruver.com/IMAGES/product-display.jpeg",
+    "method": "GET",
+    "authenticated": false,
+    "status": 200,
+    "content_type": "image/jpeg",
+    "bytes": 905598,
+    "sha256": "37e409df00aa7eec73e56d9a94a821420238a15df0bf9f3c347740d16738318c",
+    "final_url": "https://www.lagaviotafruver.com/IMAGES/product-display.jpeg",
+    "cache_control": "public, max-age=0, must-revalidate",
+    "etag": "\"3858fee875bc7d81fa05cc87110cdbc5\"",
+    "elapsed_seconds": 0.788
+  },
+  {
+    "url": "https://www.lagaviotafruver.com/",
+    "method": "GET",
+    "authenticated": false,
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "bytes": 284366,
+    "sha256": "8563cdd19f567ec2e79887de364bd3db7bb06ee6201e798414dad698fe110ec6",
+    "final_url": "https://www.lagaviotafruver.com/",
+    "cache_control": "public, max-age=0, must-revalidate",
+    "etag": "\"f99410847da5fdb6f9d2b07e26d65fc0\"",
+    "elapsed_seconds": 0.568
+  }
+]

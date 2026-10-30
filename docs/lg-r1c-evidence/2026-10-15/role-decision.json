@@ -1,0 +1,9 @@
+{
+  "decision": "Keep frozen tiers.manage permission for ADMIN and SUPER_ADMIN",
+  "authority": "Explicit owner reply in this LG-R1C conversation",
+  "original_question": "Restrict tiers.manage to SUPER_ADMIN or preserve frozen ADMIN+SUPER_ADMIN rule",
+  "selected_answer": "Conservar la regla del candidato: ADMIN y SUPER_ADMIN",
+  "application_role_semantics_changed": false,
+  "scope": "isolated LG-R1C only; no real identities/metadata modified",
+  "legacy_roles": "Inventory of source conventions only; no account enumeration. A production mapping needs separately reviewed evidence and owner approval."
+}

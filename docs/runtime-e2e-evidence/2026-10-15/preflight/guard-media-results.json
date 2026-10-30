@@ -1,0 +1,494 @@
+{
+  "layer": "ACTUAL_CURRENT_SOURCE_WITH_SYNTHETIC_CLERK_SUPABASE_NEXT_STUBS_NO_NETWORK_NO_PROD",
+  "executed": 118,
+  "passed": 118,
+  "failed": 0,
+  "sourceHashes": {
+    "src/lib/server/authorization.ts": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12",
+    "src/lib/server/database.ts": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c",
+    "src/lib/server/scheduler.ts": "4581173ae5cf49ac4d05a2c23a9833bae6e7682f025437a33d76bea795059412",
+    "src/actions/customers.ts": "926663a523c63c042c81297c3f67e62a2327adea3ac6db7c0f724b05d269cfe4",
+    "src/actions/b2b.ts": "bca589e68e3f5405d3da1744b8cf374735138ec98c131c7ec4cddcef5e2d3498",
+    "src/actions/media.ts": "4b378ed0140f1c36e60241933461a9d99bbcdd033f1bbea026098ce4b0cd24b5"
+  },
+  "sourceUnchanged": true,
+  "tests": [
+    {
+      "name": "role_USER_Personas Naturales_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_USER_Personas Naturales_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_USER_Personas Naturales_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_ADMIN_Personas Naturales_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_ADMIN_Personas Naturales_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_ADMIN_Personas Naturales_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_SUPER_ADMIN_Personas Naturales_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_SUPER_ADMIN_Personas Naturales_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_SUPER_ADMIN_Personas Naturales_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_OPERARIO_Personas Naturales_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_OPERARIO_Personas Naturales_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_OPERARIO_Personas Naturales_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_COMMERCIAL_Personas Naturales_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_COMMERCIAL_Personas Naturales_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_COMMERCIAL_Personas Naturales_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_UNKNOWN_Personas Naturales_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_UNKNOWN_Personas Naturales_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_UNKNOWN_Personas Naturales_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_admin_Personas Naturales_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_admin_Personas Naturales_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_admin_Personas Naturales_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_USER_Micromercados_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_USER_Micromercados_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_USER_Micromercados_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_ADMIN_Micromercados_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_ADMIN_Micromercados_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_ADMIN_Micromercados_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_SUPER_ADMIN_Micromercados_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_SUPER_ADMIN_Micromercados_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_SUPER_ADMIN_Micromercados_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_OPERARIO_Micromercados_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_OPERARIO_Micromercados_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_OPERARIO_Micromercados_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_COMMERCIAL_Micromercados_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_COMMERCIAL_Micromercados_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_COMMERCIAL_Micromercados_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_UNKNOWN_Micromercados_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_UNKNOWN_Micromercados_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_UNKNOWN_Micromercados_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_admin_Micromercados_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_admin_Micromercados_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_admin_Micromercados_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_USER_Restaurantes_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_USER_Restaurantes_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_USER_Restaurantes_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_ADMIN_Restaurantes_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_ADMIN_Restaurantes_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_ADMIN_Restaurantes_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_SUPER_ADMIN_Restaurantes_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_SUPER_ADMIN_Restaurantes_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_SUPER_ADMIN_Restaurantes_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_OPERARIO_Restaurantes_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_OPERARIO_Restaurantes_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_OPERARIO_Restaurantes_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_COMMERCIAL_Restaurantes_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_COMMERCIAL_Restaurantes_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_COMMERCIAL_Restaurantes_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_UNKNOWN_Restaurantes_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_UNKNOWN_Restaurantes_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_UNKNOWN_Restaurantes_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "role_admin_Restaurantes_storage_capability",
+      "passed": true
+    },
+    {
+      "name": "role_admin_Restaurantes_own_subject",
+      "passed": true
+    },
+    {
+      "name": "role_admin_Restaurantes_cross_owner",
+      "passed": true
+    },
+    {
+      "name": "guest_private_database_denied",
+      "passed": true
+    },
+    {
+      "name": "forged_actor_object_private_database_denied",
+      "passed": true
+    },
+    {
+      "name": "banned_fresh_staff_denied",
+      "passed": true
+    },
+    {
+      "name": "locked_fresh_staff_denied",
+      "passed": true
+    },
+    {
+      "name": "failClerk_fresh_staff_denied",
+      "passed": true
+    },
+    {
+      "name": "role_downgrade_checked_next_call",
+      "passed": true
+    },
+    {
+      "name": "tier_ADMIN_never_privilege",
+      "passed": true
+    },
+    {
+      "name": "USER_server_client_service_bypasses_model",
+      "passed": true
+    },
+    {
+      "name": "ADMIN_server_client_service_bypasses_model",
+      "passed": true
+    },
+    {
+      "name": "SUPER_ADMIN_server_client_service_bypasses_model",
+      "passed": true
+    },
+    {
+      "name": "Personas Naturales_getB2BProfile_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Personas Naturales_getBuyingTemplates_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Personas Naturales_getMonthlySpend_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Personas Naturales_getLastOrder_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Personas Naturales_getB2BOrders_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Micromercados_getB2BProfile_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Micromercados_getBuyingTemplates_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Micromercados_getMonthlySpend_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Micromercados_getLastOrder_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Micromercados_getB2BOrders_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Restaurantes_getB2BProfile_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Restaurantes_getBuyingTemplates_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Restaurantes_getMonthlySpend_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Restaurantes_getLastOrder_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "Restaurantes_getB2BOrders_verified_owner_filter",
+      "passed": true
+    },
+    {
+      "name": "owner_profile_sensitive_input_not_forwarded",
+      "passed": true
+    },
+    {
+      "name": "owner_tier_escalation_denied_before_write",
+      "passed": true
+    },
+    {
+      "name": "cross_owner_profile_denied_before_client",
+      "passed": true
+    },
+    {
+      "name": "guest_media_upload_denied_before_io",
+      "passed": true
+    },
+    {
+      "name": "Personas Naturales_customer_list_denied_before_client",
+      "passed": true
+    },
+    {
+      "name": "Micromercados_customer_list_denied_before_client",
+      "passed": true
+    },
+    {
+      "name": "Restaurantes_customer_list_denied_before_client",
+      "passed": true
+    },
+    {
+      "name": "ADMIN_customer_list_service_boundary_allow",
+      "passed": true
+    },
+    {
+      "name": "SUPER_ADMIN_customer_list_service_boundary_allow",
+      "passed": true
+    },
+    {
+      "name": "USER_media_upload_denied_before_io",
+      "passed": true
+    },
+    {
+      "name": "OPERARIO_media_upload_denied_before_io",
+      "passed": true
+    },
+    {
+      "name": "COMMERCIAL_media_upload_denied_before_io",
+      "passed": true
+    },
+    {
+      "name": "UNKNOWN_media_upload_denied_before_io",
+      "passed": true
+    },
+    {
+      "name": "ADMIN_product_media_upload_managed_allow",
+      "passed": true
+    },
+    {
+      "name": "ADMIN_kit_media_upload_managed_allow",
+      "passed": true
+    },
+    {
+      "name": "SUPER_ADMIN_product_media_upload_managed_allow",
+      "passed": true
+    },
+    {
+      "name": "SUPER_ADMIN_kit_media_upload_managed_allow",
+      "passed": true
+    },
+    {
+      "name": "admin_media_kind_denied_before_io",
+      "passed": true
+    },
+    {
+      "name": "admin_media_signature_denied_before_io",
+      "passed": true
+    },
+    {
+      "name": "admin_media_MIME_denied_before_io",
+      "passed": true
+    },
+    {
+      "name": "admin_media_size_denied_before_io",
+      "passed": true
+    },
+    {
+      "name": "admin_replace_retains_old_blob",
+      "passed": true
+    },
+    {
+      "name": "admin_delete_foreign_origin_denied",
+      "passed": true
+    },
+    {
+      "name": "admin_delete_unmanaged_denied",
+      "passed": true
+    },
+    {
+      "name": "admin_delete_query_denied",
+      "passed": true
+    },
+    {
+      "name": "admin_delete_shared_mapping_denied",
+      "passed": true
+    },
+    {
+      "name": "admin_delete_cross_table_mapping_denied",
+      "passed": true
+    },
+    {
+      "name": "admin_delete_managed_unique_mapping_allow",
+      "passed": true
+    },
+    {
+      "name": "scheduler_missing_and_wrong_denied_before_client",
+      "passed": true
+    },
+    {
+      "name": "scheduler_synthetic_secret_allow",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "SDK/gateway/JWT signature/session revocation/RLS/Storage/CDN not executed by VM",
+    "Service-role client stub does not enforce RLS; actor guard and owner query construction only",
+    "Media magic/MIME fixture is not full image decoding or upload API certification"
+  ]
+}

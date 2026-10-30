@@ -1,4 +1,7 @@
 'use server';
+import { requireCapability, validateTier, validateRole, assertTargetId } from '@/src/lib/server/authorization';
+
+
 
 import { clerkClient } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
@@ -14,6 +17,8 @@ export interface SystemUser {
 }
 
 export async function fetchSystemUsers(): Promise<SystemUser[]> {
+  await requireCapability('identity.read');
+
   try {
     const client = await clerkClient();
     const response = await client.users.getUserList({
@@ -39,16 +44,24 @@ export async function fetchSystemUsers(): Promise<SystemUser[]> {
 }
 
 export async function updateUserRoleAndTier(userId: string, role: string, tier: string) {
+  const actor = await requireCapability('identity.manage');
+
+
+  assertTargetId(userId);
+  const safeRole = validateRole(role);
+  const safeTier = validateTier(tier);
+  if (userId === actor.userId) throw new Error('SELF_ROLE_CHANGE_REQUIRES_SEPARATE_FLOW');
   try {
     const client = await clerkClient();
     const user = await client.users.getUser(userId);
     const existingMetadata = user.publicMetadata || {};
+    if (existingMetadata.role === 'SUPER_ADMIN' && safeRole !== 'SUPER_ADMIN') throw new Error('SUPER_ADMIN_DOWNGRADE_REQUIRES_SEPARATE_FLOW');
 
     await client.users.updateUserMetadata(userId, {
       publicMetadata: {
         ...existingMetadata,
-        role,
-        tier,
+        role: safeRole,
+        tier: safeTier,
       }
     });
 

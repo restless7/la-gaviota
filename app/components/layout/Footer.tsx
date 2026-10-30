@@ -136,13 +136,13 @@ export default function Footer() {
                 <div className="mt-1 text-gaviota-red"><MapPin size={18} /></div>
                 <div className="text-sm text-gray-400">
                   <p className="text-white font-medium">Bucaramanga, Santander</p>
-                  <p>Calle Principal Surtifruver</p>
+                  <p>Plaza de Mercado San Francisco, Calle 13 #22-49, Local 10</p>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="mt-1 text-gaviota-red"><Phone size={18} /></div>
                 <div className="text-sm text-gray-400">
-                  <p className="text-white font-medium">+57 315 123 4567</p>
+                  <p className="text-white font-medium">+57 318 499 0826</p>
                   <p>Lun - Sab, 6:00 AM - 8:00 PM</p>
                 </div>
               </div>

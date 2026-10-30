@@ -1,0 +1,38 @@
+{
+  "observed_utc": "2026-10-15T18:57:40.975188+00:00",
+  "sources": [
+    {
+      "url": "https://docs.wompi.co/docs/colombia/eventos/",
+      "observed": "GET public docs only",
+      "facts": [
+        "Payload environment test/prod; distinct per-environment callback URLs",
+        "Checksum uses ordered dynamic signature.properties values from data plus timestamp plus event secret",
+        "Published transaction sample lists id/status/amount_in_cents; reference is outside that sample checksum",
+        "Non-200 causes documented retries; no event delivery receipt was generated in this assessment"
+      ]
+    },
+    {
+      "url": "https://docs.wompi.co/docs/colombia/ambientes-y-llaves/",
+      "observed": "GET public docs only",
+      "facts": [
+        "Sandbox and production have separate base URLs and key/secret families",
+        "Testing transactions requires designated sandbox configuration; no such transaction was initiated here"
+      ]
+    },
+    {
+      "url": "https://docs.wompi.co/docs/colombia/datos-de-prueba-en-sandbox/",
+      "observed": "GET public docs only",
+      "facts": [
+        "Official sandbox data supports approved/declined/error test scenarios; none submitted"
+      ]
+    },
+    {
+      "url": "https://docs.wompi.co/docs/colombia/seguimiento-de-transacciones/",
+      "observed": "GET public docs only",
+      "facts": [
+        "Provider transaction ID is unique; merchant-assigned reference should be unique",
+        "No provider transaction lookup was performed"
+      ]
+    }
+  ]
+}

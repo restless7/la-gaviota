@@ -5,9 +5,10 @@ import { Product } from '@/src/actions/products';
 import { CATEGORIES, SUBCATEGORIES } from '@/src/constants/productConstants';
 import { ProductCard } from './ProductCard';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
-import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState as useStateReact } from 'react';
+import { CatalogImage } from './CatalogImage';
+import { normalizeCategory } from '@/src/lib/categories';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 const CATEGORY_BANNERS: Record<string, string[]> = {
   'FRUTAS': ['/IMAGES/frutas-banner.jpeg', '/IMAGES/frutas-banner1.jpeg', '/IMAGES/frutas-banner2.jpeg', '/IMAGES/frutas-banner3.jpeg'],
@@ -18,12 +19,14 @@ import { DeliveryScheduler } from '@/src/components/checkout/DeliveryScheduler';
 
 export default function ShopView({ initialProducts }: { initialProducts: Product[] }) {
    const [search, setSearch] = useState('');
-   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
    const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
    const [sortOrder, setSortOrder] = useState<'asc'|'desc'|null>(null);
    const { role } = useUserRole();
    const searchParams = useSearchParams();
-   const [showToast, setShowToast] = useState(false);
+   const router = useRouter();
+   const selectedCategory = normalizeCategory(searchParams?.get('category'));
+   const [toastDismissed, setToastDismissed] = useState(false);
+   const showToast = searchParams?.get('error') === 'unauthorized-tier' && !toastDismissed;
    const [bannerIndex, setBannerIndex] = useState(0);
 
    useEffect(() => {
@@ -34,30 +37,27 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
    }, []);
 
    useEffect(() => {
-     if (searchParams?.get('error') === 'unauthorized-tier') {
-       setShowToast(true);
-       const timer = setTimeout(() => setShowToast(false), 8000);
+     if (showToast) {
+       const timer = setTimeout(() => setToastDismissed(true), 8000);
        return () => clearTimeout(timer);
      }
      
-     const urlCategory = searchParams?.get('category');
-     if (urlCategory && CATEGORIES.includes(urlCategory)) {
-       setSelectedCategory(urlCategory);
-     }
-   }, [searchParams]);
+
+   }, [showToast]);
 
    const filteredProducts = useMemo(() => {
      const filtered = initialProducts.filter(p => {
          const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
          const matchCategory = selectedCategory ? p.category === selectedCategory : true;
-         const matchSubcategory = selectedSubcategory ? p.subcategory === selectedSubcategory : true;
+         const validSubcategory = selectedCategory && SUBCATEGORIES[selectedCategory]?.includes(selectedSubcategory ?? '') ? selectedSubcategory : null;
+         const matchSubcategory = validSubcategory ? p.subcategory === validSubcategory : true;
          return matchSearch && matchCategory && matchSubcategory;
       });
 
      if (sortOrder) {
          filtered.sort((a, b) => {
-             const priceA = role === 'Restaurantes' ? a.priceRestaurant : role === 'Micromercados' ? a.priceMicro : a.priceRetail;
-             const priceB = role === 'Restaurantes' ? b.priceRestaurant : role === 'Micromercados' ? b.priceMicro : b.priceRetail;
+             const priceA = role === 'Restaurantes' ? a.price : role === 'Micromercados' ? a.price : a.price;
+             const priceB = role === 'Restaurantes' ? b.price : role === 'Micromercados' ? b.price : b.price;
              return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
          });
      }
@@ -66,7 +66,9 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
    }, [initialProducts, search, selectedCategory, selectedSubcategory, sortOrder, role]);
 
    const handleCategorySelect = (cat: string | null) => {
-      setSelectedCategory(cat);
+      const query = new URLSearchParams(searchParams?.toString());
+      if (cat) query.set('category', cat); else query.delete('category');
+      router.replace(query.size ? `/?${query}` : '/', { scroll: false });
       setSelectedSubcategory(null); // Reset subcategory when category changes
    };
 
@@ -82,7 +84,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                <h4 className="font-bold mb-1">Acceso Denegado</h4>
                <p className="text-sm text-gray-300 leading-tight">Esta sección es exclusiva para comercios verificados. Si tienes un negocio, solicita tus precios mayoristas en tu perfil.</p>
              </div>
-             <button onClick={() => setShowToast(false)} className="text-gray-400 hover:text-white">✕</button>
+             <button onClick={() => setToastDismissed(true)} className="text-gray-400 hover:text-white">✕</button>
            </div>
          </div>
        )}
@@ -90,23 +92,23 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
        {/* Full Width Category Banner */}
        {selectedCategory && CATEGORY_BANNERS[selectedCategory] && CATEGORY_BANNERS[selectedCategory].length > 0 && (
          <div className="w-full relative aspect-video overflow-hidden">
-            <Image 
+            <CatalogImage
               src={CATEGORY_BANNERS[selectedCategory][bannerIndex % CATEGORY_BANNERS[selectedCategory].length]} 
               alt={`${selectedCategory} Banner`} 
               fill 
               className="object-cover object-top transition-all duration-1000 ease-in-out"
               priority
             />
-            <div className="absolute inset-0 z-10 flex flex-col justify-end py-12">
+            <div className="absolute inset-0 z-10 flex flex-col justify-end py-5 sm:py-12">
                <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-                 <h2 className="text-4xl md:text-6xl font-black text-white font-serif drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] uppercase tracking-tight">{selectedCategory}</h2>
+                 <h2 className="text-2xl sm:text-4xl md:text-6xl font-black text-white font-serif drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] uppercase tracking-tight">{selectedCategory}</h2>
                </div>
             </div>
          </div>
        )}
 
        {/* Categories Quick Filter Desktop Only (since mobile has hamburger) */}
-       <div className="hidden lg:block sticky top-[80px] z-40 bg-white/95 backdrop-blur-md py-3 shadow-sm border-b border-gray-100">
+       <div className="sticky top-[80px] z-40 bg-white/95 backdrop-blur-md py-3 shadow-sm border-b border-gray-100">
            <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
              <div className="flex flex-row overflow-x-auto no-scrollbar gap-2 pb-1">
                  <button 
@@ -166,10 +168,10 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
              
              {/* Search */}
              <div className="mb-8">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 block">Buscar Productor</label>
+                <label htmlFor="catalog-search" className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 block">Buscar producto</label>
                 <div className="relative">
                    <input 
-                      type="text" 
+                      id="catalog-search" type="search"
                       placeholder="Ej. Tomate chonto..." 
                       className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm outline-none focus:border-[#E30613] focus:ring-1 focus:ring-[#E30613] transition-all bg-slate-50 font-medium"
                       value={search}
@@ -248,7 +250,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
         </aside>
 
         {/* Dynamic Grid View */}
-        <div className="flex-1 w-full flex flex-col">
+        <div className="min-w-0 flex-1 w-full flex flex-col">
 
            {/* Phase 6 Delivery Integration Request - Moved to top of grid for horizontal spread */}
            <div className="mb-6 w-full">
@@ -268,10 +270,10 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
 
            <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                 <h1 className="text-3xl lg:text-4xl font-black text-slate-800 font-serif leading-tight">
+                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 font-serif leading-tight break-words">
                    {selectedSubcategory ? selectedSubcategory : selectedCategory ? selectedCategory : "Catálogo Fresco"}
                  </h1>
-                 <p className="text-sm text-gray-500 mt-2 font-medium">Mostrando los precios especiales para tu nivel.</p>
+                 <p className="text-sm text-gray-500 mt-2 font-medium">Precios estimados. Confirma disponibilidad y total al finalizar.</p>
               </div>
               <span className="text-sm font-bold bg-[#E30613]/10 text-[#E30613] px-4 py-2 rounded-full whitespace-nowrap self-start sm:self-auto">
                 {filteredProducts.length} productos

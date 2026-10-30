@@ -1,0 +1,23 @@
+{
+  "node": "v24.13.0",
+  "postgresql": "18.6",
+  "root": "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota",
+  "final_command": [
+    "/usr/bin/python3",
+    "/tmp/la-gaviota-runtime-e2e-20261015/payments/run-writer-pg.py",
+    "--root",
+    "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota",
+    "--stage",
+    "/tmp/la-gaviota-runtime-e2e-20261015/payments/pg-portable",
+    "--node",
+    "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/node"
+  ],
+  "harness_sha256": {
+    "run-current-writer-pg.cjs": "fdc20d1056b4130f8c09fbe7d3bc15264a34e82c8054e26914c87592d9c70f9f",
+    "run-writer-pg.py": "c5a132c94ecd6fd0f8712a86de2faeccf45561a228c48364deaf90b44b0eedbe",
+    "run-current-payment-models.cjs": "d74ec26d948e57630b17c5f6a7218a65db69abde794ca624b613c748bf317aba"
+  },
+  "schema_prisma_sha256": "185025bc8da83981ae59b0ebaed93a57aef2182cb8be603bffd876135c2d1ad4",
+  "repeated_db_run": "One portability replay of same5scenarios; final PG artifacts only; do not double count",
+  "limitations": "Finite psql adapter; no Supabase/PostgREST/HTTP/provider SDK; own process exit at selected adapter boundary; no OS/DB crash"
+}

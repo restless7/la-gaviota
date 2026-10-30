@@ -40,7 +40,7 @@ export default function NosotrosPage() {
             />
             <CategoryBanner 
               title="Verduras" 
-              image="/IMAGES/verduras-banner.jpeg" 
+              image="/IMAGES/verduras-banner1.jpeg"
               href="/categoria/verduras" 
               color="green" 
             />
@@ -99,6 +99,73 @@ export default function NosotrosPage() {
                 <p className="font-bold text-slate-800">Fomento del mercado justo en Santander</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Factual Business & Service FAQ (GEO & Local Discoverability) */}
+      <section className="bg-slate-50 py-20 px-4 border-t border-slate-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="text-gaviota-red font-bold text-xs uppercase tracking-widest">Preguntas Frecuentes</span>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 font-serif mt-2">
+              Conoce Más Sobre La Gaviota en Bucaramanga
+            </h2>
+            <p className="text-slate-600 mt-2 text-sm">
+              Información clara y transparente sobre nuestro servicio, cobertura y catálogo comercial.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <details className="group bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm" open>
+              <summary className="font-bold text-slate-900 cursor-pointer list-none flex justify-between items-center text-lg">
+                ¿Dónde está ubicado Frutas y Verduras La Gaviota?
+                <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="mt-4 text-slate-600 text-sm leading-relaxed">
+                Nuestra sede principal y punto comercial está ubicada en la <strong>Plaza de Mercado San Francisco, Calle 13 #22-49, Local 10</strong>, en Bucaramanga, Santander, Colombia. Propietario registrado: <strong>Eduard Iván Velazco López</strong>. Línea oficial de atención: <strong>+57 318 499 0826</strong>.
+              </p>
+            </details>
+
+            <details className="group bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm">
+              <summary className="font-bold text-slate-900 cursor-pointer list-none flex justify-between items-center text-lg">
+                ¿Qué tipo de productos comercializamos?
+                <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="mt-4 text-slate-600 text-sm leading-relaxed">
+                Ofrecemos frutas frescas, verduras, hortalizas, pulpas de fruta 100% naturales, carnes de primera calidad, frutos secos, especias, hierbas aromáticas y kits empresariales diseñados a la medida de hogares y establecimientos comerciales.
+              </p>
+            </details>
+
+            <details className="group bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm">
+              <summary className="font-bold text-slate-900 cursor-pointer list-none flex justify-between items-center text-lg">
+                ¿Cuáles son las zonas de cobertura y entrega a domicilio?
+                <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="mt-4 text-slate-600 text-sm leading-relaxed">
+                Despachamos principalmente en el casco urbano de <strong>Bucaramanga</strong> directamente desde nuestra sede en la Plaza de Mercado San Francisco, organizando las entregas para garantizar la frescura de los productos del campo.
+              </p>
+            </details>
+
+            <details className="group bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm">
+              <summary className="font-bold text-slate-900 cursor-pointer list-none flex justify-between items-center text-lg">
+                ¿En qué se diferencian los clientes de hogar y los clientes de negocio?
+                <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="mt-4 text-slate-600 text-sm leading-relaxed">
+                Los clientes particulares (Retail) acceden a compras familiares sin mínimos de pedido y con entregas rápidas. Los <strong>Micromercados</strong> y <strong>Restaurantes</strong> cuentan con precios mayoristas escalonados, pedidos periódicos programados y estados de cuenta comerciales.
+              </p>
+            </details>
+
+            <details className="group bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm">
+              <summary className="font-bold text-slate-900 cursor-pointer list-none flex justify-between items-center text-lg">
+                ¿Qué medios de pago están disponibles?
+                <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="mt-4 text-slate-600 text-sm leading-relaxed">
+                Aceptamos pago contra entrega en efectivo para pedidos locales, así como transacciones en línea seguras mediante la pasarela <strong>Wompi</strong> (tarjetas de crédito/débito, PSE y transferencias Bancolombia).
+              </p>
+            </details>
           </div>
         </div>
       </section>

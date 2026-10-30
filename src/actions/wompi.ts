@@ -1,153 +1,81 @@
 'use server';
 
-import { auth, clerkClient } from '@clerk/nextjs/server';
-import { createClient } from '@supabase/supabase-js';
-import { generateIntegritySignature, formatToCents } from '@/src/lib/wompi';
-import { createOrder } from './orders';
-import { CheckoutItem } from './checkoutAction';
+import { clerkClient } from '@clerk/nextjs/server';
+import { generateIntegritySignature, formatToCents, assertWompiCheckoutConfigured } from '@/src/lib/wompi';
+import { createOrder } from '@/src/lib/server/orderWriter';
+import { getActor, assertIssuedActor } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
+import { prepareCheckout } from '@/src/lib/server/checkout';
+import type { CheckoutItem } from './checkoutAction';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-export async function initializeWompiTransaction(formData: FormData, items: CheckoutItem[]) {
-  try {
-    const { userId } = await auth();
-  
-  if (!userId) {
-    throw new Error("Usuario no autenticado");
-  }
-
-  // 1. Fetch user role to determine correct pricing
-  const client = await clerkClient();
-  const user = await client.users.getUser(userId);
-  const role = (user.publicMetadata?.tier as string) || 'Personas Naturales';
-
-  // 2. Fetch fresh prices and stock from the database for anti-tampering
-  const productIds = items.map(item => item.product.id);
-  const { data: dbProducts, error } = await supabase
-    .from('products')
-    .select('id, name, price_retail, price_micro, price_restaurant, stock_quantity')
-    .in('id', productIds);
-
-  if (error || !dbProducts) {
-    throw new Error('Error validando productos en la base de datos');
-  }
-
-  // 3. Evaluate Inventory Feature Flag
-  const { getInventorySettings } = await import('@/src/actions/settings');
-  const { track_inventory } = await getInventorySettings();
-
-  if (track_inventory) {
-    for (const clientItem of items) {
-      const dbProduct = dbProducts.find(p => p.id === clientItem.product.id);
-      if (dbProduct && dbProduct.stock_quantity < clientItem.quantity) {
-        throw new Error(`Stock insuficiente para ${dbProduct.name}. Disponibles: ${dbProduct.stock_quantity}`);
-      }
-    }
-  }
-
-  // 3. Calculate true total
-  let serverTotal = 0;
-  const orderItemsData = items.map(clientItem => {
-    const dbProduct = dbProducts.find(p => p.id === clientItem.product.id);
-    if (!dbProduct) throw new Error(`Producto ${clientItem.product.id} no encontrado`);
-
-    let priceToUse = dbProduct.price_retail;
-    if (role === 'Micromercados') priceToUse = dbProduct.price_micro;
-    if (role === 'Restaurantes') priceToUse = dbProduct.price_restaurant;
-
-    serverTotal += priceToUse * clientItem.quantity;
-
-    return {
-      product_id: dbProduct.id,
-      product_name: dbProduct.name,
-      quantity: clientItem.quantity,
-      price_at_purchase: priceToUse,
-    };
-  });
-
-  // Calculate delivery fee logic
-  let deliveryCost = 10000;
-  const city = formData.get('city') as string;
-  if (serverTotal >= 50000) {
-    deliveryCost = 0;
-  } else {
-    if (city === 'Bucaramanga') deliveryCost = 5000;
-    else if (city === 'Floridablanca' || city === 'Girón') deliveryCost = 8000;
-  }
-  const finalServerTotal = serverTotal + deliveryCost;
-
-  // 5. Save order as Pending in Database
-  const firstName = formData.get('firstName') as string;
-  const lastName = formData.get('lastName') as string;
-  const email = formData.get('email') as string;
-  const phone = formData.get('phone') as string;
-  const address = formData.get('address') as string;
-  const apartment = formData.get('apartment') as string;
-  const neighborhood = formData.get('neighborhood') as string;
-  const notes = formData.get('notes') as string;
-
-  const fullAddress = `${address}${apartment ? `, ${apartment}` : ''}${neighborhood ? `, ${neighborhood}` : ''}`;
-
-  const orderData = {
-    clerk_user_id: userId,
-    customer_name: `${firstName} ${lastName}`,
-    customer_email: email,
-    customer_phone: phone,
-    delivery_address: fullAddress,
-    delivery_municipality: city,
-    total_amount: finalServerTotal,
-    status: 'Pago Pendiente' as const, // Pending payment confirmation via Webhook
+export async function initializeWompiTransaction(formData: FormData, items: CheckoutItem[], expectedTotal?: number, idempotencyKey?: string) {
+  const checkout = await prepareCheckout(formData, items, expectedTotal);
+  // Fail before inserting an order when the widget cannot be configured.
+  const publicKey = assertWompiCheckoutConfigured();
+  const amountInCents = formatToCents(checkout.totalAmount);
+  const { details } = checkout;
+  const intentId = `INTENT_${Date.now()}_${checkout.userId.substring(0, 12)}`;
+  const orderResult = await createOrder({
+    clerk_user_id: checkout.userId,
+    customer_name: `${details.firstName} ${details.lastName}`,
+    customer_email: details.email,
+    customer_phone: details.phone,
+    delivery_address: details.fullAddress,
+    delivery_municipality: details.city,
+    total_amount: checkout.totalAmount,
+    status: 'Pago Pendiente',
     payment_method: 'wompi',
-    notes: notes,
-  };
-
-  // We save the order to Supabase first to get the official ID
-  // Notice we pass false for incrementLTV, leaving that for the Phase-2 Webhook.
-  const orderResult = await createOrder(orderData, orderItemsData, false);
-  const reference = orderResult.orderId;
-  
-  const amountInCents = formatToCents(finalServerTotal);
-
-  // 6. Generate Wompi Integrity Signature
-  const signature = generateIntegritySignature(reference, amountInCents, 'COP');
-
-  // 7. Return payload for the Widget
-  return {
-    publicKey: process.env.NEXT_PUBLIC_WOMPI_PUB_KEY,
+    idempotency_key: idempotencyKey || null,
+    notes: details.notes,
+  }, checkout.orderItems, false, {
+    intent_id: intentId,
+    purpose: 'ORDER_CHECKOUT',
     currency: 'COP',
-    amountInCents,
-    reference,
-    signature,
-    customerData: {
-      email,
-      fullName: `${firstName} ${lastName}`,
-      phoneNumber: phone,
-      phoneNumberPrefix: '+57',
-    }
-  };
-  } catch (error: any) {
-    console.error('[WompiAction] Error:', error);
-    throw new Error(error.message || 'Error inicializando el pago. Por favor intente de nuevo.');
-  }
+    provider: 'WOMPI',
+    environment: process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT || 'sandbox'
+  });
+  const reference = orderResult.orderId;
+  const signature = generateIntegritySignature(reference, amountInCents, 'COP');
+  return { publicKey, totalAmount: checkout.totalAmount, orderId: reference, currency: 'COP', amountInCents, reference, signature,
+    customerData: { email: details.email, fullName: `${details.firstName} ${details.lastName}`, phoneNumber: details.phone, phoneNumberPrefix: '+57' } };
 }
 
 export async function initializeWompiBalancePayment(amount: number) {
+  const actor = await getActor();
+  assertIssuedActor(actor);
   try {
-    const { userId } = await auth();
+    const userId = actor.userId;
     if (!userId) throw new Error("Usuario no autenticado");
 
     const client = await clerkClient();
     const user = await client.users.getUser(userId);
 
     // Ensure amount is valid
-    if (amount <= 0) throw new Error("Monto inválido");
+    if (!Number.isSafeInteger(amount) || amount <= 0 || amount > 2147483647) throw new Error("Monto inválido");
+    assertWompiCheckoutConfigured();
 
-    // Generate a reference for balance payment
-    const reference = `BAL_${userId.substring(0,8)}_${Date.now()}`;
+    // Generate a reference for balance payment binding to the exact immutable user id
+    const reference = `BAL_${userId}_${Date.now()}`;
     const amountInCents = formatToCents(amount);
     const signature = generateIntegritySignature(reference, amountInCents, 'COP');
+
+    // Persist payment intent in payment_intents table
+    try {
+      const supabase = getServerDatabase(actor);
+      await supabase.from('payment_intents').insert({
+        intent_id: reference,
+        clerk_user_id: userId,
+        purpose: 'B2B_BALANCE',
+        amount: amount,
+        currency: 'COP',
+        provider: 'WOMPI',
+        environment: process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT || 'sandbox',
+        status: 'PENDING',
+        provider_reference: reference
+      });
+    } catch (dbErr) {
+      console.warn('Could not record B2B payment intent in database:', dbErr);
+    }
 
     return {
       publicKey: process.env.NEXT_PUBLIC_WOMPI_PUB_KEY,
@@ -162,8 +90,8 @@ export async function initializeWompiBalancePayment(amount: number) {
         phoneNumberPrefix: '+57',
       }
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[WompiBalancePayment] Error:', error);
-    throw new Error(error.message || 'Error inicializando el pago de saldo.');
+    throw new Error(error instanceof Error ? error.message : 'Error inicializando el pago de saldo.');
   }
 }

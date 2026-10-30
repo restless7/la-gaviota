@@ -1,17 +1,15 @@
 import { notFound } from 'next/navigation';
 import { fetchProducts } from '@/src/actions/products';
 import ProductDetailClient from '@/src/components/store/ProductDetailClient';
+import { cache } from 'react';
 
-export async function generateStaticParams() {
-   const products = await fetchProducts();
-   return products.map((product) => ({
-      id: product.id,
-   }));
-}
+// Prices depend on the current customer tier and must be resolved per request.
+export const dynamic = 'force-dynamic';
+const readCatalog = cache(fetchProducts);
 
 export async function generateMetadata(props: { params: Promise<{ id: string }> }) {
    const { id } = await props.params;
-   const products = await fetchProducts();
+   const products = await readCatalog();
    const product = products.find(p => p.id === id);
 
    if (!product) {
@@ -25,6 +23,7 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
    return {
       title: `${product.name} Fresco a Domicilio en Bucaramanga`,
       description: desc,
+      alternates: { canonical: `https://www.lagaviotafruver.com/product/${encodeURIComponent(product.id)}` },
       openGraph: {
          title: `${product.name} | La Gaviota Fruver`,
          description: desc,
@@ -35,7 +34,7 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
 
 export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
    const { id } = await props.params;
-   const products = await fetchProducts();
+   const products = await readCatalog();
    const product = products.find(p => p.id === id);
    
    if (!product) {
@@ -61,7 +60,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
          '@type': 'Offer',
          url: `https://www.lagaviotafruver.com/product/${product.id}`,
          priceCurrency: 'COP',
-         price: product.priceRetail,
+         price: product.price,
          availability: product.stockQuantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
          seller: {
             '@type': 'Organization',
@@ -74,7 +73,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
       <>
          <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
          />
          <ProductDetailClient product={product} relatedProducts={relatedProducts} />
       </>

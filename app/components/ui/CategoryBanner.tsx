@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import { CatalogImage } from '@/src/components/store/CatalogImage';
 import { motion } from 'framer-motion';
 
 interface CategoryBannerProps {
@@ -24,7 +24,7 @@ export default function CategoryBanner({ title, image, href, color }: CategoryBa
       whileHover={{ y: -10 }}
       className="relative block w-full h-[250px] md:h-[350px] rounded-[2.5rem] overflow-hidden group shadow-lg hover:shadow-2xl transition-all"
     >
-      <Image
+      <CatalogImage
         src={image}
         alt={title}
         fill

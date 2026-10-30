@@ -1,0 +1,353 @@
+{
+  "scope": "Final applied clone source conventions ONLY, no real user/account inventory",
+  "ownerDecision": "APPROVED ADMIN and SUPER_ADMIN tiers.manage, unchanged frozen semantics",
+  "observations": [
+    {
+      "file": "src/lib/server/authorization.ts",
+      "line": 3,
+      "text": "export type Role = 'GUEST' | 'USER' | 'ADMIN' | 'SUPER_ADMIN' | 'OPERARIO' | 'COMMERCIAL' | 'INVALID';"
+    },
+    {
+      "file": "src/lib/server/authorization.ts",
+      "line": 4,
+      "text": "export type Tier = 'Personas Naturales' | 'Micromercados' | 'Restaurantes';"
+    },
+    {
+      "file": "src/lib/server/authorization.ts",
+      "line": 10,
+      "text": "const tiers: Tier[] = ['Personas Naturales','Micromercados','Restaurantes'];"
+    },
+    {
+      "file": "src/lib/server/authorization.ts",
+      "line": 13,
+      "text": "export function validateRole(value: unknown): Exclude<Role,'GUEST'|'INVALID'> { if (!['USER','ADMIN','SUPER_ADMIN','OPERARIO','COMMERCIAL'].includes(value as string)) throw new Error('INVALID_ROLE'); return value as Exclude<Role,'GUEST'|'INVALID'>; }"
+    },
+    {
+      "file": "src/lib/server/authorization.ts",
+      "line": 28,
+      "text": "const meta = user.publicMetadata || {};"
+    },
+    {
+      "file": "src/lib/server/authorization.ts",
+      "line": 30,
+      "text": "const role: Role = raw == null || raw === 'USER' || raw === 'CLIENT' ? 'USER' : ['ADMIN','SUPER_ADMIN','OPERARIO','COMMERCIAL'].includes(raw as string) ? raw as Role : 'INVALID';"
+    },
+    {
+      "file": "src/lib/server/authorization.ts",
+      "line": 38,
+      "text": "return actor.role === 'SUPER_ADMIN' || actor.role === 'ADMIN' && staff.includes(capability);"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 5,
+      "text": "export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'OPERARIO' | 'COMMERCIAL' | 'CLIENT' | 'USER';"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 10,
+      "text": "// Extract role and tier from Clerk publicMetadata"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 11,
+      "text": "const metadata = clerkUser?.publicMetadata as Record<string, string> | undefined;"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 12,
+      "text": "const rawRole = metadata?.role;"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 13,
+      "text": "const tier = metadata?.tier;"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 17,
+      "text": "if (rawRole === 'SUPER_ADMIN') {"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 18,
+      "text": "mappedRole = 'SUPER_ADMIN';"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 21,
+      "text": "} else if (rawRole === 'OPERARIO') {"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 22,
+      "text": "mappedRole = 'OPERARIO';"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 23,
+      "text": "} else if (rawRole === 'COMMERCIAL') {"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 24,
+      "text": "mappedRole = 'COMMERCIAL';"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 25,
+      "text": "} else if (rawRole === 'CLIENT' || tier === 'Restaurantes' || tier === 'Micromercados') {"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 26,
+      "text": "mappedRole = 'CLIENT';"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 29,
+      "text": "const isSuperAdmin = mappedRole === 'SUPER_ADMIN';"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 30,
+      "text": "const isCommercial = mappedRole === 'COMMERCIAL';"
+    },
+    {
+      "file": "src/hooks/useRBAC.ts",
+      "line": 31,
+      "text": "const isClient = mappedRole === 'CLIENT';"
+    },
+    {
+      "file": "src/contexts/UserRoleContext.tsx",
+      "line": 6,
+      "text": "export type UserRole = 'Personas Naturales' | 'Micromercados' | 'Restaurantes';"
+    },
+    {
+      "file": "src/contexts/UserRoleContext.tsx",
+      "line": 46,
+      "text": "// Derive role from Clerk publicMetadata"
+    },
+    {
+      "file": "src/contexts/UserRoleContext.tsx",
+      "line": 47,
+      "text": "const metadata = user.publicMetadata as Record<string, string> | undefined;"
+    },
+    {
+      "file": "src/contexts/UserRoleContext.tsx",
+      "line": 48,
+      "text": "const tier = metadata?.tier as UserRole | undefined;"
+    },
+    {
+      "file": "src/contexts/UserRoleContext.tsx",
+      "line": 49,
+      "text": "const validTiers: UserRole[] = ['Personas Naturales', 'Micromercados', 'Restaurantes'];"
+    },
+    {
+      "file": "src/contexts/UserRoleContext.tsx",
+      "line": 57,
+      "text": "businessName: (metadata?.businessName as string) || null,"
+    },
+    {
+      "file": "middleware.ts",
+      "line": 35,
+      "text": "// Admin routes \u2014 require admin role in metadata"
+    },
+    {
+      "file": "middleware.ts",
+      "line": 46,
+      "text": "// Restaurante routes \u2014 require Restaurantes role"
+    },
+    {
+      "file": "middleware.ts",
+      "line": 52,
+      "text": "if (tier !== 'Restaurantes' && !isAdmin) {"
+    },
+    {
+      "file": "middleware.ts",
+      "line": 57,
+      "text": "// Micromercado routes \u2014 require Micromercados role"
+    },
+    {
+      "file": "middleware.ts",
+      "line": 63,
+      "text": "if (tier !== 'Micromercados' && !isAdmin) {"
+    },
+    {
+      "file": "middleware.ts",
+      "line": 75,
+      "text": "if (tier === 'Micromercados') targetPath = '/micromercado';"
+    },
+    {
+      "file": "middleware.ts",
+      "line": 76,
+      "text": "if (tier === 'Restaurantes') targetPath = '/restaurante';"
+    },
+    {
+      "file": "middleware.ts",
+      "line": 77,
+      "text": "if (isAdmin) targetPath = '/admin';"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 38,
+      "text": "{ name: 'Dashboard Principal', href: '/admin', icon: Home, roles: ['SUPER_ADMIN', 'ADMIN'] },"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 43,
+      "text": "roles: ['SUPER_ADMIN', 'ADMIN'],"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 46,
+      "text": "{ name: 'Micromercados', href: '/admin/clientes/micro' },"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 47,
+      "text": "{ name: 'Restaurantes & Mayoristas', href: '/admin/clientes/restaurantes' },"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 55,
+      "text": "roles: ['SUPER_ADMIN', 'ADMIN'],"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 62,
+      "text": "{ name: 'Gesti\u00f3n de Pedidos', href: '/admin/orders', icon: TrendingUp, roles: ['SUPER_ADMIN', 'ADMIN'] },"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 63,
+      "text": "{ name: 'Solicitudes de Negocio', href: '/admin/solicitudes', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN'] },"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 64,
+      "text": "{ name: 'Proveedores & Granjas', href: '/admin/suppliers', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN'] },"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 65,
+      "text": "{ name: 'Reportes y Ventas', href: '/admin/reports', icon: BarChart3, roles: ['SUPER_ADMIN', 'ADMIN'] },"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 66,
+      "text": "{ name: 'Audit Log (Transacciones)', href: '/admin/audit', icon: ScrollText, roles: ['SUPER_ADMIN'] },"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 67,
+      "text": "{ name: 'Configuraci\u00f3n', href: '/admin/settings', icon: Settings, roles: ['SUPER_ADMIN'] },"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 228,
+      "text": "const isActive = item.href === '/admin'"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "line": 229,
+      "text": "? pathname === '/admin'"
+    },
+    {
+      "file": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+      "line": 99,
+      "text": "<option value=\"OPERARIO\">OPERARIO (Bodega/Pedidos)</option>"
+    },
+    {
+      "file": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+      "line": 101,
+      "text": "<option value=\"SUPER_ADMIN\">SUPER_ADMIN (Acceso Total)</option>"
+    },
+    {
+      "file": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+      "line": 105,
+      "text": "user.role === 'SUPER_ADMIN' ? 'bg-[#E30613]/10 text-[#E30613]' :"
+    },
+    {
+      "file": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+      "line": 107,
+      "text": "user.role === 'OPERARIO' ? 'bg-blue-50 text-blue-600' :"
+    },
+    {
+      "file": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+      "line": 110,
+      "text": "{(user.role === 'SUPER_ADMIN' || user.role === 'ADMIN') ? <Shield className=\"w-3 h-3\" /> : <UserCheck className=\"w-3 h-3\" />}"
+    },
+    {
+      "file": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+      "line": 123,
+      "text": "<option value=\"Micromercados\">Micromercados</option>"
+    },
+    {
+      "file": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+      "line": 124,
+      "text": "<option value=\"Restaurantes\">Restaurantes</option>"
+    },
+    {
+      "file": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+      "line": 129,
+      "text": "user.tier === 'Micromercados' ? 'bg-green-50 text-green-600' :"
+    },
+    {
+      "file": "app/components/layout/Footer.tsx",
+      "line": 23,
+      "text": "const isAdmin = user?.publicMetadata?.role === 'admin';"
+    },
+    {
+      "file": "app/components/layout/Footer.tsx",
+      "line": 120,
+      "text": "<li><Link href=\"/restaurante\" className=\"hover:text-white transition-colors flex items-center gap-2 group\"><ArrowRight size={14} className=\"opacity-0 group-hover:opacity-100 -ml-5 transition-all\" /> Para Restaurantes</Link></li>"
+    },
+    {
+      "file": "app/components/layout/Footer.tsx",
+      "line": 121,
+      "text": "<li><Link href=\"/micromercado\" className=\"hover:text-white transition-colors flex items-center gap-2 group\"><ArrowRight size={14} className=\"opacity-0 group-hover:opacity-100 -ml-5 transition-all\" /> Para Micromercados</Link></li>"
+    },
+    {
+      "file": "app/components/layout/Footer.tsx",
+      "line": 123,
+      "text": "<li><Link href=\"/admin\" className=\"hover:text-white transition-colors flex items-center gap-2 group\"><ArrowRight size={14} className=\"opacity-0 group-hover:opacity-100 -ml-5 transition-all\" /> Portal Administrativo</Link></li>"
+    },
+    {
+      "file": "app/components/layout/Header.tsx",
+      "line": 17,
+      "text": "'Micromercados': { label: 'Micro \u2713', color: 'text-[#ca8a04]', bg: 'bg-yellow-50 border-yellow-200' },"
+    },
+    {
+      "file": "app/components/layout/Header.tsx",
+      "line": 18,
+      "text": "'Restaurantes': { label: 'Mayorista \u2713', color: 'text-[#4CAF50]', bg: 'bg-green-50 border-green-200' },"
+    },
+    {
+      "file": "app/components/layout/Header.tsx",
+      "line": 29,
+      "text": "if (pathname?.startsWith('/admin')) {"
+    },
+    {
+      "file": "app/components/layout/Header.tsx",
+      "line": 70,
+      "text": "<Link href={role === 'Micromercados' ? '/micromercado' : role === 'Restaurantes' ? '/restaurante' : '/retail'} className=\"text-[#83b745] hover:text-[#6c9c36] font-black transition-colors pb-1 flex items-center gap-1 bg-[#83b745]/10 px-3 py-1.5 rounded-full shadow-sm\">"
+    },
+    {
+      "file": "app/dashboard/page.tsx",
+      "line": 12,
+      "text": "if (role === 'Micromercados') {"
+    },
+    {
+      "file": "app/dashboard/page.tsx",
+      "line": 14,
+      "text": "} else if (role === 'Restaurantes') {"
+    }
+  ],
+  "pendingLegacyMapping": [
+    "role=admin lowercase",
+    "tier=admin/SUPER_ADMIN without canonical role",
+    "conflicting historical metadata",
+    "OPERARIO/COMMERCIAL operational permissions"
+  ],
+  "notModifiedOutsideApprovedScope": "Footer still tests lowercase role=admin; Header portal link uses pricing tier; runtime navigation verification pending"
+}

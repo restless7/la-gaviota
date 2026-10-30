@@ -1,0 +1,1 @@
+{"server_version" : "PostgreSQL 18.6 (Debian 18.6-3) on x86_64-pc-linux-gnu, compiled by x86_64-linux-gnu-gcc (Debian 16.2.0-1) 16.2.0, 64-bit", "listen_addresses" : "", "data_directory" : "/tmp/la-gaviota-authorized-e2e-20261015/database/data", "unix_socket_directories" : "/tmp/la-gaviota-authorized-e2e-20261015/database/socket"}

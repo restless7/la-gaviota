@@ -1,0 +1,170 @@
+{
+  "layer": "REAL_CLERK_SIGNIN_TICKET_BYPASSES_UI_PASSWORD_AND_VERIFICATION;REAL_SERVER_AUTHORITY_AND_FIXTURE_DATABASE",
+  "observations": 24,
+  "cases": [
+    {
+      "name": "realSDK_portalRouting_micro",
+      "status": "PASS",
+      "label": "micro",
+      "role": "USER",
+      "tier": "Micromercados",
+      "path": "/micromercado"
+    },
+    {
+      "name": "realSDK_catalogTierPrice_micro",
+      "status": "PASS",
+      "label": "micro",
+      "unitPrice": 15000
+    },
+    {
+      "name": "realSDK_adminRouteDenied_micro",
+      "status": "PASS",
+      "label": "micro",
+      "finalPath": "/micromercado"
+    },
+    {
+      "name": "realSDK_portalRouting_restaurant",
+      "status": "PASS",
+      "label": "restaurant",
+      "role": "USER",
+      "tier": "Restaurantes",
+      "path": "/restaurante"
+    },
+    {
+      "name": "realSDK_catalogTierPrice_restaurant",
+      "status": "PASS",
+      "label": "restaurant",
+      "unitPrice": 10000
+    },
+    {
+      "name": "realSDK_adminRouteDenied_restaurant",
+      "status": "PASS",
+      "label": "restaurant",
+      "finalPath": "/restaurante"
+    },
+    {
+      "name": "realSDK_portalRouting_admin",
+      "status": "PASS",
+      "label": "admin",
+      "role": "ADMIN",
+      "tier": "Personas Naturales",
+      "path": "/admin"
+    },
+    {
+      "name": "realSDK_catalogTierPrice_admin",
+      "status": "PASS",
+      "label": "admin",
+      "unitPrice": 20000
+    },
+    {
+      "name": "realSDK_portalRouting_super",
+      "status": "PASS",
+      "label": "super",
+      "role": "SUPER_ADMIN",
+      "tier": "Personas Naturales",
+      "path": "/admin"
+    },
+    {
+      "name": "realSDK_catalogTierPrice_super",
+      "status": "PASS",
+      "label": "super",
+      "unitPrice": 20000
+    },
+    {
+      "name": "realSDK_portalRouting_operario",
+      "status": "PASS",
+      "label": "operario",
+      "role": "OPERARIO",
+      "tier": "Personas Naturales",
+      "path": "/retail"
+    },
+    {
+      "name": "realSDK_catalogTierPrice_operario",
+      "status": "PASS",
+      "label": "operario",
+      "unitPrice": 20000
+    },
+    {
+      "name": "realSDK_adminRouteDenied_operario",
+      "status": "PASS",
+      "label": "operario",
+      "finalPath": "/retail"
+    },
+    {
+      "name": "realSDK_portalRouting_commercial",
+      "status": "PASS",
+      "label": "commercial",
+      "role": "COMMERCIAL",
+      "tier": "Personas Naturales",
+      "path": "/retail"
+    },
+    {
+      "name": "realSDK_catalogTierPrice_commercial",
+      "status": "PASS",
+      "label": "commercial",
+      "unitPrice": 20000
+    },
+    {
+      "name": "realSDK_adminRouteDenied_commercial",
+      "status": "PASS",
+      "label": "commercial",
+      "finalPath": "/retail"
+    },
+    {
+      "name": "realSDK_portalRouting_owner-a",
+      "status": "PASS",
+      "label": "owner-a",
+      "role": "USER",
+      "tier": "Personas Naturales",
+      "path": "/retail"
+    },
+    {
+      "name": "realSDK_ownOrderHistoryForeignAbsent_owner-a",
+      "status": "PASS",
+      "ownerId": "user_3KkIJOjQ8QH9AvVjBnUCdqFohSG",
+      "ownOrder": "cc3d7e6a-7a6d-5def-a222-1dea16c14add",
+      "foreignOrderAbsent": "371ddf3c-f316-5b76-8efb-4bec8b0729a3"
+    },
+    {
+      "name": "realSDK_catalogTierPrice_owner-a",
+      "status": "PASS",
+      "label": "owner-a",
+      "unitPrice": 20000
+    },
+    {
+      "name": "realSDK_adminRouteDenied_owner-a",
+      "status": "PASS",
+      "label": "owner-a",
+      "finalPath": "/retail"
+    },
+    {
+      "name": "realSDK_portalRouting_owner-b",
+      "status": "PASS",
+      "label": "owner-b",
+      "role": "USER",
+      "tier": "Personas Naturales",
+      "path": "/retail"
+    },
+    {
+      "name": "realSDK_ownOrderHistoryForeignAbsent_owner-b",
+      "status": "PASS",
+      "ownerId": "user_3KkIJUF3tWqsTrxy6N5z7I7G3tk",
+      "ownOrder": "371ddf3c-f316-5b76-8efb-4bec8b0729a3",
+      "foreignOrderAbsent": "cc3d7e6a-7a6d-5def-a222-1dea16c14add"
+    },
+    {
+      "name": "realSDK_catalogTierPrice_owner-b",
+      "status": "PASS",
+      "label": "owner-b",
+      "unitPrice": 20000
+    },
+    {
+      "name": "realSDK_adminRouteDenied_owner-b",
+      "status": "PASS",
+      "label": "owner-b",
+      "finalPath": "/retail"
+    }
+  ],
+  "browserContextsClosed": true,
+  "limit": "Eight ticket-authenticated fixture identities are not eight UI login tests. Retail password/OTP journey separate."
+}

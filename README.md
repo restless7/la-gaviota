@@ -1,5 +1,32 @@
 # 🦅 ECOSISTEMA DIGITAL LA GAVIOTA OS
 
+## Desarrollo local y preparación del lanzamiento
+
+**E2E autorizado, 2026-10-15:** login/registro con Clerk Development independiente, permisos y compras ficticias retail/micro/restaurante verificados con la aplicación real y PostgreSQL/PostgREST locales. Los tres pedidos persistidos coinciden con sus cantidades y precios. Los fallos de atomicidad/idempotencia/recuperación siguen abiertos; Wompi Sandbox y la infraestructura alojada no están certificados. **Lanzamiento NO-GO.** [Informe y fixtures repetibles](docs/LG_RUNTIME_E2E_AUTHORIZED_FUNCTIONAL_TEST_REPORT.md).
+
+Trabajamos directamente en este proyecto. No hace falta un sandbox adicional para el desarrollo normal. La aplicación conserva Next.js, Clerk, Supabase y Wompi.
+
+1. Usa Node 24 y npm 11 compatibles con `package.json`.
+2. Copia `.env.example` a `.env.local` y configura Clerk y Supabase. El cliente público usa la clave anónima; `SUPABASE_SERVICE_ROLE_KEY` es exclusivamente de servidor. Nunca publiques claves privadas ni copies archivos `.env` al repositorio.
+3. Instala con `npm ci` y ejecuta `npm run dev`.
+4. Verifica con `npm test`, `npm run typecheck`, `npm run lint` y `npm run build`.
+
+Para comprobar el build localmente, ejecuta `npm run start -- --hostname localhost --port 47773` y abre `http://localhost:47773`. Usa `localhost` tanto al iniciar como al navegar: con esta combinación de Next/Clerk, mezclar un bind `127.0.0.1` con las URL normalizadas puede provocar un proxy interno fallido.
+
+Wompi y los destinos de atención son opcionales durante el desarrollo. Sin clave pública Wompi se ofrece contra entrega; sin destino de soporte no se simula recepción de mensajes. Configurar una clave no sustituye la validación del flujo de pago.
+
+**Cambios locales actuales:** guardas de autorización por acción; catálogo público sin costos ni precios de otros tiers; header responsive y Mi Cuenta visible; enlaces de categorías corregidos; banner de Verduras existente; selector compartido `− / +` con carrito sin apertura automática; persistencia de IDs/cantidades; validación de cantidades/precios/entrega en servidor; confirmación con total aceptado y errores visibles. No se reasignaron fotos de productos por similitud de nombres.
+
+**Verificado:** 52 pruebas locales de checkout y callbacks; TypeScript; pruebas de componentes React en Chromium en cinco anchos para selector/carrito. Con la configuración local de Clerk/Supabase guardada por el propietario, el build normal termina correctamente, incluidas las 42 páginas estáticas. El catálogo real y robots responden HTTP 200 localmente. El catálogo y carrito reales pasan las comprobaciones de navegador a 360 y 1440 px: agregar sin abrir el carrito, recargar, sincronizar cantidades y eliminar en cero; categoría Verduras e imagen verificadas en móvil, cierre por clic exterior y Escape en escritorio. También pasan dos regresiones directas de hidratación. Login y compras con proveedores reales todavía no están verificados. Lint global conserva deuda previa.
+
+**Pendiente antes de cobrar pedidos reales:** configurar y probar la aplicación completa con sus servicios; completar atomicidad e idempotencia de pedidos y la vinculación/conciliación de Wompi; comprobar políticas y esquema de datos; aprobar fotos faltantes y datos legales/de contacto. Los cambios locales no publican el portal ni garantizan esos flujos financieros.
+
+**Gate LG-RUNTIME-E2E, 2026-10-15: integridad financiera FAIL; lanzamiento NO-GO.** Las pruebas del writer actual con PostgreSQL temporal reproducen cabeceras huérfanas y pedidos duplicados al reintentar. Los callbacks actuales reproducen carreras, vinculación insuficiente y recuperación incompleta con dependencias controladas. Guardas/modelos SQL pasan en su alcance; sesiones autenticadas, Wompi sandbox y políticas desplegadas siguen sin certificar. TypeScript pasa; lint y advisories permanecen abiertos. [Resultados, evidencia y siguiente paquete transaccional](docs/LG_RUNTIME_E2E_AUTH_CHECKOUT_PAYMENT_CERTIFICATION.md).
+
+La documentación que sigue es histórica y contiene descripciones aspiracionales (incluidas atomicidad e idempotencia) que no deben interpretarse como garantías implementadas.
+
+---
+
 ## Documentación Técnica de Arquitectura Core (v1.0 Stable)
 
 Esta plataforma es un sistema híbrido de comercio electrónico B2C/B2B y un balanceador logístico de inventarios frescos, construido sobre una arquitectura moderna basada en eventos e inmutabilidad de datos.

@@ -2,13 +2,10 @@
 
 import React, { useState } from 'react';
 import { Gift, Plus, GripVertical, Settings2, Image as ImageIcon, Trash2, CheckCircle } from 'lucide-react';
-import { Product } from '@/src/actions/products';
+import { AdminProduct as Product } from '@/src/actions/products';
 import { createOrUpdateKit, KitPayload } from '@/src/actions/kits';
-import { createClient } from '@supabase/supabase-js';
+import { uploadCatalogMedia } from '@/src/actions/media';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function KitsClient({ initialProducts }: { initialProducts: Product[] }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,18 +71,8 @@ export default function KitsClient({ initialProducts }: { initialProducts: Produ
       
       // Upload Banner if exists
       if (bannerFile) {
-        const fileExt = bannerFile.name.split('.').pop();
-        const fileName = `${kitSlug}-${Date.now()}.${fileExt}`;
-        const { data, error } = await supabase.storage
-          .from('kit-banners')
-          .upload(fileName, bannerFile);
-          
-        if (error) {
-          console.error("Error uploading banner:", error);
-        } else if (data) {
-          const { data: publicData } = supabase.storage.from('kit-banners').getPublicUrl(data.path);
-          finalBannerUrl = publicData.publicUrl;
-        }
+        const upload = new FormData(); upload.set('file', bannerFile);
+        finalBannerUrl = (await uploadCatalogMedia('kit', upload)).url;
       }
 
       const payload: KitPayload = {
@@ -222,7 +209,7 @@ export default function KitsClient({ initialProducts }: { initialProducts: Produ
                       <span className="text-xs mt-1 text-gray-400">Resolución recomendada: 1200x400px</span>
                     </>
                   )}
-                  <input type="file" accept="image/*" className="hidden" onChange={handleBannerChange} />
+                  <input type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleBannerChange} />
                </label>
 
                {/* Dropped items area */}

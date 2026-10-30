@@ -1,0 +1,48 @@
+{
+  "baseline_sha": "49add73ae90b837c36553a0f2b535267c9610143",
+  "remote_main": {
+    "committed": "2026-07-02T04:05:16Z",
+    "html_url": "https://github.com/restless7/la-gaviota/commit/49add73ae90b837c36553a0f2b535267c9610143",
+    "sha": "49add73ae90b837c36553a0f2b535267c9610143"
+  },
+  "vercel_alias_inspection": {
+    "deployment_id": "dpl_7akmDyb1H4VCuuzFBhjqCsoHqkv1",
+    "url": "la-gaviota-pvry94dhu-restless7s-projects.vercel.app",
+    "target": "production",
+    "readyState": "READY",
+    "createdAt": 1782965119970,
+    "aliases": [
+      "la-gaviota.vercel.app",
+      "www.lagaviotafruver.com",
+      "lagaviotafruver.com",
+      "la-gaviota-restless7s-projects.vercel.app",
+      "la-gaviota-git-main-restless7s-projects.vercel.app"
+    ],
+    "builds": [
+      {
+        "id": "bld_3z24s6co1",
+        "deploymentId": "dpl_7akmDyb1H4VCuuzFBhjqCsoHqkv1",
+        "readyState": "READY",
+        "framework": "nextjs",
+        "nodeVersion": "24.x"
+      }
+    ]
+  },
+  "github_combined_status": {
+    "sha": "49add73ae90b837c36553a0f2b535267c9610143",
+    "context": "Vercel",
+    "state": "success",
+    "target_url": "https://vercel.com/restless7s-projects/la-gaviota/7akmDyb1H4VCuuzFBhjqCsoHqkv1"
+  },
+  "github_latest_production_deployment": {
+    "created_at": "2026-07-02T04:06:58Z",
+    "environment": "Production",
+    "id": 5279006077,
+    "ref": "49add73ae90b837c36553a0f2b535267c9610143",
+    "sha": "49add73ae90b837c36553a0f2b535267c9610143",
+    "updated_at": "2026-07-02T04:06:59Z"
+  },
+  "verdict": "CONFIRMED metadata association current alias to Vercel deployment to baseline commit; artifact bytes/env/installed package graph not attested; direct privileged action reachability not probed",
+  "restriction": "No app writes, no probes, no auth mutations, no .env reading; stage paused for root incident-risk disposition",
+  "raw_metadata_sha256": "9c56d18e8ebe856f0a230802b2f2b35b02c2096eea61f7d036e2ae802b206f0b"
+}

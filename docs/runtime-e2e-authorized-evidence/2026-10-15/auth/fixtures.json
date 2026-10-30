@@ -1,0 +1,89 @@
+{
+  "applicationId": "app_3KkIBTc8ZkYA4xOqe1RISnl26qu",
+  "instanceId": "ins_3KkIBUC69XmTCaePrSymXHwofVv",
+  "fixturePrefix": "lg_e2e_20261015",
+  "createdAt": "2026-10-15T20:10:55.292910+00:00",
+  "accounts": [
+    {
+      "label": "retail",
+      "id": "user_3KkIIArwhu9gdLyBwZ7vN0eI9d0",
+      "email": "lg-e2e-20261015-retail+clerk_test@example.com",
+      "role": "USER",
+      "tier": "Personas Naturales",
+      "externalId": "lg_e2e_20261015_retail"
+    },
+    {
+      "label": "micro",
+      "id": "user_3KkIIEFAZ1V64yAkMlqyaO7mDus",
+      "email": "lg-e2e-20261015-micro+clerk_test@example.com",
+      "role": "USER",
+      "tier": "Micromercados",
+      "externalId": "lg_e2e_20261015_micro"
+    },
+    {
+      "label": "restaurant",
+      "id": "user_3KkIIZvviHQEnQQTeNOHnjWqdYU",
+      "email": "lg-e2e-20261015-restaurant+clerk_test@example.com",
+      "role": "USER",
+      "tier": "Restaurantes",
+      "externalId": "lg_e2e_20261015_restaurant"
+    },
+    {
+      "label": "admin",
+      "id": "user_3KkIIjYtsVC6fDVD8ZvjiQPuFBd",
+      "email": "lg-e2e-20261015-admin+clerk_test@example.com",
+      "role": "ADMIN",
+      "tier": "Personas Naturales",
+      "externalId": "lg_e2e_20261015_admin"
+    },
+    {
+      "label": "super",
+      "id": "user_3KkIIsWsGuuOZW5YGymeGArJLz6",
+      "email": "lg-e2e-20261015-super+clerk_test@example.com",
+      "role": "SUPER_ADMIN",
+      "tier": "Personas Naturales",
+      "externalId": "lg_e2e_20261015_super"
+    },
+    {
+      "label": "operario",
+      "id": "user_3KkIJ61OVwLZzZ0C5sDK3JjHDC3",
+      "email": "lg-e2e-20261015-operario+clerk_test@example.com",
+      "role": "OPERARIO",
+      "tier": "Personas Naturales",
+      "externalId": "lg_e2e_20261015_operario"
+    },
+    {
+      "label": "commercial",
+      "id": "user_3KkIJB73QnbN85cAD7zS0mzDj2S",
+      "email": "lg-e2e-20261015-commercial+clerk_test@example.com",
+      "role": "COMMERCIAL",
+      "tier": "Personas Naturales",
+      "externalId": "lg_e2e_20261015_commercial"
+    },
+    {
+      "label": "owner-a",
+      "id": "user_3KkIJOjQ8QH9AvVjBnUCdqFohSG",
+      "email": "lg-e2e-20261015-owner-a+clerk_test@example.com",
+      "role": "USER",
+      "tier": "Personas Naturales",
+      "externalId": "lg_e2e_20261015_owner-a"
+    },
+    {
+      "label": "owner-b",
+      "id": "user_3KkIJUF3tWqsTrxy6N5z7I7G3tk",
+      "email": "lg-e2e-20261015-owner-b+clerk_test@example.com",
+      "role": "USER",
+      "tier": "Personas Naturales",
+      "externalId": "lg_e2e_20261015_owner-b"
+    },
+    {
+      "label": "signup-ui",
+      "id": "user_3KkJhzhTyweVoqikJXkfR7Vo1Yp",
+      "email": "lg-e2e-ui-signup-20261015+clerk_test@example.com",
+      "role": null,
+      "tier": null,
+      "createdBy": "REAL_SIGNUP_UI_OTP",
+      "externalId": null
+    }
+  ]
+}

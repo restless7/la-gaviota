@@ -1,0 +1,43 @@
+{
+  "mode": "LG-R1C isolated implementation",
+  "tasks": [
+    {
+      "id": "0-1",
+      "owner": "Freya/ApplicationSecurity",
+      "status": "done_authorized_local_work",
+      "task": "baseline/isolation/patch55",
+      "release_gate": "NOT_GRANTED"
+    },
+    {
+      "id": "2",
+      "owner": "ReleaseEngineering",
+      "status": "done_authorized_local_work",
+      "task": "cleaninstall/types/lint/advisories",
+      "release_gate": "NOT_GRANTED"
+    },
+    {
+      "id": "3-4",
+      "owner": "ApplicationSecurity",
+      "status": "done_authorized_local_work",
+      "task": "syntheticsecurity/compatibility",
+      "release_gate": "NOT_GRANTED"
+    },
+    {
+      "id": "5-6",
+      "owner": "IndependentQA",
+      "status": "done_authorized_local_work",
+      "task": "runtimecontainment/independentreview",
+      "release_gate": "NOT_GRANTED"
+    },
+    {
+      "id": "7",
+      "owner": "Freya",
+      "status": "done_authorized_local_work",
+      "task": "preservation/report/graphmaintenance",
+      "release_gate": "NOT_GRANTED"
+    }
+  ],
+  "remote_mission_control": "UNAVAILABLE",
+  "accounting": "exact tokens/tier/cost unavailable",
+  "result": "LOCAL_IMPLEMENTATION_COMPLETE; RUNTIME_BLOCKED; COMMERCIAL_NO_GO"
+}

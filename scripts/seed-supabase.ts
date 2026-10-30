@@ -5,6 +5,9 @@ import { resolve } from 'path';
 // Load the environment variables from .env.local
 dotenv.config({ path: resolve(process.cwd(), '.env.local') });
 
+import { assertStagingSafety } from '../src/lib/safetyGuard';
+assertStagingSafety();
+
 // Since this is a script, we need the Service Role Key to bypass RLS reliably if needed,
 // but the ANON key will work because we enabled public inserts in the policies.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

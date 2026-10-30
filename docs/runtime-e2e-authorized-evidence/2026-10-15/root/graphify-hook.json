@@ -1,0 +1,37 @@
+{
+  "command": "npm_config_offline=true npx --no-install graphify hook-rebuild",
+  "exit_code": 0,
+  "runs_in_this_continuation": 1,
+  "ast_files": 1702,
+  "nodes": 7417,
+  "edges": 13259,
+  "communities_reported_by_cli": 571,
+  "changed_maintenance_files": [
+    ".graphify/.graphify_detect.json",
+    ".graphify/GRAPH_REPORT.md",
+    ".graphify/branch.json",
+    ".graphify/graph.json",
+    ".graphify/manifest.json",
+    ".graphify/worktree.json"
+  ],
+  "before": {
+    ".graphify/worktree.json": "b9469d14d67ad6d844bc4ad3cbbf4e610d2d51095deb0bba0be92677aad22c63",
+    ".graphify/scope.json": "716e8783996ad392a416d5aa602646080bc4c6c8bfd69fb74280d85702bc6395",
+    ".graphify/manifest.json": "23bfc582ca2a630c71f0a971a029fe7dc488abd912f044ef49dbafb524e51480",
+    ".graphify/graph.json": "50cd15a16842964c60f8b43914eca8d8e2d4a2a26a126391fa4bc23887fbed06",
+    ".graphify/GRAPH_REPORT.md": "c34bd4c028f7f803ed69c6a049f4e2c46b59053348f9bcec46152fc4ccd9728d",
+    ".graphify/.graphify_detect.json": "d411ae2f947a801044e3143e2a6166e1c92adf831e5c9f5493ce3233abe80c00",
+    ".graphify/branch.json": "c408aba0a19d6dc4a24e70aab5d353f4178e0024217fa9cb65b850076beeed97"
+  },
+  "after": {
+    ".graphify/worktree.json": "219d1c2e59f711aad3cac4613f75a2aafc9f291b2c2362f6e22c125cef8c8821",
+    ".graphify/scope.json": "716e8783996ad392a416d5aa602646080bc4c6c8bfd69fb74280d85702bc6395",
+    ".graphify/manifest.json": "18eec480138fb839fc2e20a92a49150f89aa54fb16873d62a18a3d789a611a52",
+    ".graphify/graph.json": "04eedcfbd5d5a5b07eb417bdd83d8dec51dbeb31c6c76730e3349838472b9fa9",
+    ".graphify/GRAPH_REPORT.md": "6488100287f91848e5c98f3af278eaefc19a4220a46ea6536bfca6187952f6ea",
+    ".graphify/.graphify_detect.json": "93ea5e1e5190a50c01896bfed3bf47fc3a0e29c27cb8eac43dc17fb339e62f90",
+    ".graphify/branch.json": "1093c3502a542caff9b021b82c22c12b6083a26e12098d0665f4e861d14f9e36"
+  },
+  "private_log_sha256": "6eec3b363277bd827c846b8fd54cf5b1e4e435f1dddb297176be1bf2934926af",
+  "limitation": "committed monorepo corpus excludes untracked implementation/harnesses; not feature security certification"
+}

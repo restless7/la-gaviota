@@ -1,13 +1,13 @@
 export const dynamic = 'force-dynamic';
 
 import React from 'react';
-import { fetchProducts } from '@/src/actions/products';
+import { fetchAdminProducts } from '@/src/actions/products';
 import ProductForm from '../ProductForm';
 
 export default async function EditProductPage(props: { params: Promise<{ id: string }> }) {
   const { id } = await props.params;
   const decodedId = decodeURIComponent(id || '').trim();
-  const products = await fetchProducts();
+  const products = await fetchAdminProducts();
   const product = products.find(p => String(p.id).trim() === decodedId);
 
   if (!product) {

@@ -1,0 +1,68 @@
+-- OWNER REVIEW / AUTHORIZED TEST-PROJECT METADATA ONLY. NOT EXECUTED REMOTELY.
+-- No app/customer/order/storage-object rows, passwords, tokens, function bodies,
+-- connection strings, auth.users, or secret settings are selected.
+-- Run under an approved read-only metadata session; permission errors are evidence,
+-- never permission to upgrade credentials or disable RLS. Review output privately.
+BEGIN READ ONLY;
+SET LOCAL statement_timeout = '5s';
+SET LOCAL lock_timeout = '1s';
+SELECT current_setting('server_version') AS server_version;
+
+-- RLS, owners, view security options: all exposed candidate objects, no row data.
+SELECT n.nspname AS schema_name,c.relname,c.relkind,c.relrowsecurity,c.relforcerowsecurity,
+       pg_get_userbyid(c.relowner) AS owner,c.reloptions
+FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+WHERE n.nspname IN ('public','storage') AND c.relkind IN ('r','p','v','m')
+ORDER BY 1,2;
+SELECT schemaname,tablename,policyname,permissive,roles,cmd,qual,with_check
+FROM pg_policies WHERE schemaname IN ('public','storage') ORDER BY 1,2,3;
+
+-- Raw and effective ACLs: column grants must be audited independently of table grants.
+SELECT n.nspname,c.relname,c.relacl FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+WHERE n.nspname IN ('public','storage') AND c.relkind IN ('r','p','v','m') ORDER BY 1,2;
+SELECT n.nspname,c.relname,a.attname,a.attacl
+FROM pg_attribute a JOIN pg_class c ON c.oid=a.attrelid JOIN pg_namespace n ON n.oid=c.relnamespace
+WHERE n.nspname IN ('public','storage') AND a.attnum>0 AND NOT a.attisdropped AND a.attacl IS NOT NULL ORDER BY 1,2,3;
+SELECT r.rolname,n.nspname,c.relname,p.privilege,has_table_privilege(r.oid,c.oid,p.privilege) AS allowed
+FROM pg_roles r CROSS JOIN pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+CROSS JOIN (VALUES ('SELECT'),('INSERT'),('UPDATE'),('DELETE'),('TRUNCATE'),('REFERENCES'),('TRIGGER')) AS p(privilege)
+WHERE r.rolname IN ('anon','authenticated','service_role') AND n.nspname IN ('public','storage') AND c.relkind IN ('r','p','v','m') ORDER BY 1,2,3,4;
+SELECT r.rolname,n.nspname,c.relname,a.attname,p.privilege,has_column_privilege(r.oid,c.oid,a.attnum,p.privilege) AS allowed
+FROM pg_roles r CROSS JOIN pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace JOIN pg_attribute a ON a.attrelid=c.oid
+CROSS JOIN (VALUES ('SELECT'),('INSERT'),('UPDATE'),('REFERENCES')) AS p(privilege)
+WHERE r.rolname IN ('anon','authenticated') AND n.nspname IN ('public','storage') AND c.relkind IN ('r','p','v','m') AND a.attnum>0 AND NOT a.attisdropped ORDER BY 1,2,3,4,5;
+
+-- No role passwords or pg_authid. Inheritance/BYPASSRLS/default grants affect coverage.
+SELECT rolname,rolsuper,rolinherit,rolcreaterole,rolcreatedb,rolcanlogin,rolbypassrls
+FROM pg_roles WHERE rolname IN ('anon','authenticated','service_role','authenticator','postgres') ORDER BY 1;
+SELECT pg_get_userbyid(m.roleid) AS granted_role,pg_get_userbyid(m.member) AS member,m.admin_option
+FROM pg_auth_members m WHERE m.member IN (SELECT oid FROM pg_roles WHERE rolname IN ('anon','authenticated','service_role','authenticator')) ORDER BY 1,2;
+SELECT pg_get_userbyid(d.defaclrole) AS creator,COALESCE(n.nspname,'ALL') AS schema_name,d.defaclobjtype,d.defaclacl
+FROM pg_default_acl d LEFT JOIN pg_namespace n ON n.oid=d.defaclnamespace ORDER BY 1,2,3;
+SELECT n.nspname,n.nspacl FROM pg_namespace n WHERE n.nspname IN ('public','storage','lg_private');
+
+-- Schema compatibility; default expression content deliberately omitted.
+SELECT table_schema,table_name,column_name,data_type,udt_name,is_nullable,(column_default IS NOT NULL) AS has_default
+FROM information_schema.columns WHERE table_schema IN ('public','storage') ORDER BY 1,2,ordinal_position;
+SELECT n.nspname,c.relname,k.conname,k.contype,pg_get_constraintdef(k.oid,true) AS definition
+FROM pg_constraint k JOIN pg_class c ON c.oid=k.conrelid JOIN pg_namespace n ON n.oid=c.relnamespace
+WHERE n.nspname IN ('public','storage') ORDER BY 1,2,3;
+SELECT schemaname,tablename,indexname,indexdef FROM pg_indexes WHERE schemaname IN ('public','storage') ORDER BY 1,2,3;
+SELECT n.nspname,c.relname,t.tgname,t.tgenabled,pg_get_userbyid(p.proowner) AS function_owner,p.proname,p.prosecdef
+FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace JOIN pg_proc p ON p.oid=t.tgfoid
+WHERE NOT t.tgisinternal AND n.nspname IN ('public','storage') ORDER BY 1,2,3;
+
+-- RPC/helper risk metadata only: no function bodies or configuration/secret values.
+SELECT n.nspname,p.proname,pg_get_function_identity_arguments(p.oid) AS arguments,p.prosecdef,
+       pg_get_userbyid(p.proowner) AS owner,p.proacl,p.provolatile,
+       EXISTS(SELECT 1 FROM unnest(COALESCE(p.proconfig,ARRAY[]::text[])) s WHERE s LIKE 'search_path=%') AS sets_search_path
+FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+WHERE n.nspname IN ('public','storage','lg_private') ORDER BY 1,2,3;
+SELECT to_regprocedure('storage.allow_any_operation(text[])') IS NOT NULL AS storage_operation_helper_present;
+SELECT n.nspname,c.relname,pg_get_viewdef(c.oid,true) AS definition
+FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relkind='v' ORDER BY 1,2;
+ROLLBACK;
+-- Separate non-SQL owner attestation still required: designated isolated project ref,
+-- exposed Data API schemas; configured Clerk issuer/audience/expiry validation;
+-- publishable/secret key scope; Storage version/helpers/public buckets; realtime
+-- publications/authorization; no production notifications/payment integrations.

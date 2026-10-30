@@ -1,0 +1,13 @@
+{
+  "layer": "REAL_BAPI_METADATA_CHANGE_OWN_ADMIN_FIXTURE_AND_EXISTING_REAL_SDK_SESSION",
+  "restored": true,
+  "browserExit": 0,
+  "browser": {
+    "sameSession": true,
+    "finalPath": "/retail",
+    "sessionIdSha256": "bdec397dfc6c0685ed6d5e524d7304776b433495fb194ffcea3fadb892f9b7b6",
+    "status": "PASS_FRESH_ROLE_REVOCATION_DENIES_EXISTING_SESSION",
+    "browserClosed": true
+  },
+  "restoredRole": "ADMIN"
+}

@@ -1,0 +1,33 @@
+{
+  "phase": "AUTHORIZED_LG_RUNTIME_E2E_CONTINUATION",
+  "head": "49add73ae90b837c36553a0f2b535267c9610143",
+  "head_unchanged": true,
+  "source_preservation": {
+    "files": 144,
+    "changed_or_missing": []
+  },
+  "independent_core_copy_comparison": {
+    "files": 17,
+    "mismatches": []
+  },
+  "gateway_independent_replay": {
+    "cases": 14,
+    "all_pass": true,
+    "results_equal_ignoring_duration_only": true
+  },
+  "cash_oracles": {
+    "flows": 3,
+    "checks": 33,
+    "all_matched": true,
+    "not_financial_atomicity_certificate": true
+  },
+  "child_manifest_verification": "root/child-manifest-verification.json",
+  "cleanup": {
+    "new_runtime_owned_pids_remaining": [],
+    "clerk_sessions": "10 active revoked; one already ended; ten synthetic accounts and new development app retained"
+  },
+  "local_report_links_missing_excluding_pending_manifest": [],
+  "quality": "Prior build/types/lint/audit not rerun; source/lock unchanged, financial FAIL and quality blockers retained",
+  "no_release_commit_or_production_changes": true,
+  "accounting": "Exact tokens/tier/cost unavailable; no fabricated remote bookkeeping"
+}

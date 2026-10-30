@@ -1,0 +1,74 @@
+[
+  {
+    "tile": 1,
+    "id": "prd_0001",
+    "name": "Agraz",
+    "source": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/agraz-1782948991536.jpeg"
+  },
+  {
+    "tile": 2,
+    "id": "prd_0048",
+    "name": "Aguacate choque",
+    "source": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/aguacate-choque-1782949132524.jpeg"
+  },
+  {
+    "tile": 3,
+    "id": "prd_0047",
+    "name": "Aguacate criollo",
+    "source": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/aguacate-criollo-1782949186482.jpg"
+  },
+  {
+    "tile": 4,
+    "id": "prd_0051",
+    "name": "Acelga",
+    "source": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/acelga-1782948890334.png"
+  },
+  {
+    "tile": 5,
+    "id": "prd_0052",
+    "name": "Ahuyama",
+    "source": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/ahuyama-1782962591388.png"
+  },
+  {
+    "tile": 6,
+    "id": "prd_0053",
+    "name": "Ahuyamín",
+    "source": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/ahuyamn-1782962617740.webp"
+  },
+  {
+    "tile": 7,
+    "id": "prd_0188",
+    "name": "Vísceras Chanfaina picada",
+    "source": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/vsceras-chanfaina-picada-1782958960148.jpg"
+  },
+  {
+    "tile": 8,
+    "id": "prd_0134",
+    "name": "Guanábana",
+    "source": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/guanbana-1782964566784.png"
+  },
+  {
+    "tile": 9,
+    "id": "local",
+    "name": "Historic local watermelon; mapping UNKNOWN",
+    "source": "public/PRODUCTS/Gemini_Generated_Image_7147tr7147tr7147.png"
+  },
+  {
+    "tile": 10,
+    "id": "local",
+    "name": "Historic local avocado; mapping UNKNOWN",
+    "source": "public/PRODUCTS/fp2yf.jpg"
+  },
+  {
+    "tile": 11,
+    "id": "local",
+    "name": "Historic local granadilla; mapping UNKNOWN",
+    "source": "public/PRODUCTS/granadilla-libra.jpg"
+  },
+  {
+    "tile": 12,
+    "id": "local",
+    "name": "Historic local; exact live Guana.bana match",
+    "source": "public/PRODUCTS/Gemini_Generated_Image_9u7krx9u7krx9u7k.png"
+  }
+]

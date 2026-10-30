@@ -1,0 +1,14 @@
+-- REVIEW ONLY / NOT EXECUTED. Restricts direct private user reads; does not restore insecure old grants.
+-- Requires current candidate schema, approved coordinated app restricted-mode change and preserved patched guards.
+BEGIN;
+DO $$ BEGIN IF current_setting('lg_r1b.rollback_gate',true) IS DISTINCT FROM 'REVIEWED_RESTRICT_PRIVATE_READS_ONLY' THEN RAISE EXCEPTION 'Rollback gate missing'; END IF; END $$;
+DO $$ DECLARE t text; cols text; BEGIN
+ FOREACH t IN ARRAY ARRAY['customers','orders','order_items','b2b_credit_profiles','buying_templates','business_applications'] LOOP
+  EXECUTE format('REVOKE ALL ON TABLE public.%I FROM PUBLIC,anon,authenticated',t);
+  SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid=('public.'||quote_ident(t))::regclass AND attnum>0 AND NOT attisdropped;
+  EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON public.%I FROM PUBLIC,anon,authenticated',cols,cols,cols,cols,t);
+ END LOOP;
+END $$;
+-- public.catalog_public/kits_public and safe base-column grants retained; no private access added.
+-- service_role intentionally untouched: RLS is not its boundary; retain guards/restrict server separately.
+COMMIT;

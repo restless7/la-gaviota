@@ -49,9 +49,7 @@ export function OrderHistoryClient({ orders, catalogProducts }: { orders: any[],
       const productToAdd = fullProduct || {
         id: item.product_id,
         name: item.product_name,
-        priceRetail: item.price_at_purchase,
-        priceMicro: item.price_at_purchase,
-        priceRestaurant: item.price_at_purchase,
+        price: item.price_at_purchase,
         imageUrl: '',
         unit: 'Und'
       };

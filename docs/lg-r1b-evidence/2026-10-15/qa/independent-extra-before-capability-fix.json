@@ -1,0 +1,59 @@
+{
+  "status": "FAIL",
+  "mode": "INDEPENDENT_SOURCE_VM_SYNTHETIC_NOT_HTTP",
+  "node": "v24.13.0",
+  "total": 12,
+  "passed": 11,
+  "failed": 1,
+  "results": [
+    {
+      "name": "fresh banned actor denied before targets",
+      "status": "PASS"
+    },
+    {
+      "name": "fresh locked actor denied before targets",
+      "status": "PASS"
+    },
+    {
+      "name": "fresh mismatched subject denied before targets",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown runtime capability denied super",
+      "status": "FAIL",
+      "error": "Missing expected rejection."
+    },
+    {
+      "name": "unknown runtime capability denied admin",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown runtime capability denied retail",
+      "status": "PASS"
+    },
+    {
+      "name": "copied issued actor cannot construct service database",
+      "status": "PASS"
+    },
+    {
+      "name": "missing service key rejects before client construction with no anon fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "cross owner scope error exact before database",
+      "status": "PASS"
+    },
+    {
+      "name": "admin can obtain issued cross owner subject actor",
+      "status": "PASS"
+    },
+    {
+      "name": "public inventory projection exact fields",
+      "status": "PASS"
+    },
+    {
+      "name": "public lead unknown column rejected before SDK",
+      "status": "PASS"
+    }
+  ]
+}

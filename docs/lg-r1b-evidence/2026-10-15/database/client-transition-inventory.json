@@ -1,0 +1,365 @@
+[
+  {
+    "file": "src/actions/b2b.ts",
+    "line": 9,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "b2b_credit_profiles",
+      "buying_templates",
+      "orders"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": true,
+    "sha256": "ac666a366345fd82c3e64bc854bde940440ae4c07b8fc0f937c217c76c665490"
+  },
+  {
+    "file": "src/actions/kits.ts",
+    "line": 10,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "kit_items",
+      "kits"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "6eae3ed9d80c69aa66afb02e8bc66f931079322d012e72a984202cfc45b83084"
+  },
+  {
+    "file": "src/actions/checkoutAction.ts",
+    "line": 40,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "products"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "651b5869e302f3727aacbefcd0d1108facb01ae8d1fec4139698deecd81e8da5"
+  },
+  {
+    "file": "src/actions/audit.ts",
+    "line": 7,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "audit_logs"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "e2517d7d9db10d0f7a4e4430a951bc5a94b34ab6d355532aaa7993174e5ffd03"
+  },
+  {
+    "file": "src/actions/analytics.ts",
+    "line": 8,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "agricultural_shrinkage_logs",
+      "order_items",
+      "orders",
+      "products"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "0823070b2a24716f56de687f0ce7be414250423ca189b77d7cd9a54cf8dab35b"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "line": 13,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "kits",
+      "product-images",
+      "products"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "6ed3c0c7af6ed9d556378bdb8802e6aae5637756888c2aa0679c382301beea17"
+  },
+  {
+    "file": "src/actions/businessApplications.ts",
+    "line": 3,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "business_applications",
+      "customers"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "12faa3a5e29ecad21517ce097925b009813e399660e61223e5b746cf64be6ad0"
+  },
+  {
+    "file": "src/actions/customers.ts",
+    "line": 8,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "business_applications",
+      "customers"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "93716b02185a5a8844a9d50afa89bef0561ba01ca29efc25853a3e03bc883c1b"
+  },
+  {
+    "file": "src/actions/suppliers.ts",
+    "line": 8,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "suppliers"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "a89fa802ee9f49812b55a3a775eef0a8aa61435eb7e1dd1dd7c6caca1d8c8882"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "line": 8,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "customers",
+      "daily_operational_ledgers",
+      "order_items",
+      "orders",
+      "products"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "f37304f497afc311e875b1ef61bc5fbb25f43dab279b6ee85a18ef10709ef082"
+  },
+  {
+    "file": "src/actions/settings.ts",
+    "line": 9,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "global_settings"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "a06efa2fc4a598e7bc492548a246377108772c9e63d4abc74d4b1f22f55561f3"
+  },
+  {
+    "file": "src/actions/wompi.ts",
+    "line": 11,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "products"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "0bc0c412081089e5df2aa1f4802f92c4ee2cc43f8a037a09f227a55a544f0e96"
+  },
+  {
+    "file": "src/actions/systemSettings.ts",
+    "line": 9,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "audit_logs",
+      "system_settings"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "87f5b1a2d63a24c220556fc4665ed2dab1d2ae554017a3f3815833981671efd9"
+  },
+  {
+    "file": "src/actions/dashboard.ts",
+    "line": 7,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "business_applications",
+      "orders",
+      "products",
+      "suppliers"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "95842dcbbb09464840ae83b1b2b38378b499d33aa68597b1207e6c0c87447bc9"
+  },
+  {
+    "file": "src/lib/audit.ts",
+    "line": 8,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "audit_logs"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": true,
+    "sha256": "a32f9c667209fdca13b31264780d4b380168f690bf2c7f00cb19028d38b24c43"
+  },
+  {
+    "file": "src/lib/supabase.ts",
+    "line": 7,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "9f3de4e5322da993a7499c45741aa5f78f2998ad84a6dcf9a9c1c46a3fc20672"
+  },
+  {
+    "file": "src/lib/database.types.ts",
+    "line": 11,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "37d7bf805b3222ce93f8bbfb712804885ddeedeb8e756593edbac5d55ded3e7d"
+  },
+  {
+    "file": "src/components/portals/CustomerOrderHistory.tsx",
+    "line": 9,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "orders"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "86fe35ef923149c3ae8e84d788c7c19111d7ee7240a1f2db2d277df2a9bac8a2"
+  },
+  {
+    "file": "app/aplicar-negocio/page.tsx",
+    "line": 8,
+    "client_surface": "browser",
+    "referenced_tables_or_buckets": [],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "c3572e8575d9885a2f750dc27972062abed6eda0da7ffbf0f794f57c0091bb93"
+  },
+  {
+    "file": "app/admin/marketing/page.tsx",
+    "line": 7,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "abandoned_carts",
+      "customers",
+      "marketing_leads"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "c6aa9041722c6bba7bb0884b35b55ace39eb6a807de30b5670e1938fb204ec02"
+  },
+  {
+    "file": "app/admin/orders/OrderKanbanBoard.tsx",
+    "line": 40,
+    "client_surface": "browser",
+    "referenced_tables_or_buckets": [],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "9c3124967a40ec8b5e26fe53a1217ae113790c3da7743fbd13468ed6e9893575"
+  },
+  {
+    "file": "app/admin/solicitudes/page.tsx",
+    "line": 7,
+    "client_surface": "browser",
+    "referenced_tables_or_buckets": [],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "5d8d760e11acd6e13f4495d6f0761192330f27fdaf6efc888d775ff45f4ebbc5"
+  },
+  {
+    "file": "app/admin/catalog/kits/KitsClient.tsx",
+    "line": 11,
+    "client_surface": "browser",
+    "referenced_tables_or_buckets": [
+      "kit-banners"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "59d160a1eff22e49e5f71fa9a980c61d4f3925462db27c2f82821feeba3b452b"
+  },
+  {
+    "file": "app/admin/catalog/product-management/ProductForm.tsx",
+    "line": 13,
+    "client_surface": "browser",
+    "referenced_tables_or_buckets": [
+      "product-images"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "4df1f5d811ee9a6bcd1b7263f79d14a835a168c228f2653d62e91883e9f8ab02"
+  },
+  {
+    "file": "app/api/marketing/lead-capture/route.ts",
+    "line": 7,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "marketing_leads"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "2718bf4f0ae192f4c8b05c483c2b0487b712c275c0d98ba7a60d692e888e9d12"
+  },
+  {
+    "file": "app/api/marketing/loyalty/reorder/route.ts",
+    "line": 6,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "customers"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "3663f192772a6d5da3dfbac5ec70122591a51f12c5bc6cd0379fcd340e747450"
+  },
+  {
+    "file": "app/api/marketing/abandoned-cart/trigger/route.ts",
+    "line": 7,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "abandoned_carts"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "84bdb8bd090bcd95bd74cebe1753004267bcdc81d3721ef61147f01d416cb502"
+  },
+  {
+    "file": "app/api/marketing/abandoned-cart/sync/route.ts",
+    "line": 7,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "abandoned_carts"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "fdfdbba3bc409e197cc94fe0c977b1de1fea9c4a81d67dd12b028d19358a5ad9"
+  },
+  {
+    "file": "app/api/webhooks/wompi/route.ts",
+    "line": 8,
+    "client_surface": "server",
+    "referenced_tables_or_buckets": [
+      "abandoned_carts",
+      "b2b_credit_profiles",
+      "customers",
+      "order_items",
+      "orders",
+      "products"
+    ],
+    "requires_transition": true,
+    "clerk_accessToken_present": false,
+    "existing_service_role_fallback": false,
+    "sha256": "0b9f5b2d767ee08644850e457539c6362c2ede4a7d0f5fc8a6a316006eee1228"
+  }
+]

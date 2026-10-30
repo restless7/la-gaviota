@@ -1,0 +1,32 @@
+[
+  {
+    "manifest": "auth/manifest.json",
+    "files": 15,
+    "sha256": "7b3b34313cbac196a78889db562b08342e2e9b5e935d5ae9ea8c5c199e6a26ad",
+    "mismatches": []
+  },
+  {
+    "manifest": "database/manifest.json",
+    "files": 19,
+    "sha256": "1b7607164224b592fb99d3f84f3aa9a8456750329ef820e2c6c1cd9cc91afe16",
+    "mismatches": []
+  },
+  {
+    "manifest": "payments/actions-http/manifest.json",
+    "files": 8,
+    "sha256": "9a05901dbe059a2dbf81ad04869101fc49742677338db17f90bdd1f612965a73",
+    "mismatches": []
+  },
+  {
+    "manifest": "payments/gateway/manifest.json",
+    "files": 4,
+    "sha256": "0ba4fe8e6de176a1283dd8c8729774374655c4ec1576556b817d747f01057d1a",
+    "mismatches": []
+  },
+  {
+    "manifest": "payments/manifest.json",
+    "files": 8,
+    "sha256": "bfc5885a9e13d4aa9302da4db8dd0c46f71d9275b5561bc8b2faa1b4c3c79158",
+    "mismatches": []
+  }
+]

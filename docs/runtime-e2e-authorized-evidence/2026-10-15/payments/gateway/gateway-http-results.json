@@ -1,0 +1,231 @@
+{
+  "scope": "REAL_HTTP_LOOPBACK_GATEWAY_TO_POSTGREST16_4_TO_POSTGRESQL18_FIXTURE",
+  "endpoint": "http://127.0.0.1:47776/rest/v1",
+  "configuration": "root-owned synthetic HMAC JWT; values never emitted",
+  "transport": "urllib real HTTP, proxy disabled, redirects forbidden, explicit localhost endpoint only",
+  "notProven": [
+    "Clerk issuer/JWKS validation",
+    "Clerk session freshness/revocation",
+    "Supabase hosted stack/Auth/Storage/Realtime",
+    "Next action or callback dispatch",
+    "production DB grants/policies",
+    "payments"
+  ],
+  "positiveDML": 0,
+  "deniedWriteTargets": "nonexistent fixture IDs only",
+  "cases": 14,
+  "pass": 14,
+  "fail": 0,
+  "results": [
+    {
+      "id": "GW-01-anon-safe-catalog",
+      "method": "GET",
+      "path": "/products?select=id,name,price_retail&is_active=eq.true",
+      "expected": "200 safe projection; no base_cost or B2B fields",
+      "actual": {
+        "status": 200,
+        "durationMs": 7.79,
+        "rowCount": 2,
+        "returnedFields": [
+          "id",
+          "name",
+          "price_retail"
+        ],
+        "errorCode": null
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-02-anon-cost-denied",
+      "method": "GET",
+      "path": "/products?select=id,base_cost",
+      "expected": "401/403 SQL42501, no cost rows",
+      "actual": {
+        "status": 401,
+        "durationMs": 3.29,
+        "rowCount": null,
+        "returnedFields": [],
+        "errorCode": "42501"
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-03-anon-private-customer-PII-denied",
+      "method": "GET",
+      "path": "/customers?select=clerk_user_id,email",
+      "expected": "401/403 SQL42501, no PII rows",
+      "actual": {
+        "status": 401,
+        "durationMs": 2.7,
+        "rowCount": null,
+        "returnedFields": [],
+        "errorCode": "42501"
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-04-anon-product-write-denied",
+      "method": "PATCH",
+      "path": "/products?id=eq.__NO_SUCH_SYNTHETIC_SKU__",
+      "expected": "401/403 SQL42501; impossible target prevents mutation even on unexpected allow",
+      "actual": {
+        "status": 401,
+        "durationMs": 2.84,
+        "rowCount": null,
+        "returnedFields": [],
+        "errorCode": "42501"
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-05-auth-own-profile",
+      "method": "GET",
+      "path": "/customers?select=clerk_user_id&clerk_user_id=eq.user_TEST_RETAIL_A",
+      "expected": "200 exactly own synthetic profile",
+      "actual": {
+        "status": 200,
+        "durationMs": 3.49,
+        "rowCount": 1,
+        "returnedFields": [
+          "clerk_user_id"
+        ],
+        "errorCode": null
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-06-auth-cross-owner-profile-empty",
+      "method": "GET",
+      "path": "/customers?select=clerk_user_id&clerk_user_id=eq.user_TEST_RETAIL_B",
+      "expected": "200 [] cross-owner filtered by RLS",
+      "actual": {
+        "status": 200,
+        "durationMs": 2.42,
+        "rowCount": 0,
+        "returnedFields": [],
+        "errorCode": null
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-07-auth-own-order",
+      "method": "GET",
+      "path": "/orders?select=id,clerk_user_id&id=eq.b0000000-0000-4000-8000-000000000001",
+      "expected": "200 one owned order",
+      "actual": {
+        "status": 200,
+        "durationMs": 3.29,
+        "rowCount": 1,
+        "returnedFields": [
+          "clerk_user_id",
+          "id"
+        ],
+        "errorCode": null
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-08-auth-cross-owner-order-empty",
+      "method": "GET",
+      "path": "/orders?select=id,clerk_user_id&id=eq.b0000000-0000-4000-8000-000000000002",
+      "expected": "200 [] cross-owner order filtered",
+      "actual": {
+        "status": 200,
+        "durationMs": 3.8,
+        "rowCount": 0,
+        "returnedFields": [],
+        "errorCode": null
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-09-auth-admin-label-no-direct-write",
+      "method": "PATCH",
+      "path": "/products?id=eq.__NO_SUCH_SYNTHETIC_SKU__",
+      "expected": "403 SQL42501 even with app metadata ADMIN",
+      "actual": {
+        "status": 403,
+        "durationMs": 3.45,
+        "rowCount": null,
+        "returnedFields": [],
+        "errorCode": "42501"
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-10-auth-admin-label-no-cross-owner-PII",
+      "method": "GET",
+      "path": "/customers?select=clerk_user_id&clerk_user_id=eq.user_TEST_RETAIL_B",
+      "expected": "200 [] ADMIN metadata does not grant staff DB authority",
+      "actual": {
+        "status": 200,
+        "durationMs": 3.6,
+        "rowCount": 0,
+        "returnedFields": [],
+        "errorCode": null
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-11-invalid-JWT-signature",
+      "method": "GET",
+      "path": "/products?select=id",
+      "expected": "401 invalid signature",
+      "actual": {
+        "status": 401,
+        "durationMs": 2.66,
+        "rowCount": null,
+        "returnedFields": [],
+        "errorCode": "PGRST301"
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-12-expired-JWT",
+      "method": "GET",
+      "path": "/products?select=id",
+      "expected": "401 expired token",
+      "actual": {
+        "status": 401,
+        "durationMs": 2.62,
+        "rowCount": null,
+        "returnedFields": [],
+        "errorCode": "PGRST303"
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-13-service-role-bypass-cost-positive",
+      "method": "GET",
+      "path": "/products?select=id,base_cost&id=eq.SKU_TEST_A",
+      "expected": "200 base_cost7000 via explicit service_role bypass",
+      "actual": {
+        "status": 200,
+        "durationMs": 4.0,
+        "rowCount": 1,
+        "returnedFields": [
+          "base_cost",
+          "id"
+        ],
+        "errorCode": null
+      },
+      "passed": true
+    },
+    {
+      "id": "GW-14-service-role-bypass-private-positive",
+      "method": "GET",
+      "path": "/customers?select=clerk_user_id",
+      "expected": "200 multiple owners reachable via service_role; server guard mandatory",
+      "actual": {
+        "status": 200,
+        "durationMs": 3.89,
+        "rowCount": 15,
+        "returnedFields": [
+          "clerk_user_id"
+        ],
+        "errorCode": null
+      },
+      "passed": true
+    }
+  ]
+}

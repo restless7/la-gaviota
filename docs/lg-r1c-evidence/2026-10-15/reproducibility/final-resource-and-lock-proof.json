@@ -1,0 +1,15 @@
+{
+  "resources": {
+    "root_free": 3668545536,
+    "tmp_free": 14138839040,
+    "memory_available": 11605639168
+  },
+  "package_hashes": {
+    "package.json": "7bcb5bf41cf599dffd487cb3c1032b1cb81350ace0e2f43bd009a0587b8e8c6b",
+    "package-lock.json": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157"
+  },
+  "node_modules_preserved_for_other_authorized_agents": true,
+  "release_agent_app_edits": 0,
+  "source_hash_count": 55,
+  "no_owned_install_or_static_quality_process_pending": true
+}

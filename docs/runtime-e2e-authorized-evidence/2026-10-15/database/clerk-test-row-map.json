@@ -1,0 +1,68 @@
+{
+  "count": 9,
+  "rows": [
+    {
+      "label": "retail",
+      "id": "user_3KkIIArwhu9gdLyBwZ7vN0eI9d0",
+      "orderId": "f2cc69a1-7e70-5d56-af83-ebd8fbec93a6",
+      "source": "NEW_SEPARATE_CLERK_TEST_INSTANCE_APPROVED_MANIFEST",
+      "tier": "Personas Naturales"
+    },
+    {
+      "label": "micro",
+      "id": "user_3KkIIEFAZ1V64yAkMlqyaO7mDus",
+      "orderId": "342463c4-514c-5c4a-89ef-a7f7fc8a1018",
+      "source": "NEW_SEPARATE_CLERK_TEST_INSTANCE_APPROVED_MANIFEST",
+      "tier": "Micromercados"
+    },
+    {
+      "label": "restaurant",
+      "id": "user_3KkIIZvviHQEnQQTeNOHnjWqdYU",
+      "orderId": "dd6a3b9c-15c0-5fb8-a960-1fae2862a2b3",
+      "source": "NEW_SEPARATE_CLERK_TEST_INSTANCE_APPROVED_MANIFEST",
+      "tier": "Restaurantes"
+    },
+    {
+      "label": "admin",
+      "id": "user_3KkIIjYtsVC6fDVD8ZvjiQPuFBd",
+      "orderId": "23f03bf4-da8f-5d25-b42d-8ee72d138c4c",
+      "source": "NEW_SEPARATE_CLERK_TEST_INSTANCE_APPROVED_MANIFEST",
+      "tier": "Personas Naturales"
+    },
+    {
+      "label": "super",
+      "id": "user_3KkIIsWsGuuOZW5YGymeGArJLz6",
+      "orderId": "28d53334-9fdf-5606-9f67-a480942ad9ff",
+      "source": "NEW_SEPARATE_CLERK_TEST_INSTANCE_APPROVED_MANIFEST",
+      "tier": "Personas Naturales"
+    },
+    {
+      "label": "operario",
+      "id": "user_3KkIJ61OVwLZzZ0C5sDK3JjHDC3",
+      "orderId": "3b7882b5-c56a-5f1d-9ba3-d06906ae5ea3",
+      "source": "NEW_SEPARATE_CLERK_TEST_INSTANCE_APPROVED_MANIFEST",
+      "tier": "Personas Naturales"
+    },
+    {
+      "label": "commercial",
+      "id": "user_3KkIJB73QnbN85cAD7zS0mzDj2S",
+      "orderId": "0a1ff314-470a-532b-81b2-4c4a80ba04a9",
+      "source": "NEW_SEPARATE_CLERK_TEST_INSTANCE_APPROVED_MANIFEST",
+      "tier": "Personas Naturales"
+    },
+    {
+      "label": "owner-a",
+      "id": "user_3KkIJOjQ8QH9AvVjBnUCdqFohSG",
+      "orderId": "cc3d7e6a-7a6d-5def-a222-1dea16c14add",
+      "source": "NEW_SEPARATE_CLERK_TEST_INSTANCE_APPROVED_MANIFEST",
+      "tier": "Personas Naturales"
+    },
+    {
+      "label": "owner-b",
+      "id": "user_3KkIJUF3tWqsTrxy6N5z7I7G3tk",
+      "orderId": "371ddf3c-f316-5b76-8efb-4bec8b0729a3",
+      "source": "NEW_SEPARATE_CLERK_TEST_INSTANCE_APPROVED_MANIFEST",
+      "tier": "Personas Naturales"
+    }
+  ]
+}

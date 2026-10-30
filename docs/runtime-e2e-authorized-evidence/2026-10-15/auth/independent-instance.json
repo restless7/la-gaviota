@@ -1,0 +1,21 @@
+{
+  "applicationId": "app_3KkIBTc8ZkYA4xOqe1RISnl26qu",
+  "instanceId": "ins_3KkIBUC69XmTCaePrSymXHwofVv",
+  "name": "LG-E2E-DISPOSABLE-20261015",
+  "environment": "development",
+  "frontendHost": "enough-chipmunk-1691.clerk.accounts.dev",
+  "independentFromExistingLaGaviota": true,
+  "createdOnlyDevelopment": true,
+  "usersCreated": 10,
+  "planOrBillingChanged": false,
+  "costBasis": {
+    "noPlanBillingMutation": true,
+    "sources": [
+      "https://clerk.com/pricing",
+      "https://clerk.com/docs/guides/development/managing-environments",
+      "https://clerk.com/docs/reference/platform-api/tag/applications"
+    ],
+    "facts": "Unlimited applications including Hobby; Development features available without production upgrade. Explicit development-only create payload, no billing/plan fields."
+  },
+  "webhooksAssessment": "API catalog exposes Svix create/delete but no endpoint listing; no webhook config imported or configured for the newly created application. External endpoint-list absence not certified."
+}

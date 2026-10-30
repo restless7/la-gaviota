@@ -1,0 +1,18 @@
+{
+  "selection": "sanitized explicit files only; no env/PG data/raw logs",
+  "files": {
+    "PAYMENT_RUNTIME_EVIDENCE_ES.md": "a4829be00b7a269b6f5d623421e2280cd754de36bc6a86d48ebbf8a462cd0b01",
+    "checkout-current.tap": "c8b5c08ad2a85ce7e5f854e5efe630cb1c9a0949b9f3f30fc16357e8ec776365",
+    "execution-provenance.json": "d785c43a547f2eec3fb1887271e53486837797524590275a23d3076cbcaee184",
+    "official-docs-summary.json": "fbdaceaf7534860feab4d4e8e00ce9891e79e6d52432699ff529ea5e7055fc95",
+    "payment-model-results.json": "bcf61992abcfb6ab2ca03aee97acb130182f34acbed88298e3757ef239a437c6",
+    "private-pg/cleanup.json": "edaf2051b54951ea17ed5126f7edb088e56e27a3d7c21b7f669a33e15bd92105",
+    "private-pg/cluster-settings.json": "bed56d991e3c176fcc1a0ddc377de87a388d6988a38bba816fba7ce8a9222c13",
+    "private-pg/fixture.sql": "0e4301fe821947c0abcc854ce2fda433ddf00061e36e6677c2134f94b1960109",
+    "private-pg/results.json": "4df722aed44196eda84b50fe09b217a808206cee7a0c0fb21b3ce50988b5c9e6",
+    "run-current-payment-models.cjs": "d74ec26d948e57630b17c5f6a7218a65db69abde794ca624b613c748bf317aba",
+    "run-current-writer-pg.cjs": "fdc20d1056b4130f8c09fbe7d3bc15264a34e82c8054e26914c87592d9c70f9f",
+    "run-writer-pg.py": "c5a132c94ecd6fd0f8712a86de2faeccf45561a228c48364deaf90b44b0eedbe",
+    "source-preflight.json": "7be08ad20a2b09a984bbe9cdb3515197dc1b1f3cb33369ed66a2c86c3af0609d"
+  }
+}

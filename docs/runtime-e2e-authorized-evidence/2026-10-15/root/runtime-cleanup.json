@@ -1,0 +1,31 @@
+{
+  "owned_targets": [
+    {
+      "pid": 571020,
+      "cwd": "/home/sebastiangarcia/planmaestro-ecosystem/packages",
+      "cmdline_class": "owned loopback gateway/PostgREST"
+    },
+    {
+      "pid": 571201,
+      "cwd": "/home/sebastiangarcia/planmaestro-ecosystem/packages",
+      "cmdline_class": "owned loopback gateway/PostgREST"
+    },
+    {
+      "pid": 571282,
+      "cwd": "/tmp/la-gaviota-authorized-e2e-20261015/application",
+      "cmdline_class": "owned Next dev"
+    },
+    {
+      "pid": 571229,
+      "cwd": "/tmp/la-gaviota-authorized-e2e-20261015/application",
+      "cmdline_class": "owned Next CLI parent"
+    }
+  ],
+  "signal": "SIGTERM",
+  "pids_remaining": [],
+  "listeners_remaining": false,
+  "previous_preview_47773_touched": false,
+  "private_test_pg_still_leased_until_explicit_stop": false,
+  "pg_cleanup_reference": "../database/cleanup.json",
+  "pg_pid_remaining": false
+}

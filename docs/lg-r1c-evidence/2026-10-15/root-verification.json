@@ -1,0 +1,49 @@
+{
+  "checked_utc": "2026-10-15T14:55:13.918536+00:00",
+  "review": "root hash/result/provenance review; no extra suite rerun",
+  "original_files": 492,
+  "unchanged_files": 490,
+  "allowed_document_changes": 2,
+  "original_tracked": 366,
+  "tracked_changed": 0,
+  "clone_source_files": 55,
+  "frozen_exact": 53,
+  "reviewed_compatibility_files": [
+    "middleware.ts",
+    "src/lib/server/authorization.ts"
+  ],
+  "final_source_hashes_match_QA_and_release": true,
+  "archive55hashes_match": true,
+  "full_patch_sha256": "77217da58ad83fc60d4efca359166573383d24ca5907f01fcc33d51635c71aad",
+  "unique_cases_per_execution": {
+    "implementation/synthetic-results.json": 535,
+    "implementation/middleware-context-results.json": 20,
+    "qa/synthetic-results.json": 535,
+    "qa/middleware-context-results.json": 20,
+    "qa/independent-extra-results.json": 12,
+    "qa/independent-context-results.json": 5
+  },
+  "do_not_sum_replays_or_overlapping_boundaries": true,
+  "assertion_invocations_primary": 2001,
+  "primary_static_assert_callsites": 91,
+  "clean_ci": "PASS new539packages",
+  "typecheck_final": "PASS",
+  "scoped_lint": {
+    "errors": 36,
+    "warnings": 28,
+    "new": 0,
+    "same_source_line_matches": 64
+  },
+  "global_lint": "FAIL inherited; initialfull149files92errors60warnings, finalscopedonlyrerun",
+  "real_framework": "Next16.4.1 attempted BEFORE finalcontextdelta; exit1 offlinefonts+loopbackdown; no completedbuild or SDK/HTTP acceptance",
+  "sql": "NOT_APPLIED;315historical R1B notrerun",
+  "graph_hook": "once, isolatedclone,exit0; excludes6newmodules; no semanticfeatureclaim",
+  "own_runtime_tasks_left": 0,
+  "production": "NO_GO; noqueries/mutations/deploy bythiswork",
+  "closing_resources": {
+    "root_free": 3662233600,
+    "tmp_free": 14138748928,
+    "memavailable": 11386605568
+  },
+  "exact_tokens_tier_cost": "UNAVAILABLE"
+}

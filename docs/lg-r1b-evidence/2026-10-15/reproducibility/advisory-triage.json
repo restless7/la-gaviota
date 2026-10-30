@@ -1,0 +1,422 @@
+{
+  "observed_date": "2026-10-15 America/Bogota",
+  "baseline_lock_audit": {
+    "info": 0,
+    "low": 1,
+    "moderate": 1,
+    "high": 12,
+    "critical": 1,
+    "total": 15
+  },
+  "baseline_incomplete": true,
+  "final_audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 9,
+    "critical": 0,
+    "total": 12
+  },
+  "final_omit_dev_audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 4,
+    "critical": 0,
+    "total": 7
+  },
+  "comparison_caveat": "Counts do not measure risk reduction: baseline lock excludes6declared directs and transitives. No actual deployed graph was queried.",
+  "residual": [
+    {
+      "package": "@hono/node-server",
+      "installed": "1.19.11",
+      "severity": "moderate",
+      "scope_flags": {
+        "dev": false,
+        "devOptional": true,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": true,
+      "via": [
+        {
+          "source": 1116281,
+          "name": "@hono/node-server",
+          "dependency": "@hono/node-server",
+          "title": "@hono/node-server: Middleware bypass via repeated slashes in serveStatic",
+          "url": "https://github.com/advisories/GHSA-92pp-h63x-v22m",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+          },
+          "range": "<1.19.13"
+        },
+        {
+          "source": 1139322,
+          "name": "@hono/node-server",
+          "dependency": "@hono/node-server",
+          "title": "Node.js Adapter for Hono: Path traversal in `serve-static` on Windows via encoded backslash (`%5C`)",
+          "url": "https://github.com/advisories/GHSA-frvp-7c67-39w9",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+          },
+          "range": "<1.19.15"
+        }
+      ],
+      "fixAvailable_unadopted": {
+        "name": "prisma",
+        "version": "6.19.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "@next/eslint-plugin-next",
+      "installed": "16.4.1",
+      "severity": "high",
+      "scope_flags": {
+        "dev": true,
+        "devOptional": false,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": false,
+      "via": [
+        "fast-glob"
+      ],
+      "fixAvailable_unadopted": {
+        "name": "eslint-config-next",
+        "version": "14.2.35",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "@prisma/config",
+      "installed": "7.8.0",
+      "severity": "high",
+      "scope_flags": {
+        "dev": false,
+        "devOptional": true,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": true,
+      "via": [
+        "deepmerge-ts"
+      ],
+      "fixAvailable_unadopted": {
+        "name": "prisma",
+        "version": "6.19.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "@prisma/dev",
+      "installed": "0.24.3",
+      "severity": "moderate",
+      "scope_flags": {
+        "dev": false,
+        "devOptional": true,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": true,
+      "via": [
+        "@hono/node-server",
+        "valibot"
+      ],
+      "fixAvailable_unadopted": {
+        "name": "prisma",
+        "version": "6.19.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "braces",
+      "installed": "3.0.3",
+      "severity": "high",
+      "scope_flags": {
+        "dev": true,
+        "devOptional": false,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": false,
+      "via": [
+        {
+          "source": 1240992,
+          "name": "braces",
+          "dependency": "braces",
+          "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+          "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+          "severity": "high",
+          "cwe": [
+            "CWE-674"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.0.3"
+        }
+      ],
+      "fixAvailable_unadopted": {
+        "name": "eslint-config-next",
+        "version": "14.2.35",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "deepmerge-ts",
+      "installed": "7.1.5",
+      "severity": "high",
+      "scope_flags": {
+        "dev": false,
+        "devOptional": true,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": true,
+      "via": [
+        {
+          "source": 1145093,
+          "name": "deepmerge-ts",
+          "dependency": "deepmerge-ts",
+          "title": "DeepmergeTS has stack exhaustion when merging recursive object graphs",
+          "url": "https://github.com/advisories/GHSA-ggr8-5vv4-36mx",
+          "severity": "high",
+          "cwe": [
+            "CWE-674"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<8.0.0"
+        }
+      ],
+      "fixAvailable_unadopted": {
+        "name": "prisma",
+        "version": "6.19.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "eslint-config-next",
+      "installed": "16.4.1",
+      "severity": "high",
+      "scope_flags": {
+        "dev": true,
+        "devOptional": false,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": false,
+      "via": [
+        "@next/eslint-plugin-next"
+      ],
+      "fixAvailable_unadopted": {
+        "name": "eslint-config-next",
+        "version": "14.2.35",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "fast-glob",
+      "installed": "3.3.1",
+      "severity": "high",
+      "scope_flags": {
+        "dev": true,
+        "devOptional": false,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": false,
+      "via": [
+        "micromatch"
+      ],
+      "fixAvailable_unadopted": {
+        "name": "eslint-config-next",
+        "version": "14.2.35",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "micromatch",
+      "installed": "4.0.8",
+      "severity": "high",
+      "scope_flags": {
+        "dev": true,
+        "devOptional": false,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": false,
+      "via": [
+        "braces"
+      ],
+      "fixAvailable_unadopted": {
+        "name": "eslint-config-next",
+        "version": "14.2.35",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "mysql2",
+      "installed": "3.15.3",
+      "severity": "high",
+      "scope_flags": {
+        "dev": false,
+        "devOptional": true,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": true,
+      "via": [
+        {
+          "source": 1153173,
+          "name": "mysql2",
+          "dependency": "mysql2",
+          "title": "MySQL2: Auth Plugin Downgrade to mysql_clear_password Leaks Plaintext Credentials",
+          "url": "https://github.com/advisories/GHSA-3f6p-5ww8-9rcr",
+          "severity": "high",
+          "cwe": [
+            "CWE-522"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<3.22.0"
+        },
+        {
+          "source": 1158532,
+          "name": "mysql2",
+          "dependency": "mysql2",
+          "title": "MySQL2: Unbounded zlib inflate in compressed MySQL protocol handler allows decompression-bomb DoS",
+          "url": "https://github.com/advisories/GHSA-rgwj-5xj2-c3m3",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-409"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.23.0"
+        }
+      ],
+      "fixAvailable_unadopted": {
+        "name": "prisma",
+        "version": "6.19.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "prisma",
+      "installed": "7.8.0",
+      "severity": "high",
+      "scope_flags": {
+        "dev": false,
+        "devOptional": true,
+        "optional": false,
+        "peer": true
+      },
+      "in_omit_dev_audit": true,
+      "via": [
+        "@prisma/config",
+        "@prisma/dev",
+        "mysql2"
+      ],
+      "fixAvailable_unadopted": {
+        "name": "prisma",
+        "version": "6.19.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "package": "valibot",
+      "installed": "1.2.0",
+      "severity": "moderate",
+      "scope_flags": {
+        "dev": false,
+        "devOptional": true,
+        "optional": false,
+        "peer": false
+      },
+      "in_omit_dev_audit": true,
+      "via": [
+        {
+          "source": 1124298,
+          "name": "valibot",
+          "dependency": "valibot",
+          "title": "Valibot: record() issue paths can make flatten() throw for inherited Object property names",
+          "url": "https://github.com/advisories/GHSA-5qjj-4xww-7phc",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-755"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=1.4.1"
+        }
+      ],
+      "fixAvailable_unadopted": {
+        "name": "prisma",
+        "version": "6.19.3",
+        "isSemVerMajor": true
+      }
+    }
+  ],
+  "primary_selection_sources": [
+    {
+      "url": "https://github.com/vercel/next.js/security/advisories/GHSA-vcvr-r3jv-pc5j",
+      "baseline": "16.2.1 affected version; Node next/og+untrustedSVG required; no next/og/ImageResponse import found in inspected app/src",
+      "candidate": "16.4.1 outside affected range"
+    },
+    {
+      "url": "https://github.com/vercel/next.js/security/advisories/GHSA-2xp9-vwfh-vxw4",
+      "baseline": "16.2.1 affected version; AVIF optimization condition untested",
+      "candidate": "16.4.1 outside affected range; sharp0.35.5"
+    },
+    {
+      "url": "https://github.com/lovell/sharp/security/advisories/GHSA-wq5f-xc86-pv6w",
+      "baseline": "sharp<0.35.5; SVG/glibc runtime-specific RCEconditions unverified",
+      "candidate": "sharp0.35.5 meets maintained patch minimum"
+    },
+    {
+      "url": "https://github.com/vercel/next.js/security/advisories/GHSA-cjq9-62q9-8jv4",
+      "baseline": "images.remotePatterns present; attacker-control/DNS/privateIP exploitability untested; maintainer range placeholder16.3.? vs reviewedregistry<16.3.8 discrepancy retained",
+      "candidate": "Next16.4.1 has no npm audit entry; not proving runtimeimage security"
+    },
+    {
+      "url": "https://github.com/clerk/javascript/security/advisories/GHSA-vqx2-fgx2-5wq9",
+      "baseline": "Candidateinitial6.37 reportedcritical; source inversion public-list authprotect matches documented safer pattern, role-specific matchers stillpresent; no livebypass tested",
+      "candidate": "6.39.7 >= patched6.39.2"
+    },
+    {
+      "url": "https://github.com/clerk/javascript/security/advisories/GHSA-w24r-5266-9c3c",
+      "baseline": "No combined Clerk has/authprotect authorization dimensions found; finite static finding, dependency still patched",
+      "candidate": "6.39.7 >= patched6.39.3"
+    },
+    {
+      "url": "https://eslint.org/version-support/",
+      "scope": "ESLint9EOL2026-08-06; candidate9.39.4 retained for controlledbaseline, not supported-maintenance claim; major10future separate proposal"
+    },
+    {
+      "url": "https://nodejs.org/en/about/previous-releases",
+      "scope": "Node24 LTS current branch; tested24.13.0 is not latest24.22.0; exact securitypatchvalidation still required before release, no runtime upgrade performed"
+    }
+  ],
+  "residual_context": "Prisma optional peer includes toolchain in omitdev graph; NOT dev-only. No Prisma/mysql2/hono/deepmerge/valibot imports found in app/src finite inspection; no dev/Studio/MySQL servers started. Braces reachable in lint glob parser, untrusted repository inputs must remain excluded. No suggested major downgrade or forced override adopted."
+}

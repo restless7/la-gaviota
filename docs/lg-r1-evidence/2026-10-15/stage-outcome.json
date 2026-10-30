@@ -1,0 +1,24 @@
+{
+  "authorization": {
+    "new_tests": 0,
+    "patches": 0,
+    "running_processes": 0
+  },
+  "database": {
+    "new_tests": 0,
+    "sql_proposals": 0,
+    "postgres_started": false,
+    "running_processes": 0,
+    "sentinel_sha256": "5d900b02c536ac30bb251b703b5d63250336debfc765608dad0fa9c5f65ace62"
+  },
+  "reproducibility": {
+    "new_authorization_tests": 0,
+    "new_clean_install": false,
+    "dry_run_exit": 1,
+    "dry_run_error": "EUSAGE",
+    "candidate_lock_generated": false,
+    "running_processes": 0
+  },
+  "production_mutations": 0,
+  "state": "STOPPED_STAGE1_ESCALATION_NOT_ACCEPTED"
+}

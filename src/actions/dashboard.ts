@@ -1,10 +1,10 @@
 'use server';
+import { requireCapability } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+
 
 export interface DashboardMetrics {
   productCount: number;
@@ -15,6 +15,9 @@ export interface DashboardMetrics {
 }
 
 export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
+  const actor = await requireCapability('reports.read');
+  const supabase = getServerDatabase(actor);
+
   const [
     { count: productCount },
     { count: orderCount },

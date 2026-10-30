@@ -1,0 +1,257 @@
+{
+  "observed_date": "2026-10-15 America/Bogota",
+  "source": "fresh npm audit + actual lock/install + primary maintainer pages",
+  "high_flagged_package_nodes": 9,
+  "underlying_high_advisories": 3,
+  "entries": [
+    {
+      "package": "@next/eslint-plugin-next",
+      "installed_versions": {
+        "node_modules/@next/eslint-plugin-next": "16.4.1"
+      },
+      "npm_severity": "high",
+      "via": [
+        "fast-glob"
+      ],
+      "status": "OPEN_TRIAGED_NO_UPGRADE_AUTHORIZED",
+      "cause": "GHSA-vfj7-8cjw-p6xm",
+      "scope": "tooling: eslint-config-next -> next/eslint-plugin -> fast-glob -> micromatch -> braces",
+      "reachability": "No direct import in app/src and no untrusted glob/regex endpoint found; developer-controlled lint globs only in observed checks. Maintainer disputes advisory assumptions; npm high flag remains, not suppressed.",
+      "fix": "No patched braces version in current advisory. Review supported parent release once available, bound/reject untrusted globs if future API introduces them; no forced downgrade ESLint config14.",
+      "required_tests": "Glob length/depth handling in any actual glob boundary; lint regression and supported parent/ESLint migration tests.",
+      "primary_urls": [
+        "https://github.com/micromatch/braces/issues/70"
+      ]
+    },
+    {
+      "package": "@prisma/config",
+      "installed_versions": {
+        "node_modules/@prisma/config": "7.8.0"
+      },
+      "npm_severity": "high",
+      "via": [
+        "deepmerge-ts"
+      ],
+      "status": "OPEN_TRIAGED_NO_UPGRADE_AUTHORIZED",
+      "cause": "GHSA-ggr8-5vv4-36mx",
+      "scope": "Prisma7.8 -> @prisma/config7.8 -> deepmerge-ts7.1.5; also counted in omitdev via optional Prisma peer",
+      "reachability": "No direct import in app/src; prisma.config.ts imports prisma/config in tooling. Recursive JavaScript object graphs required; JSON alone cannot encode cycles. No Prisma dev/Studio/server run by this track.",
+      "fix": "Maintainer fixes >=8.0.0 with Map/custom API breaking changes. @prisma/config pins7.1.5 exactly; requires compatible upstream Prisma/config release, not unreviewed override. Frozen graph unchanged.",
+      "required_tests": "Prisma config load/generate in isolated service-free fixture, circular-config cases, engine/client compatibility and peer tree; no blind major upgrade.",
+      "primary_urls": [
+        "https://github.com/RebeccaStevens/deepmerge-ts/security/advisories/GHSA-ggr8-5vv4-36mx",
+        "https://github.com/RebeccaStevens/deepmerge-ts/releases/tag/v8.0.0"
+      ]
+    },
+    {
+      "package": "braces",
+      "installed_versions": {
+        "node_modules/braces": "3.0.3"
+      },
+      "npm_severity": "high",
+      "via": [
+        {
+          "source": 1240992,
+          "name": "braces",
+          "dependency": "braces",
+          "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+          "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+          "severity": "high",
+          "cwe": [
+            "CWE-674"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.0.3"
+        }
+      ],
+      "status": "OPEN_TRIAGED_NO_UPGRADE_AUTHORIZED",
+      "cause": "GHSA-vfj7-8cjw-p6xm",
+      "scope": "tooling: eslint-config-next -> next/eslint-plugin -> fast-glob -> micromatch -> braces",
+      "reachability": "No direct import in app/src and no untrusted glob/regex endpoint found; developer-controlled lint globs only in observed checks. Maintainer disputes advisory assumptions; npm high flag remains, not suppressed.",
+      "fix": "No patched braces version in current advisory. Review supported parent release once available, bound/reject untrusted globs if future API introduces them; no forced downgrade ESLint config14.",
+      "required_tests": "Glob length/depth handling in any actual glob boundary; lint regression and supported parent/ESLint migration tests.",
+      "primary_urls": [
+        "https://github.com/micromatch/braces/issues/70"
+      ]
+    },
+    {
+      "package": "deepmerge-ts",
+      "installed_versions": {
+        "node_modules/deepmerge-ts": "7.1.5"
+      },
+      "npm_severity": "high",
+      "via": [
+        {
+          "source": 1145093,
+          "name": "deepmerge-ts",
+          "dependency": "deepmerge-ts",
+          "title": "DeepmergeTS has stack exhaustion when merging recursive object graphs",
+          "url": "https://github.com/advisories/GHSA-ggr8-5vv4-36mx",
+          "severity": "high",
+          "cwe": [
+            "CWE-674"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<8.0.0"
+        }
+      ],
+      "status": "OPEN_TRIAGED_NO_UPGRADE_AUTHORIZED",
+      "cause": "GHSA-ggr8-5vv4-36mx",
+      "scope": "Prisma7.8 -> @prisma/config7.8 -> deepmerge-ts7.1.5; also counted in omitdev via optional Prisma peer",
+      "reachability": "No direct import in app/src; prisma.config.ts imports prisma/config in tooling. Recursive JavaScript object graphs required; JSON alone cannot encode cycles. No Prisma dev/Studio/server run by this track.",
+      "fix": "Maintainer fixes >=8.0.0 with Map/custom API breaking changes. @prisma/config pins7.1.5 exactly; requires compatible upstream Prisma/config release, not unreviewed override. Frozen graph unchanged.",
+      "required_tests": "Prisma config load/generate in isolated service-free fixture, circular-config cases, engine/client compatibility and peer tree; no blind major upgrade.",
+      "primary_urls": [
+        "https://github.com/RebeccaStevens/deepmerge-ts/security/advisories/GHSA-ggr8-5vv4-36mx",
+        "https://github.com/RebeccaStevens/deepmerge-ts/releases/tag/v8.0.0"
+      ]
+    },
+    {
+      "package": "eslint-config-next",
+      "installed_versions": {
+        "node_modules/eslint-config-next": "16.4.1"
+      },
+      "npm_severity": "high",
+      "via": [
+        "@next/eslint-plugin-next"
+      ],
+      "status": "OPEN_TRIAGED_NO_UPGRADE_AUTHORIZED",
+      "cause": "GHSA-vfj7-8cjw-p6xm",
+      "scope": "tooling: eslint-config-next -> next/eslint-plugin -> fast-glob -> micromatch -> braces",
+      "reachability": "No direct import in app/src and no untrusted glob/regex endpoint found; developer-controlled lint globs only in observed checks. Maintainer disputes advisory assumptions; npm high flag remains, not suppressed.",
+      "fix": "No patched braces version in current advisory. Review supported parent release once available, bound/reject untrusted globs if future API introduces them; no forced downgrade ESLint config14.",
+      "required_tests": "Glob length/depth handling in any actual glob boundary; lint regression and supported parent/ESLint migration tests.",
+      "primary_urls": [
+        "https://github.com/micromatch/braces/issues/70"
+      ]
+    },
+    {
+      "package": "fast-glob",
+      "installed_versions": {
+        "node_modules/fast-glob": "3.3.1"
+      },
+      "npm_severity": "high",
+      "via": [
+        "micromatch"
+      ],
+      "status": "OPEN_TRIAGED_NO_UPGRADE_AUTHORIZED",
+      "cause": "GHSA-vfj7-8cjw-p6xm",
+      "scope": "tooling: eslint-config-next -> next/eslint-plugin -> fast-glob -> micromatch -> braces",
+      "reachability": "No direct import in app/src and no untrusted glob/regex endpoint found; developer-controlled lint globs only in observed checks. Maintainer disputes advisory assumptions; npm high flag remains, not suppressed.",
+      "fix": "No patched braces version in current advisory. Review supported parent release once available, bound/reject untrusted globs if future API introduces them; no forced downgrade ESLint config14.",
+      "required_tests": "Glob length/depth handling in any actual glob boundary; lint regression and supported parent/ESLint migration tests.",
+      "primary_urls": [
+        "https://github.com/micromatch/braces/issues/70"
+      ]
+    },
+    {
+      "package": "micromatch",
+      "installed_versions": {
+        "node_modules/micromatch": "4.0.8"
+      },
+      "npm_severity": "high",
+      "via": [
+        "braces"
+      ],
+      "status": "OPEN_TRIAGED_NO_UPGRADE_AUTHORIZED",
+      "cause": "GHSA-vfj7-8cjw-p6xm",
+      "scope": "tooling: eslint-config-next -> next/eslint-plugin -> fast-glob -> micromatch -> braces",
+      "reachability": "No direct import in app/src and no untrusted glob/regex endpoint found; developer-controlled lint globs only in observed checks. Maintainer disputes advisory assumptions; npm high flag remains, not suppressed.",
+      "fix": "No patched braces version in current advisory. Review supported parent release once available, bound/reject untrusted globs if future API introduces them; no forced downgrade ESLint config14.",
+      "required_tests": "Glob length/depth handling in any actual glob boundary; lint regression and supported parent/ESLint migration tests.",
+      "primary_urls": [
+        "https://github.com/micromatch/braces/issues/70"
+      ]
+    },
+    {
+      "package": "mysql2",
+      "installed_versions": {
+        "node_modules/mysql2": "3.15.3"
+      },
+      "npm_severity": "high",
+      "via": [
+        {
+          "source": 1153173,
+          "name": "mysql2",
+          "dependency": "mysql2",
+          "title": "MySQL2: Auth Plugin Downgrade to mysql_clear_password Leaks Plaintext Credentials",
+          "url": "https://github.com/advisories/GHSA-3f6p-5ww8-9rcr",
+          "severity": "high",
+          "cwe": [
+            "CWE-522"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<3.22.0"
+        },
+        {
+          "source": 1158532,
+          "name": "mysql2",
+          "dependency": "mysql2",
+          "title": "MySQL2: Unbounded zlib inflate in compressed MySQL protocol handler allows decompression-bomb DoS",
+          "url": "https://github.com/advisories/GHSA-rgwj-5xj2-c3m3",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-409"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.23.0"
+        }
+      ],
+      "status": "OPEN_TRIAGED_NO_UPGRADE_AUTHORIZED",
+      "cause": "GHSA-3f6p-5ww8-9rcr (+moderate GHSA-rgwj-5xj2-c3m3)",
+      "scope": "Prisma7.8 exact mysql2=3.15.3; included in omitdev audit via optional Prisma peer",
+      "reachability": "App/src uses Supabase/PostgreSQL, no mysql2 import/call found. High requires actual MySQL connection to malicious/MITM server; moderate also needs compression enabled. No MySQL endpoint/credential/handshake used or tested.",
+      "fix": "Maintainer release3.22.0 disables clear-password plugin by default (PR4236); registry advisory minimum3.22.0. Maintainer advisory page still says no patched version, so record discrepancy and use release commit evidence. Compression fix registry says3.23.1; verify maintainer patch before future update. Prisma exact pin means parent update needed, no overrides/downgrade6.19.3.",
+      "required_tests": "Supported parent release with synthetic MySQL plugin downgrade/compression limits tests, CLI compatibility and clean peers; no real service tests in R1C.",
+      "primary_urls": [
+        "https://github.com/sidorares/node-mysql2/security/advisories/GHSA-3f6p-5ww8-9rcr",
+        "https://github.com/sidorares/node-mysql2/releases/tag/v3.22.0",
+        "https://github.com/sidorares/node-mysql2/pull/4236",
+        "https://github.com/sidorares/node-mysql2/security/advisories/GHSA-rgwj-5xj2-c3m3"
+      ]
+    },
+    {
+      "package": "prisma",
+      "installed_versions": {
+        "node_modules/prisma": "7.8.0"
+      },
+      "npm_severity": "high",
+      "via": [
+        "@prisma/config",
+        "@prisma/dev",
+        "mysql2"
+      ],
+      "status": "OPEN_TRIAGED_NO_UPGRADE_AUTHORIZED",
+      "cause": "GHSA-3f6p-5ww8-9rcr (+moderate GHSA-rgwj-5xj2-c3m3)",
+      "scope": "Prisma7.8 exact mysql2=3.15.3; included in omitdev audit via optional Prisma peer",
+      "reachability": "App/src uses Supabase/PostgreSQL, no mysql2 import/call found. High requires actual MySQL connection to malicious/MITM server; moderate also needs compression enabled. No MySQL endpoint/credential/handshake used or tested.",
+      "fix": "Maintainer release3.22.0 disables clear-password plugin by default (PR4236); registry advisory minimum3.22.0. Maintainer advisory page still says no patched version, so record discrepancy and use release commit evidence. Compression fix registry says3.23.1; verify maintainer patch before future update. Prisma exact pin means parent update needed, no overrides/downgrade6.19.3.",
+      "required_tests": "Supported parent release with synthetic MySQL plugin downgrade/compression limits tests, CLI compatibility and clean peers; no real service tests in R1C.",
+      "primary_urls": [
+        "https://github.com/sidorares/node-mysql2/security/advisories/GHSA-3f6p-5ww8-9rcr",
+        "https://github.com/sidorares/node-mysql2/releases/tag/v3.22.0",
+        "https://github.com/sidorares/node-mysql2/pull/4236",
+        "https://github.com/sidorares/node-mysql2/security/advisories/GHSA-rgwj-5xj2-c3m3"
+      ]
+    }
+  ],
+  "moderate_leaf_advisories": [
+    "GHSA-rgwj-5xj2-c3m3",
+    "GHSA-92pp-h63x-v22m",
+    "GHSA-frvp-7c67-39w9",
+    "GHSA-5qjj-4xww-7phc"
+  ],
+  "no_dependency_mutation": true
+}

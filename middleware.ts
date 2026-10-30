@@ -1,10 +1,17 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
+import { getMiddlewareActor, hasCapability } from '@/src/lib/server/authorization';
 
 const isPublicRoute = createRouteMatcher([
   '/',
   '/shop(.*)',
   '/sobre-nosotros(.*)',
+  '/nosotros(.*)',
+  '/privacidad',
+  '/terminos',
+  '/pqrs',
+  '/robots.txt',
+  '/sitemap.xml',
   '/product/(.*)',
   '/categoria/(.*)',
   '/comunidad(.*)',
@@ -29,14 +36,12 @@ export default clerkMiddleware(async (auth, request) => {
   }
 
   // All other routes require authentication
-  const session = await auth.protect();
+  await auth.protect();
 
   // Admin routes — require admin role in metadata
   if (isAdminRoute(request)) {
-    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
-    const tier = metadata?.tier;
-    const role = metadata?.role;
-    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
+    const actor = await getMiddlewareActor(auth);
+    const isAdmin = hasCapability(actor, 'catalog.manage');
     
     if (!isAdmin) {
       // Non-admins get redirected to their dashboard
@@ -46,10 +51,9 @@ export default clerkMiddleware(async (auth, request) => {
 
   // Restaurante routes — require Restaurantes role
   if (isRestauranteRoute(request)) {
-    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
-    const tier = metadata?.tier;
-    const role = metadata?.role;
-    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
+    const actor = await getMiddlewareActor(auth);
+    const tier = actor.tier;
+    const isAdmin = hasCapability(actor, 'catalog.manage');
     
     if (tier !== 'Restaurantes' && !isAdmin) {
       return NextResponse.redirect(new URL('/?error=access_denied_b2b', request.url));
@@ -58,10 +62,9 @@ export default clerkMiddleware(async (auth, request) => {
 
   // Micromercado routes — require Micromercados role
   if (isMicromercadoRoute(request)) {
-    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
-    const tier = metadata?.tier;
-    const role = metadata?.role;
-    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
+    const actor = await getMiddlewareActor(auth);
+    const tier = actor.tier;
+    const isAdmin = hasCapability(actor, 'catalog.manage');
     
     if (tier !== 'Micromercados' && !isAdmin) {
       return NextResponse.redirect(new URL('/?error=access_denied_b2b', request.url));
@@ -70,10 +73,9 @@ export default clerkMiddleware(async (auth, request) => {
 
   // /dashboard — redirect to the correct portal based on role
   if (url.pathname === '/dashboard') {
-    const metadata = session.sessionClaims?.publicMetadata as Record<string, string> | undefined;
-    const tier = metadata?.tier || 'Personas Naturales';
-    const role = metadata?.role;
-    const isAdmin = tier === 'admin' || tier === 'SUPER_ADMIN' || role === 'admin' || role === 'SUPER_ADMIN';
+    const actor = await getMiddlewareActor(auth);
+    const tier = actor.tier;
+    const isAdmin = hasCapability(actor, 'catalog.manage');
 
     let targetPath = '/retail';
     if (tier === 'Micromercados') targetPath = '/micromercado';
@@ -83,7 +85,22 @@ export default clerkMiddleware(async (auth, request) => {
     return NextResponse.redirect(new URL(targetPath, request.url));
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+
+  // Enforce HTTP header X-Robots-Tag: noindex, nofollow for all private, administrative and transactional routes
+  if (
+    isAdminRoute(request) ||
+    isRestauranteRoute(request) ||
+    isMicromercadoRoute(request) ||
+    url.pathname.startsWith('/retail') ||
+    url.pathname.startsWith('/checkout') ||
+    url.pathname.startsWith('/cart') ||
+    url.pathname.startsWith('/dashboard')
+  ) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  }
+
+  return response;
 });
 
 export const config = {

@@ -1,234 +1,150 @@
 'use client';
-import React, { useState } from 'react';
-import { Product } from '@/src/actions/products';
-import { useUserRole } from '@/src/contexts/UserRoleContext';
+
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import type { Product } from '@/src/actions/products';
 import { useCart } from '@/src/contexts/CartContext';
-import Image from 'next/image';
+import { CatalogImage } from './CatalogImage';
+import { QuantitySelector } from './QuantitySelector';
 
-const CATEGORY_GRADIENTS: Record<string, string> = {
-  'FRUTAS': 'from-orange-400 to-red-400',
-  'VERDURAS Y HORTALIZAS': 'from-green-400 to-emerald-500',
-  'PULPAS': 'from-purple-400 to-pink-400',
-  'VARIOS': 'from-amber-400 to-orange-400',
-  'CARNES X 500 GRAMOS': 'from-red-500 to-rose-600',
-  'CONDIMENTOS X 125 GR': 'from-yellow-500 to-amber-500',
-  'FRUTOS SECOS Y ESPECIAS': 'from-yellow-600 to-orange-500',
-  'AROMÁTICAS Y HIERBAS X 125 GR': 'from-emerald-400 to-teal-500',
-  'KITS NEGOCIOS': 'from-blue-400 to-indigo-500',
-};
-
-const CATEGORY_EMOJI: Record<string, string> = {
-  'FRUTAS': '🍎',
-  'VERDURAS Y HORTALIZAS': '🥬',
-  'PULPAS': '🧃',
-  'VARIOS': '🥗',
-  'CARNES X 500 GRAMOS': '🥩',
-  'CONDIMENTOS X 125 GR': '🌶️',
-  'FRUTOS SECOS Y ESPECIAS': '🥜',
-  'AROMÁTICAS Y HIERBAS X 125 GR': '🌿',
-  'KITS NEGOCIOS': '📦',
-};
+const formatPrice = (price: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(price);
 
 export function ProductCard({ product }: { product: Product }) {
-  const { role } = useUserRole();
-  const { addToCart, setIsCartOpen } = useCart();
-  const [isHovered, setIsHovered] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { items, addToCart, updateQuantity, cartReady } = useCart();
+  const quantity = items.find(item => item.product.id === product.id)?.quantity ?? 0;
+  const [expanded, setExpanded] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-  // Dynamic Pricing Logic directly integrated via Context Switch
-  const activePrice = role === 'Restaurantes'
-        ? product.priceRestaurant
-        : role === 'Micromercados'
-           ? product.priceMicro
-           : product.priceRetail;
+  useEffect(() => {
+    if (expanded) dialogRef.current?.showModal();
+    else dialogRef.current?.close();
+  }, [expanded]);
 
-  const handleAddToCart = () => {
-     addToCart(product, 1);
-     setIsCartOpen(true); // Triggers Modal automatically
+  const handleIncrement = () => {
+    if (quantity === 0) {
+      addToCart(product, 1);
+    } else {
+      updateQuantity(product.id, current => current + 1);
+    }
   };
 
-  const gradient = CATEGORY_GRADIENTS[product.category] || 'from-slate-400 to-slate-500';
-  const emoji = CATEGORY_EMOJI[product.category] || '📦';
-  const initial = product.name.charAt(0).toUpperCase();
+  const handleDecrement = () => {
+    updateQuantity(product.id, current => current - 1);
+  };
 
   return (
     <>
-      <div
-         className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full relative cursor-pointer"
-         onMouseEnter={() => setIsHovered(true)}
-         onMouseLeave={() => setIsHovered(false)}
-         onClick={() => setIsExpanded(true)}
+      <article
+        data-testid="product-card"
+        data-product-id={product.id}
+        className="flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-lg"
       >
-       {/* Image Section — Dynamic Category Placeholder or Actual Image */}
-       <div className={`aspect-square w-full relative bg-gradient-to-br ${gradient} overflow-hidden flex items-center justify-center`}>
+        <button
+          type="button"
+          aria-label={`Ver detalles de ${product.name}`}
+          onClick={() => setExpanded(true)}
+          className="relative aspect-square w-full bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-red-600"
+        >
           {product.imageUrl ? (
-             <Image 
-                src={product.imageUrl} 
-                alt={product.name} 
-                fill 
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
-             />
+            <CatalogImage
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 200px"
+              className="object-contain p-2"
+            />
           ) : (
-             <>
-                {/* Large emoji background */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                  <span className="text-[120px] select-none">{emoji}</span>
-                </div>
-                {/* Product initial */}
-                <div className="relative z-10 flex flex-col items-center gap-1">
-                  <span className="text-6xl font-black text-white/90 drop-shadow-lg">{initial}</span>
-                  <span className="text-white/70 text-xs font-bold uppercase tracking-widest text-center px-2">
-                    {product.subcategory || product.category.split(' ')[0]}
-                  </span>
-                </div>
-             </>
+            <span className="flex h-full flex-col items-center justify-center gap-2 p-3 text-center text-slate-500">
+              <span aria-hidden="true" className="text-4xl">🧺</span>
+              <span className="text-xs">Foto no disponible</span>
+            </span>
           )}
-
-          {/* Quick Add Overlay */}
-          <div className={`absolute bottom-4 left-0 right-0 flex justify-center opacity-0 transform translate-y-4 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : ''}`}>
-
-              {role === 'Personas Naturales' ? (
-                 <button
-                    onClick={(e) => { e.stopPropagation(); handleAddToCart(); }}
-                    className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] hover:text-white px-3 py-2 rounded-full font-bold text-xs sm:text-sm shadow-lg hover:-translate-y-0.5 transition-all w-[90%] truncate flex items-center justify-center gap-1.5"
-                 >
-                    <svg className="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                    <span className="sm:hidden font-black">+</span> Añadir
-                 </button>
-              ) : (
-                 <div className="flex gap-1.5 w-[94%]">
-                    <button
-                       onClick={(e) => { e.stopPropagation(); handleAddToCart(); }}
-                       className="bg-white border border-[#83b745] text-[#83b745] hover:bg-[#83b745] hover:text-white px-1 sm:px-2 py-1.5 rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-xs shadow-md transition-all flex-1 text-center"
-                    >
-                       +1 {product.unit}
-                    </button>
-                    <button
-                       onClick={(e) => { e.stopPropagation(); addToCart(product, 10); setIsCartOpen(true); }}
-                       className="bg-[#83b745] hover:bg-[#6c9c36] text-white px-1 sm:px-2 py-1.5 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-xs shadow-md transition-all flex-1 text-center truncate"
-                    >
-                       +10 (Caja)
-                    </button>
-                 </div>
-             )}
-          </div>
-       </div>
-
-       {/* Content Section */}
-       <div className="p-3 flex flex-col flex-1">
-          <div className="flex justify-between items-start mb-1.5">
-             <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#4CAF50] bg-[#4CAF50]/10 px-1.5 py-0.5 rounded-md truncate max-w-full">
-               {product.category} {product.subcategory ? `> ${product.subcategory}` : ''}
-             </span>
-          </div>
-          <h3 className="font-bold text-slate-800 text-xs sm:text-sm leading-snug mb-2 line-clamp-2 min-h-[2rem]">
-             {product.name}
+        </button>
+        <div className="flex flex-1 flex-col gap-2 p-3">
+          <p className="truncate text-[9px] font-bold uppercase tracking-wide text-green-800">{product.category}</p>
+          <h3 className="min-h-10 text-sm font-bold leading-snug text-slate-800">
+            <button
+              type="button"
+              className="text-left hover:text-red-700 focus-visible:outline-2 focus-visible:outline-red-600"
+              onClick={() => setExpanded(true)}
+            >
+              {product.name}
+            </button>
           </h3>
-          
-          <div className="mt-auto flex items-end justify-between border-t border-gray-50 pt-2 sm:pt-3">
-             <div className="flex flex-col">
-                <span className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-none">
-                   {formatPrice(activePrice)}
-                </span>
-                <span className="text-[10px] font-semibold text-gray-500 mt-0.5 uppercase">
-                   / {product.unit}
-                </span>
-             </div>
-             
-             {/* Dynamic Badge indicating tier */}
-             {role !== 'Personas Naturales' && (
-                <div className="bg-[#FFCC00]/20 text-yellow-700 text-[10px] font-bold px-2 py-1 rounded-md text-right max-w-[80px] leading-tight">
-                   {role === 'Restaurantes' ? 'Tarifa Mayorista' : 'Tarifa Micro'}
-                </div>
-             )}
+          <div className="mt-auto">
+            <p className="text-lg font-black text-slate-900">{formatPrice(product.price)}</p>
+            <p className="text-xs text-slate-600">/ {product.unit}</p>
           </div>
-       </div>
-     </div>
-
-     {/* Expanded Quick View Modal */}
-     {isExpanded && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-           <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsExpanded(false)}></div>
-           <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 p-6 md:p-10 flex flex-col md:flex-row gap-8">
-              <button onClick={() => setIsExpanded(false)} className="absolute top-4 right-4 text-gray-400 hover:text-red-500 font-bold w-10 h-10 flex items-center justify-center bg-slate-50 hover:bg-slate-100 rounded-full transition-colors z-10 text-xl">✕</button>
-              
-              <div className={`w-full md:w-1/2 aspect-square relative bg-gradient-to-br ${gradient} rounded-2xl overflow-hidden flex items-center justify-center shadow-inner`}>
-                 {product.imageUrl ? (
-                    <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
-                 ) : (
-                    <>
-                       <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                         <span className="text-[120px] select-none">{emoji}</span>
-                       </div>
-                       <div className="relative z-10 flex flex-col items-center gap-1">
-                         <span className="text-8xl font-black text-white/90 drop-shadow-lg">{initial}</span>
-                       </div>
-                    </>
-                 )}
-              </div>
-              
-              <div className="w-full md:w-1/2 flex flex-col justify-center">
-                 <span className="text-xs font-bold uppercase tracking-wider text-[#4CAF50] bg-[#4CAF50]/10 px-3 py-1.5 rounded-md mb-4 inline-block self-start">
-                   {product.category} {product.subcategory ? `> ${product.subcategory}` : ''}
-                 </span>
-                 <h2 className="text-3xl font-black text-slate-800 mb-3 leading-tight">{product.name}</h2>
-                 
-                 <div className="flex items-baseline gap-2 mb-6 pb-6 border-b border-gray-100">
-                    <span className="text-4xl font-black text-slate-900">{formatPrice(activePrice)}</span>
-                    <span className="text-sm font-semibold text-gray-500 uppercase">/ {product.unit}</span>
-                    {role !== 'Personas Naturales' && (
-                       <span className="ml-3 bg-[#FFCC00]/20 text-yellow-700 text-xs font-bold px-3 py-1 rounded-md">
-                          {role === 'Restaurantes' ? 'Tarifa Mayorista' : 'Tarifa Micro'}
-                       </span>
-                    )}
-                 </div>
-                 
-                 <div className="prose prose-sm text-gray-600 mb-8 max-h-[25vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-200 whitespace-pre-wrap">
-                    {product.description ? (
-                       <p className="leading-relaxed">{product.description}</p>
-                    ) : (
-                       <p className="italic text-gray-400">Producto fresco de primera calidad. Seleccionado cuidadosamente para cumplir con los estándares de La Gaviota.</p>
-                    )}
-                 </div>
-                 
-                 <div className="mt-auto">
-                    {role === 'Personas Naturales' ? (
-                       <button
-                          onClick={(e) => { e.stopPropagation(); handleAddToCart(); setIsExpanded(false); }}
-                          className="w-full bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] hover:text-white px-6 py-4 rounded-xl font-black text-lg shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
-                       >
-                          <span>+</span> Añadir al Carrito
-                       </button>
-                    ) : (
-                       <div className="flex flex-col sm:flex-row gap-3">
-                          <button
-                             onClick={(e) => { e.stopPropagation(); handleAddToCart(); setIsExpanded(false); }}
-                             className="flex-1 bg-white border-2 border-[#83b745] text-[#83b745] hover:bg-[#83b745] hover:text-white px-4 py-4 rounded-xl font-black text-sm shadow-sm transition-all"
-                          >
-                             +1 {product.unit}
-                          </button>
-                          <button
-                             onClick={(e) => { e.stopPropagation(); addToCart(product, 10); setIsCartOpen(true); setIsExpanded(false); }}
-                             className="flex-1 bg-[#83b745] hover:bg-[#6c9c36] text-white px-4 py-4 rounded-xl font-black text-sm shadow-md transition-all"
-                          >
-                             Añadir Caja (+10)
-                          </button>
-                       </div>
-                    )}
-                 </div>
-              </div>
-           </div>
+          <div className="mt-1">
+            <QuantitySelector
+              quantity={quantity}
+              productName={product.name}
+              disabled={!cartReady || !product.isActive}
+              onIncrement={handleIncrement}
+              onDecrement={handleDecrement}
+            />
+          </div>
         </div>
-     )}
+      </article>
+
+      {expanded && (
+        <dialog
+          ref={dialogRef}
+          aria-label={`Detalles de ${product.name}`}
+          onCancel={() => setExpanded(false)}
+          onClose={() => setExpanded(false)}
+          onClick={event => {
+            if (event.target === event.currentTarget) setExpanded(false);
+          }}
+          className="fixed inset-0 m-auto max-h-[90dvh] w-[92vw] max-w-3xl overflow-y-auto rounded-3xl border-0 bg-white p-5 shadow-2xl backdrop:bg-slate-900/60 sm:p-8"
+        >
+          <div className="mb-4 flex justify-end">
+            <button
+              type="button"
+              aria-label="Cerrar detalles"
+              onClick={() => setExpanded(false)}
+              className="h-11 w-11 rounded-full bg-slate-100 text-xl text-slate-700 hover:bg-slate-200"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="flex flex-col gap-6 sm:flex-row">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-slate-50 sm:w-1/2">
+              <CatalogImage
+                src={product.imageUrl || '/IMAGES/logo.jpeg'}
+                alt={product.name}
+                fill
+                sizes="(max-width: 639px) 90vw, 350px"
+                className="object-contain p-3"
+              />
+            </div>
+            <div className="flex flex-1 flex-col gap-4">
+              <p className="text-xs font-bold uppercase text-green-800">{product.category}</p>
+              <h2 className="text-2xl font-black text-slate-800">{product.name}</h2>
+              <p className="text-3xl font-black text-slate-900">
+                {formatPrice(product.price)} <span className="text-sm font-medium">/ {product.unit}</span>
+              </p>
+              <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-600">
+                {product.description || 'Consulta la presentación y disponibilidad al confirmar tu pedido.'}
+              </p>
+              <div>
+                <QuantitySelector
+                  quantity={quantity}
+                  productName={product.name}
+                  disabled={!cartReady || !product.isActive}
+                  onIncrement={handleIncrement}
+                  onDecrement={handleDecrement}
+                />
+              </div>
+              <p className="text-xs text-slate-500">Subtotal estimado. Precio y disponibilidad se confirman al finalizar.</p>
+              <Link href={`/product/${encodeURIComponent(product.id)}`} className="py-2 text-sm font-bold text-red-700 underline">
+                Ver producto completo
+              </Link>
+            </div>
+          </div>
+        </dialog>
+      )}
     </>
   );
 }
 
-function formatPrice(price: number) {
-  return new Intl.NumberFormat('es-CO', {
-    style: 'currency',
-    currency: 'COP',
-    minimumFractionDigits: 0
-  }).format(price);
-}

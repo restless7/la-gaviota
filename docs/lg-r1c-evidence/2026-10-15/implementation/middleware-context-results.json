@@ -1,0 +1,98 @@
+{
+  "status": "PASS",
+  "layer": "SOURCE_VM_CONTEXT_WIRING_NOT_REAL_SDK_OR_HTTP_AUTH",
+  "node": "v24.13.0",
+  "cases": 20,
+  "passed": 20,
+  "results": [
+    {
+      "name": "public route does not require exported or callback auth",
+      "status": "PASS"
+    },
+    {
+      "name": "ADMIN middleware uses verified callback before downstream headers",
+      "status": "PASS"
+    },
+    {
+      "name": "SUPER_ADMIN middleware uses verified callback before downstream headers",
+      "status": "PASS"
+    },
+    {
+      "name": "raw forged headers and stale callback role do not elevate fresh USER",
+      "status": "PASS"
+    },
+    {
+      "name": "restaurant portal preserves verified tier entitlement",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong B2B tier rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "dashboard verified destination /admin",
+      "status": "PASS"
+    },
+    {
+      "name": "dashboard verified destination /retail",
+      "status": "PASS"
+    },
+    {
+      "name": "dashboard verified destination /micromercado",
+      "status": "PASS"
+    },
+    {
+      "name": "dashboard verified destination /restaurante",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown application role does not enter admin",
+      "status": "PASS"
+    },
+    {
+      "name": "middleware fails closed on banned",
+      "status": "PASS"
+    },
+    {
+      "name": "middleware fails closed on locked",
+      "status": "PASS"
+    },
+    {
+      "name": "middleware fails closed on lookupError",
+      "status": "PASS"
+    },
+    {
+      "name": "middleware fails closed on mismatch",
+      "status": "PASS"
+    },
+    {
+      "name": "callback failure rejects before actor lookup",
+      "status": "PASS"
+    },
+    {
+      "name": "raw subject string is not accepted as middleware authority",
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary server action resolver still uses exported auth",
+      "status": "PASS"
+    },
+    {
+      "name": "guest protected route fails before lookup",
+      "status": "PASS"
+    },
+    {
+      "name": "tiers.manage stays ADMIN and SUPER_ADMIN only",
+      "status": "PASS"
+    }
+  ],
+  "assertionInvocations": 51,
+  "uniqueDynamicAssertionCallsites": 30,
+  "assertionCounting": "executed assert calls and stack callsites, NOT independent security properties",
+  "loaded": {
+    "middleware.ts": "d679d31e2968c4f10302b457c4314f14844957a73d445c21ef81aa99725411d8",
+    "src/lib/server/authorization.ts": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12"
+  },
+  "loadedUnchanged": true,
+  "boundaries": "No real Clerk/Supabase/Next SDK imported; verified callback, downstream exported-auth failure, request and response are injected synthetic fixtures; raw request data never drives identity"
+}

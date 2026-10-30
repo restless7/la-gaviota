@@ -1,16 +1,17 @@
+import { getActor } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 import React from 'react';
 import { auth } from '@clerk/nextjs/server';
-import { createClient } from '@supabase/supabase-js';
+
 import { OrderHistoryClient } from './OrderHistoryClient';
 import { fetchProducts } from '@/src/actions/products';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function CustomerOrderHistory() {
   const { userId } = await auth();
   if (!userId) return null;
+  const actor = await getActor();
+  const supabase = getServerDatabase(actor);
 
   const { data: orders, error } = await supabase
     .from('orders')

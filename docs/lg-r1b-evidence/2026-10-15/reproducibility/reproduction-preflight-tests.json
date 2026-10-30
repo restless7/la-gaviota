@@ -1,0 +1,14 @@
+[
+  {
+    "scenario": "clean_preflight",
+    "exitcode": 0,
+    "stdout": "{\"status\": \"PASS_PREFLIGHT_ONLY\", \"resources\": {\"root_free\": 2047094784, \"tmp_free\": 15138115584, \"memory_available\": 14394241024}, \"candidate_hashes\": {\"package.json\": \"7bcb5bf41cf599dffd487cb3c1032b1cb81350ace0e2f43bd009a0587b8e8c6b\", \"package-lock.json\": \"1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157\"}, \"environment\": \"application keys absent, remaining inherited environment will be discarded; HOME omitted\"}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "reject_synthetic_service_variable",
+    "exitcode": 1,
+    "stdout": "",
+    "stderr": "REJECTED inherited application/runtime configuration keys: NEXT_PUBLIC_SUPABASE_URL\n"
+  }
+]

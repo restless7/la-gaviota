@@ -1,0 +1,144 @@
+[
+  {
+    "command": [
+      "gh",
+      "api",
+      "repos/restless7/la-gaviota/commits/main",
+      "--jq",
+      "{sha:.sha,committed:.commit.committer.date,html_url:.html_url}"
+    ],
+    "exitcode": 0,
+    "sanitized_metadata": {
+      "committed": "2026-07-02T04:05:16Z",
+      "html_url": "https://github.com/restless7/la-gaviota/commit/49add73ae90b837c36553a0f2b535267c9610143",
+      "sha": "49add73ae90b837c36553a0f2b535267c9610143"
+    },
+    "stderr_summary": "No stderr"
+  },
+  {
+    "command": [
+      "gh",
+      "api",
+      "repos/restless7/la-gaviota/deployments?per_page=10",
+      "--jq",
+      "[.[]|{id,ref,sha,environment,created_at,updated_at}]"
+    ],
+    "exitcode": 0,
+    "sanitized_metadata": [
+      {
+        "created_at": "2026-07-02T04:06:58Z",
+        "environment": "Production",
+        "id": 5279006077,
+        "ref": "49add73ae90b837c36553a0f2b535267c9610143",
+        "sha": "49add73ae90b837c36553a0f2b535267c9610143",
+        "updated_at": "2026-07-02T04:06:59Z"
+      },
+      {
+        "created_at": "2026-07-02T04:03:19Z",
+        "environment": "Production",
+        "id": 5278979545,
+        "ref": "12fa8575f1ef083287d5ea3fdd96faa57e1e3dbc",
+        "sha": "12fa8575f1ef083287d5ea3fdd96faa57e1e3dbc",
+        "updated_at": "2026-07-02T04:03:19Z"
+      },
+      {
+        "created_at": "2026-07-02T03:40:35Z",
+        "environment": "Production",
+        "id": 5278815823,
+        "ref": "896e68d6601f06edc5377674cc46709733802b15",
+        "sha": "896e68d6601f06edc5377674cc46709733802b15",
+        "updated_at": "2026-07-02T03:40:35Z"
+      },
+      {
+        "created_at": "2026-07-02T03:31:24Z",
+        "environment": "Production",
+        "id": 5278750114,
+        "ref": "2bae04ebaeceea7ee2834960c6f0da025c0e8094",
+        "sha": "2bae04ebaeceea7ee2834960c6f0da025c0e8094",
+        "updated_at": "2026-07-02T03:31:24Z"
+      },
+      {
+        "created_at": "2026-07-02T03:29:58Z",
+        "environment": "Production",
+        "id": 5278739278,
+        "ref": "ec5ec23d6e11571bfefce0b4128cef068dc18970",
+        "sha": "ec5ec23d6e11571bfefce0b4128cef068dc18970",
+        "updated_at": "2026-07-02T03:29:58Z"
+      },
+      {
+        "created_at": "2026-07-02T03:09:33Z",
+        "environment": "Production",
+        "id": 5278578852,
+        "ref": "ff6b11bab4e22a0cb814ed870b3a3f488adab1d1",
+        "sha": "ff6b11bab4e22a0cb814ed870b3a3f488adab1d1",
+        "updated_at": "2026-07-02T03:09:33Z"
+      },
+      {
+        "created_at": "2026-07-02T03:03:47Z",
+        "environment": "Production",
+        "id": 5278534700,
+        "ref": "2c72b322c1f0832b266278cb66c963cbcff89a82",
+        "sha": "2c72b322c1f0832b266278cb66c963cbcff89a82",
+        "updated_at": "2026-07-02T03:03:48Z"
+      },
+      {
+        "created_at": "2026-07-02T02:58:41Z",
+        "environment": "Production",
+        "id": 5278494458,
+        "ref": "f0c47ed468b8f9205f4e5d7a906c13d58ba08922",
+        "sha": "f0c47ed468b8f9205f4e5d7a906c13d58ba08922",
+        "updated_at": "2026-07-02T02:58:41Z"
+      },
+      {
+        "created_at": "2026-07-02T02:38:47Z",
+        "environment": "Production",
+        "id": 5278354635,
+        "ref": "1a508f7c96f68c04eeea2624a13cb8b279877311",
+        "sha": "1a508f7c96f68c04eeea2624a13cb8b279877311",
+        "updated_at": "2026-07-02T02:38:48Z"
+      },
+      {
+        "created_at": "2026-07-02T02:35:34Z",
+        "environment": "Production",
+        "id": 5278330970,
+        "ref": "3522bd45d9abd1cafe6e9811c0636eb4778a11e7",
+        "sha": "3522bd45d9abd1cafe6e9811c0636eb4778a11e7",
+        "updated_at": "2026-07-02T02:35:34Z"
+      }
+    ],
+    "stderr_summary": "No stderr"
+  },
+  {
+    "command": [
+      "vercel",
+      "inspect",
+      "https://www.lagaviotafruver.com",
+      "--json"
+    ],
+    "exitcode": 0,
+    "sanitized_metadata": {
+      "deployment_id": "dpl_7akmDyb1H4VCuuzFBhjqCsoHqkv1",
+      "url": "la-gaviota-pvry94dhu-restless7s-projects.vercel.app",
+      "target": "production",
+      "readyState": "READY",
+      "createdAt": 1782965119970,
+      "aliases": [
+        "la-gaviota.vercel.app",
+        "www.lagaviotafruver.com",
+        "lagaviotafruver.com",
+        "la-gaviota-restless7s-projects.vercel.app",
+        "la-gaviota-git-main-restless7s-projects.vercel.app"
+      ],
+      "builds": [
+        {
+          "id": "bld_3z24s6co1",
+          "deploymentId": "dpl_7akmDyb1H4VCuuzFBhjqCsoHqkv1",
+          "readyState": "READY",
+          "framework": "nextjs",
+          "nodeVersion": "24.x"
+        }
+      ]
+    },
+    "stderr_summary": "Fetching deployment www.lagaviotafruver.com in existing team context"
+  }
+]

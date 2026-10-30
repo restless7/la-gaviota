@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/node",
+    "--require",
+    "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015/reproducibility/deny-network.cjs",
+    "/tmp/la-gaviota-lg-r1b-20261015/candidate-final/node_modules/eslint/bin/eslint.js",
+    ".",
+    "--format",
+    "json"
+  ],
+  "cwd": "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015/reproducibility/source-copy",
+  "started_utc": "2026-10-15T13:15:04.256372+00:00",
+  "elapsed_s": 4.643,
+  "exitcode": 1,
+  "network_attempts": 0,
+  "environment_keys": [
+    "CI",
+    "LANG",
+    "LG_R1B_IO_LOG",
+    "NEXT_TELEMETRY_DISABLED",
+    "PATH"
+  ]
+}

@@ -1,28 +1,23 @@
 'use server';
+import { readPublicInventoryFlag } from '@/src/lib/server/database';
 
-import { createClient } from '@supabase/supabase-js';
+import { requireCapability } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
+
+
+
 import { revalidatePath } from 'next/cache';
 import { auth } from '@clerk/nextjs/server';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function getInventorySettings() {
-  const { data, error } = await supabase
-    .from('global_settings')
-    .select('track_inventory')
-    .eq('id', 'default')
-    .single();
-
-  if (error || !data) {
-    // Return default false if table doesn't exist yet
-    return { track_inventory: false };
-  }
-  return data;
+  return readPublicInventoryFlag();
 }
 
 export async function toggleInventoryTracking(newValue: boolean) {
+  const actor = await requireCapability('settings.manage');
+  const supabase = getServerDatabase(actor);
+
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 

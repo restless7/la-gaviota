@@ -1,0 +1,72 @@
+diff --git a/middleware.ts b/middleware.ts
+--- a/middleware.ts
++++ b/middleware.ts
+@@ -1,6 +1,6 @@
+ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+ import { NextResponse } from 'next/server';
+-import { getActor, hasCapability } from '@/src/lib/server/authorization';
++import { getMiddlewareActor, hasCapability } from '@/src/lib/server/authorization';
+ 
+ const isPublicRoute = createRouteMatcher([
+   '/',
+@@ -34,7 +34,7 @@
+ 
+   // Admin routes — require admin role in metadata
+   if (isAdminRoute(request)) {
+-    const actor = await getActor();
++    const actor = await getMiddlewareActor(auth);
+     const isAdmin = hasCapability(actor, 'catalog.manage');
+     
+     if (!isAdmin) {
+@@ -45,7 +45,7 @@
+ 
+   // Restaurante routes — require Restaurantes role
+   if (isRestauranteRoute(request)) {
+-    const actor = await getActor();
++    const actor = await getMiddlewareActor(auth);
+     const tier = actor.tier;
+     const isAdmin = hasCapability(actor, 'catalog.manage');
+     
+@@ -56,7 +56,7 @@
+ 
+   // Micromercado routes — require Micromercados role
+   if (isMicromercadoRoute(request)) {
+-    const actor = await getActor();
++    const actor = await getMiddlewareActor(auth);
+     const tier = actor.tier;
+     const isAdmin = hasCapability(actor, 'catalog.manage');
+     
+@@ -67,7 +67,7 @@
+ 
+   // /dashboard — redirect to the correct portal based on role
+   if (url.pathname === '/dashboard') {
+-    const actor = await getActor();
++    const actor = await getMiddlewareActor(auth);
+     const tier = actor.tier;
+     const isAdmin = hasCapability(actor, 'catalog.manage');
+ 
+diff --git a/src/lib/server/authorization.ts b/src/lib/server/authorization.ts
+--- a/src/lib/server/authorization.ts
++++ b/src/lib/server/authorization.ts
+@@ -1,5 +1,5 @@
+ import 'server-only';
+-import { auth, clerkClient } from '@clerk/nextjs/server';
++import { auth, clerkClient, type ClerkMiddlewareAuth } from '@clerk/nextjs/server';
+ export type Role = 'GUEST' | 'USER' | 'ADMIN' | 'SUPER_ADMIN' | 'OPERARIO' | 'COMMERCIAL' | 'INVALID';
+ export type Tier = 'Personas Naturales' | 'Micromercados' | 'Restaurantes';
+ export type Capability = 'identity.read' | 'identity.manage' | 'catalog.manage' | 'pricing.manage' | 'inventory.manage' | 'customers.manage' | 'tiers.manage' | 'orders.manage' | 'payments.manage' | 'reports.read' | 'audit.read' | 'settings.read' | 'settings.manage' | 'suppliers.manage' | 'storage.manage' | 'audit.write';
+@@ -13,6 +13,14 @@
+ export function validateRole(value: unknown): Exclude<Role,'GUEST'|'INVALID'> { if (!['USER','ADMIN','SUPER_ADMIN','OPERARIO','COMMERCIAL'].includes(value as string)) throw new Error('INVALID_ROLE'); return value as Exclude<Role,'GUEST'|'INVALID'>; }
+ export async function getActor(): Promise<Actor> {
+  const { userId } = await auth();
++ return actorFromVerifiedSubject(userId);
++}
++/** Internal server-only adapter: supply Clerk's verified middleware callback, never raw headers or caller IDs. */
++export async function getMiddlewareActor(verifiedAuth: ClerkMiddlewareAuth): Promise<Actor> {
++ const { userId } = await verifiedAuth();
++ return actorFromVerifiedSubject(userId);
++}
++async function actorFromVerifiedSubject(userId: string | null): Promise<Actor> {
+  if (!userId) { const guest: Actor = Object.freeze({userId:null,role:'GUEST',tier:'Personas Naturales'}); issued.add(guest); return guest; }
+  assertTargetId(userId);
+  const user = await (await clerkClient()).users.getUser(userId);

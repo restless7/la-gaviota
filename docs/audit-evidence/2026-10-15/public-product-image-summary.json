@@ -1,0 +1,19 @@
+{
+  "public_product_count": 255,
+  "with_image_url": 65,
+  "no_image_url": 190,
+  "unique_image_urls": 65,
+  "category_counts": {
+    "VERDURAS Y HORTALIZAS": 81,
+    "CONDIMENTOS X 125 GR": 11,
+    "FRUTAS": 50,
+    "VARIOS": 24,
+    "FRUTOS SECOS Y ESPECIAS": 14,
+    "AROM\u00c1TICAS Y HIERBAS X 125 GR": 11,
+    "CARNES X 500 GRAMOS": 46,
+    "PULPAS": 10,
+    "KITS NEGOCIOS": 8
+  },
+  "active_count": 255,
+  "image_duplicates": []
+}

@@ -1,0 +1,22 @@
+{
+  "executions": 1,
+  "command": [
+    "/usr/bin/unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "--",
+    "npx",
+    "--no-install",
+    "graphify",
+    "hook-rebuild"
+  ],
+  "cwd": "/tmp/la-gaviota-lg-r1c-20261015/application",
+  "offline": true,
+  "external_network_namespace_disabled": true,
+  "exitcode": 0,
+  "elapsed_seconds": 18.231,
+  "tracked_sources_unchanged": true,
+  "graph_directory_exists": true,
+  "source_graph_coverage": "No semantic coverage claimed; see command output; original monorepo graph untouched"
+}

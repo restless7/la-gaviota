@@ -1,8 +1,11 @@
 import React from 'react';
-import Image from 'next/image';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { ContactForm } from '@/src/components/support/ContactForm';
+import { Phone, Mail, MapPin } from 'lucide-react';
 
 export default function ContactoPage() {
+  const email = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'pedidos@lagaviota.co';
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '') || '573184990826';
+  const hasWhatsApp = Boolean(phone && /^\d{10,15}$/.test(phone));
   return (
     <div className="min-h-screen bg-slate-50 animate-fade-in relative pb-24">
       
@@ -32,44 +35,27 @@ export default function ContactoPage() {
                   <div className="flex items-start gap-4">
                      <MapPin className="w-6 h-6 shrink-0 mt-1" />
                      <div>
-                        <p className="font-bold text-lg mb-1">Centro de Acopio Principal</p>
-                        <p className="text-green-50/90 leading-relaxed">
-                           Km 4 Vía Girón - Bucaramanga<br />
-                           Santander, Colombia
+                        <p className="font-bold text-lg mb-1">Sede Comercial</p>
+                        <p className="text-sm text-white/90 leading-relaxed">
+                          Plaza de Mercado San Francisco<br />
+                          Calle 13 #22-49, Local 10<br />
+                          Bucaramanga, Santander
                         </p>
+                        <p className="text-xs text-white/75 mt-1">Titular: Eduard Iván Velazco López</p>
                      </div>
                   </div>
-                  
                   <div className="flex items-start gap-4">
                      <Phone className="w-6 h-6 shrink-0 mt-1" />
                      <div>
-                        <p className="font-bold text-lg mb-1">Línea Mayorista</p>
-                        <p className="text-green-50/90 leading-relaxed font-medium">
-                           +57 300 123 4567<br />
-                           +57 320 987 6543
-                        </p>
+                        <p className="font-bold text-lg mb-1">Teléfono / WhatsApp</p>
+                        {hasWhatsApp ? <a href={`https://wa.me/${phone}`} className="underline">+57 318 499 0826</a> : <p>+57 318 499 0826</p>}
                      </div>
                   </div>
-
                   <div className="flex items-start gap-4">
                      <Mail className="w-6 h-6 shrink-0 mt-1" />
                      <div>
-                        <p className="font-bold text-lg mb-1">Correo Electrónico</p>
-                        <p className="text-green-50/90 leading-relaxed font-medium">
-                           pedidos@lagaviota.co<br />
-                           soporte@lagaviota.co
-                        </p>
-                     </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                     <Clock className="w-6 h-6 shrink-0 mt-1" />
-                     <div>
-                        <p className="font-bold text-lg mb-1">Horario de Despachos</p>
-                        <p className="text-green-50/90 leading-relaxed">
-                           Lunes - Sábado:<br /> 4:00 AM - 6:00 PM<br />
-                           Domingos: Cerrado
-                        </p>
+                        <p className="font-bold text-lg mb-1">Correo electrónico</p>
+                        {email ? <a href={`mailto:${email}`} className="underline">{email}</a> : <p>pedidos@lagaviota.co</p>}
                      </div>
                   </div>
                </div>
@@ -80,33 +66,7 @@ export default function ContactoPage() {
                <h3 className="font-black text-slate-800 text-3xl mb-6">Envíanos un mensaje</h3>
                <p className="text-gray-500 mb-8">Si representas un restaurante o micromercado y deseas conocer nuestros precios por tier, déjanos tus datos.</p>
                
-               <form className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Nombre Completo</label>
-                        <input type="text" className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-[#E30613] focus:ring-1 focus:ring-[#E30613] outline-none transition-all" placeholder="Ej. Carlos Mendoza" />
-                     </div>
-                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Teléfono / WhatsApp</label>
-                        <input type="tel" className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-[#E30613] focus:ring-1 focus:ring-[#E30613] outline-none transition-all" placeholder="+57 300 000 0000" />
-                     </div>
-                  </div>
-                  <div>
-                     <label className="block text-sm font-bold text-gray-700 mb-2">Tipo de Cliente</label>
-                     <select className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-[#E30613] focus:ring-1 focus:ring-[#E30613] outline-none transition-all">
-                        <option>Familia / Hogar (Detal)</option>
-                        <option>Restaurante / Hotel</option>
-                        <option>Micromercado / Tienda</option>
-                     </select>
-                  </div>
-                  <div>
-                     <label className="block text-sm font-bold text-gray-700 mb-2">Mensaje o Solicitud de Pedido</label>
-                     <textarea rows={4} className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-[#E30613] focus:ring-1 focus:ring-[#E30613] outline-none transition-all resize-none" placeholder="¿En qué te podemos ayudar?"></textarea>
-                  </div>
-                  <button type="button" className="bg-[#E30613] hover:bg-[#c60510] text-white font-black px-8 py-4 rounded-xl shadow-md transition-transform hover:-translate-y-1 w-full md:w-auto uppercase tracking-wide">
-                     Enviar Mensaje
-                  </button>
-               </form>
+               <ContactForm />
             </div>
          </div>
       </div>

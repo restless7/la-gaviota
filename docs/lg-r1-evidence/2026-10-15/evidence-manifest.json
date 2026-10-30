@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-15 America/Bogota",
+  "state": "STOPPED_STAGE1_INCIDENT_RISK_ESCALATION",
+  "artifacts": [
+    {
+      "file": "baseline-npm-ci-corrected.json",
+      "bytes": 7404,
+      "sha256": "c5fa82a3d69623b14e136fcc79de982cb673e70f138c1cda84d093a7d1b92592"
+    },
+    {
+      "file": "cleanup-stop-summary.json",
+      "bytes": 5757,
+      "sha256": "f74deebec279ae4dfb03e17440aade3d0bff8c80ee3250c9a552e36a679c46c0"
+    },
+    {
+      "file": "execution-plan.json",
+      "bytes": 1761,
+      "sha256": "18ef2fc8773e01a5b2281073133532eb34715cb98fa3ac3b470c3bc740060e55"
+    },
+    {
+      "file": "github-status-provenance-and-stop.json",
+      "bytes": 1169,
+      "sha256": "644459371e83102a162073432cc7e69a65ecb69490c35a21238f0d956c4b4326"
+    },
+    {
+      "file": "parity-incident-risk-evidence.json",
+      "bytes": 1949,
+      "sha256": "b969cbb70aa7b8580d52a2dcff789fc5810c5fd2f38dc9fa0cbe6e2a7fdcdf32"
+    },
+    {
+      "file": "registry-package-metadata.json",
+      "bytes": 4630,
+      "sha256": "db65b868fb5bf585c8bc215b8348818d4c19d10f71f1ff5640e0a13e61fca7a7"
+    },
+    {
+      "file": "remote-deployment-summary.json",
+      "bytes": 4629,
+      "sha256": "74c1f564f148c216d233c4835a835553aaf10b687350dd8e60517d977981c52d"
+    },
+    {
+      "file": "source-preservation.json",
+      "bytes": 46850,
+      "sha256": "0e5443bd87a6e03d502e1ba56e843693480cc5fcb04d818d67d38acf37a1340b"
+    },
+    {
+      "file": "stage-outcome.json",
+      "bytes": 603,
+      "sha256": "1bd3919e3fded601187db3454cbae0067b0c04c4dce57890b4b3a658b52a4df1"
+    }
+  ],
+  "documents": [
+    {
+      "path": "../../LA_GAVIOTA_PRODUCTION_READINESS_AUDIT_AND_ROADMAP.md",
+      "sha256": "e286d6b96f9198ec8dea0dc97d22180fc3ad47625365cadfa96416d422bdf7f0"
+    },
+    {
+      "path": "../../LG_R1_SECURITY_FOUNDATION_AND_REPRODUCIBILITY.md",
+      "sha256": "4438e12ab22df3bb81b38f0d8e197ec8783d303cd31605d39d9d60b91d4e7adf"
+    }
+  ],
+  "scope": "Selected provider metadata and local diagnostic/stop records only; excludes raw Vercel response, secrets, private customer data and production env.",
+  "credential_pattern_scan_matches": []
+}

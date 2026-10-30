@@ -1,0 +1,79 @@
+{
+  "timestamp_utc": "2026-10-15T13:36:27.099585+00:00",
+  "scope": "isolated proposal only; no original code/deployment/data writes, no builds or HTTP/SDK/prod tests",
+  "patch": {
+    "exitcode": 0,
+    "stdout": "",
+    "stderr": "",
+    "patch_sha256": "910b8fce50bc87dfa269a22969e463c52563eadd7ceb0dd7b58b7db6e852c3d1",
+    "baseline_files": 47,
+    "before_after_identical": true,
+    "original_source_untouched": true,
+    "no_git_no_env_no_dependencies": true,
+    "final_manifest_count": 53,
+    "overlay_hashes_all_match": true,
+    "harness_hash_matches_author": true,
+    "harness_sha256": "b49f79c73a7a41cf03e4d450d7aa61dae78e8e5a96b9887a9f31edbe953f49bb"
+  },
+  "author_suite_replay": {
+    "node": "v24.13.0",
+    "total": 535,
+    "passed": 535,
+    "failed": 0
+  },
+  "independent_additional": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "typecheck_exit": 0,
+  "new_modules_lint": {
+    "files": 6,
+    "errors": 0,
+    "warnings": 0
+  },
+  "network_attempts": 0,
+  "callables": {
+    "baseline": 59,
+    "actions": 54,
+    "routes": 5,
+    "candidate": 62,
+    "new": 4,
+    "privatized": 1
+  },
+  "sql_review": {
+    "review_only_no_database_restart": true,
+    "reported_count": 315,
+    "actual_records": 315,
+    "all_passed": true,
+    "unique_names": 315,
+    "sql_hash_matches": true,
+    "fixture_hash_matches": true,
+    "harness_hash_matches": true,
+    "before_after_rows_equal": true,
+    "row_state": {
+      "customer_digest_after": "a54c4c40d0c9b5ea98f3f20e59eb8a6c",
+      "positive_write_tests_transactional_rollback": true
+    },
+    "cleanup": {
+      "started": true,
+      "pid": 81489,
+      "listen_addresses_configured": "",
+      "socket_directory": "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015/database/socket",
+      "preserved": true,
+      "stop_exit": 0,
+      "pid_alive": false,
+      "socket_entries_after": [],
+      "postmaster_pid_exists_after": false
+    },
+    "scope": "real PostgreSQL18 synthetic SQL roles/RLS/ACL; auth.jwt and Storage operation stubs; NOT JWT/gateway/API/CDN/production proof"
+  },
+  "remaining_conditions": [
+    "No Next build/action HTTP dispatch or genuine SDK/JWT/gateway/storage/CDN validation.",
+    "Production schema/roles/grants/triggers/default privileges and canonical Clerk role/tier reconciliation remain required before application.",
+    "RLS activation blocked until Wompi callback and Realtime client transitions are separately validated.",
+    "No finance transaction/idempotency/quote/payment correctness remediation; conditional math preserved.",
+    "Dependency audit retains12 findings (7 omit-dev); deployment node patch and ESLint9 EOL remain unresolved.",
+    "Media delete usage precheck is not a transactional cross-table concurrency proof; lead rate limiting not proven."
+  ]
+}

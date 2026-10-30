@@ -1,16 +1,17 @@
 'use server';
 
-import { createClient } from '@supabase/supabase-js';
-import { auth } from '@clerk/nextjs/server';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+import { auth } from '@clerk/nextjs/server';
+import { getActor } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
+
 // Fallback to service role if possible, else anon
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function getB2BProfile() {
   const { userId } = await auth();
   if (!userId) return null;
+  const actor = await getActor();
+  const supabase = getServerDatabase(actor);
 
   const { data } = await supabase
     .from('b2b_credit_profiles')
@@ -24,6 +25,8 @@ export async function getB2BProfile() {
 export async function getBuyingTemplates() {
   const { userId } = await auth();
   if (!userId) return [];
+  const actor = await getActor();
+  const supabase = getServerDatabase(actor);
 
   const { data } = await supabase
     .from('buying_templates')
@@ -37,6 +40,8 @@ export async function getBuyingTemplates() {
 export async function getMonthlySpend() {
   const { userId } = await auth();
   if (!userId) return 0;
+  const actor = await getActor();
+  const supabase = getServerDatabase(actor);
 
   const startOfMonth = new Date();
   startOfMonth.setDate(1);
@@ -45,7 +50,7 @@ export async function getMonthlySpend() {
   const { data, error } = await supabase
     .from('orders')
     .select('total_amount')
-    .eq('customer_id', userId)
+    .eq('clerk_user_id', userId)
     .in('status', ['PAID', 'SHIPPED', 'DELIVERED'])
     .gte('created_at', startOfMonth.toISOString());
 
@@ -57,11 +62,13 @@ export async function getMonthlySpend() {
 export async function getLastOrder() {
   const { userId } = await auth();
   if (!userId) return null;
+  const actor = await getActor();
+  const supabase = getServerDatabase(actor);
 
   const { data } = await supabase
     .from('orders')
-    .select('*, order_items(*, products(*))')
-    .eq('customer_id', userId)
+    .select('id,total_amount,status,created_at,order_items(product_id,product_name,quantity,price_at_purchase)')
+    .eq('clerk_user_id', userId)
     .order('created_at', { ascending: false })
     .limit(1)
     .single();
@@ -72,11 +79,13 @@ export async function getLastOrder() {
 export async function getB2BOrders() {
   const { userId } = await auth();
   if (!userId) return [];
+  const actor = await getActor();
+  const supabase = getServerDatabase(actor);
 
   const { data } = await supabase
     .from('orders')
-    .select('*, order_items(*, products(*))')
-    .eq('customer_id', userId)
+    .select('id,total_amount,status,created_at,order_items(product_id,product_name,quantity,price_at_purchase)')
+    .eq('clerk_user_id', userId)
     .order('created_at', { ascending: false });
 
   return data || [];

@@ -1,0 +1,33 @@
+name: Staging Payment Reconciliation Scheduler
+
+on:
+  schedule:
+    # Executes every 15 minutes to guarantee timely reconciliation in preview/staging
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      target_env:
+        description: 'Target Environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - preview
+
+jobs:
+  reconcile-staging:
+    name: Trigger Staging Reconciliation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Dispatch Reconciliation Run
+        env:
+          STAGING_URL: ${{ secrets.STAGING_APP_URL }}
+          CRON_SECRET: ${{ secrets.STAGING_CRON_SECRET }}
+        run: |
+          ./scripts/trigger-staging-reconciliation.sh "${STAGING_URL}" "${CRON_SECRET}"

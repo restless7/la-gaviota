@@ -1,0 +1,11 @@
+{
+  "command": [
+    "npm",
+    "ls",
+    "--all",
+    "--json",
+    "--offline"
+  ],
+  "exitcode": 0,
+  "network_attempts": 0
+}

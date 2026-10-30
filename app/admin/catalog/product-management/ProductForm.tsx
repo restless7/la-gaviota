@@ -4,13 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Package, ArrowLeft, Save, Loader2, Image as ImageIcon, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { createProduct, updateProduct, deleteProduct, Product } from '@/src/actions/products';
-import { createClient } from '@supabase/supabase-js';
+import { createProduct, updateProduct, deleteProduct, AdminProduct as Product } from '@/src/actions/products';
+import { uploadCatalogMedia } from '@/src/actions/media';
 import { CATEGORIES, SUBCATEGORIES } from '@/src/constants/productConstants';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface ProductFormProps {
   initialData?: Product;
@@ -53,15 +50,6 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageUrl || null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const slugify = (text: string) => {
-    return text.toString().toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^\w\-]+/g, '')
-      .replace(/\-\-+/g, '-')
-      .replace(/^-+/, '')
-      .replace(/-+$/, '');
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -70,21 +58,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       
       if (imageFile) {
         setIsUploading(true);
-        const fileExt = imageFile.name.split('.').pop();
-        const slugName = slugify(formData.name) || 'product';
-        const fileName = `${slugName}-${Date.now()}.${fileExt}`;
-        
-        const { data, error } = await supabase.storage
-          .from('product-images')
-          .upload(fileName, imageFile, { upsert: true });
-          
-        if (error) {
-          console.error("Error uploading image:", error);
-          alert('Error al subir la imagen.');
-        } else if (data) {
-          const { data: publicData } = supabase.storage.from('product-images').getPublicUrl(data.path);
-          finalImageUrl = publicData.publicUrl;
-        }
+        const upload = new FormData(); upload.set('file', imageFile);
+        finalImageUrl = (await uploadCatalogMedia('product', upload)).url;
         setIsUploading(false);
       }
 
@@ -381,7 +356,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                 <>
                   <ImageIcon className="h-8 w-8 mb-2 text-gray-400 group-hover:text-[#4CAF50]" />
                   <p className="text-xs font-bold text-gray-500 px-4 group-hover:text-[#4CAF50]">Haga clic para subir una imagen</p>
-                  <p className="text-[10px] text-gray-400 mt-1">JPG o PNG (máx 2MB)</p>
+                  <p className="text-[10px] text-gray-400 mt-1">JPG, PNG o WebP (máx 2MB)</p>
                 </>
               )}
               {isUploading && (
@@ -390,7 +365,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                   <span className="text-sm font-bold text-[#4CAF50]">Subiendo...</span>
                 </div>
               )}
-              <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} disabled={isUploading} />
+              <input type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleImageChange} disabled={isUploading} />
             </label>
             <input
               type="text"

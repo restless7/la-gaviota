@@ -1,0 +1,191 @@
+id,sku,name,category,subcategory,unit,price_retail,recovery_candidate,candidate_confidence,action_required
+prd_0241,prd_0241,Aromáticas Alcachofa,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,3900,,NONE,Produce new photography
+prd_0237,prd_0237,Aromáticas Eucalipto,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,2194,,NONE,Produce new photography
+prd_0245,prd_0245,Aromáticas Flor de Jamaica,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,3738,,NONE,Produce new photography
+prd_0243,prd_0243,Aromáticas Hierbabuena,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,4794,,NONE,Produce new photography
+prd_0247,prd_0247,Aromáticas Limonaria,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,4144,,NONE,Produce new photography
+prd_0242,prd_0242,Aromáticas Manzanilla,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,2519,,NONE,Produce new photography
+prd_0240,prd_0240,Aromáticas Orégano,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,6419,,NONE,Produce new photography
+prd_0246,prd_0246,Aromáticas Pulmonaria,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,5038,,NONE,Produce new photography
+prd_0239,prd_0239,Aromáticas Tomillo,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,3413,,NONE,Produce new photography
+prd_0244,prd_0244,Aromáticas Toronjil,AROMÁTICAS Y HIERBAS X 125 GR,,125 gr,1869,,NONE,Produce new photography
+prd_0199,prd_0199,Bandeja de menudencias,CARNES X 500 GRAMOS,VÍSCERAS,Bandeja,3988,,NONE,Produce new photography
+prd_0211,prd_0211,Blanquillo,CARNES X 500 GRAMOS,,Unidad / Kg,6500,,NONE,Produce new photography
+prd_0209,prd_0209,Camarones,CARNES X 500 GRAMOS,,Unidad / Kg,2844,,NONE,Produce new photography
+prd_0181,prd_0181,Cerdo Chicharrón,CARNES X 500 GRAMOS,CARNE DE CERDO,500g,13488,,NONE,Produce new photography
+prd_0182,prd_0182,Cerdo Chorizos,CARNES X 500 GRAMOS,CARNE DE CERDO,500g,19338,,NONE,Produce new photography
+prd_0176,prd_0176,Cerdo Costillas,CARNES X 500 GRAMOS,CARNE DE CERDO,500g,18119,,NONE,Produce new photography
+prd_0179,prd_0179,Cerdo Lomo fino,CARNES X 500 GRAMOS,CARNE DE CERDO,500g,20881,,NONE,Produce new photography
+prd_0183,prd_0183,Cerdo Molida,CARNES X 500 GRAMOS,CARNE DE CERDO,500g,11294,,NONE,Produce new photography
+prd_0175,prd_0175,Cerdo Panceta,CARNES X 500 GRAMOS,CARNE DE CERDO,500g,11781,,NONE,Produce new photography
+prd_0178,prd_0178,Cerdo Papada,CARNES X 500 GRAMOS,CARNE DE CERDO,500g,13731,,NONE,Produce new photography
+prd_0177,prd_0177,Cerdo Pazuña,CARNES X 500 GRAMOS,CARNE DE CERDO,500g,11944,,NONE,Produce new photography
+prd_0180,prd_0180,Cerdo Pierna,CARNES X 500 GRAMOS,CARNE DE CERDO,500g,12594,,NONE,Produce new photography
+prd_0201,prd_0201,Gallina criolla,CARNES X 500 GRAMOS,POLLO,Unidad / Kg,5931,,NONE,Produce new photography
+prd_0195,prd_0195,Gallina entera,CARNES X 500 GRAMOS,POLLO,Entero,5363,,NONE,Produce new photography
+prd_0205,prd_0205,Pescado Bagre cabeza,CARNES X 500 GRAMOS,PESCADO,500g,10888,,NONE,Produce new photography
+prd_0204,prd_0204,Pescado Bagre entero,CARNES X 500 GRAMOS,PESCADO,Entero,15844,,NONE,Produce new photography
+prd_0206,prd_0206,Pescado Bagre pechuga,CARNES X 500 GRAMOS,POLLO,500g,16250,,NONE,Produce new photography
+prd_0207,prd_0207,Pescado Cachama,CARNES X 500 GRAMOS,PESCADO,500g,10725,,NONE,Produce new photography
+prd_0203,prd_0203,Pescado Mojarra,CARNES X 500 GRAMOS,PESCADO,500g,12919,,NONE,Produce new photography
+prd_0208,prd_0208,Pescado Tilapia,CARNES X 500 GRAMOS,PESCADO,500g,20150,,NONE,Produce new photography
+prd_0202,prd_0202,Pescado Trucha,CARNES X 500 GRAMOS,PESCADO,500g,18525,,NONE,Produce new photography
+prd_0200,prd_0200,Pollo criollo,CARNES X 500 GRAMOS,POLLO,500g,3900,,NONE,Produce new photography
+prd_0194,prd_0194,Pollo entero,CARNES X 500 GRAMOS,POLLO,Entero,3413,,NONE,Produce new photography
+prd_0196,prd_0196,Pollo Pechuga,CARNES X 500 GRAMOS,POLLO,500g,1788,,NONE,Produce new photography
+prd_0197,prd_0197,Pollo Pierna/pernil,CARNES X 500 GRAMOS,POLLO,500g,2925,,NONE,Produce new photography
+prd_0198,prd_0198,Pollo Rabadilla,CARNES X 500 GRAMOS,POLLO,500g,5119,,NONE,Produce new photography
+prd_0210,prd_0210,Pulpo,CARNES X 500 GRAMOS,,Unidad / Kg,1788,,NONE,Produce new photography
+prd_0170,prd_0170,Res Cecina,CARNES X 500 GRAMOS,CARNE DE RES,500g,18200,,NONE,Produce new photography
+prd_0167,prd_0167,Res Cogote,CARNES X 500 GRAMOS,CARNE DE RES,500g,20963,,NONE,Produce new photography
+prd_0166,prd_0166,Res Costilla,CARNES X 500 GRAMOS,CARNE DE RES,500g,19825,,NONE,Produce new photography
+prd_0171,prd_0171,Res Herradero,CARNES X 500 GRAMOS,CARNE DE RES,500g,11700,,NONE,Produce new photography
+prd_0172,prd_0172,Res Hueso carnudo,CARNES X 500 GRAMOS,CARNE DE RES,500g,18688,,NONE,Produce new photography
+prd_0168,prd_0168,Res Lomo fino,CARNES X 500 GRAMOS,CARNE DE RES,500g,21613,,NONE,Produce new photography
+prd_0174,prd_0174,Res Molida,CARNES X 500 GRAMOS,CARNE DE RES,500g,19419,,NONE,Produce new photography
+prd_0173,prd_0173,Res Murillo,CARNES X 500 GRAMOS,CARNE DE RES,500g,18525,,NONE,Produce new photography
+prd_0169,prd_0169,Res Punta de anca,CARNES X 500 GRAMOS,CARNE DE RES,500g,14788,,NONE,Produce new photography
+prd_0187,prd_0187,Vísceras Bofe,CARNES X 500 GRAMOS,VÍSCERAS,Unidad / Kg,1300,,NONE,Produce new photography
+prd_0185,prd_0185,Vísceras Callo entero,CARNES X 500 GRAMOS,VÍSCERAS,Entero,2194,,NONE,Produce new photography
+prd_0186,prd_0186,Vísceras Callo picado,CARNES X 500 GRAMOS,VÍSCERAS,Unidad / Kg,1706,,NONE,Produce new photography
+prd_0190,prd_0190,Vísceras Cuajo,CARNES X 500 GRAMOS,,Unidad / Kg,2925,,NONE,Produce new photography
+prd_0184,prd_0184,Vísceras Hígado,CARNES X 500 GRAMOS,,Unidad / Kg,5769,,NONE,Produce new photography
+prd_0191,prd_0191,Vísceras Libro de res,CARNES X 500 GRAMOS,CARNE DE RES,500g,5444,,NONE,Produce new photography
+prd_0192,prd_0192,Vísceras Mano de res,CARNES X 500 GRAMOS,CARNE DE RES,500g,6256,,NONE,Produce new photography
+prd_0189,prd_0189,Vísceras Pajarilla,CARNES X 500 GRAMOS,VÍSCERAS,Unidad / Kg,3656,,NONE,Produce new photography
+prd_0193,prd_0193,Vísceras Pata de res,CARNES X 500 GRAMOS,CARNE DE RES,500g,6175,,NONE,Produce new photography
+prd_0222,prd_0222,Color 125g,CONDIMENTOS X 125 GR,,125 gr,5525,,NONE,Produce new photography
+prd_0212,prd_0212,Comino,CONDIMENTOS X 125 GR,,125 gr,2031,,NONE,Produce new photography
+prd_0217,prd_0217,Finas hierbas,CONDIMENTOS X 125 GR,,125 gr,5363,,NONE,Produce new photography
+prd_0220,prd_0220,Laurel picado,CONDIMENTOS X 125 GR,,125 gr,1625,,NONE,Produce new photography
+prd_0219,prd_0219,Orégano picado,CONDIMENTOS X 125 GR,,125 gr,3738,,NONE,Produce new photography
+prd_0214,prd_0214,Paprika,CONDIMENTOS X 125 GR,,125 gr,1869,,NONE,Produce new photography
+prd_0221,prd_0221,Tomillo,CONDIMENTOS X 125 GR,,125 gr,2031,,NONE,Produce new photography
+prd_0018,prd_0018,Limón criollo,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,5525,,NONE,Produce new photography
+prd_0019,prd_0019,Limón taití,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,3494,,NONE,Produce new photography
+prd_0026,prd_0026,Mandarina,FRUTAS,CÍTRICOS,500 gr,4063,,NONE,Produce new photography
+prd_0021,prd_0021,Mango Tommy,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,4063,,NONE,Produce new photography
+prd_0025,prd_0025,Manzana de agua,FRUTAS,FRUTAS DULCES,500 gr,4713,,NONE,Produce new photography
+prd_0024,prd_0024,Manzana rosada,FRUTAS,FRUTAS DULCES,500 gr,5606,,NONE,Produce new photography
+prd_0027,prd_0027,Maracuyá,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,2763,,NONE,Produce new photography
+prd_0028,prd_0028,Melón,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,3413,,NONE,Produce new photography
+prd_0029,prd_0029,Mora,FRUTAS,FRUTAS DULCES,500 gr,4713,,NONE,Produce new photography
+prd_0030,prd_0030,Naranja común,FRUTAS,CÍTRICOS,500 gr,2275,,NONE,Produce new photography
+prd_0032,prd_0032,Naranja tangelo,FRUTAS,CÍTRICOS,500 gr,5119,,NONE,Produce new photography
+prd_0031,prd_0031,Naranja valenciana,FRUTAS,CÍTRICOS,500 gr,2113,,NONE,Produce new photography
+prd_0033,prd_0033,Papaya,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,2194,,NONE,Produce new photography
+prd_0034,prd_0034,Patilla baby,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,4875,,NONE,Produce new photography
+prd_0035,prd_0035,Patilla común,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,4794,,NONE,Produce new photography
+prd_0037,prd_0037,Pera criolla,FRUTAS,FRUTAS DULCES,500 gr,1625,,NONE,Produce new photography
+prd_0036,prd_0036,Pera importada,FRUTAS,FRUTAS DULCES,500 gr,3900,,NONE,Produce new photography
+prd_0039,prd_0039,Piña oro miel,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,2438,,NONE,Produce new photography
+prd_0038,prd_0038,Piña perolera,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,5931,,NONE,Produce new photography
+prd_0040,prd_0040,Pitahaya,FRUTAS,FRUTAS TROPICALES Y NEUTRAS,500 gr,5119,,NONE,Produce new photography
+prd_0041,prd_0041,Toronja,FRUTAS,CÍTRICOS,500 gr,2031,,NONE,Produce new photography
+prd_0043,prd_0043,Uchuva (en cáscara),FRUTAS,FRUTAS DULCES,500 gr,4956,,NONE,Produce new photography
+prd_0042,prd_0042,Uchuva (en tarro),FRUTAS,FRUTAS DULCES,500 gr,4225,,NONE,Produce new photography
+prd_0044,prd_0044,Uchuva fresca,FRUTAS,FRUTAS DULCES,500 gr,3169,,NONE,Produce new photography
+prd_0045,prd_0045,Uva importada,FRUTAS,FRUTAS DULCES,500 gr,1869,,NONE,Produce new photography
+prd_0046,prd_0046,Uva Isabella,FRUTAS,FRUTAS DULCES,500 gr,1625,,NONE,Produce new photography
+prd_0232,prd_0232,Granola,FRUTOS SECOS Y ESPECIAS,,125 gr,5931,,NONE,Produce new photography
+prd_0230,prd_0230,Habas natural,FRUTOS SECOS Y ESPECIAS,,125 gr,2519,,NONE,Produce new photography
+prd_0231,prd_0231,Habas picantes,FRUTOS SECOS Y ESPECIAS,,125 gr,4306,,NONE,Produce new photography
+prd_0228,prd_0228,Maní crudo con sal,FRUTOS SECOS Y ESPECIAS,,125 gr,3900,,NONE,Produce new photography
+prd_0229,prd_0229,Maní crudo sin sal,FRUTOS SECOS Y ESPECIAS,,125 gr,5281,,NONE,Produce new photography
+prd_0227,prd_0227,Nueces,FRUTOS SECOS Y ESPECIAS,,125 gr,3656,,NONE,Produce new photography
+prd_0226,prd_0226,Pistachos,FRUTOS SECOS Y ESPECIAS,,125 gr,4469,,NONE,Produce new photography
+prd_0225,prd_0225,Quinua,FRUTOS SECOS Y ESPECIAS,,125 gr,3331,,NONE,Produce new photography
+prd_0223,prd_0223,Semillas de calabaza,FRUTOS SECOS Y ESPECIAS,,125 gr,4469,,NONE,Produce new photography
+prd_0224,prd_0224,Semillas de chía,FRUTOS SECOS Y ESPECIAS,,125 gr,3900,,NONE,Produce new photography
+prd_0255,prd_0255,Kit Chévere de la Semana,KITS NEGOCIOS,,Unidad / Kg,2275,,NONE,Produce new photography
+prd_0250,prd_0250,Papa pareja x @,KITS NEGOCIOS,,Arroba (@),60206,,NONE,Produce new photography
+prd_0248,prd_0248,Papa pastusa x @,KITS NEGOCIOS,,Arroba (@),50700,,NONE,Produce new photography
+prd_0249,prd_0249,Papa única x @,KITS NEGOCIOS,,Arroba (@),57931,,NONE,Produce new photography
+prd_0254,prd_0254,Plátano maduro x @,KITS NEGOCIOS,,Arroba (@),69469,,NONE,Produce new photography
+prd_0253,prd_0253,Plátano verde x @,KITS NEGOCIOS,,Arroba (@),43469,,NONE,Produce new photography
+prd_0251,prd_0251,Tomate canastilla,KITS NEGOCIOS,,Canastilla,71256,,NONE,Produce new photography
+prd_0252,prd_0252,Tomate x @,KITS NEGOCIOS,,Arroba (@),71500,,NONE,Produce new photography
+prd_0132,prd_0132,Curuba,PULPAS,PULPAS NATURALES,Unidad / Kg,2031,,NONE,Produce new photography
+prd_0133,prd_0133,Fresa,PULPAS,PULPAS NATURALES,500g,6256,,NONE,Produce new photography
+prd_0135,prd_0135,Guayaba,PULPAS,PULPAS NATURALES,Unidad / Kg,2519,public/PRODUCTS/Gemini_Generated_Image_18ats918ats918at.png,HIGH,Review candidate for approval
+prd_0136,prd_0136,Lulo,PULPAS,PULPAS NATURALES,Unidad / Kg,2519,,NONE,Produce new photography
+prd_0137,prd_0137,Maracuyá,PULPAS,PULPAS NATURALES,Unidad / Kg,6094,,NONE,Produce new photography
+prd_0138,prd_0138,Mora,PULPAS,PULPAS NATURALES,Unidad / Kg,2925,,NONE,Produce new photography
+prd_0139,prd_0139,Piña,PULPAS,PULPAS NATURALES,Unidad / Kg,3900,,NONE,Produce new photography
+prd_0140,prd_0140,Tomate de árbol,PULPAS,PULPAS NATURALES,Unidad / Kg,5606,,NONE,Produce new photography
+prd_0141,prd_0141,Tropical,PULPAS,PULPAS NATURALES,Unidad / Kg,3413,,NONE,Produce new photography
+prd_0163,prd_0163,Cuajada criolla,VARIOS,,Unidad / Kg,1950,,NONE,Produce new photography
+prd_0165,prd_0165,Cuajada fresca,VARIOS,,500g,3656,,NONE,Produce new photography
+prd_0147,prd_0147,Garbanzo remojado x250g,VARIOS,,Cuarto (250g),5850,,NONE,Produce new photography
+prd_0150,prd_0150,Hoja para tamal,VARIOS,,Unidad / Kg,3494,,NONE,Produce new photography
+prd_0160,prd_0160,Huevo A,VARIOS,,Unidad / Kg,1869,,NONE,Produce new photography
+prd_0159,prd_0159,Huevo AA,VARIOS,,Unidad / Kg,3575,,NONE,Produce new photography
+prd_0158,prd_0158,Huevo AAA/Jumbo,VARIOS,,Unidad / Kg,1788,,NONE,Produce new photography
+prd_0153,prd_0153,Jalapeño x125g,VARIOS,,125g,1381,,NONE,Produce new photography
+prd_0146,prd_0146,Maíz blanco,VARIOS,,Unidad / Kg,5769,,NONE,Produce new photography
+prd_0142,prd_0142,Maíz de mute,VARIOS,,Unidad / Kg,3250,,NONE,Produce new photography
+prd_0143,prd_0143,Masa amarilla con chicharrón,VARIOS,,Unidad / Kg,4388,,NONE,Produce new photography
+prd_0144,prd_0144,Masa amarilla sin chicharrón,VARIOS,,Unidad / Kg,5363,,NONE,Produce new photography
+prd_0145,prd_0145,Masa blanca,VARIOS,,Unidad / Kg,5038,,NONE,Produce new photography
+prd_0155,prd_0155,Miel botella grande,VARIOS,,Botella,3494,,NONE,Produce new photography
+prd_0156,prd_0156,Miel botella pequeña,VARIOS,,Botella,1219,,NONE,Produce new photography
+prd_0157,prd_0157,Propóleo,VARIOS,,Unidad / Kg,1950,,NONE,Produce new photography
+prd_0161,prd_0161,Queso tajado 250g,VARIOS,,Cuarto (250g),1544,,NONE,Produce new photography
+prd_0162,prd_0162,Queso tajado 500g,VARIOS,,Libra (500g),4631,,NONE,Produce new photography
+prd_0064,prd_0064,Calabacín verde,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,2844,,NONE,Produce new photography
+prd_0066,prd_0066,Camote,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,5119,,NONE,Produce new photography
+prd_0076,prd_0076,Champiñón bandeja,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,Bandeja,3088,,NONE,Produce new photography
+prd_0077,prd_0077,Champiñón entero,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,Entero,4469,,NONE,Produce new photography
+prd_0074,prd_0074,Cilantro atado x2000,VERDURAS Y HORTALIZAS,HOJAS VERDES,Atado,5363,,NONE,Produce new photography
+prd_0075,prd_0075,Cilantro mata,VERDURAS Y HORTALIZAS,HOJAS VERDES,Mata,3981,,NONE,Produce new photography
+prd_0073,prd_0073,Cilantro x500,VERDURAS Y HORTALIZAS,HOJAS VERDES,Atado,4469,,NONE,Produce new photography
+prd_0072,prd_0072,Coliflor,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,1544,,NONE,Produce new photography
+prd_0108,prd_0108,Ensalada ½ libra,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,2844,,NONE,Produce new photography
+prd_0105,prd_0105,Ensalada agridulce bandeja,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,Bandeja,2600,,NONE,Produce new photography
+prd_0106,prd_0106,Ensalada agridulce libra,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,3738,,NONE,Produce new photography
+prd_0107,prd_0107,Ensalada bandeja,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,Bandeja,3494,,NONE,Produce new photography
+prd_0078,prd_0078,Espinaca,VERDURAS Y HORTALIZAS,HOJAS VERDES,500 gr,3413,,NONE,Produce new photography
+prd_0079,prd_0079,Frijol desgranado,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,6338,,NONE,Produce new photography
+prd_0080,prd_0080,Frijol en concha,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,5281,,NONE,Produce new photography
+prd_0081,prd_0081,Guacas,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,5931,,NONE,Produce new photography
+prd_0082,prd_0082,Guascas,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,2681,,NONE,Produce new photography
+prd_0083,prd_0083,Guineo,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,3900,,NONE,Produce new photography
+prd_0084,prd_0084,Habichuela,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,2600,,NONE,Produce new photography
+prd_0130,prd_0130,Habichuela picada x250g,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,3656,,NONE,Produce new photography
+prd_0090,prd_0090,Mazorca bogotana,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,3494,,NONE,Produce new photography
+prd_0089,prd_0089,Mazorca criolla,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,4956,,NONE,Produce new photography
+prd_0088,prd_0088,Mazorca desgranada,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,5363,,NONE,Produce new photography
+prd_0091,prd_0091,Papa criolla o amarilla,VERDURAS Y HORTALIZAS,TUBÉRCULOS Y RAÍCES,500 gr,3125,,NONE,Produce new photography
+prd_0129,prd_0129,Papa lavada,VERDURAS Y HORTALIZAS,TUBÉRCULOS Y RAÍCES,500 gr,1788,,NONE,Produce new photography
+prd_0094,prd_0094,Papa pareja,VERDURAS Y HORTALIZAS,TUBÉRCULOS Y RAÍCES,500 gr,2113,,NONE,Produce new photography
+prd_0092,prd_0092,Papa pastusa,VERDURAS Y HORTALIZAS,TUBÉRCULOS Y RAÍCES,500 gr,6500,,NONE,Produce new photography
+prd_0093,prd_0093,Papa única o de fritar,VERDURAS Y HORTALIZAS,TUBÉRCULOS Y RAÍCES,500 gr,6338,,NONE,Produce new photography
+prd_0095,prd_0095,Pepino cohombro,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,1706,,NONE,Produce new photography
+prd_0096,prd_0096,Pepino de rellenar,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,2356,,NONE,Produce new photography
+prd_0097,prd_0097,Perejil mata,VERDURAS Y HORTALIZAS,HOJAS VERDES,Mata,2763,,NONE,Produce new photography
+prd_0098,prd_0098,Perejil x1000,VERDURAS Y HORTALIZAS,HOJAS VERDES,Atado,2844,,NONE,Produce new photography
+prd_0100,prd_0100,Picado de seco grande,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,1869,,NONE,Produce new photography
+prd_0099,prd_0099,Picado de seco pequeño,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,5606,,NONE,Produce new photography
+prd_0102,prd_0102,Picado de sopa grande,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,5119,,NONE,Produce new photography
+prd_0101,prd_0101,Picado de sopa pequeño,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,5200,,NONE,Produce new photography
+prd_0110,prd_0110,Pimentón amarillo,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,1219,,NONE,Produce new photography
+prd_0111,prd_0111,Pimentón rojo,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,3900,,NONE,Produce new photography
+prd_0109,prd_0109,Pimentón verde,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,5931,,NONE,Produce new photography
+prd_0112,prd_0112,Plátano maduro,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,6419,,NONE,Produce new photography
+prd_0113,prd_0113,Plátano maduro para asar,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,3006,,NONE,Produce new photography
+prd_0114,prd_0114,Plátano verde,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,6419,,NONE,Produce new photography
+prd_0115,prd_0115,Rábano,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,2275,,NONE,Produce new photography
+prd_0118,prd_0118,Raíz china,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,3250,,NONE,Produce new photography
+prd_0120,prd_0120,Repollo blanco,VERDURAS Y HORTALIZAS,HOJAS VERDES,500 gr,5038,,NONE,Produce new photography
+prd_0119,prd_0119,Repollo morado,VERDURAS Y HORTALIZAS,HOJAS VERDES,500 gr,2763,,NONE,Produce new photography
+prd_0103,prd_0103,Shosue bandeja,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,Bandeja,4713,,NONE,Produce new photography
+prd_0104,prd_0104,Shosue libra,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,4875,,NONE,Produce new photography
+prd_0121,prd_0121,Tomate cherry estuche,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,Estuche,2844,,NONE,Produce new photography
+prd_0122,prd_0122,Tomate cherry libra,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,3656,,NONE,Produce new photography
+prd_0123,prd_0123,Tomate chonto,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,6256,,NONE,Produce new photography
+prd_0124,prd_0124,Tomate milano verde,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,1381,,NONE,Produce new photography
+prd_0125,prd_0125,Yota,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,2356,,NONE,Produce new photography
+prd_0126,prd_0126,Yuca,VERDURAS Y HORTALIZAS,TUBÉRCULOS Y RAÍCES,500 gr,4956,,NONE,Produce new photography
+prd_0128,prd_0128,Yuca pelada,VERDURAS Y HORTALIZAS,TUBÉRCULOS Y RAÍCES,500 gr,3656,,NONE,Produce new photography
+prd_0131,prd_0131,Zanahoria picada x250g,VERDURAS Y HORTALIZAS,TUBÉRCULOS Y RAÍCES,500 gr,2031,,NONE,Produce new photography
+prd_0065,prd_0065,Zucchini amarillo,VERDURAS Y HORTALIZAS,HORTALIZAS Y OTROS,500 gr,6013,,NONE,Produce new photography

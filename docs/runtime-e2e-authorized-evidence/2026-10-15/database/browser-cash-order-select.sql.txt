@@ -1,0 +1,11 @@
+-- READ-ONLY. Independent synthetic local E2E database only. No contact/address columns.
+BEGIN READ ONLY;
+SELECT json_build_object(
+ 'order_id',o.id,
+ 'owner_matches_new_retail_fixture',o.clerk_user_id='user_3KkIIArwhu9gdLyBwZ7vN0eI9d0',
+ 'total_amount',o.total_amount,'payment_method',o.payment_method,'status',o.status,
+ 'items',COALESCE((SELECT json_agg(json_build_object('product_id',i.product_id,'quantity',i.quantity,'unit_price',i.price_at_purchase,'subtotal',i.quantity*i.price_at_purchase,'fixture_product_exists',p.id IS NOT NULL) ORDER BY i.id) FROM public.order_items i LEFT JOIN public.products p ON p.id=i.product_id WHERE i.order_id=o.id),'[]'::json),
+ 'items_subtotal',COALESCE((SELECT sum(i.quantity*i.price_at_purchase) FROM public.order_items i WHERE i.order_id=o.id),0)
+)::text
+FROM public.orders o WHERE o.id='0a314258-f323-4b20-ace7-1f920d038c50'::uuid;
+ROLLBACK;

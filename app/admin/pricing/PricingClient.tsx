@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Calculator, Save, RefreshCw, Search, ChevronDown } from 'lucide-react';
-import { Product, applyMacroMargins, updateProductPricing, updateProductPrices } from '@/src/actions/products';
+import { AdminProduct as Product, applyMacroMargins, updateProductPricing, updateProductPrices } from '@/src/actions/products';
 
 interface EditableProduct {
   id: string;

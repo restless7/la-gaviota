@@ -1,11 +1,11 @@
 'use server';
+import { requireCapability, hasCapability, requireOwnedSubject, validateTier, assertTargetId } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-import { createClient } from '@supabase/supabase-js';
+
+
 import { revalidatePath } from 'next/cache';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface Customer {
   clerk_user_id: string;
@@ -27,6 +27,9 @@ export interface Customer {
 }
 
 export async function fetchCustomers(tier?: string): Promise<Customer[]> {
+  const actor = await requireCapability('customers.manage');
+  const supabase = getServerDatabase(actor);
+
   let query = supabase
     .from('customers')
     .select('*')
@@ -47,6 +50,10 @@ export async function fetchCustomers(tier?: string): Promise<Customer[]> {
 }
 
 export async function ensureCustomer(clerkUserId: string, data: Partial<Customer>) {
+  const actor = await requireOwnedSubject(clerkUserId);
+  const supabase = getServerDatabase(actor);
+  if (data.tier !== undefined && !hasCapability(actor, 'tiers.manage')) throw new Error('TIER_FIELD_FORBIDDEN');
+
   // Upsert customer profile
   const { error } = await supabase
     .from('customers')
@@ -56,7 +63,7 @@ export async function ensureCustomer(clerkUserId: string, data: Partial<Customer
       email: data.email,
       phone: data.phone,
       address: data.address,
-      tier: data.tier || 'Personas Naturales',
+      ...(data.tier === undefined ? {} : { tier: validateTier(data.tier) }),
       updated_at: new Date().toISOString()
     });
 
@@ -69,6 +76,11 @@ export async function ensureCustomer(clerkUserId: string, data: Partial<Customer
 }
 
 export async function approveClientTier(userId: string, requestedTier: string, applicationId?: string) {
+  const actor = await requireCapability('tiers.manage');
+  const supabase = getServerDatabase(actor);
+
+  assertTargetId(userId);
+  validateTier(requestedTier);
   const { clerkClient, auth } = await import('@clerk/nextjs/server');
   const { userId: adminId } = await auth();
   

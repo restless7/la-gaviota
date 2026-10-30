@@ -1,0 +1,584 @@
+{
+  "timestamp": "2026-10-15T18:55:13.019757+00:00",
+  "baseline_kind": "current implemented worktree; HEAD alone is not implementation baseline",
+  "head": "49add73ae90b837c36553a0f2b535267c9610143",
+  "files": {
+    "app/(portals)/layout.tsx": {
+      "bytes": 712,
+      "sha256": "a8f94d545fc8e77d5e00a9e4af598b544e5811a191dd6e4b3f41e2a0512f12cf"
+    },
+    "app/(portals)/micromercado/MicromercadoClient.tsx": {
+      "bytes": 7882,
+      "sha256": "42c01ebb4e67e318e56828c1c485b410b05298149e4a9e16593c0a899c53965c"
+    },
+    "app/(portals)/micromercado/page.tsx": {
+      "bytes": 1397,
+      "sha256": "7bb32bb801813eeb835afa4e5b695e8aa0ebbb400c4e6a5186d7d15240b8614d"
+    },
+    "app/(portals)/restaurante/RestauranteClient.tsx": {
+      "bytes": 7374,
+      "sha256": "2d1ffd8fc8a153b875871bf05e9332875d289da4a33b85676539dda4c93b8129"
+    },
+    "app/(portals)/restaurante/page.tsx": {
+      "bytes": 1514,
+      "sha256": "e66f5a742bc243094cd5cb7a1ae1bc60aa556ed4d21c4e0fe4711527855dacbb"
+    },
+    "app/(portals)/retail/page.tsx": {
+      "bytes": 3657,
+      "sha256": "88425eb0807e6a8020fc5868009890c50136965a0817d8554761f530f0303f14"
+    },
+    "app/admin/AdminDashboardClient.tsx": {
+      "bytes": 13765,
+      "sha256": "545a5f3e121fc7487857b26f4547e375d87249f63bf87dddc9b0cca1db9fc0d9"
+    },
+    "app/admin/audit/AuditLogsClient.tsx": {
+      "bytes": 7427,
+      "sha256": "2d1cd741823f712850ca68cc3f86c846b6af5d53782b0a1bdd504731d0d45d85"
+    },
+    "app/admin/audit/page.tsx": {
+      "bytes": 883,
+      "sha256": "5706d9b2b15d1909113d2ee548a927fe203b20a09a7f0eadffe302224d4278ae"
+    },
+    "app/admin/catalog/inventory/page.tsx": {
+      "bytes": 142,
+      "sha256": "e777bee87ca2dc1843663066dd48f0ea4a9476f2996f0952b7c5f0b1a614a404"
+    },
+    "app/admin/catalog/kits/KitsClient.tsx": {
+      "bytes": 11941,
+      "sha256": "7dfcedfc763fa42b7eef611adc3b6db7dcc09b6e7ce5aaaf223cc483b4ed760e"
+    },
+    "app/admin/catalog/kits/page.tsx": {
+      "bytes": 298,
+      "sha256": "48d3b26fe2c39398db553518eaa6415a63789a381dd5a6bd61955ec83dbc70cb"
+    },
+    "app/admin/catalog/product-management/InventoryClient.tsx": {
+      "bytes": 14219,
+      "sha256": "7845c8b6a9f9648ffc9d156c725d8ff2522834e5cc0dc39d91a724201ce58c89"
+    },
+    "app/admin/catalog/product-management/ProductForm.tsx": {
+      "bytes": 17711,
+      "sha256": "8ecb11f0582cc8280552d3c0e7f344735618b4ff65f6f0a159b4b2faa5d50a69"
+    },
+    "app/admin/catalog/product-management/[id]/page.tsx": {
+      "bytes": 696,
+      "sha256": "ab197838cba41d301980a87df9fdee8540b3047bce3b4b2a10b2343f19e9f394"
+    },
+    "app/admin/catalog/product-management/new/page.tsx": {
+      "bytes": 114,
+      "sha256": "967a2264c45f0eb8eb39a359de799aae2b9e9de3de7cecff0c33894511d649ef"
+    },
+    "app/admin/catalog/product-management/page.tsx": {
+      "bytes": 461,
+      "sha256": "56ff7933f955e642391a94a2551786b0e276598a5141deee938d57ca831956f2"
+    },
+    "app/admin/clientes/micro/page.tsx": {
+      "bytes": 5241,
+      "sha256": "f800449d8489530670bbb5598674550ab48beadaa45bd9f0160b098b4222d4c7"
+    },
+    "app/admin/clientes/personas/page.tsx": {
+      "bytes": 4607,
+      "sha256": "d0092d2c80c95bef245b227584b79fb6123a0fead9544e1acaef232865854d55"
+    },
+    "app/admin/clientes/restaurantes/page.tsx": {
+      "bytes": 4204,
+      "sha256": "167b99427914d9382654dce4f444e9760651e1543d0ff15c169ef6bedf1c9647"
+    },
+    "app/admin/clientes/usuarios/UserManagementClient.tsx": {
+      "bytes": 8392,
+      "sha256": "73eec39268437ea1556d66609c685485104abdf2f81e388f92eec712691b0c44"
+    },
+    "app/admin/clientes/usuarios/page.tsx": {
+      "bytes": 822,
+      "sha256": "bb384f4df84fb81012954785534c90a0f0333c13b38bc07b249b4b76eff15ad3"
+    },
+    "app/admin/layout.tsx": {
+      "bytes": 12167,
+      "sha256": "c603faaf73cd424cfeabc4f2cb8fbfff157f67ccbd33dddb7bd3f13fe7a114bc"
+    },
+    "app/admin/marketing/MarketingClient.tsx": {
+      "bytes": 9439,
+      "sha256": "91ea69422347a9fa40e090f0aa50829b420be0e2b0614356a1aa5aafaeb24472"
+    },
+    "app/admin/marketing/page.tsx": {
+      "bytes": 2256,
+      "sha256": "f8a3c4af63b5616db1359c6c1d3c5f1997a08057691fdaa4b854e6d6a292193f"
+    },
+    "app/admin/orders/KanbanColumn.tsx": {
+      "bytes": 1950,
+      "sha256": "894edb952fdb7a6773cc6e6f40e1c00efc54fed8ed3bd97e47486672e4d763e3"
+    },
+    "app/admin/orders/OrderCard.tsx": {
+      "bytes": 2813,
+      "sha256": "65113fae9ffb78335badea899068cc353fde2822d77b78e051f6995079ff6545"
+    },
+    "app/admin/orders/OrderKanbanBoard.tsx": {
+      "bytes": 13152,
+      "sha256": "9c3124967a40ec8b5e26fe53a1217ae113790c3da7743fbd13468ed6e9893575"
+    },
+    "app/admin/orders/OrderSummarySheet.tsx": {
+      "bytes": 12649,
+      "sha256": "137bba7403b56d6e1b856cd538487c27c0a3015000885966819caebc3538817a"
+    },
+    "app/admin/orders/ProcurementSheet.tsx": {
+      "bytes": 7765,
+      "sha256": "1323ee63d2d5a1999052b3fb26922cbe327abf331095cfcc632bee94947618f3"
+    },
+    "app/admin/orders/invoice/[id]/page.tsx": {
+      "bytes": 7370,
+      "sha256": "9765d86145f1518efd2603613f519afdcf447609d468ff66af743b01a4fa2b3c"
+    },
+    "app/admin/orders/page.tsx": {
+      "bytes": 466,
+      "sha256": "ed4c5d3334db75bad131cbc19dda8695bd3697196947a330f0b63dfb7419f1dd"
+    },
+    "app/admin/page.tsx": {
+      "bytes": 1509,
+      "sha256": "d3ab83185b85f3f40aab8f097c380b89aec9437c0eb9cbd64801b6a57da78f72"
+    },
+    "app/admin/pricing/PricingClient.tsx": {
+      "bytes": 16444,
+      "sha256": "6dcd08f776f4ef247d0008654c03fdff6e6e2e3c84931477e092661453973910"
+    },
+    "app/admin/pricing/page.tsx": {
+      "bytes": 297,
+      "sha256": "0df3817f0dc04e58badb2dbad8144478252a8d09742f71081dc34297bce0bbf0"
+    },
+    "app/admin/reports/ReportsClient.tsx": {
+      "bytes": 16448,
+      "sha256": "8f80ea239e3e919d6e0a4598b078fee50faa45b85f78946a127022c1913dbe87"
+    },
+    "app/admin/reports/consolidation/page.tsx": {
+      "bytes": 5963,
+      "sha256": "877f1814983f4a26ddfed8c981c85cf0f1f74942197c6c9eff4b9d89be866d55"
+    },
+    "app/admin/reports/page.tsx": {
+      "bytes": 890,
+      "sha256": "3c00af309a81a9ef99844a86d7515d85998f65bbe27c3c2cf83bd08b391b5cfc"
+    },
+    "app/admin/settings/SettingsClient.tsx": {
+      "bytes": 12321,
+      "sha256": "74d2e8eb202dbada6affbad0375557b3e90f12b3ebbea3d8930a940703d6b2ff"
+    },
+    "app/admin/settings/page.tsx": {
+      "bytes": 450,
+      "sha256": "7d3897aeb25f8447e28316c624299d675827cc239ef2eeb17f4d9ac596de3c8a"
+    },
+    "app/admin/solicitudes/page.tsx": {
+      "bytes": 12408,
+      "sha256": "5d8d760e11acd6e13f4495d6f0761192330f27fdaf6efc888d775ff45f4ebbc5"
+    },
+    "app/admin/suppliers/SupplierTable.tsx": {
+      "bytes": 11656,
+      "sha256": "3d8e4f9843f95b198745ed3ae503f3f095f7ef6ef91c0f06b8fd09411a2ea34b"
+    },
+    "app/admin/suppliers/page.tsx": {
+      "bytes": 592,
+      "sha256": "ff772e120734ca0b9984f41b845d59e27c12310101227db4e12073d764f378de"
+    },
+    "app/api/marketing/abandoned-cart/sync/route.ts": {
+      "bytes": 3047,
+      "sha256": "e9b04f16078f8adf7534fcc0785bce6a828241ffb38a419013b352b4051841db"
+    },
+    "app/api/marketing/abandoned-cart/trigger/route.ts": {
+      "bytes": 2528,
+      "sha256": "d87c3ae53698cc9cb94f4c484ba37903adb815b6389ed1f641a9a20aeedfd8f7"
+    },
+    "app/api/marketing/lead-capture/route.ts": {
+      "bytes": 1733,
+      "sha256": "6fc2af399674431ba833d521d753a8bde767f24dc06f6227bb6548da0f3b991a"
+    },
+    "app/api/marketing/loyalty/reorder/route.ts": {
+      "bytes": 2505,
+      "sha256": "a284a05f7bc6dc11746186b96e81a4a0f3ed01cd7acbfdc258fd9899cdc5a8f2"
+    },
+    "app/api/webhooks/wompi/route.ts": {
+      "bytes": 9669,
+      "sha256": "6196efce9b86f25289646ed90dcb5c3f4836449d9d3deca79370095dac619ba7"
+    },
+    "app/aplicar-negocio/page.tsx": {
+      "bytes": 22745,
+      "sha256": "c3572e8575d9885a2f750dc27972062abed6eda0da7ffbf0f794f57c0091bb93"
+    },
+    "app/cart/page.tsx": {
+      "bytes": 4721,
+      "sha256": "446c78121bcecce11a0908abd32d380e6e5577807fbeae79172d2794a4351419"
+    },
+    "app/categoria/[slug]/page.tsx": {
+      "bytes": 267,
+      "sha256": "2c0d22ffa005ad992fe3140190f27f6fd9f254987979a40f2fae3c2fe5d7600f"
+    },
+    "app/checkout/page.tsx": {
+      "bytes": 25190,
+      "sha256": "9d5592a6770c61f735552d746f72b8e7d0029530745f7527eba0ddb91bfe1745"
+    },
+    "app/components/layout/ConditionalWrapper.tsx": {
+      "bytes": 826,
+      "sha256": "d9dac3797a496d710d3d5f4aefdd0cf528a9776b1da0959e59c26954151259dc"
+    },
+    "app/components/layout/Footer.tsx": {
+      "bytes": 10214,
+      "sha256": "7ba4806b913617ab928bcb9f58d45daf5d5553fd517bbac0095f43424b35cc46"
+    },
+    "app/components/layout/Header.tsx": {
+      "bytes": 6021,
+      "sha256": "2c7650ca809c4476cabcb0f6ba3aef1abe56554ff8d0d99a5f128588662a32b0"
+    },
+    "app/components/market/LiveMarketTicker.tsx": {
+      "bytes": 2682,
+      "sha256": "ec3b138efb2a0b5575cd6ea4a0c474102b4b534020a054080a21354d484506ea"
+    },
+    "app/components/market/PriceDropPopup.tsx": {
+      "bytes": 3837,
+      "sha256": "75ac22cb9cb508d180d36cfe321c39891fb700643fcb02b6c4a30f30f4c98413"
+    },
+    "app/components/modals/EmptyCartModal.tsx": {
+      "bytes": 2397,
+      "sha256": "8c0e2ca96eccbaae57375a991d3e8b7fd09d2df0706cdc84e52eb0e5922f9415"
+    },
+    "app/components/store/ProductGrid.tsx": {
+      "bytes": 5447,
+      "sha256": "45df6d6c14852cee6ede1a960def73b4f658ea10abd5c0d9ef25f9f548c01ad9"
+    },
+    "app/components/ui/CategoryBanner.tsx": {
+      "bytes": 1538,
+      "sha256": "6fd88cc3c405c57aad9699e5d14e55dd19687ddf23342e92cd2235c434ab5979"
+    },
+    "app/components/ui/FloatingWhatsApp.tsx": {
+      "bytes": 3268,
+      "sha256": "1740191d41b5964eff32e58400908e4a1eb796a629e0ec0b6337a90ca06ea132"
+    },
+    "app/components/ui/HeroBanner.tsx": {
+      "bytes": 3366,
+      "sha256": "7ce215fed0e7c1171f4d12470824a3b178c21c0cfed5c53d5fc1c2537e8ec844"
+    },
+    "app/components/ui/ImageCarousel.tsx": {
+      "bytes": 1818,
+      "sha256": "cbbb28b7a438c89ab4c39cb882bf93da2468ab70a96bfb054f64c632944345c7"
+    },
+    "app/components/ui/PromotionalBanner.tsx": {
+      "bytes": 1488,
+      "sha256": "bceff1a64da248beb0f6a23aa1ee35bc60875bd0986b3393eb6c6c477c7e626d"
+    },
+    "app/components/ui/WhatsAppHook.tsx": {
+      "bytes": 1286,
+      "sha256": "de914705a865a84c43f3f320f08f658e2a21e32d7e6f1ade83f9ab3ce5ac6c0c"
+    },
+    "app/comunidad/page.tsx": {
+      "bytes": 4858,
+      "sha256": "6189a9c7a9b56d55a310cff593d446dab7a7cd80913284616580d0c27b1f7e94"
+    },
+    "app/contacto/page.tsx": {
+      "bytes": 3129,
+      "sha256": "99dc9d60d0fe26f6d2e62bf3c3bfbf8d4cbfcc88c870add996b12e30dfff27f8"
+    },
+    "app/dashboard/page.tsx": {
+      "bytes": 722,
+      "sha256": "2aedf4fac750cea2fc5a8d233aca5b9baf70aa69f8aff0abe72e99a4e77ec5f6"
+    },
+    "app/globals.css": {
+      "bytes": 2201,
+      "sha256": "8e0cad1df5c8694ee5dad39afd625b06bbde53d816942518f517258e559baa20"
+    },
+    "app/layout.tsx": {
+      "bytes": 4013,
+      "sha256": "4ec5c623a6e0483a0dd5a9783cf9068f5003222939667da11d9cbcc4740c1bd2"
+    },
+    "app/nosotros/page.tsx": {
+      "bytes": 5128,
+      "sha256": "8c85529f1b662c8d083822662d7b460434ba91f1e3f1088e8b8fbf6223f43480"
+    },
+    "app/noticias/page.tsx": {
+      "bytes": 4713,
+      "sha256": "02693e69d9542f0b0bceaee662dbd7cb79e95c0aa763dde26a41cc02dfef279f"
+    },
+    "app/page.tsx": {
+      "bytes": 2112,
+      "sha256": "bef46ba1e9cd3c0f2f7f6eea2ba7686318e95a10059934c9489b71ebd0e29304"
+    },
+    "app/pqrs/page.tsx": {
+      "bytes": 11380,
+      "sha256": "948d90151b3e3bac01617db7840a57825612f109f5c2d8e5a98cd2676bbb0703"
+    },
+    "app/privacidad/page.tsx": {
+      "bytes": 6926,
+      "sha256": "c79f2280d0bc7ea8535c4282096f09e136a83527f94b8f41ab24ee11f70efdbe"
+    },
+    "app/product/[id]/page.tsx": {
+      "bytes": 2755,
+      "sha256": "7daf5eaf38fa6b7e66b3383a2d5eb5ff1936a99ca66b60b52c540f15f1b68188"
+    },
+    "app/robots.ts": {
+      "bytes": 375,
+      "sha256": "a4f154a3e6150c63685bb0c16f140707f19ba8d4cbab5c20814c0789d00568de"
+    },
+    "app/shop/page.tsx": {
+      "bytes": 655,
+      "sha256": "93cef753b9a01be8bb7d05ba970f81ba2f08ca344c05b4d92a058a8ddafa97c4"
+    },
+    "app/sign-in/[[...sign-in]]/page.tsx": {
+      "bytes": 756,
+      "sha256": "0da7dcfd356953b9aeefda14c7a0786b4e6cb49ce24394cd3f1eff98560c0e45"
+    },
+    "app/sign-up/[[...sign-up]]/page.tsx": {
+      "bytes": 761,
+      "sha256": "f1ca319e9c25aae58a45f163e1ee4d304c3f11be530358f1cf9427e4da2faf55"
+    },
+    "app/sitemap.ts": {
+      "bytes": 1009,
+      "sha256": "fc6e7b40cc756e1f133c51bb7dcbcd344787205cd6f2451410a5d8da408b1c8d"
+    },
+    "app/sobre-nosotros/page.tsx": {
+      "bytes": 6135,
+      "sha256": "ed089ae965fa3fcdf330549c150a19574225496cd7fb93089f07fa2544425500"
+    },
+    "app/terminos/page.tsx": {
+      "bytes": 7758,
+      "sha256": "a0c480867e6565e031a52fdf7d83905cb8687afa42ed401a04b17d80baec8c5c"
+    },
+    "eslint.config.mjs": {
+      "bytes": 465,
+      "sha256": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493"
+    },
+    "middleware.ts": {
+      "bytes": 2981,
+      "sha256": "a81e6e21b93fff00210bf5426681d257980185f41d5360de68ee82d345e249bf"
+    },
+    "next.config.ts": {
+      "bytes": 378,
+      "sha256": "8ba4b1c6d612cfb41873c6a4e456635d4c4d503143992c0a1af76f223a42c24a"
+    },
+    "package-lock.json": {
+      "bytes": 315334,
+      "sha256": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157"
+    },
+    "package.json": {
+      "bytes": 1327,
+      "sha256": "9a0fd148d340e79dc0386ee86bf7692397d1dfe865ee5ca9b5a48511f494aeca"
+    },
+    "prisma.config.ts": {
+      "bytes": 372,
+      "sha256": "2d6e0d9d8dde0dee817e50dcf2ab6137cd39f3ea9c44d91e2ed9384d0512ae38"
+    },
+    "src/actions/analytics.ts": {
+      "bytes": 8083,
+      "sha256": "fc95a99b8dde7b37978c69de4f04a3f04f43c99bc702a2fd787b86c3400df3c8"
+    },
+    "src/actions/audit.ts": {
+      "bytes": 1134,
+      "sha256": "b7cbe1d4019c6d7fa762c41043bf27848b0f367f4eee919d01ffe6b3f7a7bb37"
+    },
+    "src/actions/b2b.ts": {
+      "bytes": 2489,
+      "sha256": "bca589e68e3f5405d3da1744b8cf374735138ec98c131c7ec4cddcef5e2d3498"
+    },
+    "src/actions/businessApplications.ts": {
+      "bytes": 5505,
+      "sha256": "d6a35db102943047d2d3a17816d50299af0bb93a11061f20653039d30cdd7147"
+    },
+    "src/actions/checkoutAction.ts": {
+      "bytes": 1032,
+      "sha256": "46da08b0ea86c61e2aef42d65c2e040cf6b1e4bd9e8dd35de7049855e8e6cbb0"
+    },
+    "src/actions/customers.ts": {
+      "bytes": 3338,
+      "sha256": "926663a523c63c042c81297c3f67e62a2327adea3ac6db7c0f724b05d269cfe4"
+    },
+    "src/actions/dashboard.ts": {
+      "bytes": 1346,
+      "sha256": "7c1fa96adad8e91b38312ce7cc9fa21245b84c32221a8aadc792985904dba30a"
+    },
+    "src/actions/kits.ts": {
+      "bytes": 3743,
+      "sha256": "8efef6abf5a552243d13ee47cca2b9b356d20ce62d59d091de7d4bc6e15258d0"
+    },
+    "src/actions/media.ts": {
+      "bytes": 4357,
+      "sha256": "4b378ed0140f1c36e60241933461a9d99bbcdd033f1bbea026098ce4b0cd24b5"
+    },
+    "src/actions/orders.ts": {
+      "bytes": 14507,
+      "sha256": "47999d46a2fe09df4aea74b1a59855fe71c27c4d13b4c0faa74205371bea2f81"
+    },
+    "src/actions/products.ts": {
+      "bytes": 16008,
+      "sha256": "bbe908054e505daa160911d01d0af17dfd8ec589e8e8430b3ad520f27b150c20"
+    },
+    "src/actions/settings.ts": {
+      "bytes": 1071,
+      "sha256": "605dc760d4c298a8d99b79af685e0919eec622d15fc69088988b2528a68a458e"
+    },
+    "src/actions/suppliers.ts": {
+      "bytes": 2566,
+      "sha256": "c305590af5f6794d213a740e8261760512e46c1dfc63f075d16980832d664fdf"
+    },
+    "src/actions/systemSettings.ts": {
+      "bytes": 3124,
+      "sha256": "d7ad2c98020a7937ecba76726427548b5fbb4bcfe5a02ed9ce28f80acce4a959"
+    },
+    "src/actions/users.ts": {
+      "bytes": 2194,
+      "sha256": "6833361086b3d251707a714355d2ec369a3f0a53ee337fdd84d89181feaad62d"
+    },
+    "src/actions/wompi.ts": {
+      "bytes": 3059,
+      "sha256": "cce42ed57da3779887c6399d0a50c0ca12b11ec95620da4e647da164f40fa5dc"
+    },
+    "src/components/RoleSwitcher.tsx": {
+      "bytes": 376,
+      "sha256": "8ce2cbd7a66fb41d47cad6dd6f81aa3028bd2a210a48b47df3c188b0242e7be6"
+    },
+    "src/components/cart/CartDrawer.tsx": {
+      "bytes": 2450,
+      "sha256": "086f6c5bbf3b4732b88a977c54f545ff700b8c91cbc568b6fd5ebc3dcceba946"
+    },
+    "src/components/cart/CartItems.tsx": {
+      "bytes": 1947,
+      "sha256": "4e7b199bd99269841acbdf1d09a0282cf561700c4f1a74478f9982765b201164"
+    },
+    "src/components/cart/MiniCartDropdown.tsx": {
+      "bytes": 2427,
+      "sha256": "dee9092d09aa0f19aededc90de023992a009989b5ae7afc693db196cc3fc1210"
+    },
+    "src/components/checkout/CheckoutUpsell.tsx": {
+      "bytes": 3290,
+      "sha256": "d4643ee6e5ff9be86dbd417d43dc9c00c86675aa11f6dd052ad2163ed4af0624"
+    },
+    "src/components/checkout/DeliveryScheduler.tsx": {
+      "bytes": 3615,
+      "sha256": "955d60b04257a6e9b97a1bbc854925c6c083825d24722e47eedbc9c0c134bcb3"
+    },
+    "src/components/portals/CustomerOrderHistory.tsx": {
+      "bytes": 902,
+      "sha256": "2c9efc2796a731315e31112cb8ab2930cbac83e968efbb23ed141ff13ec25df9"
+    },
+    "src/components/portals/OrderHistoryClient.tsx": {
+      "bytes": 8828,
+      "sha256": "1f91b0997fa4fca62a44fcc9992f9903d252b1f17c898abf7c2d2d8006058493"
+    },
+    "src/components/store/CatalogImage.tsx": {
+      "bytes": 1020,
+      "sha256": "5cafe8aea41cfe5c3c81df182f5b5440fc3147eafe94146073f3442375f3905f"
+    },
+    "src/components/store/ProductCard.tsx": {
+      "bytes": 4563,
+      "sha256": "487e370e640a5268b45f666f82a53185d125ddcfb9eccb8ffbb0b228c1e24242"
+    },
+    "src/components/store/ProductDetailClient.tsx": {
+      "bytes": 2775,
+      "sha256": "678d5d15de09b7f0d8f37ee97c84daf115921df800402993d6a0312e4f15c879"
+    },
+    "src/components/store/QuantitySelector.tsx": {
+      "bytes": 2269,
+      "sha256": "1d79ba7d799aa2e3de6abcf7ed2b43941e7d51941a2f9b8e4de83b448bc2980e"
+    },
+    "src/components/store/ShopView.tsx": {
+      "bytes": 17390,
+      "sha256": "527f96013c8c9d8e3f68d5be944fba7cd3ad6fa3e48f40f3dc5e4a4a78ead930"
+    },
+    "src/components/support/ContactForm.tsx": {
+      "bytes": 2583,
+      "sha256": "a8a984c3a42551822b193b8431c8a91d4949feb175bb95f4f99c644a4789d710"
+    },
+    "src/components/ui/PartnerMarquee.tsx": {
+      "bytes": 1822,
+      "sha256": "7017763a29a1fcdfa0350ab29f0f1df765f26592bf8f42f031f5dd69c8dd5e30"
+    },
+    "src/constants/productConstants.ts": {
+      "bytes": 383,
+      "sha256": "07e0d08a10b99e843112e99c07bdb96d33863338572f61b1d49bd98a4cc0f4f8"
+    },
+    "src/contexts/CartContext.tsx": {
+      "bytes": 6302,
+      "sha256": "7ab7abb3e8cb647d4bb865eb48eab6e3e7285a20479a2cc93fdfb4d7e461478b"
+    },
+    "src/contexts/UserRoleContext.tsx": {
+      "bytes": 2006,
+      "sha256": "502897daa3f7e7e18278c24dcaf62c839a920ab54b104a7c86245cbf5ba77f16"
+    },
+    "src/data/mockOrders.ts": {
+      "bytes": 7901,
+      "sha256": "6d2ae39c9eae9537d04e0e9065530bfa2bbd0a76340abaae21bb79ac6d4599ab"
+    },
+    "src/data/mockSuppliers.ts": {
+      "bytes": 3548,
+      "sha256": "dc1d26a9025d8e8b1ab9f63dad9e8b1c74551e1b65992f925de786a1d93e3d45"
+    },
+    "src/data/products.ts": {
+      "bytes": 112589,
+      "sha256": "34880f4867d33c512baf36919be79bb1e68ddd7a981117546049388cc2c91844"
+    },
+    "src/hooks/useRBAC.ts": {
+      "bytes": 1904,
+      "sha256": "9026d11bcbe0ca3c53dcf649f6c2d20544d3a1c8b3596a0918e463d563377ea9"
+    },
+    "src/lib/audit.ts": {
+      "bytes": 1532,
+      "sha256": "1a2887e8a1166c720036f101d1d6cb2531efc5872428442f01aa0d14943f6729"
+    },
+    "src/lib/cartPersistence.ts": {
+      "bytes": 1887,
+      "sha256": "4e1b825fa655a71f1e63a141b8641c6088ee38a0637cc231625d7ec7f1d079b9"
+    },
+    "src/lib/categories.ts": {
+      "bytes": 809,
+      "sha256": "d73d9b1f613e666e003fdc0da7f099ab79235a0d1c22932d128d379ec74aed35"
+    },
+    "src/lib/checkoutValidation.ts": {
+      "bytes": 5504,
+      "sha256": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe"
+    },
+    "src/lib/database.types.ts": {
+      "bytes": 24956,
+      "sha256": "37d7bf805b3222ce93f8bbfb712804885ddeedeb8e756593edbac5d55ded3e7d"
+    },
+    "src/lib/metaCapi.ts": {
+      "bytes": 2658,
+      "sha256": "1d584e2e3d5c9e740e0a1aebbda444979e5c541134549307ee83f444652c01a8"
+    },
+    "src/lib/notifications.ts": {
+      "bytes": 3000,
+      "sha256": "5dd0d1884b0298a3832abc67a44e961baada368d22e618802be5e6405b0c0216"
+    },
+    "src/lib/server/authorization.ts": {
+      "bytes": 4044,
+      "sha256": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12"
+    },
+    "src/lib/server/checkout.ts": {
+      "bytes": 1243,
+      "sha256": "dcdbf4ebb52b7589ae5f2adaaa9a58fc26753cc1fe19f718bbc84f710f5bd4c8"
+    },
+    "src/lib/server/database.ts": {
+      "bytes": 2414,
+      "sha256": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c"
+    },
+    "src/lib/server/orderWriter.ts": {
+      "bytes": 2227,
+      "sha256": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187"
+    },
+    "src/lib/server/scheduler.ts": {
+      "bytes": 514,
+      "sha256": "4581173ae5cf49ac4d05a2c23a9833bae6e7682f025437a33d76bea795059412"
+    },
+    "src/lib/supabase.ts": {
+      "bytes": 906,
+      "sha256": "9f3de4e5322da993a7499c45741aa5f78f2998ad84a6dcf9a9c1c46a3fc20672"
+    },
+    "src/lib/wompi.ts": {
+      "bytes": 3522,
+      "sha256": "ee58cfed2c3890d18bfe7f751dc2b84e982af646a8a53ce6ca8970392fef0c76"
+    },
+    "src/types/wompi.d.ts": {
+      "bytes": 262,
+      "sha256": "16dc2e4b748f7d9638b9222ee48793a58b156107c2b0fe6962225a9867c00aed"
+    },
+    "tests/checkout.test.cjs": {
+      "bytes": 14273,
+      "sha256": "1ddbec27b9b1cda0feeadf2876822907a329cb941de118628390c80b4262f951"
+    },
+    "tsconfig.json": {
+      "bytes": 677,
+      "sha256": "413c06a3b01354b0506dad879edbe0be42c76253123e803489d46f950d447d18"
+    }
+  },
+  "environment_values_excluded": true
+}

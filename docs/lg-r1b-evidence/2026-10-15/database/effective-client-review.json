@@ -1,0 +1,92 @@
+[
+  {
+    "file": "src/actions/products.ts",
+    "effective_candidate_file": "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015/authorization/proposal/src/actions/products.ts",
+    "from_overlay": true,
+    "createClient_lines": [
+      442
+    ],
+    "tables_or_buckets": [
+      "catalog_public",
+      "kits",
+      "kits_public",
+      "products"
+    ],
+    "sha256": "c93b8e85f1ffc05e606418200831975f1bafb113cee654398abc5986837289fd"
+  },
+  {
+    "file": "src/actions/settings.ts",
+    "effective_candidate_file": "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015/authorization/proposal/src/actions/settings.ts",
+    "from_overlay": true,
+    "createClient_lines": [
+      15
+    ],
+    "tables_or_buckets": [
+      "global_settings"
+    ],
+    "sha256": "0eae20a6d205874cf1d870920f8e6de2777c8c8050109238cd800b1225fbf5b7"
+  },
+  {
+    "file": "src/lib/audit.ts",
+    "effective_candidate_file": "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/src/lib/audit.ts",
+    "from_overlay": false,
+    "createClient_lines": [
+      8
+    ],
+    "tables_or_buckets": [
+      "audit_logs"
+    ],
+    "sha256": "a32f9c667209fdca13b31264780d4b380168f690bf2c7f00cb19028d38b24c43"
+  },
+  {
+    "file": "src/lib/supabase.ts",
+    "effective_candidate_file": "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/src/lib/supabase.ts",
+    "from_overlay": false,
+    "createClient_lines": [
+      7
+    ],
+    "tables_or_buckets": [],
+    "sha256": "9f3de4e5322da993a7499c45741aa5f78f2998ad84a6dcf9a9c1c46a3fc20672"
+  },
+  {
+    "file": "app/admin/marketing/page.tsx",
+    "effective_candidate_file": "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/marketing/page.tsx",
+    "from_overlay": false,
+    "createClient_lines": [
+      7
+    ],
+    "tables_or_buckets": [
+      "abandoned_carts",
+      "customers",
+      "marketing_leads"
+    ],
+    "sha256": "c6aa9041722c6bba7bb0884b35b55ace39eb6a807de30b5670e1938fb204ec02"
+  },
+  {
+    "file": "app/admin/orders/OrderKanbanBoard.tsx",
+    "effective_candidate_file": "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/orders/OrderKanbanBoard.tsx",
+    "from_overlay": false,
+    "createClient_lines": [
+      40
+    ],
+    "tables_or_buckets": [],
+    "sha256": "9c3124967a40ec8b5e26fe53a1217ae113790c3da7743fbd13468ed6e9893575"
+  },
+  {
+    "file": "app/api/webhooks/wompi/route.ts",
+    "effective_candidate_file": "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/api/webhooks/wompi/route.ts",
+    "from_overlay": false,
+    "createClient_lines": [
+      8
+    ],
+    "tables_or_buckets": [
+      "abandoned_carts",
+      "b2b_credit_profiles",
+      "customers",
+      "order_items",
+      "orders",
+      "products"
+    ],
+    "sha256": "0b9f5b2d767ee08644850e457539c6362c2ede4a7d0f5fc8a6a316006eee1228"
+  }
+]

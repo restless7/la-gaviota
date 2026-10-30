@@ -7,8 +7,8 @@ import { Product } from '@/src/actions/products';
 
 const CATEGORY_BANNERS: Record<string, string> = {
   'Frutas': '/IMAGES/frutas-banner.jpeg',
-  'Verduras Y Hortalizas': '/IMAGES/verduras-banner.jpeg',
-  'Verduras': '/IMAGES/verduras-banner.jpeg',
+  'Verduras Y Hortalizas': '/IMAGES/verduras-banner1.jpeg',
+  'Verduras': '/IMAGES/verduras-banner1.jpeg',
   'Carnes': '/IMAGES/carnes-banner1.jpeg',
 };
 
@@ -31,10 +31,10 @@ export default function ProductGrid({ products = [] }: { products: Product[] }) 
         <div className="flex flex-col">
           <h3 className="font-semibold text-slate-800 mb-3 text-[15px]">Categorías</h3>
           <div className="flex flex-col gap-1.5 pl-1">
-            {['Todos', 'Frutas', 'Verduras', 'Carnes', 'Kits'].map(cat => (
+            {(['Todos', 'Frutas', 'Verduras', 'Carnes', 'Kits'] as const).map(cat => (
               <button
                 key={cat}
-                onClick={() => setFilter(cat as any)}
+                onClick={() => setFilter(cat)}
                 className={`text-left px-4 py-2 rounded-full text-[14px] font-medium transition-all ${
                   filter === cat 
                     ? 'bg-[#CC0000] text-white shadow-md' 

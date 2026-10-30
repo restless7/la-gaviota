@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-15 America/Bogota",
+  "mode": "ASSESSMENT_ONLY",
+  "mission_control": "UNAVAILABLE",
+  "tasks": [
+    {
+      "id": "baseline",
+      "owner": "Freya/root",
+      "scope": "Repository identity, dependency lock and safe checks",
+      "status": "done"
+    },
+    {
+      "id": "commerce_security",
+      "owner": "Principal Integration Architect / Security",
+      "scope": "Cart, checkout, authorization and payment review",
+      "status": "done"
+    },
+    {
+      "id": "assets_forensics",
+      "owner": "Digital Asset Specialist",
+      "scope": "Verduras and historical catalog photography",
+      "status": "done"
+    },
+    {
+      "id": "runtime_qa",
+      "owner": "Independent QA / UX",
+      "scope": "Public browser journeys, responsive, SEO and accessibility",
+      "status": "done"
+    },
+    {
+      "id": "synthesis",
+      "owner": "Freya/root",
+      "scope": "Evidence register, roadmap, acceptance matrix and preservation review",
+      "status": "done"
+    }
+  ]
+}

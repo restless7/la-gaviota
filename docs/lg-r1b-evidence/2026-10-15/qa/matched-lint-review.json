@@ -1,0 +1,44 @@
+{
+  "scope": "independent parsing of author matched-scope lint; not second full lint execution",
+  "baseline": {
+    "files": 47,
+    "errors": 37,
+    "warnings": 30
+  },
+  "candidate": {
+    "files": 53,
+    "errors": 36,
+    "warnings": 28
+  },
+  "new_messages": [],
+  "removed_messages": [
+    {
+      "key": [
+        "api/marketing/loyalty/reorder/route.ts",
+        "@typescript-eslint/no-unused-vars",
+        1,
+        "'req' is defined but never used."
+      ],
+      "count": 1
+    },
+    {
+      "key": [
+        "actions/systemSettings.ts",
+        "@typescript-eslint/no-explicit-any",
+        2,
+        "Unexpected any. Specify a different type."
+      ],
+      "count": 1
+    },
+    {
+      "key": [
+        "contexts/CartContext.tsx",
+        "@typescript-eslint/no-unused-vars",
+        1,
+        "'e' is defined but never used."
+      ],
+      "count": 1
+    }
+  ],
+  "normalization": "relative path + rule + severity + firstline, multiplicities preserved; excludes shifted locations"
+}

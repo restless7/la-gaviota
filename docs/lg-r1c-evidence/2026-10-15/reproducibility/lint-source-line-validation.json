@@ -1,0 +1,389 @@
+{
+  "same_source_line_matches": [
+    {
+      "file": "app/admin/catalog/kits/KitsClient.tsx",
+      "rule": "react/no-unescaped-entities",
+      "severity": 2,
+      "source_line": "<p className=\"text-gray-500 mt-1\">Arrastra productos para ensamblar \"Kits Ch\u00e9veres\" y fija precios cerrados.</p>"
+    },
+    {
+      "file": "app/admin/catalog/kits/KitsClient.tsx",
+      "rule": "react/no-unescaped-entities",
+      "severity": 2,
+      "source_line": "<p className=\"text-gray-500 mt-1\">Arrastra productos para ensamblar \"Kits Ch\u00e9veres\" y fija precios cerrados.</p>"
+    },
+    {
+      "file": "app/admin/catalog/kits/KitsClient.tsx",
+      "rule": "@next/next/no-img-element",
+      "severity": 1,
+      "source_line": "<img src={bannerPreview} alt=\"Banner\" className=\"absolute inset-0 w-full h-full object-cover opacity-80\" />"
+    },
+    {
+      "file": "app/admin/catalog/kits/KitsClient.tsx",
+      "rule": "@next/next/no-img-element",
+      "severity": 1,
+      "source_line": "<img src={item.product.imageUrl} alt={item.product.name} className=\"w-full h-full object-cover\" />"
+    },
+    {
+      "file": "app/admin/catalog/product-management/InventoryClient.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "import { Package, Search, Filter, AlertTriangle, ChevronDown, Save } from 'lucide-react';"
+    },
+    {
+      "file": "app/admin/catalog/product-management/InventoryClient.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "import { Package, Search, Filter, AlertTriangle, ChevronDown, Save } from 'lucide-react';"
+    },
+    {
+      "file": "app/admin/catalog/product-management/InventoryClient.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "source_line": "setSelectedSubcategory(null);"
+    },
+    {
+      "file": "app/admin/catalog/product-management/InventoryClient.tsx",
+      "rule": "@next/next/no-img-element",
+      "severity": 1,
+      "source_line": "<img src={p.imageUrl} alt={p.name} className=\"w-full h-full object-cover\" />"
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "import Link from 'next/link';"
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "source_line": "setFormData(prev => ({ ...prev, subcategory: availableSubcategories[0] }));"
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "react-hooks/exhaustive-deps",
+      "severity": 1,
+      "source_line": "}, [formData.category, availableSubcategories]);"
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "let newValue: any = value;"
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "@next/next/no-html-link-for-pages",
+      "severity": 2,
+      "source_line": "<a"
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "@next/next/no-img-element",
+      "severity": 1,
+      "source_line": "<img src={imagePreview} alt=\"Preview\" className=\"absolute inset-0 w-full h-full object-cover\" />"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "FileText,"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "File,"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "Database,"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "Zap,"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "Lightbulb,"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "BrainCircuit,"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "PenSquare,"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "Calculator,"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "source_line": "setCurrentDate(new Date().toLocaleDateString('es-ES', {"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "const groupKey = (item as any).group || 'crm';"
+    },
+    {
+      "file": "app/admin/marketing/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "let carts: any[] = [];"
+    },
+    {
+      "file": "app/admin/marketing/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "let reorderEligible: any[] = [];"
+    },
+    {
+      "file": "app/admin/marketing/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "let rawLeads: any[] = [];"
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "import { Calculator, Save, RefreshCw, Search, ChevronDown } from 'lucide-react';"
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "react/display-name",
+      "severity": 2,
+      "source_line": "const ProductRow = React.memo(({"
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "source_line": "setLocalCost(product.cost.toString());"
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "source_line": "setEditableProducts("
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "const formatCOP = (value: number) =>"
+    },
+    {
+      "file": "app/api/marketing/lead-capture/route.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "import { triggerOrderNotification } from '@/src/lib/notifications';"
+    },
+    {
+      "file": "app/cart/page.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "source_line": "setRandomEmptyImage(emptyImages[Math.floor(Math.random() * emptyImages.length)]);"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "WidgetCheckout: any;"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "widget.open((result: any) => {"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-location-assign-relative-destination",
+      "severity": 1,
+      "source_line": "window.location.href = '/';"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-location-assign-relative-destination",
+      "severity": 1,
+      "source_line": "window.location.href = '/';"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-html-link-for-pages",
+      "severity": 2,
+      "source_line": "<a href=\"/\" className=\"text-[#83b745] font-bold underline hover:text-[#6c9c36]\">Volver a la tienda</a>"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-html-link-for-pages",
+      "severity": 2,
+      "source_line": "<a href=\"/\" className=\"text-[#83b745] font-bold underline hover:text-[#6c9c36]\">Seguir comprando</a>"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-html-link-for-pages",
+      "severity": 2,
+      "source_line": "<a href=\"/\" className=\"text-[#83b745] font-bold underline hover:text-[#6c9c36]\">Seguir comprando</a>"
+    },
+    {
+      "file": "src/actions/analytics.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "const uniqueOrders = new Map<string, any>();"
+    },
+    {
+      "file": "src/actions/analytics.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "logs?.forEach((log: any) => {"
+    },
+    {
+      "file": "src/actions/checkoutAction.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "export async function submitCheckoutOrder(formData: FormData, items: CheckoutItem[], totalAmount: number) {"
+    },
+    {
+      "file": "src/actions/checkoutAction.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "const state = formData.get('state') as string;"
+    },
+    {
+      "file": "src/actions/checkoutAction.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "} catch (error: any) {"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "data.forEach((item: any) => {"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "const totalRevenue = deliveredOrders.reduce((acc, o) => acc + Number(o.total_amount), 0);"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "const totalProcessed = deliveredOrders.length;"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "import { CATEGORIES } from '@/src/constants/productConstants';"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "const updates: any = {};"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "const user = await client.users.getUser(userId);"
+    },
+    {
+      "file": "src/actions/users.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "const metadata = user.publicMetadata as Record<string, any>;"
+    },
+    {
+      "file": "src/actions/users.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "} catch (error: any) {"
+    },
+    {
+      "file": "src/actions/wompi.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "} catch (error: any) {"
+    },
+    {
+      "file": "src/actions/wompi.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "} catch (error: any) {"
+    },
+    {
+      "file": "src/components/cart/MiniCartDropdown.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "source_line": "setRandomEmptyImage(emptyImages[Math.floor(Math.random() * emptyImages.length)]);"
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "export function OrderHistoryClient({ orders, catalogProducts }: { orders: any[], catalogProducts?: any[] }) {"
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "export function OrderHistoryClient({ orders, catalogProducts }: { orders: any[], catalogProducts?: any[] }) {"
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "const handleReorder = (e: React.MouseEvent, order: any) => {"
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "order.order_items.forEach((item: any) => {"
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "source_line": "{order.order_items?.map((item: any, idx: number) => ("
+    },
+    {
+      "file": "src/components/store/ShopView.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "source_line": "import { useEffect, useState as useStateReact } from 'react';"
+    },
+    {
+      "file": "src/components/store/ShopView.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "source_line": "setShowToast(true);"
+    }
+  ],
+  "unmatched": []
+}

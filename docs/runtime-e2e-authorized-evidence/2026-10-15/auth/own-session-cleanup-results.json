@@ -1,0 +1,109 @@
+{
+  "scope": "ONLY_NEW_ISOLATED_APPLICATION_MANIFESTED_OWN10_SYNTHETIC_USERS",
+  "startedAt": "2026-10-15T20:27:26.556514+00:00",
+  "users": [
+    {
+      "label": "retail",
+      "sessionsObserved": 2,
+      "revoked": [
+        {
+          "sessionIdSha256": "bbf006df0a9de38abfa213911ad0d61cb1d01337e2516599a1c443d2bdd9dc26",
+          "status": "revoked"
+        },
+        {
+          "sessionIdSha256": "34cdbe4fcfae4da19ac931dbc0fff25785a83d7087c4999aaa14f69aab4197c5",
+          "status": "revoked"
+        }
+      ]
+    },
+    {
+      "label": "micro",
+      "sessionsObserved": 1,
+      "revoked": [
+        {
+          "sessionIdSha256": "04a208c3250e9e5e885cfd7ebb33b50fa99fd177963ab96af1f0ffc11224f00a",
+          "status": "revoked"
+        }
+      ]
+    },
+    {
+      "label": "restaurant",
+      "sessionsObserved": 1,
+      "revoked": [
+        {
+          "sessionIdSha256": "a17ea24cc3af74e3cb93d3ac1272ef44f555609c44861a0183528f62163e403e",
+          "status": "revoked"
+        }
+      ]
+    },
+    {
+      "label": "admin",
+      "sessionsObserved": 1,
+      "revoked": [
+        {
+          "sessionIdSha256": "bdec397dfc6c0685ed6d5e524d7304776b433495fb194ffcea3fadb892f9b7b6",
+          "status": "revoked"
+        }
+      ]
+    },
+    {
+      "label": "super",
+      "sessionsObserved": 1,
+      "revoked": [
+        {
+          "sessionIdSha256": "30dfcd2214b7c59d44ae47c443556e0f821af65a374046bb01d4b32bc52d7d08",
+          "status": "revoked"
+        }
+      ]
+    },
+    {
+      "label": "operario",
+      "sessionsObserved": 1,
+      "revoked": [
+        {
+          "sessionIdSha256": "17eb8f56755f7e2897cd9ccc027f3a095d0f30aee27bf5c0b7ae41e1d5fc095c",
+          "status": "revoked"
+        }
+      ]
+    },
+    {
+      "label": "commercial",
+      "sessionsObserved": 1,
+      "revoked": [
+        {
+          "sessionIdSha256": "439e3c27c1299bcdda9828938d8bbae4d550d65f310a71b3e2c528b40303cf14",
+          "status": "revoked"
+        }
+      ]
+    },
+    {
+      "label": "owner-a",
+      "sessionsObserved": 1,
+      "revoked": [
+        {
+          "sessionIdSha256": "bd94f9dd11a7e9eaa5e8cea60a223ff13e9a143e6c0aff99a71e3077d41ddf54",
+          "status": "revoked"
+        }
+      ]
+    },
+    {
+      "label": "owner-b",
+      "sessionsObserved": 1,
+      "revoked": [
+        {
+          "sessionIdSha256": "d54b799e3ac19e1eb632deda3b01ba6ca8070b2b0b93f1e9e6739f3f69c03da3",
+          "status": "revoked"
+        }
+      ]
+    },
+    {
+      "label": "signup-ui",
+      "sessionsObserved": 1,
+      "revoked": []
+    }
+  ],
+  "failures": [],
+  "finishedAt": "2026-10-15T20:27:44.871974+00:00",
+  "fixturesPreserved": 10,
+  "status": "PASS"
+}

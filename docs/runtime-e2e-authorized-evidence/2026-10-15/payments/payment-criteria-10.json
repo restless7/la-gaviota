@@ -1,0 +1,86 @@
+{
+  "scope": "payment track; not all-project certification",
+  "overall": "FAIL_INTEGRITY_AND_BLOCKED_PROVIDER_E2E",
+  "criteria": [
+    {
+      "id": "PAY-G1",
+      "criterion": "Entorno Sandbox designado",
+      "expected": "Identificar llaves/secretos Sandbox del comercio y backend de pruebas aislado; no usar valores Production",
+      "status": "BLOCKED",
+      "actual": "Local no tiene variables Wompi. Vercel previo enumera nombres sólo en Production; valores/prefijos UNKNOWN/no recuperados.",
+      "evidence": "environment-inventory.json"
+    },
+    {
+      "id": "PAY-G2",
+      "criterion": "Autenticación y owner del checkout",
+      "expected": "Clerk real identifica al owner y Supabase valida su pedido; revocado/cross-owner no opera",
+      "status": "BLOCKED_E2E",
+      "actual": "Guardas/unit mocks previos no equivalen a sesión Clerk y ownership reales; no se inició login ni SDK aquí.",
+      "evidence": "../../../runtime-e2e-evidence/2026-10-15/payments/checkout-current.tap"
+    },
+    {
+      "id": "PAY-G3",
+      "criterion": "Quote fresco y entrada válida",
+      "expected": "Precio/tier server, cantidades válidas, activos/stockflag y total esperado; inválido sin writes",
+      "status": "PASS_LOCAL_ONLY",
+      "actual": "52 pruebas locales previas retenidas, con fuentes sin cambios; no certificar escritura gateway.",
+      "evidence": "../../../runtime-e2e-evidence/2026-10-15/payments/checkout-current.tap"
+    },
+    {
+      "id": "PAY-G4",
+      "criterion": "Binding transacción/intención/owner",
+      "expected": "Transaction ID autoritativo coincide referencia, owner exacto, importe, moneda y entorno",
+      "status": "FAIL",
+      "actual": "PAY-04 cambia reference y aprueba otro owner; PAY-09/10 BAL user%; AUTH-PAY-08 monto distinto cancela objetivo.",
+      "evidence": "retained-16-replay.json"
+    },
+    {
+      "id": "PAY-G5",
+      "criterion": "Creación atómica",
+      "expected": "Header y líneas se confirman juntos o ninguno; caída/retry recupera misma operación",
+      "status": "FAIL_REAL_PG_FIXTURE",
+      "actual": "Writer actual con psqlfinito/PG previo deja1header0items; retry2headers; hash de fuente actual coincide. No repetido.",
+      "evidence": "../../../runtime-e2e-evidence/2026-10-15/payments/private-pg/results.json"
+    },
+    {
+      "id": "PAY-G6",
+      "criterion": "Deduplicación submit/callback/BAL",
+      "expected": "Operación estable y receipt único producen un único efecto aun concurrente",
+      "status": "FAIL",
+      "actual": "PAY-06 dos updates/notificaciones, PAY-11 BAL dos créditos, PAY-15 dos pedidos. Replaysecuencialnormal sólo PASS_MODEL.",
+      "evidence": "retained-16-replay.json"
+    },
+    {
+      "id": "PAY-G7",
+      "criterion": "Estados y desorden",
+      "expected": "Pendiente no habilita fulfillment; transiciones autoritativas conservan estado/efectos consistentes",
+      "status": "PARTIAL_FAIL",
+      "actual": "AUTH-PAY-01..05 controles simples cumplen; AUTH-PAY-06 dos transacciones distintas sin binding dejanCancelado constockdescontado.",
+      "evidence": "authorized-fixture-results.json"
+    },
+    {
+      "id": "PAY-G8",
+      "criterion": "Efectos inventario consistentes",
+      "expected": "Stock/metrics/notificación aplicados una vez y recuperables por receipt/transacción",
+      "status": "FAIL",
+      "actual": "PAY-06 stock8 con2callbacks y2notificaciones; PAY-08 stockupdatefallido devuelve200 sin recuperación. No se efectuaron cobros.",
+      "evidence": "retained-16-replay.json"
+    },
+    {
+      "id": "PAY-G9",
+      "criterion": "Retry y recuperación",
+      "expected": "Fallo antes/después del commit no pierde efecto ni duplica operación; respuesta conserva reintento",
+      "status": "PARTIAL_FAIL",
+      "actual": "AUTH-PAY-07 500→retry200 preserva rechazos; PAY-07 poststatus500→retry200skip pierde inventario. PGexit77 dejóheaderdurable.",
+      "evidence": "authorized-fixture-results.json"
+    },
+    {
+      "id": "PAY-G10",
+      "criterion": "E2E proveedor Sandbox",
+      "expected": "Aprobado/rechazado/pendiente reales Sandbox, entrega webhook y DB aislada trazables sin dinero real",
+      "status": "BLOCKED",
+      "actual": "No hay config Sandbox designada confirmada; se ejecutaron fixtures, no requests/transacciones Sandbox.",
+      "evidence": "environment-inventory.json"
+    }
+  ]
+}

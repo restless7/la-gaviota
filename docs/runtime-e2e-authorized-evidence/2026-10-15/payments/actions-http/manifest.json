@@ -1,0 +1,13 @@
+{
+  "scope": "actions-http subdirectory only; parent frozen manifests unchanged",
+  "files": {
+    "REAL_ACTION_GUARDS_ES.md": "74c4818c24ab143c5b45a4710b45a12ca222cab96826b301d7b169d488c7f685",
+    "action-http-summary.json": "8d710d08d71d732b3505f24867abe00b44f71d461c866ef97b1253f122854b6d",
+    "admin-actions.json": "dfff9014028ea49902e8bb38f29af4baff677d8f7c02fa3a8c01168ac2929ab2",
+    "retail-http-actions.json": "2dcc808990dbce28cac458c7fc0e4892aeadfa873a897b0104dc05735aba9ed4",
+    "retail-owned-history.json": "653aff4998a2cdc21110937d8bcc36f0bdc3d577a69f5631d9813cf9abf18f3f",
+    "retail-users-denied.json": "c49b7f7f73cd47cb9e1cb9e4f8ad55c57e497597ba3700bbf60315bac7585dcf",
+    "run-real-action-guards.cjs": "56654bb3960dcd7138321dfad291ea4a56265c751aa75f094edc142af4840587",
+    "super-actions.json": "d49ddab42f77af91224991b1441260710b7cf60e79ea52e6e959a48557ff8b0a"
+  }
+}

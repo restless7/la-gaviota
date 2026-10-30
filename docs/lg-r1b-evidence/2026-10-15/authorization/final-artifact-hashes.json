@@ -1,0 +1,16 @@
+{
+  "application-security-proposal.patch": "910b8fce50bc87dfa269a22969e463c52563eadd7ceb0dd7b58b7db6e852c3d1",
+  "run-synthetic.cjs": "b49f79c73a7a41cf03e4d450d7aa61dae78e8e5a96b9887a9f31edbe953f49bb",
+  "synthetic-results.json": "a9b57c135d94226b84837cf962bd71b6f4f277ebcc4adbfe32d83cc2a548c563",
+  "proposal-files.json": "f1f75e4f8b2e2bd071ff3b31c660a36ee3a1a476adaf964f8a09e9adeec0e9e8",
+  "callable-inventory.json": "c72ee17ad7b9ab758ee4bf27f1c03ba5e5140db391082f8ce5f30cb42efcc6e1",
+  "callable-coverage-final.json": "2e53b6ed7d0567590f886eb729be351b7a0524e8fd4a0dab2d4babbb5526a071",
+  "role-capability-ownership-matrix.json": "a88a3d0daa04461276ae06da16e155024121229d61215b845664e6078a620883",
+  "ROLE_MATRIX_ES.md": "0d26846ad6193a5d0e0480b6b2d1c9d081159206c1ae4dd951dfcc4da8e79334",
+  "EXACT_PROPOSED_FILES_ES.md": "20669497ed3184d564155675883eb1ed1b09d4fc99b31193f8fbf2b15036a8c6",
+  "typecheck-result.json": "9e5aad33be6bee6ac7d08246a608ff4bc61423fef239cf4482f47f1e80d3fd45",
+  "lint-comparison.json": "f341c1fb14bf7e5120ec924d6266efbcbc815eba13fb176ad822d066c71e95de",
+  "patch-check.json": "a3409763ce5bd811e5927606e3bdea8c7e122a97f5abaa99f2f16b9784a571fd",
+  "source-preservation.json": "887f0fb2685bf911b0dda05494c41ade6abb506213f5906b8a4521b08b79b69e",
+  "HANDOFF_ES.md": "a5cde1438328ae5f1afdb966b5b7b15579f1696b8f378621670ccbef9c1c3e4b"
+}

@@ -1,0 +1,2483 @@
+{
+  "captured_before_phase_harness_publication": true,
+  "files_with_diagnostics": [
+    {
+      "path": "app/(portals)/layout.tsx",
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'useUserRole' is defined but never used.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Image' is defined but never used.",
+          "line": 3,
+          "column": 8
+        }
+      ]
+    },
+    {
+      "path": "app/(portals)/micromercado/MicromercadoClient.tsx",
+      "errors": 8,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 14,
+          "column": 14
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 15,
+          "column": 14
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 16,
+          "column": 14
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 27,
+          "column": 42
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 36,
+          "column": 41
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 38,
+          "column": 39
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 46,
+          "column": 168
+        },
+        {
+          "ruleId": "@next/next/no-html-link-for-pages",
+          "severity": 2,
+          "message": "Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages",
+          "line": 147,
+          "column": 10
+        }
+      ]
+    },
+    {
+      "path": "app/(portals)/micromercado/page.tsx",
+      "errors": 1,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'allOrders' is assigned a value but never used.",
+          "line": 20,
+          "column": 9
+        },
+        {
+          "ruleId": "react-hooks/purity",
+          "severity": 2,
+          "message": "Error: Cannot call impure function during render\n\n`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/(portals)/micromercado/page.tsx:25:58\n  23 |   // Enterprise Recommendation Engine (Simulated): Mixes frequently ordered products with new seasonal items\n  24 |   const activeProducts = products.filter(p => p.isActive && p.stockQuantity > 0);\n> 25 |   const bulkPicks = [...activeProducts].sort(() => 0.5 - Math.random()).slice(0, 4);\n     |                                                          ^^^^^^^^^^^^^ Cannot call impure function\n  26 |\n  27 |   return (\n  28 |     <div className=\"space-y-12\">",
+          "line": 25,
+          "column": 58
+        }
+      ]
+    },
+    {
+      "path": "app/(portals)/restaurante/RestauranteClient.tsx",
+      "errors": 6,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 16,
+          "column": 19
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 18,
+          "column": 18
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 19,
+          "column": 14
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 62,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 66,
+          "column": 42
+        },
+        {
+          "ruleId": "@next/next/no-html-link-for-pages",
+          "severity": 2,
+          "message": "Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages",
+          "line": 143,
+          "column": 10
+        }
+      ]
+    },
+    {
+      "path": "app/(portals)/restaurante/page.tsx",
+      "errors": 1,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "react-hooks/purity",
+          "severity": 2,
+          "message": "Error: Cannot call impure function during render\n\n`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/(portals)/restaurante/page.tsx:27:63\n  25 |   // Enterprise Recommendation Engine (Simulated): Mixes frequently ordered products with new seasonal items\n  26 |   const activeProducts = products.filter(p => p.isActive && p.stockQuantity > 0);\n> 27 |   const wholesalePicks = [...activeProducts].sort(() => 0.5 - Math.random()).slice(0, 4);\n     |                                                               ^^^^^^^^^^^^^ Cannot call impure function\n  28 |\n  29 |   return (\n  30 |     <div className=\"space-y-12\">",
+          "line": 27,
+          "column": 63
+        }
+      ]
+    },
+    {
+      "path": "app/admin/AdminDashboardClient.tsx",
+      "errors": 1,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'initialPendingApplications' is defined but never used.",
+          "line": 135,
+          "column": 3
+        },
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/AdminDashboardClient.tsx:140:5\n  138 |\n  139 |   useEffect(() => {\n> 140 |     setLoading(false);\n      |     ^^^^^^^^^^ Avoid calling setState() directly within an effect\n  141 |   }, []);\n  142 |\n  143 |   if (loading) {",
+          "line": 140,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "path": "app/admin/audit/AuditLogsClient.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Filter' is defined but never used.",
+          "line": 4,
+          "column": 10
+        }
+      ]
+    },
+    {
+      "path": "app/admin/catalog/kits/KitsClient.tsx",
+      "errors": 2,
+      "warnings": 2,
+      "messages": [
+        {
+          "ruleId": "react/no-unescaped-entities",
+          "severity": 2,
+          "message": "`\"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.",
+          "line": 125,
+          "column": 84
+        },
+        {
+          "ruleId": "react/no-unescaped-entities",
+          "severity": 2,
+          "message": "`\"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.",
+          "line": 125,
+          "column": 98
+        },
+        {
+          "ruleId": "@next/next/no-img-element",
+          "severity": 1,
+          "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element",
+          "line": 204,
+          "column": 22
+        },
+        {
+          "ruleId": "@next/next/no-img-element",
+          "severity": 1,
+          "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element",
+          "line": 226,
+          "column": 28
+        }
+      ]
+    },
+    {
+      "path": "app/admin/catalog/product-management/InventoryClient.tsx",
+      "errors": 1,
+      "warnings": 3,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Filter' is defined but never used.",
+          "line": 5,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Save' is defined but never used.",
+          "line": 5,
+          "column": 63
+        },
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/catalog/product-management/InventoryClient.tsx:45:5\n  43 |\n  44 |   React.useEffect(() => {\n> 45 |     setSelectedSubcategory(null);\n     |     ^^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  46 |   }, [selectedCategory]);\n  47 |\n  48 |   const filtered = useMemo(() => {",
+          "line": 45,
+          "column": 5
+        },
+        {
+          "ruleId": "@next/next/no-img-element",
+          "severity": 1,
+          "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element",
+          "line": 221,
+          "column": 33
+        }
+      ]
+    },
+    {
+      "path": "app/admin/catalog/product-management/ProductForm.tsx",
+      "errors": 3,
+      "warnings": 3,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Link' is defined but never used.",
+          "line": 6,
+          "column": 8
+        },
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/catalog/product-management/ProductForm.tsx:43:7\n  41 |   useEffect(() => {\n  42 |     if (availableSubcategories.length > 0 && !availableSubcategories.includes(formData.subcategory)) {\n> 43 |       setFormData(prev => ({ ...prev, subcategory: availableSubcategories[0] }));\n     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  44 |     } else if (availableSubcategories.length === 0) {\n  45 |       setFormData(prev => ({ ...prev, subcategory: '' }));\n  46 |     }",
+          "line": 43,
+          "column": 7
+        },
+        {
+          "ruleId": "react-hooks/exhaustive-deps",
+          "severity": 1,
+          "message": "React Hook useEffect has a missing dependency: 'formData.subcategory'. Either include it or remove the dependency array.",
+          "line": 47,
+          "column": 6
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 107,
+          "column": 21
+        },
+        {
+          "ruleId": "@next/next/no-html-link-for-pages",
+          "severity": 2,
+          "message": "Do not use an `<a>` element to navigate to `/admin/catalog/product-management/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages",
+          "line": 144,
+          "column": 11
+        },
+        {
+          "ruleId": "@next/next/no-img-element",
+          "severity": 1,
+          "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element",
+          "line": 354,
+          "column": 17
+        }
+      ]
+    },
+    {
+      "path": "app/admin/clientes/restaurantes/page.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Search' is defined but never used.",
+          "line": 2,
+          "column": 19
+        }
+      ]
+    },
+    {
+      "path": "app/admin/clientes/usuarios/UserManagementClient.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'error' is defined but never used.",
+          "line": 38,
+          "column": 14
+        }
+      ]
+    },
+    {
+      "path": "app/admin/layout.tsx",
+      "errors": 2,
+      "warnings": 8,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'FileText' is defined but never used.",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'File' is defined but never used.",
+          "line": 16,
+          "column": 3
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Database' is defined but never used.",
+          "line": 18,
+          "column": 3
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Zap' is defined but never used.",
+          "line": 19,
+          "column": 3
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Lightbulb' is defined but never used.",
+          "line": 20,
+          "column": 3
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'BrainCircuit' is defined but never used.",
+          "line": 22,
+          "column": 3
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'PenSquare' is defined but never used.",
+          "line": 23,
+          "column": 3
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Calculator' is defined but never used.",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/layout.tsx:84:5\n  82 |\n  83 |   useEffect(() => {\n> 84 |     setCurrentDate(new Date().toLocaleDateString('es-ES', {\n     |     ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  85 |       weekday: 'long',\n  86 |       year: 'numeric',\n  87 |       month: 'long',",
+          "line": 84,
+          "column": 5
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 178,
+          "column": 41
+        }
+      ]
+    },
+    {
+      "path": "app/admin/marketing/MarketingClient.tsx",
+      "errors": 3,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'ArrowUpRight' is defined but never used.",
+          "line": 4,
+          "column": 73
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 12,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 13,
+          "column": 20
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 14,
+          "column": 13
+        }
+      ]
+    },
+    {
+      "path": "app/admin/marketing/page.tsx",
+      "errors": 3,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 16,
+          "column": 14
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 17,
+          "column": 24
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 18,
+          "column": 17
+        }
+      ]
+    },
+    {
+      "path": "app/admin/orders/OrderKanbanBoard.tsx",
+      "errors": 6,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'AlertTriangle' is defined but never used.",
+          "line": 10,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 15,
+          "column": 113
+        },
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/orders/OrderKanbanBoard.tsx:33:5\n  31 |\n  32 |   React.useEffect(() => {\n> 33 |     setOrders(initialOrders);\n     |     ^^^^^^^^^ Avoid calling setState() directly within an effect\n  34 |   }, [initialOrders]);\n  35 |\n  36 |   React.useEffect(() => {",
+          "line": 33,
+          "column": 5
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 37,
+          "column": 30
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 47,
+          "column": 19
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 121,
+          "column": 23
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 192,
+          "column": 45
+        }
+      ]
+    },
+    {
+      "path": "app/admin/orders/OrderSummarySheet.tsx",
+      "errors": 1,
+      "warnings": 4,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'updateOrderStatus' is defined but never used.",
+          "line": 4,
+          "column": 36
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'ArrowRight' is defined but never used.",
+          "line": 5,
+          "column": 55
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'error' is defined but never used.",
+          "line": 37,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 50,
+          "column": 23
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'error' is defined but never used.",
+          "line": 63,
+          "column": 16
+        }
+      ]
+    },
+    {
+      "path": "app/admin/orders/ProcurementSheet.tsx",
+      "errors": 1,
+      "warnings": 2,
+      "messages": [
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/orders/ProcurementSheet.tsx:34:5\n  32 |\n  33 |   useEffect(() => {\n> 34 |     loadData();\n     |     ^^^^^^^^ Avoid calling setState() directly within an effect\n  35 |   }, [statuses]);\n  36 |\n  37 |   const totalRequired = items.reduce((acc, i) => acc + i.quantity, 0);",
+          "line": 34,
+          "column": 5
+        },
+        {
+          "ruleId": "react-hooks/exhaustive-deps",
+          "severity": 1,
+          "message": "React Hook useEffect has a missing dependency: 'loadData'. Either include it or remove the dependency array.",
+          "line": 35,
+          "column": 6
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'totalRequired' is assigned a value but never used.",
+          "line": 37,
+          "column": 9
+        }
+      ]
+    },
+    {
+      "path": "app/admin/pricing/PricingClient.tsx",
+      "errors": 3,
+      "warnings": 2,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Save' is defined but never used.",
+          "line": 4,
+          "column": 22
+        },
+        {
+          "ruleId": "react/display-name",
+          "severity": 2,
+          "message": "Component definition is missing display name",
+          "line": 18,
+          "column": 20
+        },
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/pricing/PricingClient.tsx:36:5\n  34 |   // Sync with parent state if it changes externally (e.g. macro update or dynamic margin applied)\n  35 |   React.useEffect(() => {\n> 36 |     setLocalCost(product.cost.toString());\n     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  37 |     setLocalRetail(product.priceRetail.toString());\n  38 |     setLocalMicro(product.priceMicro.toString());\n  39 |     setLocalRestaurant(product.priceRestaurant.toString());",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/pricing/PricingClient.tsx:197:5\n  195 |   // Sync state if initialProducts changes due to server revalidation\n  196 |   React.useEffect(() => {\n> 197 |     setEditableProducts(\n      |     ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  198 |       initialProducts.map(p => ({\n  199 |         id: p.id,\n  200 |         name: p.name,",
+          "line": 197,
+          "column": 5
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'formatCOP' is assigned a value but never used.",
+          "line": 235,
+          "column": 9
+        }
+      ]
+    },
+    {
+      "path": "app/admin/reports/ReportsClient.tsx",
+      "errors": 4,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 10,
+          "column": 14
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 11,
+          "column": 18
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 85,
+          "column": 45
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 91,
+          "column": 23
+        }
+      ]
+    },
+    {
+      "path": "app/admin/reports/consolidation/page.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Calendar' is defined but never used.",
+          "line": 2,
+          "column": 46
+        }
+      ]
+    },
+    {
+      "path": "app/admin/settings/SettingsClient.tsx",
+      "errors": 3,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'error' is defined but never used.",
+          "line": 22,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 28,
+          "column": 60
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 156,
+          "column": 53
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 157,
+          "column": 127
+        }
+      ]
+    },
+    {
+      "path": "app/admin/solicitudes/page.tsx",
+      "errors": 1,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/app/admin/solicitudes/page.tsx:54:5\n  52 |\n  53 |   useEffect(() => {\n> 54 |     loadApplications();\n     |     ^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  55 |   }, []);\n  56 |\n  57 |   const handleApprove = async (app: BusinessApplication) => {",
+          "line": 54,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "path": "app/admin/suppliers/SupplierTable.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Truck' is defined but never used.",
+          "line": 4,
+          "column": 39
+        }
+      ]
+    },
+    {
+      "path": "app/api/marketing/lead-capture/route.ts",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'triggerOrderNotification' is defined but never used.",
+          "line": 4,
+          "column": 10
+        }
+      ]
+    },
+    {
+      "path": "app/aplicar-negocio/page.tsx",
+      "errors": 1,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'Building2' is defined but never used.",
+          "line": 7,
+          "column": 10
+        },
+        {
+          "ruleId": "@next/next/no-html-link-for-pages",
+          "severity": 2,
+          "message": "Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages",
+          "line": 127,
+          "column": 11
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1b-evidence/2026-10-15/authorization/run-synthetic.cjs",
+      "errors": 7,
+      "warnings": 5,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 69
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 94
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'base_cost' is assigned a value but never used.",
+          "line": 27,
+          "column": 42
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 64
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 81
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 102
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 49,
+          "column": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1b-evidence/2026-10-15/qa/deny-network.cjs",
+      "errors": 4,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'args' is defined but never used.",
+          "line": 3,
+          "column": 24
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 4,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 5,
+          "column": 55
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 6,
+          "column": 61
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1b-evidence/2026-10-15/qa/independent-extra.cjs",
+      "errors": 7,
+      "warnings": 9,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 69
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 94
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'base_cost' is assigned a value but never used.",
+          "line": 27,
+          "column": 42
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 64
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 81
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 102
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 49,
+          "column": 2
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'baseline' is assigned a value but never used.",
+          "line": 56,
+          "column": 36
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'denied' is defined but never used.",
+          "line": 59,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'args' is assigned a value but never used.",
+          "line": 61,
+          "column": 7
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'png' is defined but never used.",
+          "line": 62,
+          "column": 10
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1b-evidence/2026-10-15/qa/inspect-callables.cjs",
+      "errors": 4,
+      "warnings": 3,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 34
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'crypto' is assigned a value but never used.",
+          "line": 1,
+          "column": 55
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 62
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'body' is defined but never used.",
+          "line": 7,
+          "column": 711
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'k' is assigned a value but never used.",
+          "line": 8,
+          "column": 136
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1b-evidence/2026-10-15/qa/inspect-financial-delta.cjs",
+      "errors": 4,
+      "warnings": 3,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 34
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'crypto' is assigned a value but never used.",
+          "line": 1,
+          "column": 55
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 62
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'body' is defined but never used.",
+          "line": 7,
+          "column": 711
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'k' is assigned a value but never used.",
+          "line": 8,
+          "column": 136
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1b-evidence/2026-10-15/qa/replay-author.cjs",
+      "errors": 7,
+      "warnings": 5,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 69
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 94
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'base_cost' is assigned a value but never used.",
+          "line": 27,
+          "column": 42
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 64
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 81
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 102
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 49,
+          "column": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1b-evidence/2026-10-15/reproducibility/deny-network.cjs",
+      "errors": 4,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'args' is defined but never used.",
+          "line": 3,
+          "column": 24
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 4,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 5,
+          "column": 55
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 6,
+          "column": 61
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/implementation/middleware-context-regression.cjs",
+      "errors": 7,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 69
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 100
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 4,
+          "column": 10
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 15,
+          "column": 424
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/implementation/run-implemented-synthetic.cjs",
+      "errors": 7,
+      "warnings": 5,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 75
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 100
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'base_cost' is assigned a value but never used.",
+          "line": 34,
+          "column": 42
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_micro' is assigned a value but never used.",
+          "line": 34,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_restaurant' is assigned a value but never used.",
+          "line": 34,
+          "column": 64
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_micro' is assigned a value but never used.",
+          "line": 34,
+          "column": 81
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_restaurant' is assigned a value but never used.",
+          "line": 34,
+          "column": 102
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 58,
+          "column": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/qa/deny-network.cjs",
+      "errors": 4,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'args' is defined but never used.",
+          "line": 3,
+          "column": 24
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 4,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 5,
+          "column": 55
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 6,
+          "column": 61
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/qa/independent-context.cjs",
+      "errors": 7,
+      "warnings": 9,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 69
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 94
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'base_cost' is assigned a value but never used.",
+          "line": 27,
+          "column": 42
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 64
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 81
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 102
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 49,
+          "column": 2
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'baseline' is assigned a value but never used.",
+          "line": 56,
+          "column": 36
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'denied' is defined but never used.",
+          "line": 59,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'args' is assigned a value but never used.",
+          "line": 61,
+          "column": 7
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'png' is defined but never used.",
+          "line": 62,
+          "column": 10
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/qa/independent-extra.cjs",
+      "errors": 7,
+      "warnings": 9,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 69
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 94
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'base_cost' is assigned a value but never used.",
+          "line": 27,
+          "column": 42
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 64
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_micro' is assigned a value but never used.",
+          "line": 27,
+          "column": 81
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_restaurant' is assigned a value but never used.",
+          "line": 27,
+          "column": 102
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 49,
+          "column": 2
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'baseline' is assigned a value but never used.",
+          "line": 56,
+          "column": 36
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'denied' is defined but never used.",
+          "line": 59,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'args' is assigned a value but never used.",
+          "line": 61,
+          "column": 7
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'png' is defined but never used.",
+          "line": 62,
+          "column": 10
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/qa/inspect-callables.cjs",
+      "errors": 4,
+      "warnings": 3,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 34
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'crypto' is assigned a value but never used.",
+          "line": 1,
+          "column": 55
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 62
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'body' is defined but never used.",
+          "line": 7,
+          "column": 711
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'k' is assigned a value but never used.",
+          "line": 8,
+          "column": 136
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/qa/inspect-financial-delta.cjs",
+      "errors": 4,
+      "warnings": 3,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 34
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'crypto' is assigned a value but never used.",
+          "line": 1,
+          "column": 55
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 62
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'body' is defined but never used.",
+          "line": 7,
+          "column": 711
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'k' is assigned a value but never used.",
+          "line": 8,
+          "column": 136
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/qa/replay-implemented.cjs",
+      "errors": 7,
+      "warnings": 5,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 75
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 100
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'base_cost' is assigned a value but never used.",
+          "line": 34,
+          "column": 42
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_micro' is assigned a value but never used.",
+          "line": 34,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'price_restaurant' is assigned a value but never used.",
+          "line": 34,
+          "column": 64
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_micro' is assigned a value but never used.",
+          "line": 34,
+          "column": 81
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'previous_price_restaurant' is assigned a value but never used.",
+          "line": 34,
+          "column": 102
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 58,
+          "column": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/qa/replay-middleware-context.cjs",
+      "errors": 7,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 27
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 46
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 69
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 100
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 4,
+          "column": 10
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 15,
+          "column": 424
+        }
+      ]
+    },
+    {
+      "path": "docs/lg-r1c-evidence/2026-10-15/reproducibility/deny-network.cjs",
+      "errors": 4,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'args' is defined but never used.",
+          "line": 3,
+          "column": 24
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 4,
+          "column": 52
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 5,
+          "column": 55
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 6,
+          "column": 61
+        }
+      ]
+    },
+    {
+      "path": "inspect_edward.ts",
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'err1' is assigned a value but never used.",
+          "line": 10,
+          "column": 34
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'err2' is assigned a value but never used.",
+          "line": 19,
+          "column": 34
+        }
+      ]
+    },
+    {
+      "path": "scripts/migrate-categories.ts",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'count' is assigned a value but never used.",
+          "line": 33,
+          "column": 20
+        }
+      ]
+    },
+    {
+      "path": "scripts/seed-gaviota.ts",
+      "errors": 3,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/ban-ts-comment",
+          "severity": 2,
+          "message": "Use \"@ts-expect-error\" instead of \"@ts-ignore\", as \"@ts-ignore\" will do nothing if the following line is error-free.",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "ruleId": "@typescript-eslint/ban-ts-comment",
+          "severity": 2,
+          "message": "Use \"@ts-expect-error\" instead of \"@ts-ignore\", as \"@ts-ignore\" will do nothing if the following line is error-free.",
+          "line": 29,
+          "column": 3
+        },
+        {
+          "ruleId": "@typescript-eslint/ban-ts-comment",
+          "severity": 2,
+          "message": "Use \"@ts-expect-error\" instead of \"@ts-ignore\", as \"@ts-ignore\" will do nothing if the following line is error-free.",
+          "line": 31,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "path": "scripts/seedSuppliers.js",
+      "errors": 3,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 26
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 14
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'data' is assigned a value but never used.",
+          "line": 94,
+          "column": 11
+        }
+      ]
+    },
+    {
+      "path": "scripts/test-fetch2.ts",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'error' is assigned a value but never used.",
+          "line": 13,
+          "column": 17
+        }
+      ]
+    },
+    {
+      "path": "scripts/test-webhook-fraud.js",
+      "errors": 4,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 26
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 6,
+          "column": 14
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'error' is defined but never used.",
+          "line": 128,
+          "column": 20
+        }
+      ]
+    },
+    {
+      "path": "scripts/test.js",
+      "errors": 1,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 1,
+          "column": 26
+        }
+      ]
+    },
+    {
+      "path": "src/actions/analytics.ts",
+      "errors": 2,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 43,
+          "column": 40
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 171,
+          "column": 23
+        }
+      ]
+    },
+    {
+      "path": "src/actions/orders.ts",
+      "errors": 1,
+      "warnings": 2,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 131,
+          "column": 23
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'totalRevenue' is assigned a value but never used.",
+          "line": 356,
+          "column": 9
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'totalProcessed' is assigned a value but never used.",
+          "line": 357,
+          "column": 9
+        }
+      ]
+    },
+    {
+      "path": "src/actions/products.ts",
+      "errors": 1,
+      "warnings": 2,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'CATEGORIES' is defined but never used.",
+          "line": 11,
+          "column": 10
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 165,
+          "column": 18
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'user' is assigned a value but never used.",
+          "line": 210,
+          "column": 9
+        }
+      ]
+    },
+    {
+      "path": "src/actions/users.ts",
+      "errors": 2,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 29,
+          "column": 62
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 70,
+          "column": 19
+        }
+      ]
+    },
+    {
+      "path": "src/components/RoleSwitcher.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'React' is defined but never used.",
+          "line": 3,
+          "column": 8
+        }
+      ]
+    },
+    {
+      "path": "src/components/checkout/CheckoutUpsell.tsx",
+      "errors": 0,
+      "warnings": 2,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'addToCart' is assigned a value but never used.",
+          "line": 8,
+          "column": 11
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'i' is defined but never used.",
+          "line": 29,
+          "column": 39
+        }
+      ]
+    },
+    {
+      "path": "src/components/checkout/DeliveryScheduler.tsx",
+      "errors": 1,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "react-hooks/set-state-in-effect",
+          "severity": 2,
+          "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota/src/components/checkout/DeliveryScheduler.tsx:27:5\n  25 |\n  26 |   React.useEffect(() => {\n> 27 |     setNextDelivery(getNextBusinessDay());\n     |     ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  28 |   }, []);\n  29 |\n  30 |   if (!nextDelivery) {",
+          "line": 27,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "path": "src/components/portals/OrderHistoryClient.tsx",
+      "errors": 5,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 30,
+          "column": 75
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 30,
+          "column": 100
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 35,
+          "column": 54
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 45,
+          "column": 38
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 2,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 150,
+          "column": 52
+        }
+      ]
+    },
+    {
+      "path": "src/lib/metaCapi.ts",
+      "errors": 1,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 32,
+          "column": 18
+        }
+      ]
+    },
+    {
+      "path": "test_single.ts",
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'fetchError' is assigned a value but never used.",
+          "line": 13,
+          "column": 38
+        }
+      ]
+    },
+    {
+      "path": "tests/checkout.test.cjs",
+      "errors": 8,
+      "warnings": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 2,
+          "column": 18
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 3,
+          "column": 16
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 4,
+          "column": 12
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 5,
+          "column": 14
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 6,
+          "column": 12
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 7,
+          "column": 12
+        },
+        {
+          "ruleId": "@typescript-eslint/no-require-imports",
+          "severity": 2,
+          "message": "A `require()` style import is forbidden.",
+          "line": 8,
+          "column": 16
+        },
+        {
+          "ruleId": "@next/next/no-assign-module-variable",
+          "severity": 2,
+          "message": "Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable",
+          "line": 13,
+          "column": 3
+        }
+      ]
+    }
+  ]
+}

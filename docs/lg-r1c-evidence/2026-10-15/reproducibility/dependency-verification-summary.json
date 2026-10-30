@@ -1,0 +1,50 @@
+{
+  "locked_entries": 617,
+  "downloadable_tarballs": 610,
+  "all_registry_https": true,
+  "all_tarballs_sha512": true,
+  "missing_tarball_integrity": [],
+  "bundled_without_resolved": [
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/core",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/runtime",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/wasi-threads",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@napi-rs/wasm-runtime",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@tybys/wasm-util",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/tslib"
+  ],
+  "installed_entries": 539,
+  "version_mismatches": [],
+  "direct_count": 26,
+  "direct_all_exact": true,
+  "peer_top_problems": [
+    "extraneous: @emnapi/runtime@1.11.3 /tmp/la-gaviota-lg-r1c-20261015/application/node_modules/@emnapi/runtime",
+    "extraneous: @img/sharp-wasm32@0.35.5 /tmp/la-gaviota-lg-r1c-20261015/application/node_modules/@img/sharp-wasm32"
+  ],
+  "lifecycle_entries_in_lock": [
+    "node_modules/@clerk/backend/node_modules/@clerk/shared",
+    "node_modules/@clerk/clerk-react/node_modules/@clerk/shared",
+    "node_modules/@clerk/nextjs/node_modules/@clerk/shared",
+    "node_modules/@clerk/types/node_modules/@clerk/shared",
+    "node_modules/@prisma/engines",
+    "node_modules/prisma",
+    "node_modules/unrs-resolver"
+  ],
+  "audit_full": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 9,
+    "critical": 0,
+    "total": 12
+  },
+  "audit_omit_dev": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 4,
+    "critical": 0,
+    "total": 7
+  },
+  "scripts_disabled": true,
+  "cryptographic_boundary": "npmci tarball integrity enforced by npm; no separate maintainer signature/provenance attestation claimed"
+}

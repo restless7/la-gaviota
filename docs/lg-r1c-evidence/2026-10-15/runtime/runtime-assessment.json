@@ -1,0 +1,14 @@
+{
+  "network_trace_bytes": 21628,
+  "connect_calls_total": 31,
+  "full_framework_build": "BLOCKED",
+  "blocker": "next/font/google Inter download unavailable by intentional kernel network isolation",
+  "sdk_runtime": "NOT_TESTED",
+  "first_attempt": "HARNESS_DIAGNOSTIC_RSS_PARSER_BUG, not app failure",
+  "tracked_files_preserved": true,
+  "af_inet_connect_attempts": 27,
+  "external_dns_attempts": 16,
+  "external_dns_success_observed": 0,
+  "loopback_connect_attempts_blocked": 11,
+  "limitation": "Fresh namespace loopback remained down, so internal loopback worker connections also blocked; build failure output identifies Inter fetch, and no completed bundling/runtime PASS is inferred."
+}

@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-15 America/Bogota",
+  "mode": "PROPOSALS_AND_ISOLATED_VERIFICATION_ONLY",
+  "baseline": "49add73ae90b837c36553a0f2b535267c9610143",
+  "remote_mission_control": "UNAVAILABLE",
+  "tasks": [
+    {
+      "id": "r1-1",
+      "owner": "Freya + Release Engineering",
+      "task": "Baseline/preservation, read-only exposure triage and parity evidence",
+      "status": "stopped_at_directive_gate"
+    },
+    {
+      "id": "r1-2",
+      "owner": "Security Architect",
+      "task": "Role/capability/ownership matrix and proposed action patches with synthetic source tests",
+      "status": "stopped_at_directive_gate"
+    },
+    {
+      "id": "r1-3",
+      "owner": "PostgreSQL/Supabase Security Architect",
+      "task": "Client migration design, proposed policies and disposable database allow/deny tests",
+      "status": "stopped_at_directive_gate"
+    },
+    {
+      "id": "r1-4",
+      "owner": "Release Engineering / QA",
+      "task": "Dependency lock reconciliation, clean-install baseline, advisory applicability",
+      "status": "stopped_at_directive_gate"
+    },
+    {
+      "id": "r1-5",
+      "owner": "Freya + independent reviewers",
+      "task": "Canonical roadmap addendum, focused LG-R1 record, exact approval gate and final preservation",
+      "status": "stop_handoff_complete"
+    }
+  ],
+  "restrictions": [
+    "No application code edits",
+    "No production mutation or live auth experiments",
+    "No payment/financial refactor or UX redesign",
+    "No commit/push/deploy"
+  ],
+  "outcome": "STOPPED_STAGE1_INCIDENT_RISK_ESCALATION",
+  "complete_stages": [],
+  "note": "No application/policy patches produced and no new authorization/DB acceptance tests. Only metadata, dry-run and cleanup preceded final documentation."
+}

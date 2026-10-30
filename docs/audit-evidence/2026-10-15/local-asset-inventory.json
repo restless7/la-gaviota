@@ -1,0 +1,2428 @@
+[
+  {
+    "path": "public/next.svg",
+    "url": "/next.svg",
+    "bytes": 1375,
+    "sha256": "55995dfad6ecb4945a1e856ddca03c5e16aa5bf13fd21b4df6a74ae79357bcfc",
+    "references": [],
+    "tracked": true,
+    "decodable": null,
+    "decode_error": null,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/mascota.png",
+    "url": "/mascota.png",
+    "bytes": 252213,
+    "sha256": "a63391b1981c45bdd15288bc04eb317024fdd9d5e692aac6f92a436c66aeb849",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "P",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/file.svg",
+    "url": "/file.svg",
+    "bytes": 391,
+    "sha256": "2b67812c325c199a02536cdbeea0c593a72f707d323b72ee3e08dbab06753bd4",
+    "references": [],
+    "tracked": true,
+    "decodable": null,
+    "decode_error": null,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/vercel.svg",
+    "url": "/vercel.svg",
+    "bytes": 128,
+    "sha256": "f081337b2fee635b455b63275406a3e7f39d6a014e25ad90dab5a67e62a12ac4",
+    "references": [],
+    "tracked": true,
+    "decodable": null,
+    "decode_error": null,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/globe.svg",
+    "url": "/globe.svg",
+    "bytes": 1035,
+    "sha256": "b614b9bf183925957661ac851498fe1d8029fd43a62fbfed86f9e2624a57e7cf",
+    "references": [],
+    "tracked": true,
+    "decodable": null,
+    "decode_error": null,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/window.svg",
+    "url": "/window.svg",
+    "bytes": 385,
+    "sha256": "644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1",
+    "references": [],
+    "tracked": true,
+    "decodable": null,
+    "decode_error": null,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_7147tr7147tr7147.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_7147tr7147tr7147.png",
+    "bytes": 6790686,
+    "sha256": "68ba91b301171a5fdd9e25d268510285650976b313ee186eadf0a03b1cb9bc4c",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_ql2btfql2btfql2b.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_ql2btfql2btfql2b.png",
+    "bytes": 1671351,
+    "sha256": "7e95af6a36eeaf4a2b36fc8f0079025034ff4d76b0fe4bb9d72e8150df2cf77a",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_kttrc0kttrc0kttr.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_kttrc0kttrc0kttr.png",
+    "bytes": 7527880,
+    "sha256": "7ebffccaf96f1ee3c07fcaaf0fc4aff378b27a605530881702808f8175058b3a",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_k58dk6k58dk6k58d.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_k58dk6k58dk6k58d.png",
+    "bytes": 7511567,
+    "sha256": "267cef808a7d7974eb8303dc19005d3a47acb072e30c7b36322f5e908504860a",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_mtt3hcmtt3hcmtt3.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_mtt3hcmtt3hcmtt3.png",
+    "bytes": 1515900,
+    "sha256": "ac83de3f4822f66bbd039da94161857186286251a9c94181c3e432860fb1a226",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_ecamezecamezecam.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_ecamezecamezecam.png",
+    "bytes": 6437114,
+    "sha256": "3017249976ac2dbf88efa40be8d1b89071bc65eed045f242d3e839336a2b9020",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/fp2yf.jpg",
+    "url": "/PRODUCTS/fp2yf.jpg",
+    "bytes": 195820,
+    "sha256": "3fc1833863244d626d215c1c19399be1127f1ff06319b1d6ae5f2cac7bf32abe",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 784,
+    "height": 1168,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_l6rorkl6rorkl6ro.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_l6rorkl6rorkl6ro.png",
+    "bytes": 6224451,
+    "sha256": "d970b1d879a4819fcee14d0a6cb66742af18946e7b47fcdd2fc529d4c0c80484",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_4qv4l04qv4l04qv4.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_4qv4l04qv4l04qv4.png",
+    "bytes": 5630999,
+    "sha256": "da2f2e0b10c7fce7bb5bdc9f6abea7dd74bd7f965dbb809ff0811f2e8886c60d",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_ej4rrvej4rrvej4r.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_ej4rrvej4rrvej4r.png",
+    "bytes": 7019551,
+    "sha256": "b4cb5420f9cf168e2352e3f050fcdb8d5a321b17b75fce93c2c0ea29362cc7e6",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_4dt2m24dt2m24dt2.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_4dt2m24dt2m24dt2.png",
+    "bytes": 6154826,
+    "sha256": "9abdcfeed7b883c72b380d4357a34bc7b44f69501e2d29d32b6a8abc3435b7f0",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_f77au1f77au1f77a.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_f77au1f77au1f77a.png",
+    "bytes": 1775355,
+    "sha256": "c3afc15ed54b3e98d12581830d395a4d7ca27307e7500effaf15416310c1566e",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_y1sbg8y1sbg8y1sb.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_y1sbg8y1sbg8y1sb.png",
+    "bytes": 5497163,
+    "sha256": "88979f4fb024e9f5e7d9a6edbcd0c4b63a7c0ef0bf9923a0bb7a1f321c0e892c",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/ChatGPT Image May 12, 2026, 07_13_51 PM.png",
+    "url": "/PRODUCTS/ChatGPT Image May 12, 2026, 07_13_51 PM.png",
+    "bytes": 1809679,
+    "sha256": "4e1a4fc3750e7abaa77a61a833381e193a9a566387a76b37305cc6271295eb68",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1529,
+    "height": 1029,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_24ppx124ppx124pp.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_24ppx124ppx124pp.png",
+    "bytes": 6114595,
+    "sha256": "1fcfcad9c88a730123156392e869f76a02ab9da2fc925aaa4b315a87e82682bf",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/granadilla-libra.jpg",
+    "url": "/PRODUCTS/granadilla-libra.jpg",
+    "bytes": 92054,
+    "sha256": "d651a7794ad5e3a590af311014d6741ec78986a19efe6e1f844f274396711a58",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 750,
+    "height": 750,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/download (2).jpeg",
+    "url": "/PRODUCTS/download (2).jpeg",
+    "bytes": 10624,
+    "sha256": "a58657b501d470d1ffad9998baca987583880d2bc7cb7788d30dec69132f2008",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 259,
+    "height": 194,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_v7tbh9v7tbh9v7tb.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_v7tbh9v7tbh9v7tb.png",
+    "bytes": 7072427,
+    "sha256": "c5137aaa6ad560af8e52044eb1ead35891d277c5e265f46a39a1ce88b59c2ab1",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/uhviN.jpg",
+    "url": "/PRODUCTS/uhviN.jpg",
+    "bytes": 207513,
+    "sha256": "4dd6bf9123a643871cb9113db186be84443de9504ccee38d2a538d01fddd91a2",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 784,
+    "height": 1168,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_iyeo5ciyeo5ciyeo.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_iyeo5ciyeo5ciyeo.png",
+    "bytes": 6135034,
+    "sha256": "92cdbffe52ba94dbc589d8527b0d3c6064bbb26639dc93acecc4d917b360d4c6",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_i6k6hwi6k6hwi6k6.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_i6k6hwi6k6hwi6k6.png",
+    "bytes": 1507121,
+    "sha256": "457427116d1218f0e630530b606bd261d6ed3ae4aec2d8798634d702d4f1b862",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_8qi7u8qi7u8qi7u8.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_8qi7u8qi7u8qi7u8.png",
+    "bytes": 1648672,
+    "sha256": "55abca249e066ddb3ac3d4c87dfbb1ec45034003d8a8233602417b1d485a9b70",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_ugvuuhugvuuhugvu.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_ugvuuhugvuuhugvu.png",
+    "bytes": 1609921,
+    "sha256": "30e78cbdd014bf4127fa25a66f21046ad3c8f81220464a5d844c567f8734ba66",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_p04yerp04yerp04y.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_p04yerp04yerp04y.png",
+    "bytes": 6286894,
+    "sha256": "1a484f4c56007d380fbbd13fcaf8fd0ccc459b85f1274eb2578e63a3c9db034a",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_81puzn81puzn81pu.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_81puzn81puzn81pu.png",
+    "bytes": 1574010,
+    "sha256": "11f2bf2e98069f96aec945c84637bd4182a1fe7eb1bf5e2db613e7d608a7a86a",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_jduinsjduinsjdui.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_jduinsjduinsjdui.png",
+    "bytes": 5802585,
+    "sha256": "dc4f828c77c3b8fddae6c54c51e9ca2a0f1fae1359e898d113a6c68b28f35f76",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_mtc5vlmtc5vlmtc5.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_mtc5vlmtc5vlmtc5.png",
+    "bytes": 1584680,
+    "sha256": "a2fbaaf3e8608e773b930fef1c15cd3a4697aa7b3d14d72cfc9d19fab6414cec",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/cbUZi.jpg",
+    "url": "/PRODUCTS/cbUZi.jpg",
+    "bytes": 275780,
+    "sha256": "82112e34adc9d7d43c3253ef097449d4ec43945fdc37f01d2dab38e1fa640849",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 784,
+    "height": 1168,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_pjwncdpjwncdpjwn.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_pjwncdpjwncdpjwn.png",
+    "bytes": 6972830,
+    "sha256": "400f475321c678014fff35a24d999044387c701d22e418f0ad01055f50783b6d",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_rl5lolrl5lolrl5l.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_rl5lolrl5lolrl5l.png",
+    "bytes": 5608189,
+    "sha256": "0b326e8de7d3200fb325e8414781525929b5bf342c3ab76e8d67cab32875b2db",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_nkhe6enkhe6enkhe.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_nkhe6enkhe6enkhe.png",
+    "bytes": 6916776,
+    "sha256": "eda02466cfe5f4edd32ec6196fb9a396bef4865ac7775b9bc717739bbe5f28c6",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_ganmprganmprganm.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_ganmprganmprganm.png",
+    "bytes": 6822821,
+    "sha256": "0e468cd5304e39bcaee669daece5ef871fbebbfe2086fc5c19649d3f1d5669ba",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_8iea8p8iea8p8iea.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_8iea8p8iea8p8iea.png",
+    "bytes": 1895793,
+    "sha256": "646f76616b94b4895351c5a0dad379ee1bf27465e81c59681604a3e0af80eb51",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_jx99cqjx99cqjx99.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_jx99cqjx99cqjx99.png",
+    "bytes": 6592922,
+    "sha256": "62e53162b4d7afb68175bd9260cf59e4f92abeb0c9c194403ca428bff4eda3f1",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_xyuadkxyuadkxyua.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_xyuadkxyuadkxyua.png",
+    "bytes": 6352804,
+    "sha256": "9270f167ff5ed433f465442879309236bb2900a49387a5a71492e20edc5890b4",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_xx16gcxx16gcxx16.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_xx16gcxx16gcxx16.png",
+    "bytes": 5473483,
+    "sha256": "e04349f068950c7958d1070fe1ef33774c7a0c152cea67ce1e18cf9bd164d52f",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/download (3).jpeg",
+    "url": "/PRODUCTS/download (3).jpeg",
+    "bytes": 11522,
+    "sha256": "0b0c49a5f2e173a5928a16a2ad41ee9c1103e711f8c1ae45624545f65a9f13a4",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 247,
+    "height": 204,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_jjemi5jjemi5jjem.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_jjemi5jjemi5jjem.png",
+    "bytes": 7127589,
+    "sha256": "e0b947144f13016f5817c74d1876c05d7b03c6ba6ca69bd9cae17381b6c4502d",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_95j51x95j51x95j5.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_95j51x95j51x95j5.png",
+    "bytes": 6547238,
+    "sha256": "f6ec5a7ba88e08af7ae63b95672e8c5ae7d89d632b543165daf2af029256643d",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_n19mlon19mlon19m.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_n19mlon19mlon19m.png",
+    "bytes": 6035816,
+    "sha256": "17f0331349c6f3a99d805e0449056d6fbfca451f9747b919eba50b189958517a",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_j161qtj161qtj161.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_j161qtj161qtj161.png",
+    "bytes": 6438696,
+    "sha256": "b4b4a6efa4e68a73ecec813c18acd93b9c2634e7e73c0550b6fb23e12f3da0be",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_dkzlp5dkzlp5dkzl.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_dkzlp5dkzlp5dkzl.png",
+    "bytes": 1670049,
+    "sha256": "35c2a4682397426b9fae36125510526977a829790b4fce0c5cd8c4f48283b1fa",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_7399pc7399pc7399.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_7399pc7399pc7399.png",
+    "bytes": 7128836,
+    "sha256": "8716ae46575fdbeee3026ceb045d2f9be27215e92fcd85285855fa46c8f06caf",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_9wt3g69wt3g69wt3.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_9wt3g69wt3g69wt3.png",
+    "bytes": 6259495,
+    "sha256": "57b10384c02ba0074536eff3835795f52de5f2856581b070d09f525e802ce39b",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_3ww793ww793ww793.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_3ww793ww793ww793.png",
+    "bytes": 6757610,
+    "sha256": "827eeb583c55926929ba4b21c64b2705f9a7a8cd309ffe9290f80184a571642f",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_w3yxw1w3yxw1w3yx.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_w3yxw1w3yxw1w3yx.png",
+    "bytes": 6703934,
+    "sha256": "7b07d6ada59c7eb9b2c86f80e24611e88c25acc9dc1f2af799369bd53da3ceae",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_pllgyzpllgyzpllg.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_pllgyzpllgyzpllg.png",
+    "bytes": 6159370,
+    "sha256": "f72ee7da95d6a0108b4c3694405008a91591582b88b3e680230d2b1a82c56324",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/cCR1K.jpg",
+    "url": "/PRODUCTS/cCR1K.jpg",
+    "bytes": 350801,
+    "sha256": "279955db89ef009012ae5d529850bfd9c9dca5ce34e689a1a28ba80b8a227f24",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 784,
+    "height": 1168,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_18ats918ats918at.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_18ats918ats918at.png",
+    "bytes": 1436604,
+    "sha256": "f126b13eac6cb5d27bf1a13ec8def01c185773ffce833b6eb092b1073936522d",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_ssfy3cssfy3cssfy.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_ssfy3cssfy3cssfy.png",
+    "bytes": 1097503,
+    "sha256": "f5b7c9b47c0a8b982eed794dbe92a1f8c7efa50cd729edf758936b1d9920b623",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/naranjas-ok.png",
+    "url": "/PRODUCTS/naranjas-ok.png",
+    "bytes": 227391,
+    "sha256": "460a4dc6b3075bc78500687a712639e42da3d756fbe74dc1d6bbf133b76cc35b",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 479,
+    "height": 414,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/KBBNQRM5ZNKHNMT2TCXNHI5U4A.jpg",
+    "url": "/PRODUCTS/KBBNQRM5ZNKHNMT2TCXNHI5U4A.jpg",
+    "bytes": 59792,
+    "sha256": "dc8844187f949a3aa3145a56115765835f500923b57a8df63c7b0e70c3650fb8",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 770,
+    "height": 513,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/co81Z.jpg",
+    "url": "/PRODUCTS/co81Z.jpg",
+    "bytes": 327381,
+    "sha256": "ebf1b7c48a9a7f6cf098c85e2fd88e6dd028b64169ce7cc2fedf368049b810a5",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 784,
+    "height": 1168,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_egenpkegenpkegen.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_egenpkegenpkegen.png",
+    "bytes": 1558633,
+    "sha256": "f2fdb774e605882b9daf57706fa7a262eb8308db07f1a7f6d15496b83a31842c",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_pfa2ajpfa2ajpfa2.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_pfa2ajpfa2ajpfa2.png",
+    "bytes": 1631816,
+    "sha256": "a96406d9de1252925aa121a46e8465c60f73397be3d0d4d1a816d85fbf348fa5",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_6o430d6o430d6o43.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_6o430d6o430d6o43.png",
+    "bytes": 6600734,
+    "sha256": "a608657af17398af362f4e022fe41b49e6f4e1fafffe15c03d689abeb7b34f6f",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_qrsrz0qrsrz0qrsr.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_qrsrz0qrsrz0qrsr.png",
+    "bytes": 1817481,
+    "sha256": "e39542c62b4628a7010ee492984afd4bd92d4432b1652262c541cc380a004970",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_534ff0534ff0534f.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_534ff0534ff0534f.png",
+    "bytes": 1685745,
+    "sha256": "51806b6728c97840a55165d54920c68bf8732440f08f909cc439ce5d5a9597a0",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_sec8rpsec8rpsec8.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_sec8rpsec8rpsec8.png",
+    "bytes": 5857464,
+    "sha256": "94ed0b224a49ea21c2781b021ce11045dd4692511a956518e831996efc79c7f4",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_r69zuzr69zuzr69z.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_r69zuzr69zuzr69z.png",
+    "bytes": 1739533,
+    "sha256": "bdd68646735106c7fce8b1cf650c8c7aaabb2fc4e06bfe410ab64c2091caac29",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_b3s08ob3s08ob3s0.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_b3s08ob3s08ob3s0.png",
+    "bytes": 5100023,
+    "sha256": "c83656a7ea11707bb308d2591af01753767581a67bf4c339acd71e529e22944c",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_1xlj9u1xlj9u1xlj.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_1xlj9u1xlj9u1xlj.png",
+    "bytes": 1825264,
+    "sha256": "365103baee248d7cafefc596d45a7d19569acd2f211a5e897cd5b9799505e5a8",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/LL802.jpg",
+    "url": "/PRODUCTS/LL802.jpg",
+    "bytes": 195216,
+    "sha256": "451c6aca47efb76341d818a28594622266e467b2d877f2400183e90f689c5105",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 784,
+    "height": 1168,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_e7indae7indae7in.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_e7indae7indae7in.png",
+    "bytes": 7365345,
+    "sha256": "1cc9423047607384de8ce43ee595e9a7b481877d9e1bda2250e023e771dcd1c6",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Tb8JT.jpg",
+    "url": "/PRODUCTS/Tb8JT.jpg",
+    "bytes": 230334,
+    "sha256": "953a5977b56124eb472aeed227f0cae3fa59592f11f969beb6b5fe63a16ddf3c",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 784,
+    "height": 1168,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/ChatGPT Image May 12, 2026, 06_53_22 PM.png",
+    "url": "/PRODUCTS/ChatGPT Image May 12, 2026, 06_53_22 PM.png",
+    "bytes": 1919286,
+    "sha256": "4cf48d2421ca96b80f4524b28bbcc89a4c736aa51e4f48a0a9f69cf76b6118c9",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1531,
+    "height": 1027,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_y3henvy3henvy3he.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_y3henvy3henvy3he.png",
+    "bytes": 5761889,
+    "sha256": "fccaab1552dee5f7a2b86616957c71bb8a9da9911cc542300f5012b118ed192e",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_z9rhl9z9rhl9z9rh.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_z9rhl9z9rhl9z9rh.png",
+    "bytes": 5931365,
+    "sha256": "dbb111efceba649e7076adc9e8757e3f237c2230694366ac3a28cb818b547a3e",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_iqigl1iqigl1iqig.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_iqigl1iqigl1iqig.png",
+    "bytes": 6070789,
+    "sha256": "14c6a61747b45b8b8700b34f51320913e14ca458765fe64cf6e6ae39805f3229",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_h3ukc8h3ukc8h3uk.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_h3ukc8h3ukc8h3uk.png",
+    "bytes": 6430216,
+    "sha256": "008e3a58c1c6335fd4e4c48b6b4ea26c2c98dc2dd0d005363041cccb4e28d7c5",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_18qtrg18qtrg18qt.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_18qtrg18qtrg18qt.png",
+    "bytes": 1964857,
+    "sha256": "eebaa3e60a035ba5755e2949054bac3e4a182254319d9a23f3398897da47834e",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_5t2px65t2px65t2p.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_5t2px65t2px65t2p.png",
+    "bytes": 6356484,
+    "sha256": "1c49cf0ad6cc23b59d752e45e681d66b3a2547d0690d32e851aa02a28a2e6acd",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_fikte5fikte5fikt.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_fikte5fikte5fikt.png",
+    "bytes": 6588783,
+    "sha256": "bdb75f110ff8c200c8d50c688ce368b3cf0b60313b6bdca939553bec443196ba",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_fc2r3ofc2r3ofc2r.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_fc2r3ofc2r3ofc2r.png",
+    "bytes": 5583881,
+    "sha256": "e45edc512e9ead49ee6786f22eeb96bdd02c791cfec791570fc418c77a0cbfee",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/gAjGw.jpg",
+    "url": "/PRODUCTS/gAjGw.jpg",
+    "bytes": 207457,
+    "sha256": "eeca7e85fb6a648b276c5cf2fd97ebf6b321c2e639b72c9d172ab459aa822a32",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 784,
+    "height": 1168,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_d3pcwid3pcwid3pc.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_d3pcwid3pcwid3pc.png",
+    "bytes": 6687121,
+    "sha256": "394db27bbf58e1568e292fbb55da196d6c8991754455612406880cc5cd2c4cb7",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_7i411x7i411x7i41.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_7i411x7i411x7i41.png",
+    "bytes": 6509385,
+    "sha256": "5917c17b137928626b73ce8d81b47c24dbf29f41c4b3672d94af42410c335677",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_pund0lpund0lpund.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_pund0lpund0lpund.png",
+    "bytes": 7195170,
+    "sha256": "4692592893b6af74e9d7251596e9dd1d967c8971f79f681947ca9a456d342bf5",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_9q1p359q1p359q1p.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_9q1p359q1p359q1p.png",
+    "bytes": 6840838,
+    "sha256": "bd7899add6384ab641711c7cb9c1d69fa3fc38d821472122ea1f7a83b16b13a7",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_a4srxra4srxra4sr.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_a4srxra4srxra4sr.png",
+    "bytes": 6017679,
+    "sha256": "eb005ae553e8f946f0b9761fabaaa64e95953a45241775ae28436b17b2ac136a",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_rpdg9prpdg9prpdg.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_rpdg9prpdg9prpdg.png",
+    "bytes": 7636738,
+    "sha256": "fe3edf3211f48a05794a030bfcf8d9e3af7d884e30da4ac7ce4fd7a0eca208ff",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_9u7krx9u7krx9u7k.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_9u7krx9u7krx9u7k.png",
+    "bytes": 1877102,
+    "sha256": "33a6f0460b0f67dc82295fffebb08dcaa82fede8d50575739df754408337dcb7",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_fj18mefj18mefj18.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_fj18mefj18mefj18.png",
+    "bytes": 1641809,
+    "sha256": "5f755944fcc9581ccbccf6872a484fb586da61bf5a4ec20c9ad2837f4f99a304",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1264,
+    "height": 848,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/PRODUCTS/Gemini_Generated_Image_qlgzmbqlgzmbqlgz.png",
+    "url": "/PRODUCTS/Gemini_Generated_Image_qlgzmbqlgzmbqlgz.png",
+    "bytes": 6753044,
+    "sha256": "8e373a09366ed8d004846aa324420ce95a3ece513d4b8412936a0762e60ed62b",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 2528,
+    "height": 1696,
+    "mode": "RGBA",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/fill-cart.jpeg",
+    "url": "/portal restaurantes/fill-cart.jpeg",
+    "bytes": 531447,
+    "sha256": "3730a180d919cb001dfab28e2a16b945abd8c0cec3104fb576db8a61042d8eb8",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/empty-cart-seagull.jpeg",
+    "url": "/portal restaurantes/empty-cart-seagull.jpeg",
+    "bytes": 617638,
+    "sha256": "e289c82c1413fe2dc08c3f5282b1cb1f0cc5b8ef7ac094fa8a2b49600a551b15",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/empty-cart-seagull1.jpeg",
+    "url": "/portal restaurantes/empty-cart-seagull1.jpeg",
+    "bytes": 637216,
+    "sha256": "6e869bb454f190c31180c829ef6386067cdfee44e23c174162a9ee1cb9c3bb6d",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/checkoutimage.jpeg",
+    "url": "/portal restaurantes/checkoutimage.jpeg",
+    "bytes": 540252,
+    "sha256": "41de97a7a952adfa11fe3b6466552722747872b8cad9099178dd9b86264bd951",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/banner-aplicar-negocio.jpeg",
+    "url": "/portal restaurantes/banner-aplicar-negocio.jpeg",
+    "bytes": 745498,
+    "sha256": "035e78307df3ab3a78ef71aad2fad243470e656c523f2678907b29e336de2771",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/empty-cart-seagull3.jpeg",
+    "url": "/portal restaurantes/empty-cart-seagull3.jpeg",
+    "bytes": 526379,
+    "sha256": "72a05948af51a68e64bd3128d5978c7fe469575c01ab98554a081afd555c6c38",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/empty-cart-seagull2.jpeg",
+    "url": "/portal restaurantes/empty-cart-seagull2.jpeg",
+    "bytes": 565051,
+    "sha256": "78903a2c4fbf3dcc9533a6be802b095fcf0440b8673c8ba3a5b5e87471054209",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/mi-portal.jpeg",
+    "url": "/portal restaurantes/mi-portal.jpeg",
+    "bytes": 627724,
+    "sha256": "d724c562a1ab88de6879655cc9e34c3d6547971ccf538005cdcc217dff77a602",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/aplicar-negocio-micromercado.jpeg",
+    "url": "/portal restaurantes/aplicar-negocio-micromercado.jpeg",
+    "bytes": 780288,
+    "sha256": "7b967920e52372c7f7f9301b3bd7c4ebfde4b157d15356623b3688545cd024a7",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/portal restaurantes/aplicar-negocio-restaurante.jpeg",
+    "url": "/portal restaurantes/aplicar-negocio-restaurante.jpeg",
+    "bytes": 785197,
+    "sha256": "d4e35b69f69f3bd3439903350dbc43e843592ddc0607de532aefd90bf7b24ad0",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/whatsapp-button-seagull.jpeg",
+    "url": "/IMAGES/whatsapp-button-seagull.jpeg",
+    "bytes": 472549,
+    "sha256": "ee0020ee5a224386a68a4758981fc417b9751e176f24f2f37f764c755aa2f5d4",
+    "references": [
+      {
+        "file": "app/components/ui/FloatingWhatsApp.tsx",
+        "line": 64
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/hero-main2.jpeg",
+    "url": "/IMAGES/hero-main2.jpeg",
+    "bytes": 710541,
+    "sha256": "8c8d2977d1720f311ffa4da1614cfbe1c90a5f7d3f816175db82b5abc4a1bdd4",
+    "references": [
+      {
+        "file": "app/components/ui/HeroBanner.tsx",
+        "line": 10
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/product-display.jpeg",
+    "url": "/IMAGES/product-display.jpeg",
+    "bytes": 905598,
+    "sha256": "37e409df00aa7eec73e56d9a94a821420238a15df0bf9f3c347740d16738318c",
+    "references": [
+      {
+        "file": "src/components/cart/MiniCartDropdown.tsx",
+        "line": 69
+      },
+      {
+        "file": "src/components/cart/CartDrawer.tsx",
+        "line": 74
+      },
+      {
+        "file": "src/components/checkout/CheckoutUpsell.tsx",
+        "line": 14
+      },
+      {
+        "file": "src/components/store/ProductDetailClient.tsx",
+        "line": 29
+      },
+      {
+        "file": "app/cart/page.tsx",
+        "line": 82
+      },
+      {
+        "file": "app/noticias/page.tsx",
+        "line": 12
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/slide-tiered-pricing2.jpeg",
+    "url": "/IMAGES/slide-tiered-pricing2.jpeg",
+    "bytes": 632416,
+    "sha256": "57ac6265ae0f0b4064ee56f9d1d74167d610f8d293c6ad2234960e4c666a66e8",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/Canvas_tote_bag_202603260850.jpeg",
+    "url": "/IMAGES/Canvas_tote_bag_202603260850.jpeg",
+    "bytes": 575928,
+    "sha256": "bc6bbada18c73ab71ddd43c15af8744348042c53d6ae5120b238c3ba10a1e6e1",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/frutas-banner3.jpeg",
+    "url": "/IMAGES/frutas-banner3.jpeg",
+    "bytes": 809231,
+    "sha256": "60931e5ea974b0511074ae890893122ea743872a5d7ca6c1348b75573fa7444e",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 13
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/Seagull_holding_basket_202604221736 (3).jpeg",
+    "url": "/IMAGES/Seagull_holding_basket_202604221736 (3).jpeg",
+    "bytes": 699178,
+    "sha256": "f50ed691db0b3158af4e5ed7fba56093b5ef4c0616f5ca42c2e0d532389505be",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 768,
+    "height": 1376,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/frutas-banner2.jpeg",
+    "url": "/IMAGES/frutas-banner2.jpeg",
+    "bytes": 795700,
+    "sha256": "108ea403029253e47db4037f835d9275660bc79871157e2f9c25f9c028f7c6ee",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 13
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/carnes-banner2.jpeg",
+    "url": "/IMAGES/carnes-banner2.jpeg",
+    "bytes": 753930,
+    "sha256": "5f1c489bbdb3659d42fb89b424f3fec68d67918f9d31b68cd3e3cba399cf81a2",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 15
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/verduras-banner2.jpeg",
+    "url": "/IMAGES/verduras-banner2.jpeg",
+    "bytes": 790497,
+    "sha256": "722333b38536e64032beeacbb01c88cd623e0f9e3fbb11bb47aad6406fd627be",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 14
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/Canvas_market_tote_202603260917.jpeg",
+    "url": "/IMAGES/Canvas_market_tote_202603260917.jpeg",
+    "bytes": 788956,
+    "sha256": "925e58fb3ccc1e53db8130d63059cdbb1b5374c4bbb5cc600849754304faff30",
+    "references": [
+      {
+        "file": "app/noticias/page.tsx",
+        "line": 44
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/WhatsApp_button_with_202604221754 (2).jpeg",
+    "url": "/IMAGES/WhatsApp_button_with_202604221754 (2).jpeg",
+    "bytes": 625232,
+    "sha256": "17f18edcb32bc7a7759b9dece492d95fe0865fb674da9568ef35801071a66176",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/verduras-banner3.jpeg",
+    "url": "/IMAGES/verduras-banner3.jpeg",
+    "bytes": 851438,
+    "sha256": "09a6303012fe57058b1e45d38978cfb0bd073f718728179674aa199c4d800956",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 14
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/slide-santander-pride2.jpeg",
+    "url": "/IMAGES/slide-santander-pride2.jpeg",
+    "bytes": 753933,
+    "sha256": "c7e64e884743e995dfa06be8c778216fe3bfc863e87ee983cf4a10a3f8bbad2c",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/fill-cart.jpeg",
+    "url": "/IMAGES/fill-cart.jpeg",
+    "bytes": 531447,
+    "sha256": "3730a180d919cb001dfab28e2a16b945abd8c0cec3104fb576db8a61042d8eb8",
+    "references": [
+      {
+        "file": "app/cart/page.tsx",
+        "line": 65
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/whatsapp-button-seagull1.jpeg",
+    "url": "/IMAGES/whatsapp-button-seagull1.jpeg",
+    "bytes": 476670,
+    "sha256": "a36a5c6d41a8996553f4a563b26bd5ae1eb520968fd28624087fb93b92bf6122",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/slide-freshness-24h3.jpeg",
+    "url": "/IMAGES/slide-freshness-24h3.jpeg",
+    "bytes": 792282,
+    "sha256": "333790a1a30f1e47063dd7afd38e49593d27773e0b43b12318effb0133d637e3",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/slide-freshness-24h.jpeg",
+    "url": "/IMAGES/slide-freshness-24h.jpeg",
+    "bytes": 656946,
+    "sha256": "3d0cf465a2599ddac00ffbd9acc84d512e5e5fb8432f35818d20d464eb24124d",
+    "references": [
+      {
+        "file": "app/components/ui/ImageCarousel.tsx",
+        "line": 11
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/empty-cart-seagull.jpeg",
+    "url": "/IMAGES/empty-cart-seagull.jpeg",
+    "bytes": 617638,
+    "sha256": "e289c82c1413fe2dc08c3f5282b1cb1f0cc5b8ef7ac094fa8a2b49600a551b15",
+    "references": [
+      {
+        "file": "src/components/cart/MiniCartDropdown.tsx",
+        "line": 13
+      },
+      {
+        "file": "app/cart/page.tsx",
+        "line": 15
+      },
+      {
+        "file": "app/components/modals/EmptyCartModal.tsx",
+        "line": 35
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/Seagull_holding_basket_202604221736 (2).jpeg",
+    "url": "/IMAGES/Seagull_holding_basket_202604221736 (2).jpeg",
+    "bytes": 698017,
+    "sha256": "9cb68e5273166a2df4be266615425cf83800d2f0bc9eac4d978fd29b32260a26",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 768,
+    "height": 1376,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/hero-main1.jpeg",
+    "url": "/IMAGES/hero-main1.jpeg",
+    "bytes": 644445,
+    "sha256": "f1db060b096048fb73f33c28f587a42d9dd19219243d3eab4b08dbb5145acaae",
+    "references": [
+      {
+        "file": "app/components/ui/HeroBanner.tsx",
+        "line": 9
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/WhatsApp_button_with_202604221754.jpeg",
+    "url": "/IMAGES/WhatsApp_button_with_202604221754.jpeg",
+    "bytes": 372482,
+    "sha256": "83007bf3587b258e21eb79960a7b0167f1f048f64f5c242058a7cb4e4df4c9e0",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/WhatsApp_button_with_202604221754 (1).jpeg",
+    "url": "/IMAGES/WhatsApp_button_with_202604221754 (1).jpeg",
+    "bytes": 488836,
+    "sha256": "38401ec41690aebab9c6bce64f99631f924508e1ecc3886be1f6d7fed1fb1fd6",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/empty-cart-seagull1.jpeg",
+    "url": "/IMAGES/empty-cart-seagull1.jpeg",
+    "bytes": 637216,
+    "sha256": "6e869bb454f190c31180c829ef6386067cdfee44e23c174162a9ee1cb9c3bb6d",
+    "references": [
+      {
+        "file": "src/components/cart/MiniCartDropdown.tsx",
+        "line": 28
+      },
+      {
+        "file": "app/cart/page.tsx",
+        "line": 20
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/whatsapp-button-seagull2.jpeg",
+    "url": "/IMAGES/whatsapp-button-seagull2.jpeg",
+    "bytes": 479998,
+    "sha256": "28e427143fb0058c8e926b95158d4e6f1a6827deaa0d3cab7ab55dec4c9574dd",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/checkoutimage.jpeg",
+    "url": "/IMAGES/checkoutimage.jpeg",
+    "bytes": 540252,
+    "sha256": "41de97a7a952adfa11fe3b6466552722747872b8cad9099178dd9b86264bd951",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/banner-aplicar-negocio.jpeg",
+    "url": "/IMAGES/banner-aplicar-negocio.jpeg",
+    "bytes": 745498,
+    "sha256": "035e78307df3ab3a78ef71aad2fad243470e656c523f2678907b29e336de2771",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/slide-freshness-24h2.jpeg",
+    "url": "/IMAGES/slide-freshness-24h2.jpeg",
+    "bytes": 663907,
+    "sha256": "a2ca682a0873a1de766f6ed23f520e76ea999f39df136cc69aa48029f18abe90",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/Colombian_produce_on_202603260851.jpeg",
+    "url": "/IMAGES/Colombian_produce_on_202603260851.jpeg",
+    "bytes": 914670,
+    "sha256": "b74d66669c98a847b6e8e711828c711da5c2dab4efa4e8ac61a809f28ba05dd2",
+    "references": [
+      {
+        "file": "app/noticias/page.tsx",
+        "line": 31
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/carnes-banner3.jpeg",
+    "url": "/IMAGES/carnes-banner3.jpeg",
+    "bytes": 758377,
+    "sha256": "c58efe70223a65f970b34815b65c5c3042b001151092bcce00a2edab75805462",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 15
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/slide-tiered-pricing.jpeg",
+    "url": "/IMAGES/slide-tiered-pricing.jpeg",
+    "bytes": 554098,
+    "sha256": "aec4eb306fb93eb0b35f87a569608b449ad5c05216597f49ab6f36da727994e2",
+    "references": [
+      {
+        "file": "app/components/ui/ImageCarousel.tsx",
+        "line": 17
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/kit-chevere-semana.jpg",
+    "url": "/IMAGES/kit-chevere-semana.jpg",
+    "bytes": 762443,
+    "sha256": "1de543d91a90abcd8f30f1cdd0b9529a422153e6fa866fa239d0a140f41d83f4",
+    "references": [
+      {
+        "file": "app/components/ui/PromotionalBanner.tsx",
+        "line": 17
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/slide-santander-pride.jpeg",
+    "url": "/IMAGES/slide-santander-pride.jpeg",
+    "bytes": 862214,
+    "sha256": "245ca9e5a2b5dc513350cca024d9586f383f1d2a38db9521c8ab6859a1c73b2d",
+    "references": [
+      {
+        "file": "app/sobre-nosotros/page.tsx",
+        "line": 42
+      },
+      {
+        "file": "app/components/ui/ImageCarousel.tsx",
+        "line": 23
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/verduras-banner1.jpeg",
+    "url": "/IMAGES/verduras-banner1.jpeg",
+    "bytes": 693432,
+    "sha256": "81c68f2887e59cc29cb3f0b824a99202558e10c298f577bbce84f3d4ca145fdc",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 14
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/empty-cart-seagull3.jpeg",
+    "url": "/IMAGES/empty-cart-seagull3.jpeg",
+    "bytes": 526379,
+    "sha256": "72a05948af51a68e64bd3128d5978c7fe469575c01ab98554a081afd555c6c38",
+    "references": [
+      {
+        "file": "src/components/cart/MiniCartDropdown.tsx",
+        "line": 30
+      },
+      {
+        "file": "app/cart/page.tsx",
+        "line": 22
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/about-granja-mesa3.jpeg",
+    "url": "/IMAGES/about-granja-mesa3.jpeg",
+    "bytes": 862307,
+    "sha256": "9e904f9ecd84fad79171fcac8e8fd894228c7d101a42b4cc36c5233c86da890e",
+    "references": [
+      {
+        "file": "app/sobre-nosotros/page.tsx",
+        "line": 11
+      },
+      {
+        "file": "app/nosotros/page.tsx",
+        "line": 70
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/Seagull_holding_basket_202604221736 (1).jpeg",
+    "url": "/IMAGES/Seagull_holding_basket_202604221736 (1).jpeg",
+    "bytes": 720782,
+    "sha256": "99d886ea7a625b1e52adbbc5f337eb0b6c4ca1c120d331e6b18f08dfc81dd66d",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 768,
+    "height": 1376,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/logo.png",
+    "url": "/IMAGES/logo.png",
+    "bytes": 167224,
+    "sha256": "9a0340363ceeb250ab555e5549d549dbd6421e1cf98f1b83b14ab227f5d3bde5",
+    "references": [],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "P",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/empty-cart-seagull2.jpeg",
+    "url": "/IMAGES/empty-cart-seagull2.jpeg",
+    "bytes": 565051,
+    "sha256": "78903a2c4fbf3dcc9533a6be802b095fcf0440b8673c8ba3a5b5e87471054209",
+    "references": [
+      {
+        "file": "src/components/cart/MiniCartDropdown.tsx",
+        "line": 29
+      },
+      {
+        "file": "app/cart/page.tsx",
+        "line": 21
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/carnes-banner1.jpeg",
+    "url": "/IMAGES/carnes-banner1.jpeg",
+    "bytes": 740807,
+    "sha256": "533c2f72d417bbf1182850d4b463ccdc6b2a8a9f6222c774667783034dfcd65b",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 15
+      },
+      {
+        "file": "app/nosotros/page.tsx",
+        "line": 49
+      },
+      {
+        "file": "app/components/store/ProductGrid.tsx",
+        "line": 12
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/mascota.jpeg",
+    "url": "/IMAGES/mascota.jpeg",
+    "bytes": 252213,
+    "sha256": "a63391b1981c45bdd15288bc04eb317024fdd9d5e692aac6f92a436c66aeb849",
+    "references": [
+      {
+        "file": "app/comunidad/page.tsx",
+        "line": 69
+      },
+      {
+        "file": "app/(portals)/retail/page.tsx",
+        "line": 20
+      },
+      {
+        "file": "app/components/ui/WhatsAppHook.tsx",
+        "line": 16
+      },
+      {
+        "file": "app/components/ui/HeroBanner.tsx",
+        "line": 86
+      }
+    ],
+    "tracked": true,
+    "format": "PNG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "P",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/frutas-banner.jpeg",
+    "url": "/IMAGES/frutas-banner.jpeg",
+    "bytes": 828715,
+    "sha256": "0a6ad46dfda27b0b9b123b493a84e1ee531049da22d586cedd719f756092d103",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 13
+      },
+      {
+        "file": "app/nosotros/page.tsx",
+        "line": 37
+      },
+      {
+        "file": "app/components/store/ProductGrid.tsx",
+        "line": 9
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/logo.jpeg",
+    "url": "/IMAGES/logo.jpeg",
+    "bytes": 433871,
+    "sha256": "a2e205373da84327e4721178d4671eb934fce4dcce2fb742c0c3fd0496b4c4f1",
+    "references": [
+      {
+        "file": "app/layout.tsx",
+        "line": 35
+      },
+      {
+        "file": "app/admin/layout.tsx",
+        "line": 161
+      },
+      {
+        "file": "app/components/layout/Footer.tsx",
+        "line": 74
+      },
+      {
+        "file": "app/components/layout/Header.tsx",
+        "line": 53
+      },
+      {
+        "file": "app/product/[id]/page.tsx",
+        "line": 53
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/kit-chevere-semana3.jpeg",
+    "url": "/IMAGES/kit-chevere-semana3.jpeg",
+    "bytes": 750580,
+    "sha256": "669c211313e06918d8bea79094300fc1a7dddb67a5898b7517f58b763d0ece06",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/slide-tiered-pricing3.jpeg",
+    "url": "/IMAGES/slide-tiered-pricing3.jpeg",
+    "bytes": 680868,
+    "sha256": "43042dceace93ae0487b9f8a920eb64e39d6c47c2ec484b3032749c63aaa9011",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/Seagull_holding_basket_202604221736.jpeg",
+    "url": "/IMAGES/Seagull_holding_basket_202604221736.jpeg",
+    "bytes": 689581,
+    "sha256": "6fc8c3a4312bcb4f5f87c2cd65cf34d221004fde4f3d9d5dca0e33ff556e8e7b",
+    "references": [
+      {
+        "file": "app/comunidad/page.tsx",
+        "line": 13
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 768,
+    "height": 1376,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/carnes-banner4.jpeg",
+    "url": "/IMAGES/carnes-banner4.jpeg",
+    "bytes": 709354,
+    "sha256": "8e976baad8aeda4100a3ec6261c90bb60853ae8631a93b29a680dda95a5fed78",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 15
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/slide-freshness-24h1.jpeg",
+    "url": "/IMAGES/slide-freshness-24h1.jpeg",
+    "bytes": 720177,
+    "sha256": "6b2779efd52871c231e4fc2a602a09f0e3cf9d99183bb28e88bbc492fe22bc5a",
+    "references": [
+      {
+        "file": "app/sobre-nosotros/page.tsx",
+        "line": 87
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/about-granja-mesa4.jpeg",
+    "url": "/IMAGES/about-granja-mesa4.jpeg",
+    "bytes": 708810,
+    "sha256": "336236acf550186d65f1eede9c3616220a3f24ff25a9b3eb0cf31515187edc3e",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/verduras-banner4.jpeg",
+    "url": "/IMAGES/verduras-banner4.jpeg",
+    "bytes": 976645,
+    "sha256": "a4c55b353eec21febe9aec8f698672cbe38494752d7b5cf0009095dd8ad6fa6c",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 14
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/kit-chevere-semana2.jpeg",
+    "url": "/IMAGES/kit-chevere-semana2.jpeg",
+    "bytes": 752033,
+    "sha256": "3f23d6530c1a7a855992250ce90081ce8b0de346b4df1ebc444e8162025bc30e",
+    "references": [],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1376,
+    "height": 768,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "no_static_reference_NOT_proven_orphan"
+  },
+  {
+    "path": "public/IMAGES/frutas-banner1.jpeg",
+    "url": "/IMAGES/frutas-banner1.jpeg",
+    "bytes": 790610,
+    "sha256": "f37e896284511817da1d842a3a26e7f6ed28233532bce85cd5a109627fc22796",
+    "references": [
+      {
+        "file": "src/components/store/ShopView.tsx",
+        "line": 13
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/mi-portal.jpeg",
+    "url": "/IMAGES/mi-portal.jpeg",
+    "bytes": 627724,
+    "sha256": "d724c562a1ab88de6879655cc9e34c3d6547971ccf538005cdcc217dff77a602",
+    "references": [
+      {
+        "file": "app/(portals)/micromercado/MicromercadoClient.tsx",
+        "line": 80
+      },
+      {
+        "file": "app/(portals)/restaurante/RestauranteClient.tsx",
+        "line": 83
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1200,
+    "height": 896,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/aplicar-negocio-micromercado.jpeg",
+    "url": "/IMAGES/aplicar-negocio-micromercado.jpeg",
+    "bytes": 780288,
+    "sha256": "7b967920e52372c7f7f9301b3bd7c4ebfde4b157d15356623b3688545cd024a7",
+    "references": [
+      {
+        "file": "app/aplicar-negocio/page.tsx",
+        "line": 26
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  },
+  {
+    "path": "public/IMAGES/aplicar-negocio-restaurante.jpeg",
+    "url": "/IMAGES/aplicar-negocio-restaurante.jpeg",
+    "bytes": 785197,
+    "sha256": "d4e35b69f69f3bd3439903350dbc43e843592ddc0607de532aefd90bf7b24ad0",
+    "references": [
+      {
+        "file": "app/aplicar-negocio/page.tsx",
+        "line": 44
+      }
+    ],
+    "tracked": true,
+    "format": "JPEG",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "decodable": true,
+    "mapping_status": "static_reference"
+  }
+]

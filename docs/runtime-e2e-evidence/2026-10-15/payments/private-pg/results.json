@@ -1,0 +1,208 @@
+{
+  "scope": "CURRENT_WRITER_ACTUAL_FUNCTION_REAL_POSTGRESQL_VIA_FINITE_PSQL_ADAPTER",
+  "runner": "/tmp/la-gaviota-runtime-e2e-20261015/payments/run-current-writer-pg.cjs",
+  "root": "/home/sebastiangarcia/planmaestro-ecosystem/packages/la-gaviota",
+  "private_stage": "/tmp/la-gaviota-runtime-e2e-20261015/payments/pg-portable",
+  "schema": "subset matching Prisma relevant columns/FK/integer types; injection trigger fictional",
+  "notProven": [
+    "HTTP actions",
+    "Clerk authentication",
+    "Supabase/PostgREST/RLS",
+    "production deployed schema/triggers",
+    "real Wompi sandbox",
+    "OS/DB crash"
+  ],
+  "scenarios": [
+    {
+      "scenario": "valid",
+      "counts": {
+        "orders": 1,
+        "items": 1
+      },
+      "errors": 0,
+      "returned": [
+        {
+          "success": true,
+          "orderId": "bfce30c3-9420-417b-9aa7-27b281692431"
+        }
+      ],
+      "operations": [
+        {
+          "table": "orders",
+          "verb": "INSERT",
+          "autocommitSession": true
+        },
+        {
+          "table": "order_items",
+          "verb": "INSERT",
+          "autocommitSession": true
+        }
+      ],
+      "sourceHashes": {
+        "src/lib/checkoutValidation.ts": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+        "src/lib/server/orderWriter.ts": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187"
+      },
+      "source": "CURRENT_WORKTREE",
+      "scope": "actual_orderWriter_function_with_finite_psql_adapter_realPG_notSupabase",
+      "safety": "PASS_DB_FIXTURE"
+    },
+    {
+      "scenario": "items-fault",
+      "counts": {
+        "orders": 1,
+        "items": 0
+      },
+      "errors": 1,
+      "returned": [],
+      "operations": [
+        {
+          "table": "orders",
+          "verb": "INSERT",
+          "autocommitSession": true
+        },
+        {
+          "table": "order_items",
+          "verb": "INSERT",
+          "autocommitSession": true
+        }
+      ],
+      "sourceHashes": {
+        "src/lib/checkoutValidation.ts": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+        "src/lib/server/orderWriter.ts": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187"
+      },
+      "source": "CURRENT_WORKTREE",
+      "scope": "actual_orderWriter_function_with_finite_psql_adapter_realPG_notSupabase",
+      "safety": "FAIL"
+    },
+    {
+      "scenario": "retry-fault",
+      "counts": {
+        "orders": 2,
+        "items": 0
+      },
+      "errors": 2,
+      "returned": [],
+      "operations": [
+        {
+          "table": "orders",
+          "verb": "INSERT",
+          "autocommitSession": true
+        },
+        {
+          "table": "order_items",
+          "verb": "INSERT",
+          "autocommitSession": true
+        },
+        {
+          "table": "orders",
+          "verb": "INSERT",
+          "autocommitSession": true
+        },
+        {
+          "table": "order_items",
+          "verb": "INSERT",
+          "autocommitSession": true
+        }
+      ],
+      "sourceHashes": {
+        "src/lib/checkoutValidation.ts": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+        "src/lib/server/orderWriter.ts": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187"
+      },
+      "source": "CURRENT_WORKTREE",
+      "scope": "actual_orderWriter_function_with_finite_psql_adapter_realPG_notSupabase",
+      "safety": "FAIL"
+    },
+    {
+      "scenario": "concurrent",
+      "counts": {
+        "orders": 2,
+        "items": 2
+      },
+      "errors": 0,
+      "returned": [
+        {
+          "success": true,
+          "orderId": "0b818b9b-527b-4c04-8747-116f33b7a9af"
+        },
+        {
+          "success": true,
+          "orderId": "8da7a644-7eb1-45a6-83e2-aff17297a5c7"
+        }
+      ],
+      "operations": [
+        {
+          "table": "orders",
+          "verb": "INSERT",
+          "autocommitSession": true
+        },
+        {
+          "table": "orders",
+          "verb": "INSERT",
+          "autocommitSession": true
+        },
+        {
+          "table": "order_items",
+          "verb": "INSERT",
+          "autocommitSession": true
+        },
+        {
+          "table": "order_items",
+          "verb": "INSERT",
+          "autocommitSession": true
+        }
+      ],
+      "sourceHashes": {
+        "src/lib/checkoutValidation.ts": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+        "src/lib/server/orderWriter.ts": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187"
+      },
+      "source": "CURRENT_WORKTREE",
+      "scope": "actual_orderWriter_function_with_finite_psql_adapter_realPG_notSupabase",
+      "safety": "FAIL"
+    },
+    {
+      "scenario": "abrupt_application_process_exit_after_committed_header",
+      "exitCode": 77,
+      "durableRowsNewConnection": {
+        "orders": 1,
+        "items": 0
+      },
+      "recovery": {
+        "scenario": "recover",
+        "counts": {
+          "orders": 2,
+          "items": 1
+        },
+        "errors": 0,
+        "returned": [
+          {
+            "success": true,
+            "orderId": "6f432d42-0917-4ab6-8f8f-e5a9b00c17c3"
+          }
+        ],
+        "operations": [
+          {
+            "table": "orders",
+            "verb": "INSERT",
+            "autocommitSession": true
+          },
+          {
+            "table": "order_items",
+            "verb": "INSERT",
+            "autocommitSession": true
+          }
+        ],
+        "sourceHashes": {
+          "src/lib/checkoutValidation.ts": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+          "src/lib/server/orderWriter.ts": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187"
+        },
+        "source": "CURRENT_WORKTREE",
+        "scope": "actual_orderWriter_function_with_finite_psql_adapter_realPG_notSupabase"
+      },
+      "safety": "FAIL",
+      "notProven": "OS/DB crash; HTTP/client SDK; production schema triggers or RLS"
+    }
+  ],
+  "total": 5,
+  "safetyPass": 1,
+  "safetyFail": 4
+}

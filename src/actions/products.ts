@@ -1,4 +1,7 @@
 'use server';
+import { requireCapability, getActor, assertTargetId } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
+
 
 import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
@@ -10,9 +13,8 @@ import { CATEGORIES } from '@/src/constants/productConstants';
 // We initialize the Supabase client here for server actions
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
-export interface Product {
+export interface AdminProduct {
   id: string;
   name: string;
   category: string;
@@ -32,7 +34,10 @@ export interface Product {
   description: string | null;
 }
 
-export async function fetchProducts(): Promise<Product[]> {
+export async function fetchAdminProducts(): Promise<AdminProduct[]> {
+  const actor = await requireCapability('catalog.manage');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase
     .from('products')
     .select('*')
@@ -102,6 +107,10 @@ export async function fetchProducts(): Promise<Product[]> {
 
 
 export async function updateProductStock(id: string, newStock: number) {
+  const actor = await requireCapability('inventory.manage');
+  const supabase = getServerDatabase(actor);
+  assertTargetId(id);
+
   const { error } = await supabase
     .from('products')
     .update({ stock_quantity: newStock })
@@ -119,6 +128,10 @@ export async function updateProductStock(id: string, newStock: number) {
 }
 
 export async function updateProductSeasonStatus(id: string, inSeason: boolean) {
+  const actor = await requireCapability('catalog.manage');
+  const supabase = getServerDatabase(actor);
+  assertTargetId(id);
+
   const { error } = await supabase
     .from('products')
     .update({ is_in_season: inSeason })
@@ -141,6 +154,10 @@ export async function updateProductPricing(
   price_micro?: number, 
   price_restaurant?: number
 ) {
+  const actor = await requireCapability('pricing.manage');
+  assertTargetId(id);
+  const supabase = getServerDatabase(actor);
+
   // Enforce auth
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -180,6 +197,10 @@ export async function updateProductPricing(
 }
 
 export async function updateProductPrices(productId: string, prices: { retail: number, micro: number, restaurant: number }) {
+  const actor = await requireCapability('pricing.manage');
+  const supabase = getServerDatabase(actor);
+  assertTargetId(productId);
+
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -220,6 +241,9 @@ export async function applyMacroMargins(
   microMargin: number, 
   restaurantMargin: number
 ) {
+  const actor = await requireCapability('pricing.manage');
+  const supabase = getServerDatabase(actor);
+
   // To avoid hitting edge limits, we fetch all, calculate, and do a batch upsert
   const { data: products, error: fetchError } = await supabase
     .from('products')
@@ -257,7 +281,10 @@ export async function applyMacroMargins(
   return { success: true, count: updatedProducts.length };
 }
 
-export async function createProduct(product: Omit<Product, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
+export async function createProduct(product: Omit<AdminProduct, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
+  const actor = await requireCapability('catalog.manage');
+  const supabase = getServerDatabase(actor);
+
   // Generate a new ID like prd_XXXX based on the highest existing ID
   const { data: lastProduct } = await supabase
     .from('products')
@@ -311,7 +338,11 @@ export async function createProduct(product: Omit<Product, 'id' | 'previousPrice
   return { success: true, id: newId };
 }
 
-export async function updateProduct(id: string, product: Omit<Product, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
+export async function updateProduct(id: string, product: Omit<AdminProduct, 'id' | 'previousPriceRetail' | 'previousPriceMicro' | 'previousPriceRestaurant'>) {
+  const actor = await requireCapability('catalog.manage');
+  const supabase = getServerDatabase(actor);
+  assertTargetId(id);
+
   // Fetch existing product to audit changes
   const { data: oldProduct } = await supabase
     .from('products')
@@ -372,27 +403,11 @@ export async function updateProduct(id: string, product: Omit<Product, 'id' | 'p
 }
 
 export async function deleteProduct(id: string) {
-  // First get the product to delete its image if it exists
-  const { data: product, error: fetchError } = await supabase
-    .from('products')
-    .select('image_url')
-    .eq('id', id)
-    .single();
+  const actor = await requireCapability('catalog.manage');
+  assertTargetId(id);
+  const supabase = getServerDatabase(actor);
 
-  if (!fetchError && product?.image_url) {
-    try {
-      // The image_url is usually a public URL, we need to extract the path
-      // Example: https://<project>.supabase.co/storage/v1/object/public/product-images/product-123.jpg
-      const urlParts = product.image_url.split('/product-images/');
-      if (urlParts.length > 1) {
-        const path = urlParts[1];
-        await supabase.storage.from('product-images').remove([path]);
-      }
-    } catch (e) {
-      console.error('Error deleting image:', e);
-    }
-  }
-
+  // Retain historical/shared blobs; managed media deletion is a separate guarded action.
   const { error } = await supabase
     .from('products')
     .delete()
@@ -414,4 +429,39 @@ export async function deleteProduct(id: string) {
   revalidatePath('/shop');
   revalidatePath('/');
   return { success: true };
+}
+
+export interface Product {
+ id: string; name: string; category: string; subcategory: string | null; unit: string;
+ price: number; previousPrice: number | null; stockQuantity: number; isActive: boolean; isInSeason: boolean; imageUrl: string | null; description: string | null;
+}
+
+// Public DTO never contains costs or non-entitled tier prices.
+export async function fetchProducts(): Promise<Product[]> {
+ const actor = await getActor();
+ const publicDb = createClient(supabaseUrl, supabaseKey);
+ const { data, error } = await publicDb.from('products')
+   .select('id,name,category,subcategory,unit,price_retail,previous_price_retail,stock_quantity,is_active,is_in_season,image_url,description')
+   .eq('is_active', true);
+ if (error) throw new Error('CATALOG_UNAVAILABLE');
+ const { data: kits, error: kitsError } = await publicDb.from('kits')
+   .select('id,name,fixed_price,banner_url,status')
+   .eq('status', 'active');
+ if (kitsError) throw new Error('KITS_UNAVAILABLE');
+ const tierPrices = new Map<string, { price: number; previous: number | null }>();
+ if (actor.userId && actor.tier !== 'Personas Naturales') {
+   const db = getServerDatabase(actor);
+   const column = actor.tier === 'Restaurantes' ? 'price_restaurant' : 'price_micro';
+   const previous = actor.tier === 'Restaurantes' ? 'previous_price_restaurant' : 'previous_price_micro';
+   const result = await db.from('products').select('id,' + column + ',' + previous).in('id', (data || []).map(p => p.id));
+   if (result.error) throw new Error('ENTITLED_PRICE_UNAVAILABLE');
+   for (const row of (result.data || []) as unknown as Record<string, unknown>[]) {
+     if (typeof row.id !== 'string' || typeof row[column] !== 'number' || row[previous] !== null && typeof row[previous] !== 'number') throw new Error('INVALID_ENTITLED_PRICE');
+     tierPrices.set(row.id, { price: row[column] as number, previous: row[previous] as number | null });
+   }
+ }
+ if (actor.userId && actor.tier !== 'Personas Naturales' && (data || []).some(p => !tierPrices.has(p.id))) throw new Error('ENTITLED_PRICE_MISSING');
+ const products: Product[] = (data || []).map(p => ({ id:p.id, name:p.name, category:p.category, subcategory:p.subcategory, unit:p.unit, price:tierPrices.get(p.id)?.price ?? p.price_retail, previousPrice:tierPrices.has(p.id) ? tierPrices.get(p.id)!.previous : p.previous_price_retail, stockQuantity:p.stock_quantity, isActive:p.is_active, isInSeason:p.is_in_season, imageUrl:p.image_url, description:p.description }));
+ const combos: Product[] = (kits || []).map(k => ({ id:k.id, name:k.name, category:'Kits Negocios', subcategory:null, unit:'Combo', price:Number(k.fixed_price), previousPrice:null, stockQuantity:999, isActive:true, isInSeason:true, imageUrl:k.banner_url || null, description:'Combo mayorista: ' + k.name }));
+ return [...products, ...combos].sort((a,b) => a.name.localeCompare(b.name));
 }

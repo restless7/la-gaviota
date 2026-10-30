@@ -1,0 +1,20 @@
+{
+  "files": 131,
+  "errors": 82,
+  "warnings": 58,
+  "fatal": 0,
+  "rule_counts": {
+    "@typescript-eslint/no-unused-vars": 50,
+    "@typescript-eslint/no-explicit-any": 53,
+    "@next/next/no-html-link-for-pages": 7,
+    "react-hooks/purity": 3,
+    "react-hooks/set-state-in-effect": 13,
+    "react/no-unescaped-entities": 2,
+    "@next/next/no-img-element": 4,
+    "react-hooks/exhaustive-deps": 2,
+    "@typescript-eslint/no-require-imports": 2,
+    "react/display-name": 1,
+    "prefer-const": 1,
+    "@next/next/no-location-assign-relative-destination": 2
+  }
+}

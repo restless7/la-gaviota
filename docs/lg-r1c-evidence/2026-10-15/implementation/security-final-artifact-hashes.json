@@ -1,0 +1,16 @@
+{
+  "run-implemented-synthetic.cjs": "8dbcca1974a432780d9a31201023c582621e6d09a46c922e823d79beadc303df",
+  "harness-adaptation.json": "2e8e0d42a3600e570bb87fe7ee8732630d66142e8c03773fbfa57f9144386044",
+  "synthetic-results.json": "4bbf2c623b4576e9e7c91f06fc69ee40ce407490eb1a097e4026343ee45440c8",
+  "middleware-context-compatibility.patch": "30f8b701b6e289b2fbad0c3100e11f18557338f8d023f9be210f003494e5b9a1",
+  "middleware-context-applied.json": "b0e11ca60ed305f9fbd7ae28cdd8ff93ba4ad6ae72be7620ddcbf245e452802e",
+  "middleware-context-review.json": "aaf0071ca97aac477953f1011ced22d6ebbb191c2579164cc4c7554ef61cfafc",
+  "middleware-context-regression.cjs": "1bb6d52111ae68cd34fe342a64bbb2d6cc2a4d5ab41f24ab027170c786780ad9",
+  "middleware-context-results.json": "f4e5198faf15520bff470b39597c80e75b67092a38dc730e148ad44d17508554",
+  "financial-import-compatibility.json": "e9f6298f3d20256a31c54ecf463ccfd842ad865ccc85baf9d04518476242beb2",
+  "final-implemented-scope-hashes.json": "dc86634e94fc84064e172f218dac0fddf10f8d23be6af25c7ccab28492472256",
+  "role-label-source-inventory.json": "a5b4c8ffda7df7ca6adcaf4d1506a8f1f365b0c5638c51f1f1e23eef82b81405",
+  "implemented-role-matrix.json": "9f2796a985b75d0fd0234d3221f2e4b31a0afbea1eb564e3d606059d3b003f9c",
+  "ROLE_LEGACY_MIGRATION_PLAN_ES.md": "e24a2758923257bde4a48c61a36859922ef56ad81186c90c0c6e97a054dc8013",
+  "SECURITY_IMPLEMENTATION_HANDOFF_ES.md": "51aea9ea57e73406df9797cc1bd431b4c8f59dd604a1bfe35c31a0d9372329aa"
+}

@@ -1,6 +1,9 @@
 'use server';
+import { requireCapability, requireOwnedSubject, validateTier, assertTargetId } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-import { supabase } from '@/src/lib/supabase';
+
+
 import { clerkClient } from '@clerk/nextjs/server';
 import type { BusinessTier } from '@/src/lib/supabase';
 
@@ -18,6 +21,10 @@ export async function submitBusinessApplication(formData: {
   monthlyVolume: string;
   notes: string;
 }) {
+  const actor = await requireOwnedSubject(formData.clerkUserId);
+  const supabase = getServerDatabase(actor);
+  validateTier(formData.businessType);
+
   try {
     const { data, error } = await supabase
       .from('business_applications')
@@ -52,6 +59,9 @@ export async function submitBusinessApplication(formData: {
 
 // ---------- Fetch All Applications (Admin) ----------
 export async function fetchBusinessApplications() {
+  const actor = await requireCapability('customers.manage');
+  const supabase = getServerDatabase(actor);
+
   try {
     const { data, error } = await supabase
       .from('business_applications')
@@ -72,6 +82,13 @@ export async function fetchBusinessApplications() {
 
 // ---------- Approve Application (Admin) ----------
 export async function approveApplication(applicationId: string, clerkUserId: string, businessType: BusinessTier, businessName: string, adminName: string) {
+  const actor = await requireCapability('tiers.manage');
+  const supabase = getServerDatabase(actor);
+
+  void adminName; // Attribution comes from the issued actor, never the caller name.
+  assertTargetId(applicationId);
+  assertTargetId(clerkUserId);
+  validateTier(businessType);
   try {
     // 1. Update Clerk user metadata to grant the tier
     const client = await clerkClient();
@@ -88,7 +105,7 @@ export async function approveApplication(applicationId: string, clerkUserId: str
       .from('business_applications')
       .update({
         status: 'approved',
-        reviewed_by: adminName,
+        reviewed_by: actor.userId,
         reviewed_at: new Date().toISOString(),
       })
       .eq('id', applicationId);
@@ -131,12 +148,17 @@ export async function approveApplication(applicationId: string, clerkUserId: str
 
 // ---------- Reject Application (Admin) ----------
 export async function rejectApplication(applicationId: string, adminName: string) {
+  const actor = await requireCapability('tiers.manage');
+  const supabase = getServerDatabase(actor);
+
+  void adminName; // Attribution comes from the issued actor, never the caller name.
+  assertTargetId(applicationId);
   try {
     const { error } = await supabase
       .from('business_applications')
       .update({
         status: 'rejected',
-        reviewed_by: adminName,
+        reviewed_by: actor.userId,
         reviewed_at: new Date().toISOString(),
       })
       .eq('id', applicationId);

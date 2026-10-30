@@ -1,0 +1,92 @@
+{
+  "files": {
+    "proposals/lg-r1b-policy-proposal.sql.txt": {
+      "bytes": 18152,
+      "sha256": "88eff4933862913457e11e92474d4cf9d83501b8f9afcacb340e238cfb164def"
+    },
+    "proposals/lg-r1b-policy-proposal.patch": {
+      "bytes": 18330,
+      "sha256": "645d6eaae94d7494b00853d49df0e01adb9547da96af6bb4593953ed297d9a8f"
+    },
+    "fixture.sql": {
+      "bytes": 22099,
+      "sha256": "018c98ae260d2ce4be0eeed798811c0ef3ca27f1f93895cd4e34d55f836528c9"
+    },
+    "storage-stub.sql": {
+      "bytes": 342,
+      "sha256": "47c79f48150f2997b4bc40b669e3cb44cd0b536885aeec2cbf287d763c2fa452"
+    },
+    "schema-coverage.json": {
+      "bytes": 7860,
+      "sha256": "d6b842783a4533b14f09d083c1df935dd667c2bbc404fe73cee53bfd1f78d313"
+    },
+    "run-isolated.py": {
+      "bytes": 16294,
+      "sha256": "d204f8ddf9c713a85bf3c3205c8ec743348a74c8c98a63937409c001b7ee7244"
+    },
+    "test-summary.json": {
+      "bytes": 858,
+      "sha256": "160ad86a3a63611f03f90d827c38d8831de577eeec8849cdc037ffdea48f438d"
+    },
+    "test-results.json": {
+      "bytes": 87499,
+      "sha256": "ea12765436766bba85c30c8a44c6bd1afe9ecf095ae2fc10322766f3858d77e5"
+    },
+    "cleanup.json": {
+      "bytes": 309,
+      "sha256": "945f05e06ff69520ae67d468f1cf896d2fa4c6df1e673760bb88dc8351ba7a25"
+    },
+    "cluster-settings.json": {
+      "bytes": 388,
+      "sha256": "2259848131bba3de353e63fb794a99b122ffde96be2e959c9cae17658bd1cf20"
+    },
+    "rows-before.json": {
+      "bytes": 18432,
+      "sha256": "30119069494aad642f51900089c729e4a49dbf3ff08cbf4301c0538037fd343e"
+    },
+    "rows-after.json": {
+      "bytes": 18432,
+      "sha256": "30119069494aad642f51900089c729e4a49dbf3ff08cbf4301c0538037fd343e"
+    },
+    "row-state-check.json": {
+      "bytes": 115,
+      "sha256": "bfaea2620278b285c9cb8eb339142046804ee8fef9887de4617d892b212d0ca3"
+    },
+    "client-transition-inventory.json": {
+      "bytes": 11050,
+      "sha256": "15046a75c44231abfb63e9049773bad7799e04c88e43eeb3a750e91bd94d4c91"
+    },
+    "effective-client-review.json": {
+      "bytes": 2875,
+      "sha256": "c607da47e64cfd2cfe2396da3dcc8c3c996d6de81e16b7971bc6b65fcf464290"
+    },
+    "ADR_TRANSICION_Y_RESULTADOS.md": {
+      "bytes": 16766,
+      "sha256": "35cdda0a78e0014c331848e940699968d349a86117533fd4b138cd20dace45e9"
+    },
+    "metadata-request.sql.txt": {
+      "bytes": 1929,
+      "sha256": "789b01bc57bf694a536d369f0131d998281a0de8ad1ea88006fca66fde19cc05"
+    },
+    "failclosed-rollback.sql.txt": {
+      "bytes": 1208,
+      "sha256": "c28f73029fb48aee4a3d29d212073da241d9e2c3911521f92c4c8863204f040e"
+    },
+    "replay-isolated.py": {
+      "bytes": 1824,
+      "sha256": "0413de61dda5efc6d83040d3b2613f94d6a1b2d957bdfd7d6f801dcf81bf16aa"
+    },
+    "generate.py": {
+      "bytes": 1606,
+      "sha256": "1d3c95cf57ad9f6a34b22d6df1477d04d70870b320d03b57808df06298dbda79"
+    },
+    "ENOSPC-INCIDENT.txt": {
+      "bytes": 369,
+      "sha256": "682ef406381ebac39da02e28d36dafadc15ae82c1ba0c807992be393bc308a97"
+    }
+  },
+  "final_sql_cases": 315,
+  "production_execution": false,
+  "original_repo_edits": false,
+  "sql_candidate_activation": "BLOCKED pending coordinated clients + R2 callback integrity + live metadata/sandbox"
+}

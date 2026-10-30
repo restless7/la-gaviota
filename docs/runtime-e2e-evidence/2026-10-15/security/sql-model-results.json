@@ -1,0 +1,3539 @@
+[
+  {
+    "name": "migration_missing_review_gate_aborts",
+    "role": "lg_r1b_fixture_owner",
+    "expected": {
+      "error_sqlstate": "P0001"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "WARNING:  25001: there is already a transaction in progress\nLOCATION:  BeginTransactionBlock, xact.c:3954\nERROR:  P0001: LG-R1B reviewed metadata/client transition gate missing\nCONTEXT:  PL/pgSQL function inline_code_block line 1 at RAISE\nLOCATION:  exec_stmt_raise, pl_exec.c:3909"
+  },
+  {
+    "name": "migration_unknown_policy_aborts",
+    "role": "lg_r1b_fixture_owner",
+    "expected": {
+      "error_sqlstate": "P0001"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "SYNTHETIC_OR_REVIEWED_METADATA_ONLY",
+    "stderr": "WARNING:  25001: there is already a transaction in progress\nLOCATION:  BeginTransactionBlock, xact.c:3954\nERROR:  P0001: Unreviewed policy public.products/synthetic_unreviewed_policy: abort\nCONTEXT:  PL/pgSQL function inline_code_block line 1 at RAISE\nLOCATION:  exec_stmt_raise, pl_exec.c:3909"
+  },
+  {
+    "name": "anon_catalog_active_only",
+    "role": "anon",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "anon_kits_active_only",
+    "role": "anon",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "anon_base_safe_columns_active_only",
+    "role": "anon",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "anon_deny_base_base_cost",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "anon_deny_base_price_micro",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "anon_deny_base_price_restaurant",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "anon_deny_base_previous_price_micro",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "anon_deny_base_previous_price_restaurant",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "anon_deny_base_fixture_extra_secret",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "anon_deny_base_select_star",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "anon_safe_view_no_sensitive_columns",
+    "role": "anon",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "authenticated_catalog_active_only",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "authenticated_kits_active_only",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "authenticated_base_safe_columns_active_only",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "authenticated_deny_base_base_cost",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "authenticated_deny_base_price_micro",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "authenticated_deny_base_price_restaurant",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "authenticated_deny_base_previous_price_micro",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "authenticated_deny_base_previous_price_restaurant",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "authenticated_deny_base_fixture_extra_secret",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "authenticated_deny_base_select_star",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "authenticated_safe_view_no_sensitive_columns",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_owns_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "retail_cross_owner_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_owns_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "retail_cross_owner_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_owns_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "retail_cross_owner_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_owns_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "retail_cross_owner_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_owns_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "retail_cross_owner_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_owns_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "retail_cross_owner_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_cannot_update_price",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_cannot_update_own_credit",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_cannot_insert_order",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "micro_owns_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "micro_cross_owner_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "micro_owns_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "micro_cross_owner_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "micro_owns_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "micro_cross_owner_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "micro_owns_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "micro_cross_owner_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "micro_owns_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "micro_cross_owner_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "micro_owns_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "micro_cross_owner_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "micro_cannot_update_price",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "micro_cannot_update_own_credit",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "micro_cannot_insert_order",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "restaurant_owns_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_cross_owner_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_owns_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_cross_owner_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_owns_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_cross_owner_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_owns_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_cross_owner_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_owns_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_cross_owner_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_owns_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_cross_owner_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "restaurant_cannot_update_price",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "restaurant_cannot_update_own_credit",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "restaurant_cannot_insert_order",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_owns_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "admin_cross_owner_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "admin_owns_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "admin_cross_owner_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "admin_owns_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "admin_cross_owner_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "admin_owns_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "admin_cross_owner_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "admin_owns_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "admin_cross_owner_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "admin_owns_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "admin_cross_owner_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "admin_cannot_update_price",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_cannot_update_own_credit",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_cannot_insert_order",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_owns_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_cross_owner_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_owns_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_cross_owner_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_owns_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_cross_owner_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_owns_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_cross_owner_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_owns_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_cross_owner_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_owns_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_cross_owner_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_cannot_update_price",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_cannot_update_own_credit",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_cannot_insert_order",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "operario_owns_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "operario_cross_owner_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "operario_owns_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "operario_cross_owner_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "operario_owns_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "operario_cross_owner_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "operario_owns_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "operario_cross_owner_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "operario_owns_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "operario_cross_owner_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "operario_owns_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "operario_cross_owner_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "operario_cannot_update_price",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "operario_cannot_update_own_credit",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "operario_cannot_insert_order",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "commercial_owns_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "commercial_cross_owner_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "commercial_owns_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "commercial_cross_owner_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "commercial_owns_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "commercial_cross_owner_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "commercial_owns_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "commercial_cross_owner_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "commercial_owns_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "commercial_cross_owner_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "commercial_owns_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "commercial_cross_owner_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "commercial_cannot_update_price",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "commercial_cannot_update_own_credit",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "commercial_cannot_insert_order",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "unknown_owns_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "unknown_cross_owner_customers",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "unknown_owns_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "unknown_cross_owner_orders",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "unknown_owns_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "unknown_cross_owner_order_items",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "unknown_owns_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "unknown_cross_owner_b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "unknown_owns_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "unknown_cross_owner_buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "unknown_owns_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "unknown_cross_owner_business_applications",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "unknown_cannot_update_price",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "unknown_cannot_update_own_credit",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "unknown_cannot_insert_order",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "missing_owner_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "missing_no_staff_update",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "empty_sub_owner_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "empty_sub_no_staff_update",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "uuid_sub_owner_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "uuid_sub_no_staff_update",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "wrong_transport_role_owner_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "wrong_transport_role_no_staff_update",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "missing_transport_role_owner_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "missing_transport_role_no_staff_update",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "fake_admin_metadata_owner_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "fake_admin_metadata_no_staff_update",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "stale_admin_claim_owner_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "stale_admin_claim_no_staff_update",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_customers",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_orders",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_order_items",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table order_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_b2b_credit_profiles",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table b2b_credit_profiles\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_buying_templates",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buying_templates\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_business_applications",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table business_applications\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.abandoned_carts",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table abandoned_carts\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.agricultural_shrinkage_logs",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table agricultural_shrinkage_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.audit_logs",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table audit_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.b2b_credit_profiles",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table b2b_credit_profiles\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.business_applications",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table business_applications\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.buying_templates",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buying_templates\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.customers",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.daily_operational_ledgers",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table daily_operational_ledgers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.global_settings",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table global_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.kit_items",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kit_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.kits",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kits\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.marketing_leads",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table marketing_leads\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.order_items",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table order_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.orders",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.products",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.suppliers",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table suppliers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_deny_delete_public.system_settings",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table system_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.abandoned_carts",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table abandoned_carts\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.agricultural_shrinkage_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table agricultural_shrinkage_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.audit_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table audit_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table b2b_credit_profiles\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.business_applications",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table business_applications\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buying_templates\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.customers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.daily_operational_ledgers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table daily_operational_ledgers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.global_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table global_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.kit_items",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kit_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.kits",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kits\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.marketing_leads",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table marketing_leads\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.order_items",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table order_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.orders",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.products",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.suppliers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table suppliers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_delete_public.system_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table system_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.abandoned_carts",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table abandoned_carts\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.agricultural_shrinkage_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table agricultural_shrinkage_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.audit_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table audit_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table b2b_credit_profiles\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.business_applications",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table business_applications\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buying_templates\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.customers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.daily_operational_ledgers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table daily_operational_ledgers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.global_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table global_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.kit_items",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kit_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.kits",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kits\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.marketing_leads",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table marketing_leads\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.order_items",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table order_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.orders",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.products",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.suppliers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table suppliers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_delete_public.system_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table system_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.abandoned_carts",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table abandoned_carts\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.agricultural_shrinkage_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table agricultural_shrinkage_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.audit_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table audit_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.b2b_credit_profiles",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table b2b_credit_profiles\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.business_applications",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table business_applications\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.buying_templates",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buying_templates\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.customers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table customers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.daily_operational_ledgers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table daily_operational_ledgers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.global_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table global_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.kit_items",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kit_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.kits",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kits\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.marketing_leads",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table marketing_leads\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.order_items",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table order_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.orders",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.products",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.suppliers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table suppliers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_deny_delete_public.system_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table system_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_private_abandoned_carts",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table abandoned_carts\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_private_abandoned_carts",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table abandoned_carts\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_private_agricultural_shrinkage_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table agricultural_shrinkage_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_private_agricultural_shrinkage_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table agricultural_shrinkage_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_private_audit_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table audit_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_private_audit_logs",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table audit_logs\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_private_daily_operational_ledgers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table daily_operational_ledgers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_private_daily_operational_ledgers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table daily_operational_ledgers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_private_global_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table global_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_private_global_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table global_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_private_kit_items",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kit_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_private_kit_items",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table kit_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_private_marketing_leads",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table marketing_leads\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_private_marketing_leads",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table marketing_leads\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_private_suppliers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table suppliers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_private_suppliers",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table suppliers\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_deny_private_system_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table system_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_deny_private_system_settings",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table system_settings\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_storage_bucket_metadata_denied",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buckets\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_storage_bucket_flag_mutation_denied",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buckets\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_storage_public_get_rows",
+    "role": "anon",
+    "expected": {
+      "value": "2"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "2",
+    "stderr": null
+  },
+  {
+    "name": "guest_storage_private_get_rows",
+    "role": "anon",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "guest_storage_list_denied",
+    "role": "anon",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "guest_storage_missing_operation_denied",
+    "role": "anon",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "guest_storage_insert_denied",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_storage_update_denied",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "guest_storage_delete_denied",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_storage_bucket_metadata_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buckets\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_storage_bucket_flag_mutation_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buckets\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_storage_public_get_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "2"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "2",
+    "stderr": null
+  },
+  {
+    "name": "retail_storage_private_get_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_storage_list_denied",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_storage_missing_operation_denied",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "retail_storage_insert_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_storage_update_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "retail_storage_delete_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_storage_bucket_metadata_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buckets\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_storage_bucket_flag_mutation_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buckets\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_storage_public_get_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "2"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "2",
+    "stderr": null
+  },
+  {
+    "name": "admin_storage_private_get_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "admin_storage_list_denied",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "admin_storage_missing_operation_denied",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "admin_storage_insert_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_storage_update_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "admin_storage_delete_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_storage_bucket_metadata_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buckets\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_storage_bucket_flag_mutation_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table buckets\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_storage_public_get_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "2"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "2",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_storage_private_get_rows",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_storage_list_denied",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_storage_missing_operation_denied",
+    "role": "authenticated",
+    "expected": {
+      "value": "0"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "0",
+    "stderr": null
+  },
+  {
+    "name": "superadmin_storage_insert_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_storage_update_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "superadmin_storage_delete_denied",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table objects\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "expired_claim_owner_read_limitation_sql_stub_not_gateway",
+    "role": "authenticated",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "expired_staff_claim_still_no_mutation",
+    "role": "authenticated",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "service_bypass_can_select_products",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_customers",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_orders",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_order_items",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_suppliers",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_audit_logs",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_marketing_leads",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_abandoned_carts",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_system_settings",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_global_settings",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_b2b_credit_profiles",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_buying_templates",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_business_applications",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_kits",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_kit_items",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_agricultural_shrinkage_logs",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_can_select_daily_operational_ledgers",
+    "role": "service_role",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_reads_all_customer_owners",
+    "role": "service_role",
+    "expected": {
+      "value": "8"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "8",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_mutates_cost_without_actor_guard",
+    "role": "service_role",
+    "expected": {
+      "value": "999"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "999",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_storage_private_rows",
+    "role": "service_role",
+    "expected": {
+      "value": "3"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "3",
+    "stderr": null
+  },
+  {
+    "name": "service_bypass_storage_write",
+    "role": "service_role",
+    "expected": {
+      "value": "synthetic/server.jpg"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "synthetic/server.jpg",
+    "stderr": null
+  },
+  {
+    "name": "no_durable_cost_delta_after_service_test",
+    "role": "lg_r1b_fixture_owner",
+    "expected": {
+      "value": "111"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "111",
+    "stderr": null
+  },
+  {
+    "name": "no_durable_storage_delta_after_service_test",
+    "role": "lg_r1b_fixture_owner",
+    "expected": {
+      "value": "3"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "3",
+    "stderr": null
+  },
+  {
+    "name": "helper_security_invoker",
+    "role": "lg_r1b_fixture_owner",
+    "expected": {
+      "value": "false"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "false",
+    "stderr": null
+  },
+  {
+    "name": "catalog_view_security_invoker",
+    "role": "lg_r1b_fixture_owner",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "service_role_bypass_explicit",
+    "role": "lg_r1b_fixture_owner",
+    "expected": {
+      "value": "true"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "true",
+    "stderr": null
+  },
+  {
+    "name": "current_anon_fetchProducts_projection",
+    "role": "anon",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "current_anon_fetchProducts_kits_projection",
+    "role": "anon",
+    "expected": {
+      "value": "1"
+    },
+    "passed": true,
+    "returncode": 0,
+    "actual": "1",
+    "stderr": null
+  },
+  {
+    "name": "current_anon_catalog_extra_cost_denied",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table products\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "current_anon_webhook_order_read_blocked",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "current_anon_webhook_order_write_blocked",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "current_anon_webhook_items_blocked",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table order_items\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "current_anon_kanban_orders_blocked",
+    "role": "anon",
+    "expected": {
+      "error_sqlstate": "42501"
+    },
+    "passed": true,
+    "returncode": 1,
+    "actual": "object.get_authenticated",
+    "stderr": "ERROR:  42501: permission denied for table orders\nLOCATION:  aclcheck_error, aclchk.c:2793"
+  },
+  {
+    "name": "all19_table_rows_unchanged_after_candidate_and_rollback_tests",
+    "passed": true,
+    "table_count": 19,
+    "expected": "identical before/after synthetic row snapshots"
+  }
+]

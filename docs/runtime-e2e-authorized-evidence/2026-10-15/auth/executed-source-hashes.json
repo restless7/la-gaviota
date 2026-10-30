@@ -1,0 +1,107 @@
+{
+  "scope": "Selected auth/checkout actually executed source copy vs original; no Next config/env equivalence claimed",
+  "files": [
+    {
+      "file": "middleware.ts",
+      "originalSha256": "a81e6e21b93fff00210bf5426681d257980185f41d5360de68ee82d345e249bf",
+      "executedCopySha256": "a81e6e21b93fff00210bf5426681d257980185f41d5360de68ee82d345e249bf",
+      "identical": true
+    },
+    {
+      "file": "src/lib/server/authorization.ts",
+      "originalSha256": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12",
+      "executedCopySha256": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12",
+      "identical": true
+    },
+    {
+      "file": "src/lib/server/database.ts",
+      "originalSha256": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c",
+      "executedCopySha256": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c",
+      "identical": true
+    },
+    {
+      "file": "src/actions/products.ts",
+      "originalSha256": "bbe908054e505daa160911d01d0af17dfd8ec589e8e8430b3ad520f27b150c20",
+      "executedCopySha256": "bbe908054e505daa160911d01d0af17dfd8ec589e8e8430b3ad520f27b150c20",
+      "identical": true
+    },
+    {
+      "file": "src/actions/users.ts",
+      "originalSha256": "6833361086b3d251707a714355d2ec369a3f0a53ee337fdd84d89181feaad62d",
+      "executedCopySha256": "6833361086b3d251707a714355d2ec369a3f0a53ee337fdd84d89181feaad62d",
+      "identical": true
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "originalSha256": "47999d46a2fe09df4aea74b1a59855fe71c27c4d13b4c0faa74205371bea2f81",
+      "executedCopySha256": "47999d46a2fe09df4aea74b1a59855fe71c27c4d13b4c0faa74205371bea2f81",
+      "identical": true
+    },
+    {
+      "file": "src/actions/checkoutAction.ts",
+      "originalSha256": "46da08b0ea86c61e2aef42d65c2e040cf6b1e4bd9e8dd35de7049855e8e6cbb0",
+      "executedCopySha256": "46da08b0ea86c61e2aef42d65c2e040cf6b1e4bd9e8dd35de7049855e8e6cbb0",
+      "identical": true
+    },
+    {
+      "file": "src/contexts/CartContext.tsx",
+      "originalSha256": "7ab7abb3e8cb647d4bb865eb48eab6e3e7285a20479a2cc93fdfb4d7e461478b",
+      "executedCopySha256": "7ab7abb3e8cb647d4bb865eb48eab6e3e7285a20479a2cc93fdfb4d7e461478b",
+      "identical": true
+    },
+    {
+      "file": "src/contexts/UserRoleContext.tsx",
+      "originalSha256": "502897daa3f7e7e18278c24dcaf62c839a920ab54b104a7c86245cbf5ba77f16",
+      "executedCopySha256": "502897daa3f7e7e18278c24dcaf62c839a920ab54b104a7c86245cbf5ba77f16",
+      "identical": true
+    },
+    {
+      "file": "src/components/store/QuantitySelector.tsx",
+      "originalSha256": "1d79ba7d799aa2e3de6abcf7ed2b43941e7d51941a2f9b8e4de83b448bc2980e",
+      "executedCopySha256": "1d79ba7d799aa2e3de6abcf7ed2b43941e7d51941a2f9b8e4de83b448bc2980e",
+      "identical": true
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "originalSha256": "9d5592a6770c61f735552d746f72b8e7d0029530745f7527eba0ddb91bfe1745",
+      "executedCopySha256": "9d5592a6770c61f735552d746f72b8e7d0029530745f7527eba0ddb91bfe1745",
+      "identical": true
+    },
+    {
+      "file": "app/sign-in/[[...sign-in]]/page.tsx",
+      "originalSha256": "0da7dcfd356953b9aeefda14c7a0786b4e6cb49ce24394cd3f1eff98560c0e45",
+      "executedCopySha256": "0da7dcfd356953b9aeefda14c7a0786b4e6cb49ce24394cd3f1eff98560c0e45",
+      "identical": true
+    },
+    {
+      "file": "app/sign-up/[[...sign-up]]/page.tsx",
+      "originalSha256": "f1ca319e9c25aae58a45f163e1ee4d304c3f11be530358f1cf9427e4da2faf55",
+      "executedCopySha256": "f1ca319e9c25aae58a45f163e1ee4d304c3f11be530358f1cf9427e4da2faf55",
+      "identical": true
+    },
+    {
+      "file": "src/components/portals/CustomerOrderHistory.tsx",
+      "originalSha256": "2c9efc2796a731315e31112cb8ab2930cbac83e968efbb23ed141ff13ec25df9",
+      "executedCopySha256": "2c9efc2796a731315e31112cb8ab2930cbac83e968efbb23ed141ff13ec25df9",
+      "identical": true
+    },
+    {
+      "file": "src/lib/server/orderWriter.ts",
+      "originalSha256": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187",
+      "executedCopySha256": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187",
+      "identical": true
+    },
+    {
+      "file": "src/lib/server/checkout.ts",
+      "originalSha256": "dcdbf4ebb52b7589ae5f2adaaa9a58fc26753cc1fe19f718bbc84f710f5bd4c8",
+      "executedCopySha256": "dcdbf4ebb52b7589ae5f2adaaa9a58fc26753cc1fe19f718bbc84f710f5bd4c8",
+      "identical": true
+    },
+    {
+      "file": "src/lib/checkoutValidation.ts",
+      "originalSha256": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+      "executedCopySha256": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+      "identical": true
+    }
+  ]
+}

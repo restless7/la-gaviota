@@ -1,0 +1,111 @@
+{
+  "startedAt": "2026-10-15T18:53:44.163Z",
+  "layer": "ACTUAL_LOCAL_NEXT_HTTP_ANONYMOUS;SHARED_CONFIG_NO_LOGIN",
+  "routes": [
+    {
+      "route": "/dashboard",
+      "http": 404,
+      "location": null,
+      "bodyBytes": 103784,
+      "bodySha256": "2c7932c83f8090d8723a37157434824dff58f84a066d89a599c871677ab4284c",
+      "status": "FAIL"
+    },
+    {
+      "route": "/retail",
+      "http": 404,
+      "location": null,
+      "bodyBytes": 103784,
+      "bodySha256": "2c7932c83f8090d8723a37157434824dff58f84a066d89a599c871677ab4284c",
+      "status": "FAIL"
+    },
+    {
+      "route": "/micromercado",
+      "http": 404,
+      "location": null,
+      "bodyBytes": 103784,
+      "bodySha256": "2c7932c83f8090d8723a37157434824dff58f84a066d89a599c871677ab4284c",
+      "status": "FAIL"
+    },
+    {
+      "route": "/restaurante",
+      "http": 404,
+      "location": null,
+      "bodyBytes": 103784,
+      "bodySha256": "2c7932c83f8090d8723a37157434824dff58f84a066d89a599c871677ab4284c",
+      "status": "FAIL"
+    },
+    {
+      "route": "/admin",
+      "http": 404,
+      "location": null,
+      "bodyBytes": 103784,
+      "bodySha256": "2c7932c83f8090d8723a37157434824dff58f84a066d89a599c871677ab4284c",
+      "status": "FAIL"
+    },
+    {
+      "route": "/admin/clientes/usuarios",
+      "http": 404,
+      "location": null,
+      "bodyBytes": 103784,
+      "bodySha256": "2c7932c83f8090d8723a37157434824dff58f84a066d89a599c871677ab4284c",
+      "status": "FAIL"
+    },
+    {
+      "route": "/admin/settings",
+      "http": 404,
+      "location": null,
+      "bodyBytes": 103784,
+      "bodySha256": "2c7932c83f8090d8723a37157434824dff58f84a066d89a599c871677ab4284c",
+      "status": "FAIL"
+    },
+    {
+      "route": "/sign-in",
+      "http": 200,
+      "location": null,
+      "bodyBytes": 103573,
+      "bodySha256": "b77594ed7b96480efa6cbe0c0c4a37970f3d2372ca21a46fc9937acd5d78d7a8",
+      "status": "PASS"
+    },
+    {
+      "route": "/sign-up",
+      "http": 200,
+      "location": null,
+      "bodyBytes": 103583,
+      "bodySha256": "7437408c01ac5a26213392a6d654b50c574e8a4340bbf75323bd4b8df5814515",
+      "status": "PASS"
+    }
+  ],
+  "actions": [
+    {
+      "name": "fetchSystemUsers",
+      "http": 409,
+      "flightErrorRecord": false,
+      "bodyBytes": 26,
+      "bodySha256": "d4b74fd3aa08502ca3195b1d212e4a094a322a4c9bf30e0c491cc55b19cc8011",
+      "status": "FAIL"
+    },
+    {
+      "name": "fetchAdminProducts",
+      "http": 500,
+      "flightErrorRecord": true,
+      "bodyBytes": 86,
+      "bodySha256": "5eb70f8013921bc6c2ced243552d3b7c12a24ffb239eb2b6a9bf9f6393c26501",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders",
+      "http": 409,
+      "flightErrorRecord": false,
+      "bodyBytes": 26,
+      "bodySha256": "d4b74fd3aa08502ca3195b1d212e4a094a322a4c9bf30e0c491cc55b19cc8011",
+      "status": "FAIL"
+    }
+  ],
+  "limits": [
+    "Protected redirects checked without following them; no login or remote authentication writes.",
+    "Only three read actions with first-statement requireCapability invoked; no mutating actions.",
+    "HTTP error response is framework-level evidence; zero target operations established separately with source mocks, not server network instrumentation."
+  ],
+  "status": "PARTIAL",
+  "endedAt": "2026-10-15T18:53:44.329Z"
+}

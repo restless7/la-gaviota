@@ -1,0 +1,53 @@
+{
+  "phase": "Authorized continuation of LG-RUNTIME-E2E",
+  "inventory_preceded_test_resource_creation": true,
+  "existing_backend": {
+    "supabase": "Current configured project preserved; not disposable; no writes, migrations, RLS or data modifications authorized/executed",
+    "clerk": "Existing La Gaviota application/dev instance identified and not used for synthetic account mutations",
+    "wompi": "Local keys absent; Vercel pre-existing metadata lists Production names only, values/prefixes not retrieved; sandbox not verified"
+  },
+  "authorized_test_environment": {
+    "clerk": {
+      "name": "LG-E2E-DISPOSABLE-20261015",
+      "application": "app_3KkIBTc8ZkYA4xOqe1RISnl26qu",
+      "instance": "ins_3KkIBUC69XmTCaePrSymXHwofVv",
+      "mode": "development only",
+      "identities": "nine synthetic fixtures; seven role/tier profiles plus two owners",
+      "plan_or_billing_changed": false,
+      "private_restore_directory": "/home/sebastiangarcia/.local/share/la-gaviota/authorized-e2e-20261015/auth",
+      "existing_application_unchanged": true
+    },
+    "database": {
+      "engine": "PostgreSQL18.6",
+      "isolation": "new owned cluster, Unix socket only, fictitious dataset",
+      "socket": "/tmp/la-gaviota-authorized-e2e-20261015/database/socket",
+      "port": 55479,
+      "schema": "fixture from retained source schema plus proposed restrictive policy; not attested hosted schema",
+      "catalog": "two active products, one inactive and active kit; approved test prices only"
+    },
+    "gateway": {
+      "engine": "PostgREST16.4 official static binary with GitHub asset digest comparison",
+      "urls": [
+        "http://127.0.0.1:47775",
+        "http://127.0.0.1:47776/rest/v1"
+      ],
+      "credentials": "fixture HMAC JWTs only; not real Clerk JWT or Supabase hosted API key",
+      "unsupported": [
+        "Supabase Auth",
+        "Storage API",
+        "Realtime",
+        "Clerk JWT gateway/JWKS"
+      ]
+    },
+    "application": {
+      "path": "/tmp/la-gaviota-authorized-e2e-20261015/application",
+      "url": "http://localhost:47774",
+      "source": "current app/src/public copied; node_modules reused by symlink; no original .env/.git/.next copied",
+      "framework": "Next16.4.1 real development webpack; not a new production build",
+      "environment": "allowlisted variables, new Clerk test keys and local fictitious backend only; Wompi absent"
+    },
+    "wompi": "Synthetic signed fixtures only; real sandbox BLOCKED"
+  },
+  "authorization": "No release/commit/push/production migration or financial implementation; only isolated synthetic tests",
+  "credentials_values_included": false
+}

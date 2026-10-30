@@ -8,8 +8,13 @@ export default function PQRSPage() {
   const [submitted, setSubmitted] = useState(false);
   const [type, setType] = useState('peticion');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const recipient = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
+    if (!recipient) return;
+    const form = new FormData(e.currentTarget);
+    const fields = Array.from(form.entries()).map(([key, value]) => `${key}: ${value}`).join('\n');
+    window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(`PQRS: ${type}`)}&body=${encodeURIComponent(fields)}`;
     setSubmitted(true);
   };
 
@@ -46,14 +51,10 @@ export default function PQRSPage() {
             <div className="bg-gaviota-green/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle size={40} className="text-gaviota-green" />
             </div>
-            <h2 className="text-3xl font-black text-slate-800 font-serif mb-4">¡Recibimos tu solicitud!</h2>
+            <h2 className="text-3xl font-black text-slate-800 font-serif mb-4">Termina el envío por correo</h2>
             <p className="text-gray-500 text-lg max-w-md mx-auto mb-8">
-              Nuestro equipo revisará tu {typeLabels[type].title.toLowerCase()} y te responderemos en un plazo máximo de 15 días hábiles conforme a la Ley 1755 de 2015.
+              Revisa y envía tu {typeLabels[type].title.toLowerCase()} desde tu aplicación de correo. Abrir el correo no confirma recepción ni genera un radicado.
             </p>
-            <div className="bg-slate-50 rounded-2xl p-6 max-w-sm mx-auto border border-gray-100 mb-8">
-              <p className="text-sm text-gray-500">Número de radicado</p>
-              <p className="text-2xl font-black text-slate-800 mt-1">PQRS-{Date.now().toString().slice(-8)}</p>
-            </div>
             <Link href="/" className="inline-flex items-center gap-2 bg-gaviota-green text-white font-bold py-3 px-8 rounded-full hover:bg-green-600 transition-all shadow-lg">
               Volver al inicio
             </Link>
@@ -83,15 +84,14 @@ export default function PQRSPage() {
               </div>
 
               <div className="bg-gaviota-green/5 border border-gaviota-green/20 rounded-3xl p-8">
-                <h4 className="font-bold text-slate-800 mb-3">📞 ¿Prefieres llamar?</h4>
-                <p className="text-sm text-gray-500 mb-4">Nuestro equipo está disponible de Lunes a Sábado de 6:00 AM a 8:00 PM.</p>
-                <p className="font-black text-lg text-gaviota-green">+57 315 123 4567</p>
+                <h4 className="font-bold text-slate-800 mb-3">Otros canales</h4>
+                <Link href="/contacto" className="text-sm font-bold text-green-800 underline">Consultar los canales de contacto</Link>
               </div>
 
               <div className="bg-slate-100 rounded-3xl p-8">
                 <h4 className="font-bold text-slate-800 mb-3">⚖️ Marco Legal</h4>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  De conformidad con la Ley 1755 de 2015, respondemos peticiones en máximo 15 días hábiles, quejas y reclamos en 15 días hábiles, y sugerencias en 15 días hábiles.
+                  Conserva una copia de tu correo. El equipo de atención confirmará la recepción y el trámite de tu solicitud.
                 </p>
               </div>
             </div>
@@ -113,6 +113,7 @@ export default function PQRSPage() {
                         key={key}
                         type="button"
                         onClick={() => setType(key)}
+                        aria-pressed={type === key}
                         className={`p-3 rounded-xl border-2 text-center transition-all ${type === key ? `border-gaviota-green bg-gaviota-green/5 shadow-md` : 'border-gray-100 hover:border-gray-200'}`}
                       >
                         <span className="text-xl block mb-1">{val.emoji}</span>
@@ -126,11 +127,11 @@ export default function PQRSPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Nombre completo *</label>
-                    <input type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" placeholder="Tu nombre" />
+                    <input type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="name" aria-label="Nombre completo" placeholder="Tu nombre" />
                   </div>
                   <div>
                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Correo electrónico *</label>
-                    <input type="email" required className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" placeholder="tu@correo.com" />
+                    <input type="email" required className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="email" aria-label="Correo electrónico" placeholder="tu@correo.com" />
                   </div>
                 </div>
 
@@ -138,32 +139,33 @@ export default function PQRSPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Teléfono</label>
-                    <input type="tel" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" placeholder="+57 300 000 0000" />
+                    <input type="tel" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="phone" aria-label="Teléfono" placeholder="+57 300 000 0000" />
                   </div>
                   <div>
                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">No. de pedido (si aplica)</label>
-                    <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" placeholder="ORD-XXXX" />
+                    <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="order" aria-label="Número de pedido" placeholder="ORD-XXXX" />
                   </div>
                 </div>
 
                 {/* Subject */}
                 <div>
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Asunto *</label>
-                  <input type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" placeholder="Resumen breve de tu solicitud" />
+                  <input type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="subject" aria-label="Asunto" placeholder="Resumen breve de tu solicitud" />
                 </div>
 
                 {/* Message */}
                 <div>
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Descripción detallada *</label>
-                  <textarea required rows={5} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium resize-none" placeholder="Describe tu solicitud con el mayor detalle posible..."></textarea>
+                  <textarea required rows={5} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium resize-none" name="message" aria-label="Descripción detallada" placeholder="Describe tu solicitud con el mayor detalle posible..."></textarea>
                 </div>
 
                 {/* Submit */}
-                <button type="submit" className="w-full bg-gaviota-green hover:bg-green-600 text-white font-black py-4 rounded-xl shadow-lg transition-all hover:-translate-y-0.5 flex items-center justify-center gap-3 text-lg">
+                <button type="submit" disabled={!process.env.NEXT_PUBLIC_SUPPORT_EMAIL} className="disabled:opacity-50 disabled:cursor-not-allowed w-full bg-gaviota-green hover:bg-green-600 text-white font-black py-4 rounded-xl shadow-lg transition-all hover:-translate-y-0.5 flex items-center justify-center gap-3 text-lg">
                   <Send size={20} />
-                  Enviar {typeLabels[type].title}
+                  Preparar correo: {typeLabels[type].title}
                 </button>
 
+                {!process.env.NEXT_PUBLIC_SUPPORT_EMAIL && <p role="status" className="text-sm text-slate-600">El correo de atención se habilitará al completar la configuración del portal. Este formulario no registra solicitudes todavía.</p>}
                 <p className="text-xs text-gray-400 text-center">
                   Al enviar este formulario, aceptas nuestra <Link href="/privacidad" className="text-gaviota-green font-bold hover:underline">Política de Privacidad</Link> y el tratamiento de tus datos personales.
                 </p>

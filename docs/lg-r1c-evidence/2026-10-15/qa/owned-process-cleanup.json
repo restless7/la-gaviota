@@ -1,0 +1,7 @@
+{
+  "runtime_trace_tasks_recorded": 163,
+  "runtime_trace_tasks_alive_now": [],
+  "owned_synthetic_processes": "all four synchronous subprocess.run calls completed",
+  "no_local_HTTP_server_started": true,
+  "no_postgres_started_or_sql_applied": true
+}

@@ -73,7 +73,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
   const [opsOpen, setOpsOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState<string>('');
   const pathname = usePathname();
-  const { user, loading, isSuperAdmin, isCommercial, isAdminAreaUser } = useRBAC();
+  const { user, loading, isSuperAdmin, isAdminAreaUser } = useRBAC();
   const { signOut } = useClerk();
 
   const handleLogout = () => {
@@ -170,7 +170,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
 
         <nav className="flex-1 mt-4 px-3 overflow-y-auto mb-4">
           {navigation.map((item) => {
-            const canView = isSuperAdmin ? true : (isCommercial && item.roles.includes('COMMERCIAL'));
+            const canView = isSuperAdmin || (!!user && item.roles.includes(user.role));
             if (!canView) return null;
 
             if (item.subItems) {

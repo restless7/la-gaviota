@@ -1,14 +1,16 @@
+import { getActor } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 import { NextResponse } from 'next/server';
-import { auth, clerkClient } from '@clerk/nextjs/server';
-import { createClient } from '@supabase/supabase-js';
+import { clerkClient } from '@clerk/nextjs/server';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth();
+    const actor = await getActor();
+    const userId = actor.userId;
+    if (!userId) return NextResponse.json({error:'Unauthorized'},{status:401});
+    const supabase = getServerDatabase(actor);
     const payload = await req.json();
     const { items, cartTotal, phone, email, isCompleted } = payload;
 

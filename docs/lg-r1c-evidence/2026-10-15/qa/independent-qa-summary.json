@@ -1,0 +1,78 @@
+{
+  "status": "INDEPENDENT_QA_COMPLETE; LOCAL_SOURCE_MODEL_PASS, REAL_RUNTIME_BLOCKED, COMMERCIAL_NO_GO",
+  "timestamp_utc": "2026-10-15T14:46:07.319341+00:00",
+  "implemented_workspace": "/tmp/la-gaviota-lg-r1c-20261015/application",
+  "final_hash_count": 55,
+  "hashes_match_release_final55": true,
+  "critical_suite": {
+    "unique_named_cases": 535,
+    "author_replayed_independently": true,
+    "assertion_invocations": 2001,
+    "static_assertion_callsites": 91,
+    "failures": 0,
+    "skips": 0,
+    "real_sdk": false
+  },
+  "context_suite": {
+    "unique_named_cases": 20,
+    "author_replayed_independently": true,
+    "assertion_invocations": 51,
+    "failures": 0,
+    "real_sdk": false
+  },
+  "independent_cases": {
+    "core": 12,
+    "middleware_context": 5,
+    "failures": 0,
+    "skips": 0,
+    "overlap_with_author_cases": "some boundaries overlap; counts not aggregated into distinct security assertions"
+  },
+  "tests_node": "24.13.0",
+  "test_environment_keys": [
+    "PATH",
+    "LANG"
+  ],
+  "synthetic_network_attempts": 0,
+  "source_inventory": {
+    "original": 59,
+    "original_actions": 54,
+    "original_routes": 5,
+    "implemented": 62,
+    "added": 4,
+    "privatized": 1
+  },
+  "static_quality_review": {
+    "kind": "independent review of release-owner final logs/hashes, not second execution",
+    "typecheck_exit": 0,
+    "scoped_lint": {
+      "exitcode": 1,
+      "files": 53,
+      "errors": 36,
+      "warnings": 28,
+      "fatal_errors": 0,
+      "new_violations": [],
+      "inherited_source_line_matches": 64
+    },
+    "hashes_stable": true
+  },
+  "real_framework": {
+    "next": "16.4.1",
+    "exit": 1,
+    "elapsed_seconds": 26.071,
+    "classification": "BLOCKED controlled offlinefont and downloopback",
+    "build_complete": false,
+    "http_tested": false,
+    "real_Clerk_auth_tested": false,
+    "Supabase_gateway_or_storage_tested": false,
+    "tracked_pre_post_equal": true,
+    "tracked_files": 366
+  },
+  "sql": "NOT_APPLIED;315R1B historical cases not rerun/copied as new acceptance",
+  "cleanup": {
+    "runtime_trace_tasks_recorded": 163,
+    "runtime_trace_tasks_alive_now": [],
+    "owned_synthetic_processes": "all four synchronous subprocess.run calls completed",
+    "no_local_HTTP_server_started": true,
+    "no_postgres_started_or_sql_applied": true
+  }
+}

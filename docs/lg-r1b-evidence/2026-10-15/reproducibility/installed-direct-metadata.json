@@ -1,0 +1,354 @@
+[
+  {
+    "name": "@clerk/localizations",
+    "declared_exact": "4.6.2",
+    "installed_version": "4.6.2",
+    "engines": {
+      "node": ">=20.9.0"
+    },
+    "peerDependencies": null,
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-wcA+BcXHJyoZWh7aRfSp56u3uSLHHDlBHLfJ86DoC8fCxwMkl4/njwjN8sahFm5fRN5gOkUd2qnxYwBHCLeDoQ=="
+  },
+  {
+    "name": "@clerk/nextjs",
+    "declared_exact": "6.39.7",
+    "installed_version": "6.39.7",
+    "engines": {
+      "node": ">=18.17.0"
+    },
+    "peerDependencies": {
+      "next": "^13.5.7 || ^14.2.25 || ^15.2.3 || ^16",
+      "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0",
+      "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-J5884xWcNs+/kV4HQAjUVnMw+XR67B8qPveO7yWwrPrYmzARcQC3gxewlROL1dHXzWlx0cqgSvJbolm8KpEppg=="
+  },
+  {
+    "name": "@dnd-kit/core",
+    "declared_exact": "6.3.1",
+    "installed_version": "6.3.1",
+    "engines": null,
+    "peerDependencies": {
+      "react": ">=16.8.0",
+      "react-dom": ">=16.8.0"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-xkGBRQQab4RLwgXxoqETICr6S5JlogafbhNsidmrkVv2YRs5MLwpjoF2qpiGjQt8S9AoxtIV603s0GIUpY5eYQ=="
+  },
+  {
+    "name": "@dnd-kit/sortable",
+    "declared_exact": "8.0.0",
+    "installed_version": "8.0.0",
+    "engines": null,
+    "peerDependencies": {
+      "react": ">=16.8.0",
+      "@dnd-kit/core": "^6.1.0"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-U3jk5ebVXe1Lr7c2wU7SBZjcWdQP+j7peHJfCspnA81enlu88Mgd7CC8Q+pub9ubP7eKVETzJW+IBAhsqbSu/g=="
+  },
+  {
+    "name": "@dnd-kit/utilities",
+    "declared_exact": "3.2.2",
+    "installed_version": "3.2.2",
+    "engines": null,
+    "peerDependencies": {
+      "react": ">=16.8.0"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg=="
+  },
+  {
+    "name": "@prisma/client",
+    "declared_exact": "7.8.0",
+    "installed_version": "7.8.0",
+    "engines": {
+      "node": "^20.19 || ^22.12 || >=24.0"
+    },
+    "peerDependencies": {
+      "prisma": "*",
+      "typescript": ">=5.4.0"
+    },
+    "peerDependenciesMeta": {
+      "prisma": {
+        "optional": true
+      },
+      "typescript": {
+        "optional": true
+      }
+    },
+    "integrity": "sha512-HFp3Dawv/3sU3JtlPha90IB+48lS7zHiH4LKZPjmcE8YH5P9DOXGPvo8dqOtO7MqLDd1p2hOWMcFlRT1DMblHw=="
+  },
+  {
+    "name": "@supabase/ssr",
+    "declared_exact": "0.7.0",
+    "installed_version": "0.7.0",
+    "engines": null,
+    "peerDependencies": {
+      "@supabase/supabase-js": "^2.43.4"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-G65t5EhLSJ5c8hTCcXifSL9Q/ZRXvqgXeNo+d3P56f4U1IxwTqjB64UfmfixvmMcjuxnq2yGqEWVJqUcO+AzAg=="
+  },
+  {
+    "name": "@supabase/supabase-js",
+    "declared_exact": "2.106.2",
+    "installed_version": "2.106.2",
+    "engines": {
+      "node": ">=20.0.0"
+    },
+    "peerDependencies": null,
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-2/RZ/1fmJx/MRSEDG2Xk8+J4JVk5clM9V0uSI6kUTrcS32KA89DtqI5RUOC9r6mzY3WBC9qexLjssIHjbLyVJA=="
+  },
+  {
+    "name": "@tailwindcss/postcss",
+    "declared_exact": "4.2.4",
+    "installed_version": "4.2.4",
+    "engines": null,
+    "peerDependencies": null,
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-wgAVj6nUWAolAu8YFvzT2cTBIElWHkjZwFYovF+xsqKsW2ADxM/X2opxj5NsF/qVccAOjRNe8X2IdPzMsWyHTg=="
+  },
+  {
+    "name": "autoprefixer",
+    "declared_exact": "10.5.0",
+    "installed_version": "10.5.0",
+    "engines": {
+      "node": "^10 || ^12 || >=14"
+    },
+    "peerDependencies": {
+      "postcss": "^8.1.0"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-FMhOoZV4+qR6aTUALKX2rEqGG+oyATvwBt9IIzVR5rMa2HRWPkxf+P+PAJLD1I/H5/II+HuZcBJYEFBpq39ong=="
+  },
+  {
+    "name": "embla-carousel-autoplay",
+    "declared_exact": "8.6.0",
+    "installed_version": "8.6.0",
+    "engines": null,
+    "peerDependencies": {
+      "embla-carousel": "8.6.0"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-OBu5G3nwaSXkZCo1A6LTaFMZ8EpkYbwIaH+bPqdBnDGQ2fh4+NbzjXjs2SktoPNKCtflfVMc75njaDHOYXcrsA=="
+  },
+  {
+    "name": "embla-carousel-react",
+    "declared_exact": "8.6.0",
+    "installed_version": "8.6.0",
+    "engines": null,
+    "peerDependencies": {
+      "react": "^16.8.0 || ^17.0.1 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-0/PjqU7geVmo6F734pmPqpyHqiM99olvyecY7zdweCw+6tKEXnrE90pBiBbMMU8s5tICemzpQ3hi5EpxzGW+JA=="
+  },
+  {
+    "name": "framer-motion",
+    "declared_exact": "11.18.2",
+    "installed_version": "11.18.2",
+    "engines": null,
+    "peerDependencies": {
+      "@emotion/is-prop-valid": "*",
+      "react": "^18.0.0 || ^19.0.0",
+      "react-dom": "^18.0.0 || ^19.0.0"
+    },
+    "peerDependenciesMeta": {
+      "@emotion/is-prop-valid": {
+        "optional": true
+      },
+      "react": {
+        "optional": true
+      },
+      "react-dom": {
+        "optional": true
+      }
+    },
+    "integrity": "sha512-5F5Och7wrvtLVElIpclDT0CBzMVg3dL22B64aZwHtsIY8RB4mXICLrkajK4G9R+ieSAGcgrLeae2SeUTg2pr6w=="
+  },
+  {
+    "name": "lucide-react",
+    "declared_exact": "0.525.0",
+    "installed_version": "0.525.0",
+    "engines": null,
+    "peerDependencies": {
+      "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-Tm1txJ2OkymCGkvwoHt33Y2JpN5xucVq1slHcgE6Lk0WjDfjgKWor5CdVER8U6DvcfMwh4M8XxmpTiyzfmfDYQ=="
+  },
+  {
+    "name": "next",
+    "declared_exact": "16.4.1",
+    "installed_version": "16.4.1",
+    "engines": {
+      "node": ">=20.9.0"
+    },
+    "peerDependencies": {
+      "@opentelemetry/api": "^1.1.0",
+      "@playwright/test": "^1.51.1",
+      "babel-plugin-react-compiler": "*",
+      "react": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
+      "react-dom": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
+      "sass": "^1.3.0"
+    },
+    "peerDependenciesMeta": {
+      "babel-plugin-react-compiler": {
+        "optional": true
+      },
+      "sass": {
+        "optional": true
+      },
+      "@opentelemetry/api": {
+        "optional": true
+      },
+      "@playwright/test": {
+        "optional": true
+      }
+    },
+    "integrity": "sha512-uc657V62E34fOI6W5NtG9IzwsPcms0Z60grz2MJGtglgD+pTFnNt4Yw2PzaU622tfX4vhrDgLZzicE2YlhI20Q=="
+  },
+  {
+    "name": "react",
+    "declared_exact": "19.2.4",
+    "installed_version": "19.2.4",
+    "engines": {
+      "node": ">=0.10.0"
+    },
+    "peerDependencies": null,
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-9nfp2hYpCwOjAN+8TZFGhtWEwgvWHXqESH8qT89AT/lWklpLON22Lc8pEtnpsZz7VmawabSU0gCjnj8aC0euHQ=="
+  },
+  {
+    "name": "react-dom",
+    "declared_exact": "19.2.4",
+    "installed_version": "19.2.4",
+    "engines": null,
+    "peerDependencies": {
+      "react": "^19.2.4"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ=="
+  },
+  {
+    "name": "recharts",
+    "declared_exact": "2.15.4",
+    "installed_version": "2.15.4",
+    "engines": {
+      "node": ">=14"
+    },
+    "peerDependencies": {
+      "react": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+      "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-UT/q6fwS3c1dHbXv2uFgYJ9BMFHu3fwnd7AYZaEQhXuYQ4hgsxLvsUXzGdKeZrW5xopzDCvuA2N41WJ88I7zIw=="
+  },
+  {
+    "name": "tailwindcss",
+    "declared_exact": "4.2.4",
+    "installed_version": "4.2.4",
+    "engines": null,
+    "peerDependencies": null,
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-HhKppgO81FQof5m6TEnuBWCZGgfRAWbaeOaGT00KOy/Pf/j6oUihdvBpA7ltCeAvZpFhW3j0PTclkxsd4IXYDA=="
+  },
+  {
+    "name": "@types/node",
+    "declared_exact": "20.19.39",
+    "installed_version": "20.19.39",
+    "engines": null,
+    "peerDependencies": {},
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-orrrD74MBUyK8jOAD/r0+lfa1I2MO6I+vAkmAWzMYbCcgrN4lCrmK52gRFQq/JRxfYPfonkr4b0jcY7Olqdqbw=="
+  },
+  {
+    "name": "@types/react",
+    "declared_exact": "19.3.0",
+    "installed_version": "19.3.0",
+    "engines": null,
+    "peerDependencies": {},
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg=="
+  },
+  {
+    "name": "@types/react-dom",
+    "declared_exact": "19.3.0",
+    "installed_version": "19.3.0",
+    "engines": null,
+    "peerDependencies": {
+      "@types/react": "^19.3.0"
+    },
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q=="
+  },
+  {
+    "name": "eslint",
+    "declared_exact": "9.39.4",
+    "installed_version": "9.39.4",
+    "engines": {
+      "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+    },
+    "peerDependencies": {
+      "jiti": "*"
+    },
+    "peerDependenciesMeta": {
+      "jiti": {
+        "optional": true
+      }
+    },
+    "integrity": "sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ=="
+  },
+  {
+    "name": "eslint-config-next",
+    "declared_exact": "16.4.1",
+    "installed_version": "16.4.1",
+    "engines": null,
+    "peerDependencies": {
+      "eslint": ">=9.0.0",
+      "typescript": ">=3.3.1"
+    },
+    "peerDependenciesMeta": {
+      "typescript": {
+        "optional": true
+      }
+    },
+    "integrity": "sha512-6AsojbCfRdpWkP6BIUnMBv3MH4OvtfmH9p4hSfLh8ZgsW7nfhu7DpUMNBB7leisDyyMz+YYxTc+NAdBOQfovlA=="
+  },
+  {
+    "name": "prisma",
+    "declared_exact": "7.8.0",
+    "installed_version": "7.8.0",
+    "engines": {
+      "node": "^20.19 || ^22.12 || >=24.0"
+    },
+    "peerDependencies": {
+      "better-sqlite3": ">=9.0.0",
+      "typescript": ">=5.4.0"
+    },
+    "peerDependenciesMeta": {
+      "better-sqlite3": {
+        "optional": true
+      },
+      "typescript": {
+        "optional": true
+      }
+    },
+    "integrity": "sha512-yfN4yrw7HV9kEJhoy1+jgah0jafEIQsf7uWouSsM8MvJtlubsk+kM7AIBWZ8+GJl74Yj3c+nbYqBkMOxtsZ3Lw=="
+  },
+  {
+    "name": "typescript",
+    "declared_exact": "5.9.3",
+    "installed_version": "5.9.3",
+    "engines": {
+      "node": ">=14.17"
+    },
+    "peerDependencies": null,
+    "peerDependenciesMeta": null,
+    "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="
+  }
+]

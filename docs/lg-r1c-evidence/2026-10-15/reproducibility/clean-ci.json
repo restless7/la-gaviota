@@ -1,0 +1,58 @@
+{
+  "command": [
+    "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/npm",
+    "ci",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+    "--strict-peer-deps",
+    "--engine-strict"
+  ],
+  "cwd": "/tmp/la-gaviota-lg-r1c-20261015/application",
+  "versions": {
+    "node": "v24.13.0",
+    "npm": "11.6.2"
+  },
+  "exitcode": 0,
+  "elapsed_s": 12.062,
+  "aborted": null,
+  "environment_keys": [
+    "CI",
+    "LANG",
+    "NEXT_TELEMETRY_DISABLED",
+    "PATH",
+    "npm_config_audit",
+    "npm_config_cache",
+    "npm_config_engine_strict",
+    "npm_config_fund",
+    "npm_config_globalconfig",
+    "npm_config_ignore_scripts",
+    "npm_config_registry",
+    "npm_config_strict_peer_deps",
+    "npm_config_userconfig"
+  ],
+  "before": {
+    "root_free": 3681878016,
+    "tmp_free": 15363002368,
+    "memory_available": 13065379840
+  },
+  "after": {
+    "root_free": 3681611776,
+    "tmp_free": 14282727424,
+    "memory_available": 11581751296
+  },
+  "minima": {
+    "root_free": 3681615872,
+    "tmp_free": 14282739712,
+    "memory_available": 10365370368
+  },
+  "scripts_disabled": true,
+  "no_force_legacy_overrides": true,
+  "package_hashes_after": {
+    "package.json": "7bcb5bf41cf599dffd487cb3c1032b1cb81350ace0e2f43bd009a0587b8e8c6b",
+    "package-lock.json": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157"
+  },
+  "expected_hashes_unchanged": true,
+  "owned_install_pid": 199691,
+  "process_completed": true
+}

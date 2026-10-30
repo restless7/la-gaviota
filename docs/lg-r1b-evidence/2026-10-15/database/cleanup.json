@@ -1,0 +1,11 @@
+{
+  "started": true,
+  "pid": 81489,
+  "listen_addresses_configured": "",
+  "socket_directory": "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015/database/socket",
+  "preserved": true,
+  "stop_exit": 0,
+  "pid_alive": false,
+  "socket_entries_after": [],
+  "postmaster_pid_exists_after": false
+}

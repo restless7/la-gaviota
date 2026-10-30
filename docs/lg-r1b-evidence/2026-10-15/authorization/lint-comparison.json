@@ -1,0 +1,17 @@
+{
+  "candidate": {
+    "files": 53,
+    "errors": 36,
+    "warnings": 28,
+    "exitCode": 1
+  },
+  "baseline": {
+    "files": 47,
+    "errors": 37,
+    "warnings": 30,
+    "exitCode": 1
+  },
+  "newMessages": [],
+  "removedMessageCount": 3,
+  "normalization": "relativefile/rule/severity/first diagnostic line; excludes embedded source paths and shifted code excerpts"
+}

@@ -1,0 +1,11 @@
+{
+  "scope": "2-file context-only correction reviewed by root+independent QA before application",
+  "patchSha256": "30f8b701b6e289b2fbad0c3100e11f18557338f8d023f9be210f003494e5b9a1",
+  "freshActorResolutionBodyByteEqual": true,
+  "privilegeAndOwnershipSuffixByteEqual": true,
+  "tierCapabilityStaffLineEqual": true,
+  "normalServerGetActorStillUsesExportedAuth": true,
+  "middlewarePassesVerifiedCallbackOnly": true,
+  "noNewPublicServerAction": true,
+  "runtimeLimitation": "SourceVM verifies wiring; live Clerk SDK/gateway/HTTP verification remains separate"
+}

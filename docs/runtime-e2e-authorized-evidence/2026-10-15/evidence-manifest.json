@@ -1,0 +1,308 @@
+{
+  "date": "2026-10-15",
+  "phase": "Authorized LG-RUNTIME-E2E continuation",
+  "baseline": "Current implemented worktree, 144 source/test/config hashes retained; historical HEAD alone is not implementation identity",
+  "outcome": "Real independent Clerk authentication and three local cash purchase journeys PASS within tested scope; financial integrity FAIL; Wompi Sandbox BLOCKED; commercial NO-GO",
+  "self_hash_excluded": true,
+  "files": {
+    "auth/REPRODUCTION.md": {
+      "bytes": 2520,
+      "sha256": "77c84f0b85e7160097f5a06d483ef5ee804da312740dfe0fa78ad9ba2c42d2dd"
+    },
+    "auth/auth-summary.json": {
+      "bytes": 2152,
+      "sha256": "93ef1be882b01e966bf84c033625969dab8ec8a9e328983f7aae78743173467d"
+    },
+    "auth/environment-inventory.json": {
+      "bytes": 1140,
+      "sha256": "b1d385050ce8c0b51c6c0545a70dd3b72742721bc7a8bd6e5367ad0ea570581f"
+    },
+    "auth/executed-source-hashes.json": {
+      "bytes": 4756,
+      "sha256": "a1b17606c95f50ebfd811185751c7fbf72484b47fc409dd47339ff3170d252f0"
+    },
+    "auth/fixtures.json": {
+      "bytes": 2790,
+      "sha256": "cab94a4bfd7f10d7315dffdc361511e664657833d53e014443c302040c5c6909"
+    },
+    "auth/independent-instance.json": {
+      "bytes": 1027,
+      "sha256": "067575ea7ef05cc9bc8e80433d73a8002b1839a45d7c02580e2c50a736cb20c7"
+    },
+    "auth/manifest.json": {
+      "bytes": 2280,
+      "sha256": "7b3b34313cbac196a78889db562b08342e2e9b5e935d5ae9ea8c5c199e6a26ad"
+    },
+    "auth/metadata-revocation-results.json": {
+      "bytes": 416,
+      "sha256": "bb84608cf68b59630b8cd3e95420f74dce0f53624ad1a5ef86e5956bec268e7c"
+    },
+    "auth/own-session-cleanup-results.json": {
+      "bytes": 2681,
+      "sha256": "02017d1b4bfa9ef2483073b2abd920e6dd5e24ba4182a173f4e291dc20e1cd83"
+    },
+    "auth/real-browser-cash-results.json": {
+      "bytes": 2671,
+      "sha256": "ab2608ec2b81ceb69237f0c6855cf07468da2ac68fa27a17ed75c392255fdae2"
+    },
+    "auth/real-sdk-role-results.json": {
+      "bytes": 4410,
+      "sha256": "575e2982c4d766b0a3fa98fe342093f8f1168ef8ef8126d88557ff860a7d4752"
+    },
+    "auth/real-ui-auth-results.json": {
+      "bytes": 1710,
+      "sha256": "c91fc48776972af969e3ab4ce65b35e797bb3ea517a3272244b50fefcac7dcf6"
+    },
+    "auth/reproduce-b2b-cash.cjs": {
+      "bytes": 6240,
+      "sha256": "bfcecfa30d4b386e5230cedead99f58eabc6918f11bb24b0e055239728ded663"
+    },
+    "auth/reproduce-password-otp.cjs": {
+      "bytes": 5166,
+      "sha256": "22606381ff9910e38247e10542ba129aab791b5a9a159d5a245a22b606f61292"
+    },
+    "auth/reproduce-role-ticket.cjs": {
+      "bytes": 6668,
+      "sha256": "c4272fbb6ae66821815ecb96f457ff89d181f45bc60f12571bf6425b16356c0a"
+    },
+    "auth/reproduce-signup.cjs": {
+      "bytes": 6171,
+      "sha256": "3fcd3603ee952c7318190951526a00c0ab41a8cc03c902909faa55811318ca2d"
+    },
+    "database/DATABASE_GATE.md": {
+      "bytes": 6763,
+      "sha256": "871f6d26cd8c2e6e02022bf11f429ddd1eb723c46819054411690e950e2d60f2"
+    },
+    "database/baseline-fixture.sql": {
+      "bytes": 22099,
+      "sha256": "018c98ae260d2ce4be0eeed798811c0ef3ca27f1f93895cd4e34d55f836528c9"
+    },
+    "database/baseline-storage-stub.sql": {
+      "bytes": 342,
+      "sha256": "47c79f48150f2997b4bc40b669e3cb44cd0b536885aeec2cbf287d763c2fa452"
+    },
+    "database/browser-cash-order-select.sql.txt": {
+      "bytes": 886,
+      "sha256": "4645ad0623e3001d50b8a2b4b1989733401a492ff4ba41046479e814b47afd20"
+    },
+    "database/browser-cash-order-verification.json": {
+      "bytes": 1365,
+      "sha256": "4fa9ac6ee97c2ae23e4950518f483f688d35494be97ec4c2533c777e5d544068"
+    },
+    "database/browser-cash-orders-verification.json": {
+      "bytes": 5060,
+      "sha256": "56e0e5f31483bbf1d554a14a883fb54232041768413c0ccefd3152c7df6c4378"
+    },
+    "database/browser-micro-cash-order-select.sql.txt": {
+      "bytes": 885,
+      "sha256": "fc730bae079cd693ed0fe967c7f9a785613c00b1a5414870672ab86855f1336d"
+    },
+    "database/browser-restaurant-cash-order-select.sql.txt": {
+      "bytes": 890,
+      "sha256": "0d2bdf039aa6b72d05bdd5945269fa279ee57519a8c11208fa00530719878623"
+    },
+    "database/cleanup.json": {
+      "bytes": 110,
+      "sha256": "48f8480f1f98567c69390f72b1e454b0ff2a04ebbf853264a89eb7a6ecf4363c"
+    },
+    "database/clerk-test-row-map.json": {
+      "bytes": 2263,
+      "sha256": "b1bb16bf2003f60309438f670649e161a0b53ace60749181eb9a49e39c1d0b28"
+    },
+    "database/cluster-control.py": {
+      "bytes": 3963,
+      "sha256": "6b2c6afe4cee7c973852e3a923525ef8dbf2e72df3317d23a4f923dc58a62f15"
+    },
+    "database/cluster-settings.json": {
+      "bytes": 333,
+      "sha256": "e77a835476ca0a9c310594ce0289e3656ce7a31f3f22ef40cd84e42662181ce4"
+    },
+    "database/current-checkout-pg.cjs": {
+      "bytes": 10663,
+      "sha256": "cce51d5bbdf18e0caec1a5636bff1bd36978fceb8f7a3bb7123107efb16403db"
+    },
+    "database/current-checkout-results.json": {
+      "bytes": 4332,
+      "sha256": "fac39ee64fa4581b14eb5fa130bb84ab4f6104b26d32a31562fd9c468230edca"
+    },
+    "database/handoff-state.json": {
+      "bytes": 1026,
+      "sha256": "2528651755280b997b103e90d273c8284637d2d052c30dba887c67cd55aa9540"
+    },
+    "database/local-inventory.json": {
+      "bytes": 783,
+      "sha256": "9928c911b066afe9e32f3c8c30cdf12e29c6cf6d6c2c1b391dd081a4145e384b"
+    },
+    "database/manifest.json": {
+      "bytes": 1888,
+      "sha256": "1b7607164224b592fb99d3f84f3aa9a8456750329ef820e2c6c1cd9cc91afe16"
+    },
+    "database/policy-model.sql.txt": {
+      "bytes": 18152,
+      "sha256": "88eff4933862913457e11e92474d4cf9d83501b8f9afcacb340e238cfb164def"
+    },
+    "database/seed-clerk-test-identities.sql": {
+      "bytes": 9167,
+      "sha256": "1f89c400b5da7c802f7366877546f484d2ccd2502686e4f3035557d6740e9b66"
+    },
+    "database/seed-stable.sql": {
+      "bytes": 5379,
+      "sha256": "c2acea05f27befc91459cfadd412680fe3c0e293f024b931c6b9eb23f31c7c11"
+    },
+    "payments/PAYMENTS_AUTHORIZED_E2E_STATUS_ES.md": {
+      "bytes": 6050,
+      "sha256": "e5e188abf188055e3772e97fe7563bd1b6049943853172691717e3927792e629"
+    },
+    "payments/actions-http/REAL_ACTION_GUARDS_ES.md": {
+      "bytes": 3637,
+      "sha256": "74c4818c24ab143c5b45a4710b45a12ca222cab96826b301d7b169d488c7f685"
+    },
+    "payments/actions-http/action-http-summary.json": {
+      "bytes": 3571,
+      "sha256": "8d710d08d71d732b3505f24867abe00b44f71d461c866ef97b1253f122854b6d"
+    },
+    "payments/actions-http/admin-actions.json": {
+      "bytes": 2456,
+      "sha256": "dfff9014028ea49902e8bb38f29af4baff677d8f7c02fa3a8c01168ac2929ab2"
+    },
+    "payments/actions-http/manifest.json": {
+      "bytes": 891,
+      "sha256": "9a05901dbe059a2dbf81ad04869101fc49742677338db17f90bdd1f612965a73"
+    },
+    "payments/actions-http/retail-http-actions.json": {
+      "bytes": 2364,
+      "sha256": "2dcc808990dbce28cac458c7fc0e4892aeadfa873a897b0104dc05735aba9ed4"
+    },
+    "payments/actions-http/retail-owned-history.json": {
+      "bytes": 1662,
+      "sha256": "653aff4998a2cdc21110937d8bcc36f0bdc3d577a69f5631d9813cf9abf18f3f"
+    },
+    "payments/actions-http/retail-users-denied.json": {
+      "bytes": 1612,
+      "sha256": "c49b7f7f73cd47cb9e1cb9e4f8ad55c57e497597ba3700bbf60315bac7585dcf"
+    },
+    "payments/actions-http/run-real-action-guards.cjs": {
+      "bytes": 7266,
+      "sha256": "56654bb3960dcd7138321dfad291ea4a56265c751aa75f094edc142af4840587"
+    },
+    "payments/actions-http/super-actions.json": {
+      "bytes": 2500,
+      "sha256": "d49ddab42f77af91224991b1441260710b7cf60e79ea52e6e959a48557ff8b0a"
+    },
+    "payments/authorized-fixture-results.json": {
+      "bytes": 5446,
+      "sha256": "5f8c91e45a9611d0aa99a33ff74a688794df570b9b4f78d1bf3d7a48aa785dbc"
+    },
+    "payments/environment-inventory.json": {
+      "bytes": 2017,
+      "sha256": "68a04572a3c373f03f7a883bceb28510962e0b3d76fc74d1f202bbeae2a18a94"
+    },
+    "payments/fictional-events.json": {
+      "bytes": 2490,
+      "sha256": "802a12d88e514b8a68f967cb6a3343070f94b94584dfb2cb34389794dea8aa78"
+    },
+    "payments/gateway/GATEWAY_HTTP_EVIDENCE_ES.md": {
+      "bytes": 2963,
+      "sha256": "793fa8a04785497cd6d416057db5eea0ac53d790eda670096394f18d1734eba9"
+    },
+    "payments/gateway/execution-provenance.json": {
+      "bytes": 682,
+      "sha256": "76e872aee94f7ffed0207b301ec22a7914da139ca268b821915e311bf101fec6"
+    },
+    "payments/gateway/gateway-http-results.json": {
+      "bytes": 6406,
+      "sha256": "aee4b09c3899f9ee0a8f7da294a0a8bf47bb75019fc37f861bfcf12d87f867a9"
+    },
+    "payments/gateway/manifest.json": {
+      "bytes": 498,
+      "sha256": "0ba4fe8e6de176a1283dd8c8729774374655c4ec1576556b817d747f01057d1a"
+    },
+    "payments/gateway/run-gateway-http.py": {
+      "bytes": 7110,
+      "sha256": "285416f60e2f9c5d91b385761976fec174d5b32f98db120d1d850312bae0e765"
+    },
+    "payments/manifest.json": {
+      "bytes": 936,
+      "sha256": "bfc5885a9e13d4aa9302da4db8dd0c46f71d9275b5561bc8b2faa1b4c3c79158"
+    },
+    "payments/pairing-and-counts.json": {
+      "bytes": 994,
+      "sha256": "544cb16b406f8031014178d7d584758bfee975bf1140ba5bc5107dd597bb752e"
+    },
+    "payments/payment-criteria-10.json": {
+      "bytes": 4399,
+      "sha256": "28c019b9d6b0992ed425539ad3a58ad1f04022921f0275658d4f1b6d944b4ff1"
+    },
+    "payments/retained-16-replay.json": {
+      "bytes": 8224,
+      "sha256": "d3632223fea70fb2c90c4ebdd5f26120cd9314ab77dc1c81ef1a53e134cc8d5d"
+    },
+    "payments/run-authorized-payment-fixtures.cjs": {
+      "bytes": 12332,
+      "sha256": "e82077bb6cdea432c655c27624f985254e988d0d0121806b66b4de7de98a6f35"
+    },
+    "root/baseline-source-manifest.json": {
+      "bytes": 21975,
+      "sha256": "81efdcf135e09fe1df4c2a8ea30aa5424f41d43f95fa5e71bf542a9b954fe498"
+    },
+    "root/child-manifest-verification.json": {
+      "bytes": 872,
+      "sha256": "5c5fdfdba1ca4d7dd3fe76631c82915ba1fcd328210d92f111d4525a879684c2"
+    },
+    "root/credential-scan.json": {
+      "bytes": 343,
+      "sha256": "0adba6f0ec520513b056801344bd9522b2ed4a3b7b9e96e0810a567620451c9f"
+    },
+    "root/environment-inventory.json": {
+      "bytes": 2652,
+      "sha256": "580b4ce3782d55babd9443fddbdb078455c1dea94d266b7e9d4e47372f82832b"
+    },
+    "root/gateway-root-replay.json": {
+      "bytes": 6409,
+      "sha256": "7fd76395168acdb485d0e807875ed33438b56155302a1ee81628b9f92afc7004"
+    },
+    "root/gateway-transport-summary.json": {
+      "bytes": 671,
+      "sha256": "4299644130255846c69b5c08c86b0e1959ea63252713caa4a406d3d2de5a547d"
+    },
+    "root/graphify-hook.json": {
+      "bytes": 2098,
+      "sha256": "b74421288cfef029c527f0386fa91c3e2060939147dd7eb9be894fac6fa9335b"
+    },
+    "root/postgrest-acquisition.json": {
+      "bytes": 494,
+      "sha256": "b86acc276626f96242a4478ce4f89d300c28a5a874e2525c2f7bc4886717ff70"
+    },
+    "root/runtime-cleanup.json": {
+      "bytes": 907,
+      "sha256": "a58631d782ac20cc69378b942a7303960a4e5cf2f4f1ff15745f8d449c4b9d9f"
+    },
+    "root/source-preservation.json": {
+      "bytes": 195,
+      "sha256": "889d12061bfdf48b32c4295f44d98da4764478a0033017d37d9b88b765e5f14f"
+    },
+    "root-verification.json": {
+      "bytes": 1139,
+      "sha256": "e496b0894fb90bd878795a01ec5915e33ced46cf54a85c3fade9103908531c89"
+    }
+  },
+  "authoritative_documents": {
+    "README.md": {
+      "bytes": 13890,
+      "sha256": "0e9b9aa3d13bf845667b871fe5a5887a0806fbae8883be49fdd51ff02222a0cc"
+    },
+    "docs/LG_RUNTIME_E2E_AUTHORIZED_FUNCTIONAL_TEST_REPORT.md": {
+      "bytes": 17711,
+      "sha256": "ae95b25881886ec5745054668fe9b427c659e079f2ddb4de55c1b249702eede5"
+    },
+    "docs/LA_GAVIOTA_PRODUCTION_READINESS_AUDIT_AND_ROADMAP.md": {
+      "bytes": 90813,
+      "sha256": "144c3906af1d5d77169c8271ec02d42535454052306c1f522dba3ee9d017bab9"
+    }
+  },
+  "historical_manifests": "Earlier manifests describe their original document revisions; this manifest records current report/README/audit updates.",
+  "privacy": "No env/passwords/tokens/cookies/PGDATA/node_modules/cache/private raw logs; exact scan of 75 known credential values found zero matches.",
+  "test_resources_retained": "New Development Clerk app and ten synthetic accounts; private restoration outside repository. New local runtime/PG stopped and owned sessions revoked/ended.",
+  "reproduction_limits": "Browser wrappers syntax-checked after packaging but not reexecuted then. Stage guards require fresh private fixtures; no provider/payment/production certification implied.",
+  "accounting": "Exact token/tier/cost metrics unavailable; no fabricated accounting."
+}

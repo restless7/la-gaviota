@@ -1,0 +1,18 @@
+{
+  "event": "OWN_DISPOSABLE_INSTALL_ENOSPC_CLEANUP",
+  "before_free_bytes": 1536000,
+  "after_free_bytes": 1638776832,
+  "freed_bytes": 1637240832,
+  "removed_generated_only": [
+    "npm-cache/_cacache",
+    "candidate-final/node_modules"
+  ],
+  "preserved": [
+    "candidate/node_modules (first successful clean install tooltree)",
+    "candidate-final/package.json",
+    "candidate-final/package-lock.json",
+    "all log/stdout artifacts",
+    "originalrepo untouched"
+  ],
+  "final_second_install_status": "FAILED/BLOCKED_ENOSPC; no successful log/exit recorded by runner; do not infer success"
+}

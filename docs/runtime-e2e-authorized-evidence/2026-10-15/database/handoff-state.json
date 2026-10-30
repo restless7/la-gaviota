@@ -1,0 +1,35 @@
+{
+  "state": "STOPPED",
+  "pid": 569200,
+  "socket": "/tmp/la-gaviota-authorized-e2e-20261015/database/socket",
+  "tcp": false,
+  "ownerAgent": "assets_forensics",
+  "lifecycleCoordinator": "root",
+  "stopCondition": "Root confirms actual HTTP/browser test complete, then owned pg_ctl stop + cleanup proof",
+  "existingBackendTouched": false,
+  "existingDatabaseQueried": false,
+  "databaseSource": "synthetic local only",
+  "tests": {
+    "currentSourceFinitePGAdapter": {
+      "executed": 19,
+      "passed": 19,
+      "failed": 0,
+      "actualPGReadQueries": 28
+    }
+  },
+  "browserCashOrderVerification": {
+    "flows": 3,
+    "assertions": 33,
+    "passed": true,
+    "authoritativeArtifact": "browser-cash-orders-verification.json",
+    "countingNote": "Intermediate retail/micro artifacts overlap; do not sum again."
+  },
+  "cleanup": {
+    "stopExit": 0,
+    "pid": 569200,
+    "pidAlive": false,
+    "socketFiles": [],
+    "postmasterPidExists": false
+  },
+  "leaseClosedByRootAfterNextAndGatewaysStopped": true
+}

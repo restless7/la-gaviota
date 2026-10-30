@@ -7,6 +7,7 @@ import { PriceDropPopup } from '@/app/components/market/PriceDropPopup';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: 'https://www.lagaviotafruver.com/' },
   title: 'Inicio | Surtifruver La Gaviota',
   description: 'Explora nuestro catálogo fresco y haz tu pedido con precios mayoristas en Bogotá y Bucaramanga.',
 };
@@ -15,8 +16,8 @@ export default async function Home() {
   const products = await fetchProducts();
 
   const tickerItems = products.map(p => {
-    const currentPrice = p.priceRetail;
-    const previousPrice = p.previousPriceRetail || currentPrice;
+    const currentPrice = p.price;
+    const previousPrice = p.previousPrice || currentPrice;
     const delta = currentPrice - previousPrice;
     const percentage = previousPrice > 0 ? (delta / previousPrice) * 100 : 0;
     return {
@@ -30,8 +31,8 @@ export default async function Home() {
 
   const priceDrops = products
     .map(p => {
-      const currentPrice = p.priceRetail;
-      const previousPrice = p.previousPriceRetail || currentPrice;
+      const currentPrice = p.price;
+      const previousPrice = p.previousPrice || currentPrice;
       const percentageDrop = previousPrice > 0 ? ((previousPrice - currentPrice) / previousPrice) * 100 : 0;
       return { ...p, percentageDrop: Number(percentageDrop.toFixed(1)) };
     })

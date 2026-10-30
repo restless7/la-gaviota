@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "mode": "INDEPENDENT_CONTEXT_CALLBACK_MOCKS_NOT_REAL_SDK_AUTH",
+  "node": "v24.13.0",
+  "total": 5,
+  "passed": 5,
+  "failed": 0,
+  "results": [
+    {
+      "name": "callback actor uses verified callback rather than global AppRouter auth",
+      "status": "PASS"
+    },
+    {
+      "name": "callback guest returns nonprivileged issued guest without identity lookup",
+      "status": "PASS"
+    },
+    {
+      "name": "callback invalid subject rejected before fresh lookup",
+      "status": "PASS"
+    },
+    {
+      "name": "callback failure propagated before target or identity lookup",
+      "status": "PASS"
+    },
+    {
+      "name": "callback stale privilege claims ignored in favor of fresh user metadata",
+      "status": "PASS"
+    }
+  ]
+}

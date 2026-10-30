@@ -1,0 +1,34 @@
+{
+  "payments": {
+    "diagnostic_cases": 16,
+    "safety_pass_model": 5,
+    "integrity_fail": 11,
+    "source_hashes_equal": true,
+    "observations_equal_ignoring_generated_updated_at": true,
+    "normalization": "only updated_at timestamp; no safety/result fields removed"
+  },
+  "guards": {
+    "executed": 118,
+    "passed": 118,
+    "failed": 0,
+    "source_hashes_equal": true,
+    "tests_equal": true
+  },
+  "cleanup_process_checks": {
+    "482867": {
+      "present_at_check": false
+    },
+    "489036": {
+      "present_at_check": false
+    },
+    "486422": {
+      "present_at_check": false
+    }
+  },
+  "previous_preview": {
+    "pid": 432822,
+    "present_at_check": true,
+    "url": "http://localhost:47773"
+  },
+  "not_unique_new_cases": "Independent replays overlap author cases; no cumulative acceptance total."
+}

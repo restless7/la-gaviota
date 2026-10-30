@@ -1,0 +1,1 @@
+Initial 301/301 PASS captured in tool transcript; own PG71547 stopped. ENOSPC interrupted generator rewrite, truncated generator.py, and later guarded startup overwrote top-level result JSON with0. Preserved prior-run-301 is diagnostic only, not final test authority. Final rerun artifacts supersede it; do not sum runs. No PG process was started during failed repeat.

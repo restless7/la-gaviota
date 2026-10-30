@@ -1,0 +1,13 @@
+{
+  "classification": "sanitized fixtures/inventory only; no real secrets/envcopy/PGDATA",
+  "files": {
+    "PAYMENTS_AUTHORIZED_E2E_STATUS_ES.md": "e5e188abf188055e3772e97fe7563bd1b6049943853172691717e3927792e629",
+    "authorized-fixture-results.json": "5f8c91e45a9611d0aa99a33ff74a688794df570b9b4f78d1bf3d7a48aa785dbc",
+    "environment-inventory.json": "68a04572a3c373f03f7a883bceb28510962e0b3d76fc74d1f202bbeae2a18a94",
+    "fictional-events.json": "802a12d88e514b8a68f967cb6a3343070f94b94584dfb2cb34389794dea8aa78",
+    "pairing-and-counts.json": "544cb16b406f8031014178d7d584758bfee975bf1140ba5bc5107dd597bb752e",
+    "payment-criteria-10.json": "28c019b9d6b0992ed425539ad3a58ad1f04022921f0275658d4f1b6d944b4ff1",
+    "retained-16-replay.json": "d3632223fea70fb2c90c4ebdd5f26120cd9314ab77dc1c81ef1a53e134cc8d5d",
+    "run-authorized-payment-fixtures.cjs": "e82077bb6cdea432c655c27624f985254e988d0d0121806b66b4de7de98a6f35"
+  }
+}

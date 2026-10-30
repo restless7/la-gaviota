@@ -1,0 +1,29 @@
+{
+  "command": [
+    "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/npm",
+    "ls",
+    "--all",
+    "--json",
+    "--offline"
+  ],
+  "cwd": "/tmp/la-gaviota-lg-r1c-20261015/application",
+  "exitcode": 0,
+  "elapsed_s": 1.554,
+  "environment_keys": [
+    "CI",
+    "LANG",
+    "NEXT_TELEMETRY_DISABLED",
+    "PATH",
+    "npm_config_audit",
+    "npm_config_cache",
+    "npm_config_engine_strict",
+    "npm_config_fund",
+    "npm_config_globalconfig",
+    "npm_config_ignore_scripts",
+    "npm_config_registry",
+    "npm_config_strict_peer_deps",
+    "npm_config_userconfig"
+  ],
+  "stdout_sha256": "f8a1412e15048fca58b3d64769d9dfb18bade2920981e9d778a046d5ec2f551c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

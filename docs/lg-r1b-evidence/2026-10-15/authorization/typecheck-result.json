@@ -1,0 +1,5 @@
+{
+  "exitCode": 0,
+  "status": "PASS",
+  "boundary": "source-only full isolated compile, not app build/runtime"
+}

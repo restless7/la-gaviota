@@ -1,0 +1,135 @@
+{
+  "status": "STOPPED_STAGE1_INCIDENT_RISK_GATE_CLEANUP_ONLY",
+  "at_utc": "2026-10-15T12:41:15.371966+00:00",
+  "tool_versions": {
+    "node": "v24.13.0",
+    "npm": "11.6.2",
+    "vercel": "53.2.0",
+    "gh": "gh version 2.100.0 (2026-09-03)"
+  },
+  "owned_execution_sessions": {
+    "44339": "completed exit0 wrapper; npm ci dry-run exit1",
+    "48529": "completed exit0 wrapper; ten registry metadata npm view queries exit0",
+    "92019": "completed exit0 wrapper; gh2/vercel1 queries exit0"
+  },
+  "owned_stage_processes_running": [],
+  "baseline_files_sha256": {
+    "package.json": "b1e4811de4265c0fb9ec3f746daa11cb37080fdb0a7973022606f0f943dbf78c",
+    "package-lock.json": "17ccb1a104c724576910d012002bf0f28343733e312b9cd59acb82afe62ce769",
+    "tsconfig.json": "413c06a3b01354b0506dad879edbe0be42c76253123e803489d46f950d447d18",
+    "eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493"
+  },
+  "after_files_sha256": {
+    "package.json": "b1e4811de4265c0fb9ec3f746daa11cb37080fdb0a7973022606f0f943dbf78c",
+    "package-lock.json": "17ccb1a104c724576910d012002bf0f28343733e312b9cd59acb82afe62ce769",
+    "tsconfig.json": "413c06a3b01354b0506dad879edbe0be42c76253123e803489d46f950d447d18",
+    "eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493"
+  },
+  "source_configuration_files_unchanged": true,
+  "git_head": "49add73ae90b837c36553a0f2b535267c9610143",
+  "git_status": "?? docs/LA_GAVIOTA_PRODUCTION_READINESS_AUDIT_AND_ROADMAP.md\n?? docs/audit-evidence/",
+  "actions_performed": [
+    "Read directive and package/lock, refs and sanitized remote URL",
+    "GitHub connector combined status GET (twice) existing connection",
+    "GitHub CLI main/deployments GET with existing session",
+    "Vercel CLI inspect current alias metadata GET using existing session, no login",
+    "Isolated manifest+lock copies; first npm ci dry-run failed duplicate empty config path; corrected dry-run failed lock drift",
+    "Ten npm registry package-metadata reads with allowlisted cleared environment and empty configs",
+    "Primary public web advisory search only; no exploit probes"
+  ],
+  "not_performed": [
+    "No candidate lock generated",
+    "No real clean install completed or attempted after dry-run failure",
+    "No lint/type rerun in this LG-R1 track",
+    "No Next build/server/app import",
+    "No production probes/action POST/auth/customer data",
+    "No source, package, lock, deployment, policy, credentials or .env modifications",
+    "No further network after stop"
+  ],
+  "npm_ci_missing_dependency_observations": 151,
+  "partial_blockers": [
+    "Reproducible clean install unachieved; source lock mismatch",
+    "Actual installed production dependency graph, artifact hashes and deployed action reachability unverified",
+    "Dependency advisory applicability not completed after stop; no patch version recommendation adopted"
+  ],
+  "private_artifacts": [
+    {
+      "name": "baseline-npm-ci-corrected.json",
+      "bytes": 7404,
+      "sha256": "c5fa82a3d69623b14e136fcc79de982cb673e70f138c1cda84d093a7d1b92592",
+      "mtime_utc": "2026-10-15T12:38:57.038450+00:00"
+    },
+    {
+      "name": "baseline-npm-ci-corrected.stderr.log",
+      "bytes": 9584,
+      "sha256": "58abc2f7246cf9824c74dc4cb88e1c69538bbfa9c439530e9d24e64b1708c95a",
+      "mtime_utc": "2026-10-15T12:38:57.038250+00:00"
+    },
+    {
+      "name": "baseline-npm-ci-corrected.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_utc": "2026-10-15T12:38:57.034666+00:00"
+    },
+    {
+      "name": "baseline-npm-ci.json",
+      "bytes": 424,
+      "sha256": "33d0754f6b71425f589e01499369b6fb9c7c6b719dd272338e465ed4c2f94b78",
+      "mtime_utc": "2026-10-15T12:38:29.234713+00:00"
+    },
+    {
+      "name": "baseline-npm-ci.stderr.log",
+      "bytes": 117,
+      "sha256": "250e369d730a46c4d41df37449a5c58c169b4b1d2ab546951a8bed0285805a95",
+      "mtime_utc": "2026-10-15T12:38:29.234558+00:00"
+    },
+    {
+      "name": "baseline-npm-ci.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_utc": "2026-10-15T12:38:29.228274+00:00"
+    },
+    {
+      "name": "baseline.json",
+      "bytes": 893,
+      "sha256": "0b9acf9c0d7fb58b997e8d093c0a744e242106e1d940af464f28580c19dc55c3",
+      "mtime_utc": "2026-10-15T12:38:15.066175+00:00"
+    },
+    {
+      "name": "empty-global.npmrc",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_utc": "2026-10-15T12:38:40.207588+00:00"
+    },
+    {
+      "name": "empty-user.npmrc",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_utc": "2026-10-15T12:38:40.207588+00:00"
+    },
+    {
+      "name": "parity-incident-risk-evidence.json",
+      "bytes": 1949,
+      "sha256": "b969cbb70aa7b8580d52a2dcff789fc5810c5fd2f38dc9fa0cbe6e2a7fdcdf32",
+      "mtime_utc": "2026-10-15T12:40:09.815259+00:00"
+    },
+    {
+      "name": "registry-package-metadata.json",
+      "bytes": 4630,
+      "sha256": "db65b868fb5bf585c8bc215b8348818d4c19d10f71f1ff5640e0a13e61fca7a7",
+      "mtime_utc": "2026-10-15T12:38:59.925097+00:00"
+    },
+    {
+      "name": "remote-deployment-metadata.json",
+      "bytes": 2293216,
+      "sha256": "9c56d18e8ebe856f0a230802b2f2b35b02c2096eea61f7d036e2ae802b206f0b",
+      "mtime_utc": "2026-10-15T12:39:18.334557+00:00"
+    },
+    {
+      "name": "remote-deployment-summary.json",
+      "bytes": 4629,
+      "sha256": "74c1f564f148c216d233c4835a835553aaf10b687350dd8e60517d977981c52d",
+      "mtime_utc": "2026-10-15T12:41:15.321331+00:00"
+    }
+  ]
+}

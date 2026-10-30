@@ -1,0 +1,482 @@
+{
+  "comparison": "exact same installed ESLint9.39.4/config-next16.4.1, source baseline49add73; normalize multiline codeframe path/line by first paragraph; compare perfile/rule/severity/message multiset",
+  "baseline_full": {
+    "files": 143,
+    "errors": 93,
+    "warnings": 62
+  },
+  "candidate_full": {
+    "files": 149,
+    "errors": 92,
+    "warnings": 60
+  },
+  "baseline_scoped": {
+    "files": 47,
+    "errors": 37,
+    "warnings": 30
+  },
+  "candidate_scoped": {
+    "files": 53,
+    "errors": 36,
+    "warnings": 28
+  },
+  "new_unmatched": [],
+  "new_error_count": 0,
+  "new_warning_count": 0,
+  "inherited_scoped_diagnostics": [
+    {
+      "file": "app/admin/catalog/kits/KitsClient.tsx",
+      "rule": "react/no-unescaped-entities",
+      "severity": 2,
+      "line": 125,
+      "message": "`\"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`."
+    },
+    {
+      "file": "app/admin/catalog/kits/KitsClient.tsx",
+      "rule": "react/no-unescaped-entities",
+      "severity": 2,
+      "line": 125,
+      "message": "`\"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`."
+    },
+    {
+      "file": "app/admin/catalog/kits/KitsClient.tsx",
+      "rule": "@next/next/no-img-element",
+      "severity": 1,
+      "line": 204,
+      "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+    },
+    {
+      "file": "app/admin/catalog/kits/KitsClient.tsx",
+      "rule": "@next/next/no-img-element",
+      "severity": 1,
+      "line": 226,
+      "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+    },
+    {
+      "file": "app/admin/catalog/product-management/InventoryClient.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 5,
+      "message": "'Filter' is defined but never used."
+    },
+    {
+      "file": "app/admin/catalog/product-management/InventoryClient.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 5,
+      "message": "'Save' is defined but never used."
+    },
+    {
+      "file": "app/admin/catalog/product-management/InventoryClient.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "line": 45,
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+    },
+    {
+      "file": "app/admin/catalog/product-management/InventoryClient.tsx",
+      "rule": "@next/next/no-img-element",
+      "severity": 1,
+      "line": 221,
+      "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 6,
+      "message": "'Link' is defined but never used."
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "line": 43,
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "react-hooks/exhaustive-deps",
+      "severity": 1,
+      "line": 47,
+      "message": "React Hook useEffect has a missing dependency: 'formData.subcategory'. Either include it or remove the dependency array."
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 107,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "@next/next/no-html-link-for-pages",
+      "severity": 2,
+      "line": 144,
+      "message": "Do not use an `<a>` element to navigate to `/admin/catalog/product-management/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+    },
+    {
+      "file": "app/admin/catalog/product-management/ProductForm.tsx",
+      "rule": "@next/next/no-img-element",
+      "severity": 1,
+      "line": 354,
+      "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 9,
+      "message": "'FileText' is defined but never used."
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 16,
+      "message": "'File' is defined but never used."
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 18,
+      "message": "'Database' is defined but never used."
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 19,
+      "message": "'Zap' is defined but never used."
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 20,
+      "message": "'Lightbulb' is defined but never used."
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 22,
+      "message": "'BrainCircuit' is defined but never used."
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 23,
+      "message": "'PenSquare' is defined but never used."
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 27,
+      "message": "'Calculator' is defined but never used."
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "line": 84,
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 178,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "app/admin/marketing/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 16,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "app/admin/marketing/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 17,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "app/admin/marketing/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 18,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 4,
+      "message": "'Save' is defined but never used."
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "react/display-name",
+      "severity": 2,
+      "line": 18,
+      "message": "Component definition is missing display name"
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "line": 36,
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "line": 197,
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+    },
+    {
+      "file": "app/admin/pricing/PricingClient.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 235,
+      "message": "'formatCOP' is assigned a value but never used."
+    },
+    {
+      "file": "app/api/marketing/lead-capture/route.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 4,
+      "message": "'triggerOrderNotification' is defined but never used."
+    },
+    {
+      "file": "app/cart/page.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "line": 24,
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 14,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 62,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-location-assign-relative-destination",
+      "severity": 1,
+      "line": 67,
+      "message": "Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-location-assign-relative-destination",
+      "severity": 1,
+      "line": 78,
+      "message": "Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-html-link-for-pages",
+      "severity": 2,
+      "line": 94,
+      "message": "Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-html-link-for-pages",
+      "severity": 2,
+      "line": 109,
+      "message": "Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+    },
+    {
+      "file": "app/checkout/page.tsx",
+      "rule": "@next/next/no-html-link-for-pages",
+      "severity": 2,
+      "line": 121,
+      "message": "Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+    },
+    {
+      "file": "src/actions/analytics.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 43,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/actions/analytics.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 171,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/actions/checkoutAction.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 14,
+      "message": "'totalAmount' is defined but never used."
+    },
+    {
+      "file": "src/actions/checkoutAction.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 27,
+      "message": "'state' is assigned a value but never used."
+    },
+    {
+      "file": "src/actions/checkoutAction.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 101,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 131,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 356,
+      "message": "'totalRevenue' is assigned a value but never used."
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 357,
+      "message": "'totalProcessed' is assigned a value but never used."
+    },
+    {
+      "file": "src/actions/products.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 11,
+      "message": "'CATEGORIES' is defined but never used."
+    },
+    {
+      "file": "src/actions/products.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 165,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/actions/products.ts",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 210,
+      "message": "'user' is assigned a value but never used."
+    },
+    {
+      "file": "src/actions/users.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 29,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/actions/users.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 70,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/actions/wompi.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 130,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/actions/wompi.ts",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 166,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/components/cart/MiniCartDropdown.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "line": 32,
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 30,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 30,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 35,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 45,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/components/portals/OrderHistoryClient.tsx",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "severity": 2,
+      "line": 150,
+      "message": "Unexpected any. Specify a different type."
+    },
+    {
+      "file": "src/components/store/ShopView.tsx",
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "line": 10,
+      "message": "'useStateReact' is defined but never used."
+    },
+    {
+      "file": "src/components/store/ShopView.tsx",
+      "rule": "react-hooks/set-state-in-effect",
+      "severity": 2,
+      "line": 38,
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+    }
+  ],
+  "out_of_scope_unchanged": {
+    "errors": 56,
+    "warnings": 32
+  },
+  "fatal_errors": 0,
+  "quality_decision": "no application lint edits proposed: no new violations; inherited failures remain FAIL honestly"
+}

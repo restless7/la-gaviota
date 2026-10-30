@@ -50,7 +50,7 @@ export function PriceDropPopup({ products }: { products: MarketAlertProduct[] })
               <div key={product.id} className="group flex flex-col rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                 <div className="relative h-40 w-full bg-gray-50">
                   <Image 
-                    src={product.imageUrl || '/IMAGES/placeholder.png'} 
+                    src={product.imageUrl || '/IMAGES/product-display.jpeg'}
                     alt={product.name} 
                     fill 
                     className="object-cover"
@@ -62,7 +62,7 @@ export function PriceDropPopup({ products }: { products: MarketAlertProduct[] })
                 <div className="p-4 flex flex-col flex-1">
                   <h3 className="font-bold text-slate-800 leading-tight mb-1">{product.name}</h3>
                   <div className="font-black text-[#10b981] mb-3">
-                    ${product.priceRetail.toLocaleString('es-CO')} <span className="text-xs text-gray-400 font-medium">/{product.unit}</span>
+                    ${product.price.toLocaleString('es-CO')} <span className="text-xs text-gray-400 font-medium">/{product.unit}</span>
                   </div>
                   <button
                     onClick={() => {

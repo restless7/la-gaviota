@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-15",
+  "node": "24.13.0",
+  "npm": "11.6.2",
+  "typescript": "5.9.3",
+  "eslint": "9.39.4",
+  "next": "16.4.1",
+  "commands": {
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit --incremental false --pretty false",
+    "eslint": "node node_modules/eslint/bin/eslint.js . --format json",
+    "audits": "npm audit --package-lock-only --ignore-scripts --json [--omit=dev]; copied package/lock, isolated npm config/cache and allowlisted env",
+    "vercel": "read-only environment-name presence and current production alias inspection; no values fetched",
+    "payment_replay": "run-current-payment-models.cjs APP_ROOT PRIVATE_OUTPUT",
+    "guard_replay": "identical copy of security/guard-media-model.cjs in private stage"
+  },
+  "remote_app_mutations": false,
+  "new_application_source_changes": false
+}

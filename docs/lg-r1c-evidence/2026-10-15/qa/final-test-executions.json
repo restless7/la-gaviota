@@ -1,0 +1,55 @@
+{
+  "runs": {
+    "critical535": {
+      "command": [
+        "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/node",
+        "--require",
+        "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/qa/deny-network.cjs",
+        "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/qa/replay-implemented.cjs"
+      ],
+      "exitcode": 0,
+      "seconds": 0.758,
+      "harness_sha256": "8dbcca1974a432780d9a31201023c582621e6d09a46c922e823d79beadc303df"
+    },
+    "independent12": {
+      "command": [
+        "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/node",
+        "--require",
+        "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/qa/deny-network.cjs",
+        "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/qa/independent-extra.cjs"
+      ],
+      "exitcode": 0,
+      "seconds": 0.456,
+      "harness_sha256": "14155334fd8ea6772b311918971a44ae14401c48efb60cd55e2f32d7c83e2510"
+    },
+    "context20replay": {
+      "command": [
+        "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/node",
+        "--require",
+        "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/qa/deny-network.cjs",
+        "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/qa/replay-middleware-context.cjs"
+      ],
+      "exitcode": 0,
+      "seconds": 0.479,
+      "harness_sha256": "1bb6d52111ae68cd34fe342a64bbb2d6cc2a4d5ab41f24ab027170c786780ad9"
+    },
+    "independentContext5": {
+      "command": [
+        "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/node",
+        "--require",
+        "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/qa/deny-network.cjs",
+        "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/qa/independent-context.cjs"
+      ],
+      "exitcode": 0,
+      "seconds": 0.41,
+      "harness_sha256": "3f0b33202bfe23f377288fd392072dd501fbd9b06f20c51b6169552639a8da17"
+    }
+  },
+  "final_application_files": 53,
+  "hashes_match_frozen_plus_explicit_compatibility": true,
+  "manifest_sha256": "7bcb5bf41cf599dffd487cb3c1032b1cb81350ace0e2f43bd009a0587b8e8c6b",
+  "lock_sha256": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157",
+  "network_attempts": 0,
+  "mock_dependencies": "Clerk/Supabase/Next response/context/notifications are synthetic injection; no real authentication or HTTP dispatch",
+  "counts_not_added_across_replays": true
+}

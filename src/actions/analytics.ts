@@ -1,11 +1,11 @@
 'use server';
+import { requireCapability } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-import { createClient } from '@supabase/supabase-js';
+
+
 import { revalidatePath } from 'next/cache';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface AnalyticsFilters {
   startDate?: string;
@@ -15,6 +15,9 @@ export interface AnalyticsFilters {
 }
 
 export async function getAdvancedFinancialSummary(filters: AnalyticsFilters) {
+  const actor = await requireCapability('reports.read');
+  const supabase = getServerDatabase(actor);
+
   let query = supabase.from('orders').select('id, total_amount, purchase_tier, status, order_items!inner(product_id)');
 
   if (filters.startDate) query = query.gte('created_at', filters.startDate);
@@ -99,6 +102,9 @@ export async function getAdvancedFinancialSummary(filters: AnalyticsFilters) {
 }
 
 export async function getSalesProjectionData(filters: AnalyticsFilters) {
+  const actor = await requireCapability('reports.read');
+  const supabase = getServerDatabase(actor);
+
   let query = supabase.from('orders').select('id, created_at, total_amount, purchase_tier, status');
   if (filters.startDate) query = query.gte('created_at', filters.startDate);
   if (filters.endDate) query = query.lte('created_at', filters.endDate);
@@ -139,6 +145,9 @@ export async function getSalesProjectionData(filters: AnalyticsFilters) {
 }
 
 export async function getRealShrinkageMetrics(filters: AnalyticsFilters) {
+  const actor = await requireCapability('reports.read');
+  const supabase = getServerDatabase(actor);
+
   let query = supabase.from('agricultural_shrinkage_logs').select(`
     quantity_kg, 
     log_type, 
@@ -175,6 +184,9 @@ export async function getRealShrinkageMetrics(filters: AnalyticsFilters) {
 }
 
 export async function logAgriculturalShrinkage(payload: { productId: string, quantityKg: number, logType: 'MERMA_TOTAL' | 'RECUPERADO_ORGANICO', reason: string }) {
+  const actor = await requireCapability('inventory.manage');
+  const supabase = getServerDatabase(actor);
+
   const { error } = await supabase.from('agricultural_shrinkage_logs').insert({
     product_id: payload.productId,
     quantity_kg: payload.quantityKg,
@@ -192,6 +204,9 @@ export async function logAgriculturalShrinkage(payload: { productId: string, qua
 }
 
 export async function fetchAllProducts() {
+  const actor = await requireCapability('reports.read');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase.from('products').select('id, name, category').order('name');
   if (error) throw new Error('Failed to fetch products');
   return data || [];

@@ -1,0 +1,73 @@
+{
+  "scope": "REAL_BROWSER_HTTP_NEXT_SERVER_ACTION_NEW_CLERK_TEST_APP_ISOLATED_PG",
+  "roleLabel": "super",
+  "base": "http://localhost:47774",
+  "sessionSubjectMatched": true,
+  "cases": [
+    {
+      "action": "fetchAdminProducts",
+      "workerNames": [
+        "app/sign-in/[[...sign-in]]/page",
+        "app/(portals)/retail/page",
+        "app/page",
+        "app/cart/page",
+        "app/checkout/page",
+        "app/(portals)/micromercado/page",
+        "app/admin/page",
+        "app/sign-up/[[...sign-up]]/page",
+        "app/(portals)/restaurante/page",
+        "app/admin/clientes/usuarios/page"
+      ],
+      "expected": "ALLOW_CATALOG",
+      "http": 200,
+      "contentType": "text/x-component",
+      "forbidden": false,
+      "errorMessages": [],
+      "hasRscError": false,
+      "bodyChars": 1702,
+      "protocolFailure": false,
+      "hasUsersArray": false,
+      "hasAdminCatalog": true,
+      "catalogCount": 4,
+      "hasOwnedOrders": false,
+      "status": "PASS_HTTP_CATALOG_POSITIVE"
+    },
+    {
+      "action": "fetchSystemUsers",
+      "workerNames": [
+        "app/admin/clientes/usuarios/page"
+      ],
+      "expected": "ALLOW_LIST",
+      "http": 200,
+      "contentType": "text/x-component",
+      "forbidden": false,
+      "errorMessages": [],
+      "hasRscError": false,
+      "bodyChars": 2029,
+      "protocolFailure": false,
+      "hasUsersArray": true,
+      "userCount": 10,
+      "knownFixtureUsers": 10,
+      "hasAdminCatalog": false,
+      "hasOwnedOrders": false,
+      "status": "PASS_HTTP_LIST_POSITIVE"
+    }
+  ],
+  "blockedRequests": [],
+  "sourceHashes": {
+    "middleware.ts": "a81e6e21b93fff00210bf5426681d257980185f41d5360de68ee82d345e249bf",
+    "src/lib/server/authorization.ts": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12",
+    "src/actions/products.ts": "bbe908054e505daa160911d01d0af17dfd8ec589e8e8430b3ad520f27b150c20",
+    "src/actions/users.ts": "6833361086b3d251707a714355d2ec369a3f0a53ee337fdd84d89181feaad62d",
+    "src/actions/orders.ts": "47999d46a2fe09df4aea74b1a59855fe71c27c4d13b4c0faa74205371bea2f81",
+    "src/actions/b2b.ts": "bca589e68e3f5405d3da1744b8cf374735138ec98c131c7ec4cddcef5e2d3498"
+  },
+  "notProven": [
+    "production app",
+    "Wompi payments",
+    "all action surfaces",
+    "Clerk native JWT to PostgREST; application server path uses guarded service client"
+  ],
+  "observedRole": "SUPER_ADMIN",
+  "manifestSha256": "93b991097769dd4ce658f438794dc86aa11246bfc0c0fbb706caa62b09fa2ba0"
+}

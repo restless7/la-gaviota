@@ -1,12 +1,12 @@
 'use server';
+import { requireCapability } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-import { createClient } from '@supabase/supabase-js';
+
+
 import { revalidatePath } from 'next/cache';
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { currentUser } from '@clerk/nextjs/server';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface DeliveryZone {
   name: string;
@@ -35,6 +35,9 @@ export interface SystemSettings {
 }
 
 export async function fetchSystemSettings(): Promise<SystemSettings> {
+  const actor = await requireCapability('settings.read');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase
     .from('system_settings')
     .select('*')
@@ -74,13 +77,8 @@ export async function fetchSystemSettings(): Promise<SystemSettings> {
 }
 
 export async function updateSystemSettings(settings: Partial<SystemSettings>): Promise<{ success: boolean; error?: string }> {
-  const { sessionClaims } = await auth();
-  
-  // Strict RBAC: Only ADMIN or SUPER_ADMIN can modify system settings
-  const userRole = (sessionClaims?.metadata as any)?.role;
-  if (userRole !== 'ADMIN' && userRole !== 'SUPER_ADMIN') {
-    throw new Error("Unauthorized. Se requieren privilegios de Administrador para realizar esta acción.");
-  }
+  const actor = await requireCapability('settings.manage');
+  const supabase = getServerDatabase(actor);
 
   const user = await currentUser();
   const actorName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.emailAddresses[0]?.emailAddress || 'Admin' : 'System Admin';

@@ -1,0 +1,74 @@
+{
+  "audit_date": "2026-10-27",
+  "mission_id": "LG-UX-MEDIA-R1",
+  "mode": "STRICT_READ_ONLY",
+  "catalog_source": "Supabase products table (tcjeiizrarwerarcfyky.supabase.co)",
+  "totals": {
+    "total_products": 255,
+    "active_products": 255,
+    "with_assigned_image": 65,
+    "missing_reference": 190,
+    "healthy_images": 61,
+    "broken_references": 0,
+    "duplicate_references": 0,
+    "recovery_candidates_found": 33
+  },
+  "category_breakdown": {
+    "AROMÁTICAS Y HIERBAS X 125 GR": {
+      "total": 11,
+      "withImage": 1,
+      "missing": 10
+    },
+    "CARNES X 500 GRAMOS": {
+      "total": 46,
+      "withImage": 1,
+      "missing": 45
+    },
+    "CONDIMENTOS X 125 GR": {
+      "total": 11,
+      "withImage": 4,
+      "missing": 7
+    },
+    "FRUTAS": {
+      "total": 50,
+      "withImage": 22,
+      "missing": 28
+    },
+    "FRUTOS SECOS Y ESPECIAS": {
+      "total": 14,
+      "withImage": 4,
+      "missing": 10
+    },
+    "KITS NEGOCIOS": {
+      "total": 8,
+      "withImage": 0,
+      "missing": 8
+    },
+    "PULPAS": {
+      "total": 10,
+      "withImage": 1,
+      "missing": 9
+    },
+    "VARIOS": {
+      "total": 24,
+      "withImage": 6,
+      "missing": 18
+    },
+    "VERDURAS Y HORTALIZAS": {
+      "total": 81,
+      "withImage": 22,
+      "missing": 59
+    }
+  },
+  "visual_standards": {
+    "master_resolution": "1600 × 1600 px square",
+    "export_formats": [
+      "WebP",
+      "AVIF",
+      "JPEG fallback"
+    ],
+    "background": "Seamless Neutral Warm-White (#FDFBF7)",
+    "lighting": "Soft diffused natural daylight / dual softbox",
+    "composition": "Product-centered, 1:1 square with 10% padding safe margin"
+  }
+}

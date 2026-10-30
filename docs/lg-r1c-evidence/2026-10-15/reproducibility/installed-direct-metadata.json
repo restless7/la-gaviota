@@ -1,0 +1,311 @@
+[
+  {
+    "name": "@clerk/localizations",
+    "declared": "4.6.2",
+    "actual": "4.6.2",
+    "kind": "dependencies",
+    "engines": {
+      "node": ">=20.9.0"
+    },
+    "peerDependencies": null,
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@clerk/nextjs",
+    "declared": "6.39.7",
+    "actual": "6.39.7",
+    "kind": "dependencies",
+    "engines": {
+      "node": ">=18.17.0"
+    },
+    "peerDependencies": {
+      "next": "^13.5.7 || ^14.2.25 || ^15.2.3 || ^16",
+      "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0",
+      "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@dnd-kit/core",
+    "declared": "6.3.1",
+    "actual": "6.3.1",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": {
+      "react": ">=16.8.0",
+      "react-dom": ">=16.8.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@dnd-kit/sortable",
+    "declared": "8.0.0",
+    "actual": "8.0.0",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": {
+      "react": ">=16.8.0",
+      "@dnd-kit/core": "^6.1.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@dnd-kit/utilities",
+    "declared": "3.2.2",
+    "actual": "3.2.2",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": {
+      "react": ">=16.8.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@prisma/client",
+    "declared": "7.8.0",
+    "actual": "7.8.0",
+    "kind": "dependencies",
+    "engines": {
+      "node": "^20.19 || ^22.12 || >=24.0"
+    },
+    "peerDependencies": {
+      "prisma": "*",
+      "typescript": ">=5.4.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@supabase/ssr",
+    "declared": "0.7.0",
+    "actual": "0.7.0",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": {
+      "@supabase/supabase-js": "^2.43.4"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@supabase/supabase-js",
+    "declared": "2.106.2",
+    "actual": "2.106.2",
+    "kind": "dependencies",
+    "engines": {
+      "node": ">=20.0.0"
+    },
+    "peerDependencies": null,
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@tailwindcss/postcss",
+    "declared": "4.2.4",
+    "actual": "4.2.4",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": null,
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "autoprefixer",
+    "declared": "10.5.0",
+    "actual": "10.5.0",
+    "kind": "dependencies",
+    "engines": {
+      "node": "^10 || ^12 || >=14"
+    },
+    "peerDependencies": {
+      "postcss": "^8.1.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "embla-carousel-autoplay",
+    "declared": "8.6.0",
+    "actual": "8.6.0",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": {
+      "embla-carousel": "8.6.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "embla-carousel-react",
+    "declared": "8.6.0",
+    "actual": "8.6.0",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": {
+      "react": "^16.8.0 || ^17.0.1 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "framer-motion",
+    "declared": "11.18.2",
+    "actual": "11.18.2",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": {
+      "@emotion/is-prop-valid": "*",
+      "react": "^18.0.0 || ^19.0.0",
+      "react-dom": "^18.0.0 || ^19.0.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "lucide-react",
+    "declared": "0.525.0",
+    "actual": "0.525.0",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": {
+      "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "next",
+    "declared": "16.4.1",
+    "actual": "16.4.1",
+    "kind": "dependencies",
+    "engines": {
+      "node": ">=20.9.0"
+    },
+    "peerDependencies": {
+      "@opentelemetry/api": "^1.1.0",
+      "@playwright/test": "^1.51.1",
+      "babel-plugin-react-compiler": "*",
+      "react": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
+      "react-dom": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
+      "sass": "^1.3.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "react",
+    "declared": "19.2.4",
+    "actual": "19.2.4",
+    "kind": "dependencies",
+    "engines": {
+      "node": ">=0.10.0"
+    },
+    "peerDependencies": null,
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "react-dom",
+    "declared": "19.2.4",
+    "actual": "19.2.4",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": {
+      "react": "^19.2.4"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "recharts",
+    "declared": "2.15.4",
+    "actual": "2.15.4",
+    "kind": "dependencies",
+    "engines": {
+      "node": ">=14"
+    },
+    "peerDependencies": {
+      "react": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+      "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "tailwindcss",
+    "declared": "4.2.4",
+    "actual": "4.2.4",
+    "kind": "dependencies",
+    "engines": null,
+    "peerDependencies": null,
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@types/node",
+    "declared": "20.19.39",
+    "actual": "20.19.39",
+    "kind": "devDependencies",
+    "engines": null,
+    "peerDependencies": {},
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@types/react",
+    "declared": "19.3.0",
+    "actual": "19.3.0",
+    "kind": "devDependencies",
+    "engines": null,
+    "peerDependencies": {},
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "@types/react-dom",
+    "declared": "19.3.0",
+    "actual": "19.3.0",
+    "kind": "devDependencies",
+    "engines": null,
+    "peerDependencies": {
+      "@types/react": "^19.3.0"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "eslint",
+    "declared": "9.39.4",
+    "actual": "9.39.4",
+    "kind": "devDependencies",
+    "engines": {
+      "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+    },
+    "peerDependencies": {
+      "jiti": "*"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "eslint-config-next",
+    "declared": "16.4.1",
+    "actual": "16.4.1",
+    "kind": "devDependencies",
+    "engines": null,
+    "peerDependencies": {
+      "eslint": ">=9.0.0",
+      "typescript": ">=3.3.1"
+    },
+    "lifecycle_scripts": {}
+  },
+  {
+    "name": "prisma",
+    "declared": "7.8.0",
+    "actual": "7.8.0",
+    "kind": "devDependencies",
+    "engines": {
+      "node": "^20.19 || ^22.12 || >=24.0"
+    },
+    "peerDependencies": {
+      "better-sqlite3": ">=9.0.0",
+      "typescript": ">=5.4.0"
+    },
+    "lifecycle_scripts": {
+      "preinstall": "node scripts/preinstall-entry.js"
+    }
+  },
+  {
+    "name": "typescript",
+    "declared": "5.9.3",
+    "actual": "5.9.3",
+    "kind": "devDependencies",
+    "engines": {
+      "node": ">=14.17"
+    },
+    "peerDependencies": null,
+    "lifecycle_scripts": {}
+  }
+]

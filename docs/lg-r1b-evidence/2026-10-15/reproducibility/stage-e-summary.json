@@ -1,0 +1,156 @@
+{
+  "at_utc": "2026-10-15T13:19:34.810928+00:00",
+  "gate_E_clean_install": "PASS_ISOLATED_CANDIDATE",
+  "gate_E_overall": "PARTIAL",
+  "original_repository_modified": false,
+  "candidate_final": "candidate-final/package.json + package-lock.json",
+  "candidate_patch": "dependency-reconciliation.patch",
+  "installed_final_tree": "/tmp/la-gaviota-lg-r1b-20261015/candidate-final/node_modules",
+  "clean_ci": {
+    "command": [
+      "npm",
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--strict-peer-deps"
+    ],
+    "cwd": "/tmp/la-gaviota-lg-r1b-20261015/candidate-final",
+    "exitcode": 0,
+    "aborted": null,
+    "started_utc": "2026-10-15T13:13:44.606344+00:00",
+    "elapsed_s": 12.918,
+    "resource_limits": {
+      "root_free_min": 536870912,
+      "tmpfs_free_min": 4294967296,
+      "memory_available_min": 4294967296,
+      "log_each_max": 10485760
+    },
+    "before": {
+      "root_free": 2302955520,
+      "tmpfs_free": 16499781632,
+      "memory_available": 15143706624
+    },
+    "minimum_observed": {
+      "root_free": 2302869504,
+      "tmpfs_free": 15162540032,
+      "memory_available": 12956307456
+    },
+    "after": {
+      "root_free": 2302906368,
+      "tmpfs_free": 15156363264,
+      "memory_available": 13664165888
+    },
+    "environment_keys": [
+      "CI",
+      "LANG",
+      "PATH",
+      "npm_config_audit",
+      "npm_config_cache",
+      "npm_config_engine_strict",
+      "npm_config_fund",
+      "npm_config_globalconfig",
+      "npm_config_ignore_scripts",
+      "npm_config_registry",
+      "npm_config_strict_peer_deps",
+      "npm_config_userconfig"
+    ],
+    "HOME_and_credentials": "omitted, not rebound",
+    "scripts_disabled": true,
+    "manifest_sha256": "7bcb5bf41cf599dffd487cb3c1032b1cb81350ace0e2f43bd009a0587b8e8c6b",
+    "lock_sha256": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157",
+    "fresh_node_modules_before": true,
+    "network": "npm public registry only; no app/SDK/start/build executed"
+  },
+  "static": {
+    "files": 131,
+    "errors": 82,
+    "warnings": 58,
+    "fatal": 0,
+    "rule_counts": {
+      "@typescript-eslint/no-unused-vars": 50,
+      "@typescript-eslint/no-explicit-any": 53,
+      "@next/next/no-html-link-for-pages": 7,
+      "react-hooks/purity": 3,
+      "react-hooks/set-state-in-effect": 13,
+      "react/no-unescaped-entities": 2,
+      "@next/next/no-img-element": 4,
+      "react-hooks/exhaustive-deps": 2,
+      "@typescript-eslint/no-require-imports": 2,
+      "react/display-name": 1,
+      "prefer-const": 1,
+      "@next/next/no-location-assign-relative-destination": 2
+    }
+  },
+  "typecheck_exitcode": 0,
+  "peer_tree_exitcode": 0,
+  "full_audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 9,
+    "critical": 0,
+    "total": 12
+  },
+  "omit_dev_audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 4,
+    "critical": 0,
+    "total": 7
+  },
+  "build": "BLOCKED_NOT_EXECUTED_NO_FULL_SYNTHETIC_SDK_LAYER",
+  "artifacts": [
+    {
+      "path": "candidate-final/package.json",
+      "sha256": "7bcb5bf41cf599dffd487cb3c1032b1cb81350ace0e2f43bd009a0587b8e8c6b",
+      "bytes": 1223
+    },
+    {
+      "path": "candidate-final/package-lock.json",
+      "sha256": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157",
+      "bytes": 315334
+    },
+    {
+      "path": "dependency-reconciliation.patch",
+      "sha256": "3eb6ac75f3211aa3a300026ecc44e46a4403395952bd4e0bdf111f7be90692ac",
+      "bytes": 208087
+    },
+    {
+      "path": "advisory-triage.json",
+      "sha256": "28c31511a6f0ab5132a6920c695ef756560af6930f1eec259f041ec62ae6988d",
+      "bytes": 12314
+    },
+    {
+      "path": "source-preservation.json",
+      "sha256": "1e41bea1f48c2ce73d9cb14b46dd64f27494323123bfa95bfaf9b24be43bb2f6",
+      "bytes": 432
+    },
+    {
+      "path": "installed-direct-metadata.json",
+      "sha256": "2b88b44518f022b53af32046a1740a7aef601c58ef7de8195aa1ccf7495b9af8",
+      "bytes": 10449
+    },
+    {
+      "path": "final-lock-integrity-delta.json",
+      "sha256": "15203526cf05d3b7750be0dd5731a9187611367515be85cc758add99c907c26c",
+      "bytes": 1773
+    },
+    {
+      "path": "HANDOFF_STAGE_E.md",
+      "sha256": "97c40505f08871ed791660b7012dfd5ca26626dc41c7f22d71e2a3dc3d517cde",
+      "bytes": 10284
+    },
+    {
+      "path": "reproduce-candidate.py",
+      "sha256": "648908a6d63d15fd6eebf5b82ab5b064bc8e3d34a06e80048cec92851ba65dbf",
+      "bytes": 4480
+    },
+    {
+      "path": "deny-network.cjs",
+      "sha256": "8f06449c51bc250e08e53d798ff03364294bc3206bfc51a8620a75973210ce1d",
+      "bytes": 885
+    }
+  ]
+}

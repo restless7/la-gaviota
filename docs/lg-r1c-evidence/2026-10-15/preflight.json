@@ -1,0 +1,10 @@
+{
+  "root_free": 3681329152,
+  "tmp_free": 15033323520,
+  "memavailable": 12494036992,
+  "minimum_root": 1073741824,
+  "minimum_tmpfs": 4294967296,
+  "minimum_memavailable": 4294967296,
+  "expected_clone_and_install_bytes_upper_bound": 4294967296,
+  "no_unrelated_cleanup": true
+}

@@ -1,12 +1,14 @@
+import { requireCapability } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 import React from 'react';
-import { createClient } from '@supabase/supabase-js';
+
 import MarketingClient from './MarketingClient';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 export default async function MarketingHubPage() {
+  const actor=await requireCapability('reports.read');
+  const supabase=getServerDatabase(actor);
   // Try to fetch abandoned carts stats gracefully
   let totalAbandoned = 0;
   let totalRecoveredAmount = 0;

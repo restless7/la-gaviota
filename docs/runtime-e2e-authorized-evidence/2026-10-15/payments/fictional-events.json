@@ -1,0 +1,100 @@
+{
+  "classification": "FICTIONAL_OFFICIAL_EVENT_SHAPE_NOT_PROVIDER_RECORDS",
+  "officialDocs": [
+    "https://docs.wompi.co/docs/colombia/eventos/",
+    "https://docs.wompi.co/docs/colombia/datos-de-prueba-en-sandbox/"
+  ],
+  "clock": "2026-10-15T12:00:00.000Z",
+  "events": {
+    "APPROVED": {
+      "event": "transaction.updated",
+      "environment": "test",
+      "timestamp": 1234567890,
+      "signature": {
+        "properties": [
+          "transaction.id",
+          "transaction.status",
+          "transaction.amount_in_cents"
+        ],
+        "checksum": "451b64a0cbff5ffdb6917b1bed08ebbcb2c756829260441bca2e81e3ab0a4855"
+      },
+      "data": {
+        "transaction": {
+          "id": "fictional-tx-1",
+          "reference": "order-a",
+          "status": "APPROVED",
+          "currency": "COP",
+          "amount_in_cents": 1500000
+        }
+      }
+    },
+    "DECLINED": {
+      "event": "transaction.updated",
+      "environment": "test",
+      "timestamp": 1234567890,
+      "signature": {
+        "properties": [
+          "transaction.id",
+          "transaction.status",
+          "transaction.amount_in_cents"
+        ],
+        "checksum": "d43c79f3db2eb3a678f7d10b18597c2074cc0ced3ca0c8a472537ac61c1e9517"
+      },
+      "data": {
+        "transaction": {
+          "id": "fictional-tx-1",
+          "reference": "order-a",
+          "status": "DECLINED",
+          "currency": "COP",
+          "amount_in_cents": 1500000
+        }
+      }
+    },
+    "PENDING": {
+      "event": "transaction.updated",
+      "environment": "test",
+      "timestamp": 1234567890,
+      "signature": {
+        "properties": [
+          "transaction.id",
+          "transaction.status",
+          "transaction.amount_in_cents"
+        ],
+        "checksum": "d889b24fd992660ecd68249a47e32118ab0b2d63439b28d1995ad050e13ae6b7"
+      },
+      "data": {
+        "transaction": {
+          "id": "fictional-tx-1",
+          "reference": "order-a",
+          "status": "PENDING",
+          "currency": "COP",
+          "amount_in_cents": 1500000
+        }
+      }
+    }
+  },
+  "sequences": {
+    "approvedDuplicate": [
+      "APPROVED",
+      "APPROVED"
+    ],
+    "pendingApproved": [
+      "PENDING",
+      "APPROVED"
+    ],
+    "latePending": [
+      "APPROVED",
+      "PENDING"
+    ],
+    "lateDecline": [
+      "APPROVED",
+      "DECLINED"
+    ],
+    "declinedPending": [
+      "DECLINED",
+      "PENDING"
+    ]
+  },
+  "noRealProviderKeys": true,
+  "noCardsOrRealPayments": true
+}

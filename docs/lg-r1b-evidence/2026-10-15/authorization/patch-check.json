@@ -1,0 +1,6 @@
+{
+  "exitCode": 0,
+  "operation": "git apply --check ONLY; NOT APPLIED",
+  "stderr": "",
+  "patchSha256": "910b8fce50bc87dfa269a22969e463c52563eadd7ceb0dd7b58b7db6e852c3d1"
+}

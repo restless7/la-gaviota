@@ -1,0 +1,82 @@
+{
+  "phase": "LG-RUNTIME-E2E",
+  "date": "2026-10-15",
+  "baseline": "CURRENT_IMPLEMENTED_WORKTREE",
+  "head": "49add73ae90b837c36553a0f2b535267c9610143",
+  "baseline_head_unchanged": true,
+  "baseline_files_checked": 144,
+  "changed_or_missing": [],
+  "env_local_git_ignored": true,
+  "child_manifests": [
+    {
+      "track": "auth",
+      "manifest_sha256": "54fcf94782b47ecbaf6ba1c62117a4eebcb883f5faec76d74f580aea5b1db1b2",
+      "verified_files": 10,
+      "mismatches": []
+    },
+    {
+      "track": "security",
+      "manifest_sha256": "a53a10668de52e6f01083d568c6a3cd1a47155b60a14e5dbd398f0810fdd3fc9",
+      "verified_files": 16,
+      "mismatches": []
+    },
+    {
+      "track": "payments",
+      "manifest_sha256": "659002fffbe35f28e8cce5a09a7fa231f46764c26bf5bd77bd991792472602d4",
+      "verified_files": 13,
+      "mismatches": []
+    }
+  ],
+  "root_replays": {
+    "payments": {
+      "diagnostic_cases": 16,
+      "safety_pass_model": 5,
+      "integrity_fail": 11,
+      "source_hashes_equal": true,
+      "observations_equal_ignoring_generated_updated_at": true,
+      "normalization": "only updated_at timestamp; no safety/result fields removed"
+    },
+    "guards": {
+      "executed": 118,
+      "passed": 118,
+      "failed": 0,
+      "source_hashes_equal": true,
+      "tests_equal": true
+    },
+    "cleanup_process_checks": {
+      "482867": {
+        "present_at_check": false
+      },
+      "489036": {
+        "present_at_check": false
+      },
+      "486422": {
+        "present_at_check": false
+      }
+    },
+    "previous_preview": {
+      "pid": 432822,
+      "present_at_check": true,
+      "url": "http://localhost:47773"
+    },
+    "not_unique_new_cases": "Independent replays overlap author cases; no cumulative acceptance total."
+  },
+  "missing_local_report_links_excluding_pending_manifest": [],
+  "outcome": {
+    "financial_integrity": "FAIL",
+    "authentication_provider_e2e": "BLOCKED_PENDING_DESIGNATED_TEST_RESOURCES",
+    "deployed_rls_gateway_storage": "NOT_ATTESTED",
+    "typescript": "PASS",
+    "lint": "FAIL",
+    "commercial_release": "NO_GO"
+  },
+  "claims_not_made": [
+    "real payment or duplicate charge",
+    "live exploit",
+    "real authenticated E2E",
+    "applied SQL or deployment",
+    "sum of overlapping case counts as acceptance total"
+  ],
+  "application_code_changed_in_this_gate": false,
+  "accounting": "exact tokens/tier/cost unavailable; no remote board completion fabricated"
+}

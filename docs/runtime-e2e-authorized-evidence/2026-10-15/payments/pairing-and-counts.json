@@ -1,0 +1,24 @@
+{
+  "sourcesUnchangedSincePriorPhase": true,
+  "newFixtureClockFixed": true,
+  "retained16Replay": "same16 cases; 5PASS_MODEL/11FAIL; not16 newcases",
+  "retainedPG5": "not replayed; actual current writer/validation hashes match prior proof; 1PASS_DB_FIXTURE/4FAIL",
+  "newScenarioCases": 10,
+  "newScenarioSafetyPassModel": 8,
+  "newScenarioSafetyFail": 2,
+  "notIndependentDefectCount": true,
+  "providerRequests": 0,
+  "newDatabaseClusters": 0,
+  "appCodeModified": false,
+  "envModified": false,
+  "newLoadedSources": {
+    "src/lib/wompi.ts": "ee58cfed2c3890d18bfe7f751dc2b84e982af646a8a53ce6ca8970392fef0c76",
+    "src/lib/checkoutValidation.ts": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+    "app/api/webhooks/wompi/route.ts": "6196efce9b86f25289646ed90dcb5c3f4836449d9d3deca79370095dac619ba7"
+  },
+  "stabilityReplay": {
+    "byteIdentical": true,
+    "sha256": "5f8c91e45a9611d0aa99a33ff74a688794df570b9b4f78d1bf3d7a48aa785dbc",
+    "notNewCases": true
+  }
+}

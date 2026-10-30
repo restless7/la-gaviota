@@ -1,0 +1,101 @@
+{
+  "status": "PARTIAL_AUTHENTICATED_E2E_BLOCKED_PENDING_ISOLATED_FIXTURES",
+  "scope": "LG-RUNTIME-E2E auth track; no release",
+  "configuration": {
+    "clerkSDK": "6.39.7 Core2",
+    "clerkPublishablePresent": true,
+    "clerkSecretPresent": true,
+    "clerkMode": "development",
+    "supabaseRequiredThreeNamesPresent": true,
+    "dedicatedIsolatedClerkInstanceVerified": false,
+    "dedicatedIsolatedDatabaseVerified": false,
+    "credentialValuesRecorded": false
+  },
+  "layers": {
+    "sourceMocks": {
+      "status": "PASS",
+      "distinctCases": 33,
+      "edgeOwnership": 12,
+      "callbacksRolesOwnPositive": 21,
+      "limits": "Actual original source loaded by TypeScript VM; Clerk/DB injected, no real SDK identity/session."
+    },
+    "actualAnonymousBrowser": {
+      "status": "PASS_BOUNDED",
+      "protectedRouteRedirects": 2,
+      "publicAuthShellRoutes": 2,
+      "signInInputsObserved": 2,
+      "signUpInputsObserved": 2,
+      "pageErrors": 0,
+      "blockedWrites": 7,
+      "limits": "First sign-in snapshot had shell only at700ms; later admin redirect rendered SignIn. Form presence is not credential/session success."
+    },
+    "actualGuestActionHTTP": {
+      "status": "PARTIAL",
+      "flightErrorResponses": 1,
+      "framework409Unverified": 2,
+      "limits": "fetchAdminProducts returned500 Flight error; fetchSystemUsers/getLiveOperationalOrders409 not counted guard proof. No target data or response bodies saved; source guards reviewed first."
+    },
+    "loginRegistrationSessionsAuthenticatedPortals": {
+      "status": "BLOCKED",
+      "reason": "No confirmed dedicated instance/database nor authorized synthetic fixtures. No existing-account login, create-user, session creation/signout, role mutation, order/payment calls executed."
+    }
+  },
+  "diagnosticCorrections": [
+    "Raw Node fetch without HTML accept returns404 per Clerk protect non-page branch; browser-shaped fresh requests redirect307 to dev handshake including publicauthpages. Neither initial result establishes authenticated success or an appFAIL. Actual browser GET completed anonymous redirect to localSignIn.",
+    "Initial raw HTTP statuses retained for provenance; two409 frameworkaction responses unresolved, not securityfailure or guardPASS."
+  ],
+  "sourceSha256": {
+    "src/lib/server/authorization.ts": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12",
+    "src/lib/server/database.ts": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c",
+    "middleware.ts": "a81e6e21b93fff00210bf5426681d257980185f41d5360de68ee82d345e249bf",
+    "src/actions/users.ts": "6833361086b3d251707a714355d2ec369a3f0a53ee337fdd84d89181feaad62d",
+    "src/actions/products.ts": "bbe908054e505daa160911d01d0af17dfd8ec589e8e8430b3ad520f27b150c20",
+    "src/actions/orders.ts": "47999d46a2fe09df4aea74b1a59855fe71c27c4d13b4c0faa74205371bea2f81",
+    "app/sign-in/[[...sign-in]]/page.tsx": "0da7dcfd356953b9aeefda14c7a0786b4e6cb49ce24394cd3f1eff98560c0e45",
+    "app/sign-up/[[...sign-up]]/page.tsx": "f1ca319e9c25aae58a45f163e1ee4d304c3f11be530358f1cf9427e4da2faf55"
+  },
+  "nextAuthorizedChecks": {
+    "requiredOwnerConfirmation": [
+      "Dedicated Clerk development instance and dedicated nonproduction database/project or explicit scoped fixtures",
+      "Synthetic account prefix, allowed creates/deletes/metadata/session operations and webhook side-effect isolation",
+      "No existing customer accounts; ephemeral auth state private and never committed"
+    ],
+    "cases": [
+      "UI sign-up with dedicated +clerk_test address and fixed test code after approval",
+      "UI sign-in and wrong-password rejection",
+      "Session reload, signout, revoked/expired session",
+      "Retail/Micro/Restaurant/Admin/Super portal allow/deny and fresh metadata revocation",
+      "Cross-owner resource denial with two synthetic users; ADMIN tiers.manage preserved; identity.manage SUPER only"
+    ],
+    "testingHelpers": "Official clerkSetup/setupClerkTestingToken and clerk.signIn require authorized instance; helper emailAddress token bypasses verification/MFA and cannot substitute actual UI verification test."
+  },
+  "references": [
+    "https://clerk.com/docs/guides/development/testing/playwright/overview",
+    "https://clerk.com/docs/guides/development/testing/playwright/test-helpers",
+    "https://clerk.com/docs/guides/development/testing/playwright/test-sign-up-flows",
+    "https://clerk.com/docs/guides/development/testing/test-emails-and-phones"
+  ],
+  "skill": "Local clerk router read; referenced clerk-testing skill absent after local search. Official current testing docs used as fallback.",
+  "cleanup": {
+    "ownedBrowserClosed": true,
+    "ownedProcessesPending": false,
+    "rootPreviewLeftRunning": true,
+    "appSourceEditedByTrack": false
+  },
+  "reproduction": {
+    "commands": [
+      "env -i PATH=/path/to/node24/bin:/usr/bin:/bin LANG=C.UTF-8 node docs/runtime-e2e-evidence/2026-10-15/auth/reproduce-auth-edges.cjs \"$PWD\" /tmp/la-gaviota-runtime-auth-replay",
+      "env -i PATH=/path/to/node24/bin:/usr/bin:/bin LANG=C.UTF-8 node docs/runtime-e2e-evidence/2026-10-15/auth/reproduce-auth-context.cjs \"$PWD\" /tmp/la-gaviota-runtime-auth-replay"
+    ],
+    "requirements": "From app root with installed TypeScript/Node24; explicit ROOT/OUT, no env loading, mocks only."
+  },
+  "dependencyOperationCounts": {
+    "sourceDeniedCases": "Target DB/storage/target Clerk operations each asserted0; actor authority lookup separate, may be1 authenticated fixture. Specific guest negatives assert0 authority lookups.",
+    "actualHTTP": "Server dependency calls not instrumented; framework errors cannot prove zero backend operations."
+  },
+  "diagnosticStatusClarification": {
+    "anonymous-http-initial-protocol-diagnostic.json": "Initial raw FAIL labels from wrong request shape/expectations are diagnostic artifacts; no appFAIL asserted.",
+    "anonymous-page-get-results.json": "Fresh HTML307 devhandshakes include publicpages; raw publicpage FAIL expectation is a harness artifact.",
+    "anonymous-browser-results.json": "2actualguest gate redirects+2authshells; firstSignIn SDK absent700ms, observed later; no login success."
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "scope": "real browser same-origin HTTP actions with existing real Clerk test sessions",
+  "confirmedDistinctRoleActionCases": 5,
+  "confirmed": [
+    {
+      "role": "retail",
+      "action": "fetchAdminProducts",
+      "observation": "PASS_HTTP_GUARD_DENY",
+      "http": 500,
+      "contentType": "text/x-component",
+      "evidence": "retail-http-actions.json"
+    },
+    {
+      "role": "admin",
+      "action": "fetchAdminProducts",
+      "observation": "PASS_HTTP_CATALOG_POSITIVE",
+      "http": 200,
+      "contentType": "text/x-component",
+      "evidence": "admin-actions.json"
+    },
+    {
+      "role": "admin",
+      "action": "fetchSystemUsers",
+      "observation": "PASS_HTTP_GUARD_DENY",
+      "http": 200,
+      "contentType": "text/x-component",
+      "evidence": "admin-actions.json"
+    },
+    {
+      "role": "super",
+      "action": "fetchAdminProducts",
+      "observation": "PASS_HTTP_CATALOG_POSITIVE",
+      "http": 200,
+      "contentType": "text/x-component",
+      "evidence": "super-actions.json"
+    },
+    {
+      "role": "super",
+      "action": "fetchSystemUsers",
+      "observation": "PASS_HTTP_LIST_POSITIVE",
+      "http": 200,
+      "contentType": "text/x-component",
+      "evidence": "super-actions.json"
+    }
+  ],
+  "unverifiedObservationsNotAcceptance": [
+    {
+      "role": "retail",
+      "action": "fetchSystemUsers",
+      "observation": "UNVERIFIED_NO_COMPILED_ACTION",
+      "http": null,
+      "contentType": null,
+      "evidence": "retail-http-actions.json"
+    },
+    {
+      "role": "retail",
+      "action": "getB2BOrders",
+      "observation": "UNVERIFIED_RESULT",
+      "http": 200,
+      "contentType": "application/json; charset=utf-8",
+      "evidence": "retail-http-actions.json"
+    },
+    {
+      "role": "retail",
+      "action": "getB2BOrders",
+      "observation": "UNVERIFIED_RESULT",
+      "http": 200,
+      "contentType": "application/json; charset=utf-8",
+      "evidence": "retail-owned-history.json"
+    },
+    {
+      "role": "retail",
+      "action": "fetchSystemUsers",
+      "observation": "UNVERIFIED_RESULT",
+      "http": 200,
+      "contentType": "application/json; charset=utf-8",
+      "evidence": "retail-users-denied.json"
+    }
+  ],
+  "sourceApplication": "private application current copied worktree; hashes in reports",
+  "accountScope": "new independent Clerk app fixture; SUPER returned 10users and all10 matched private fixture manifest after authorized signup",
+  "identityMaterialExported": false,
+  "cookiesTokensStorageStateCopied": false,
+  "sideEffectCaveat": "No HTTP tracing of all privileged dependencies; source guard ordering supports decision but does not prove zero privileged IO",
+  "roleRevocationSameSession": "NOT_EXECUTED_OPTIONAL",
+  "protocolNotes": [
+    "No409 encountered",
+    "Retail ownhistory twice yielded200 application/json {} rather than action RSC payload; no more retries",
+    "Retail users sourceworker originally absent, later forwarded/nonRSC result; not classified as function guard deny",
+    "Action worker forwarding/protected route is a hypothesis from manifest and protocol, not a captured forwarding trace"
+  ],
+  "preflightCorrection": "Two launch attempts aborted locally before browser/HTTP because fixture manifest grew9to10 after authorized signup; count guard corrected to permitted9..10; not auth/protocol failures",
+  "applicationDataMutationsRequested": 0,
+  "identityAccountRoleMutationsRequested": 0,
+  "sessionRefreshRequests": "Not separately counted; Clerk SDK may refresh existing sessions during browser load"
+}

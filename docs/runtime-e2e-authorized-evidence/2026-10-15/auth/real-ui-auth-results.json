@@ -1,0 +1,51 @@
+{
+  "layer": "REAL_UI_PASSWORD_EMAIL_OTP_AND_SIGNUP_EMAIL_OTP_NEW_CLERK_DEVELOPMENT",
+  "passwordLoginAndSessionCases": [
+    {
+      "name": "realUI_retailPasswordLoginAndDashboardRouting",
+      "status": "PASS",
+      "path": "/retail"
+    },
+    {
+      "name": "realSession_survivesReload",
+      "status": "PASS"
+    },
+    {
+      "name": "realRetail_adminRouteDenied",
+      "status": "PASS",
+      "finalPath": "/retail"
+    }
+  ],
+  "signupAndProperlyAwaitedSignoutCases": [
+    {
+      "name": "realUI_signupPasswordEmailOTP_defaultRetailRouting",
+      "status": "PASS",
+      "userId": "user_3KkJhzhTyweVoqikJXkfR7Vo1Yp",
+      "path": "/retail",
+      "rawPublicRole": null,
+      "rawPublicTier": null,
+      "roleMetadataNotPatched": true
+    },
+    {
+      "name": "realSDK_signOut_sessionCleared",
+      "status": "PASS"
+    },
+    {
+      "name": "realSDK_signOut_protectedRouteDenied",
+      "status": "PASS",
+      "path": "/sign-in"
+    }
+  ],
+  "wrongPasswordHTTP": {
+    "status": 422,
+    "code": "form_password_incorrect",
+    "visibleErrorSelector": "UNVERIFIED; raw expected selector not present"
+  },
+  "testingToken": "Antibot only, not sign-in token; password and Development email OTP completed through real UI",
+  "diagnosticsNotAppFailures": [
+    "Error selector expectation wrong despite credential rejection422.",
+    "OTP entry initially raced prepare_second_factor;400verification_not_sent occurred before prepare200. Awaiting prepare200 completed successfully.",
+    "Initial signout checked while SDK/page transitioning; no signout POST. Proper SDKloaded/rootnavigation/loaded-user-null wait in signup then protectedroute denial passed."
+  ],
+  "browserClosed": true
+}

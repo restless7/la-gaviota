@@ -1,0 +1,79 @@
+{
+  "observedUTC": "2026-10-15T20:09:31.690169+00:00",
+  "scope": "local presence plus previously retained Vercel metadata; no secret retrieval",
+  "localFiles": [
+    {
+      "path": ".env.example",
+      "exampleOnly": true,
+      "wompiVariables": [
+        {
+          "name": "NEXT_PUBLIC_WOMPI_PUB_KEY",
+          "present": false,
+          "classification": "EMPTY"
+        },
+        {
+          "name": "WOMPI_INTEGRITY_SECRET",
+          "present": false,
+          "classification": "EMPTY"
+        },
+        {
+          "name": "WOMPI_EVENTS_SECRET",
+          "present": false,
+          "classification": "EMPTY"
+        }
+      ]
+    },
+    {
+      "path": ".env.local",
+      "exampleOnly": false,
+      "wompiVariables": []
+    }
+  ],
+  "processEnv": {
+    "NEXT_PUBLIC_WOMPI_PUB_KEY": {
+      "present": false,
+      "classification": "ABSENT"
+    },
+    "WOMPI_INTEGRITY_SECRET": {
+      "present": false,
+      "classification": "ABSENT"
+    },
+    "WOMPI_EVENTS_SECRET": {
+      "present": false,
+      "classification": "ABSENT"
+    },
+    "WOMPI_PRV_KEY": {
+      "present": false,
+      "classification": "ABSENT"
+    },
+    "WOMPI_PRIVATE_KEY": {
+      "present": false,
+      "classification": "ABSENT"
+    },
+    "WOMPI_ENVIRONMENT": {
+      "present": false,
+      "classification": "ABSENT"
+    },
+    "WOMPI_API_URL": {
+      "present": false,
+      "classification": "ABSENT"
+    }
+  },
+  "existingVercelMetadata": {
+    "source": "docs/runtime-e2e-evidence/2026-10-15/preflight/vercel-env-presence.json and private retained metadata names only",
+    "environment": "Production",
+    "names": [
+      "NEXT_PUBLIC_WOMPI_PUB_KEY",
+      "WOMPI_INTEGRITY_SECRET",
+      "WOMPI_EVENTS_SECRET",
+      "WOMPI_PRV_KEY"
+    ],
+    "valuesFetched": false,
+    "prefixes": "UNKNOWN",
+    "sandboxEntitlement": "UNKNOWN",
+    "use": "DO_NOT_USE"
+  },
+  "sandboxGate": "BLOCKED_MISSING_DESIGNATED_LOCAL_SANDBOX_CONFIGURATION",
+  "providerPaymentsInitiated": 0,
+  "productionSecretsFetched": 0
+}

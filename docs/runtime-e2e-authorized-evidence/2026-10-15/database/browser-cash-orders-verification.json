@@ -1,0 +1,141 @@
+{
+  "scope": "READ_ONLY_DURABLE_ORACLES_AFTER_ROOT_BROWSER_CASH_CHECKOUTS_IN_SEPARATE_TEST_ENVIRONMENT",
+  "flows": 3,
+  "checksExecuted": 33,
+  "checksPassed": 33,
+  "records": [
+    {
+      "layer": "READ_ONLY_REAL_PG_DURABLE_ORDER_CHECK_AFTER_ROOT_BROWSER_CASH_CHECKOUT_IN_NEW_CLERK_TEST_INSTANCE",
+      "observedAtUtc": "2026-10-15T20:21:41.867587+00:00",
+      "order": {
+        "order_id": "0a314258-f323-4b20-ace7-1f920d038c50",
+        "owner_matches_new_retail_fixture": true,
+        "total_amount": 60000,
+        "payment_method": "cash",
+        "status": "Pendiente",
+        "items": [
+          {
+            "product_id": "SKU_TEST_A",
+            "quantity": 3,
+            "unit_price": 20000,
+            "subtotal": 60000,
+            "fixture_product_exists": true
+          }
+        ],
+        "items_subtotal": 60000
+      },
+      "checks": {
+        "owner_matches_retail": true,
+        "header_total_60000": true,
+        "payment_cash": true,
+        "status_Pendiente": true,
+        "exactly_one_item": true,
+        "fixture_SKU_TEST_A": true,
+        "quantity_3": true,
+        "unit_price_20000": true,
+        "line_subtotal_60000": true,
+        "header_equals_items_subtotal": true,
+        "FK_product_exists": true
+      },
+      "passed": true,
+      "readOnly": true,
+      "contactOrAddressColumnsSelected": false,
+      "existingBackendAccessed": false,
+      "sqlSha256": "4645ad0623e3001d50b8a2b4b1989733401a492ff4ba41046479e814b47afd20",
+      "limits": [
+        "Fixture database and independent Clerk test instance only",
+        "Confirms durable header+item after browser flow; not atomic rollback/crash/retry guarantee or real payment processing"
+      ],
+      "fixtureLabel": "retail"
+    },
+    {
+      "fixtureLabel": "micro",
+      "layer": "READ_ONLY_REAL_PG_DURABLE_ORDER_CHECK_AFTER_ROOT_BROWSER_CASH_CHECKOUT_IN_NEW_CLERK_TEST_INSTANCE",
+      "observedAtUtc": "2026-10-15T20:25:48.929757+00:00",
+      "order": {
+        "order_id": "ce9f9f46-fd0c-4cf1-929b-d892fac25832",
+        "owner_matches_new_micro_fixture": true,
+        "total_amount": 150000,
+        "payment_method": "cash",
+        "status": "Pendiente",
+        "items": [
+          {
+            "product_id": "SKU_TEST_A",
+            "quantity": 10,
+            "unit_price": 15000,
+            "subtotal": 150000,
+            "fixture_product_exists": true
+          }
+        ],
+        "items_subtotal": 150000
+      },
+      "checks": {
+        "owner_matches_micro": true,
+        "header_total_150000": true,
+        "payment_cash": true,
+        "status_Pendiente": true,
+        "exactly_one_item": true,
+        "fixture_SKU_TEST_A": true,
+        "quantity_10": true,
+        "unit_price_15000": true,
+        "line_subtotal_150000": true,
+        "header_equals_items_subtotal": true,
+        "FK_product_exists": true
+      },
+      "passed": true,
+      "readOnly": true,
+      "contactOrAddressColumnsSelected": false,
+      "existingBackendAccessed": false,
+      "sqlSha256": "fc730bae079cd693ed0fe967c7f9a785613c00b1a5414870672ab86855f1336d",
+      "limits": [
+        "Fixture database and independent Clerk test instance only",
+        "Confirms durable header+item after browser flow; not atomic rollback/crash/retry guarantee or real payment processing"
+      ]
+    },
+    {
+      "fixtureLabel": "restaurant",
+      "layer": "READ_ONLY_REAL_PG_DURABLE_ORDER_CHECK_AFTER_ROOT_BROWSER_CASH_CHECKOUT_IN_NEW_CLERK_TEST_INSTANCE",
+      "observedAtUtc": "2026-10-15T20:27:12.927804+00:00",
+      "order": {
+        "order_id": "b16e153e-d63f-4463-a3d7-e6375435225e",
+        "owner_matches_new_restaurant_fixture": true,
+        "total_amount": 300000,
+        "payment_method": "cash",
+        "status": "Pendiente",
+        "items": [
+          {
+            "product_id": "SKU_TEST_A",
+            "quantity": 30,
+            "unit_price": 10000,
+            "subtotal": 300000,
+            "fixture_product_exists": true
+          }
+        ],
+        "items_subtotal": 300000
+      },
+      "checks": {
+        "owner_matches_restaurant": true,
+        "header_total_300000": true,
+        "payment_cash": true,
+        "status_Pendiente": true,
+        "exactly_one_item": true,
+        "fixture_SKU_TEST_A": true,
+        "quantity_30": true,
+        "unit_price_10000": true,
+        "line_subtotal_300000": true,
+        "header_equals_items_subtotal": true,
+        "FK_product_exists": true
+      },
+      "passed": true,
+      "readOnly": true,
+      "contactOrAddressColumnsSelected": false,
+      "existingBackendAccessed": false,
+      "sqlSha256": "0d2bdf039aa6b72d05bdd5945269fa279ee57519a8c11208fa00530719878623",
+      "limits": [
+        "Fixture database and independent Clerk test instance only",
+        "Confirms durable header+item after browser flow; not atomic rollback/crash/retry guarantee or real payment processing"
+      ]
+    }
+  ],
+  "countingNote": "3 browser cash flows with33database assertions; retail/micro intermediate artifacts overlap and must not be added again."
+}

@@ -1,0 +1,10 @@
+{
+  "src/lib/server/authorization.ts": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12",
+  "src/lib/server/database.ts": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c",
+  "middleware.ts": "a81e6e21b93fff00210bf5426681d257980185f41d5360de68ee82d345e249bf",
+  "src/actions/users.ts": "6833361086b3d251707a714355d2ec369a3f0a53ee337fdd84d89181feaad62d",
+  "src/actions/products.ts": "bbe908054e505daa160911d01d0af17dfd8ec589e8e8430b3ad520f27b150c20",
+  "src/actions/orders.ts": "47999d46a2fe09df4aea74b1a59855fe71c27c4d13b4c0faa74205371bea2f81",
+  "app/sign-in/[[...sign-in]]/page.tsx": "0da7dcfd356953b9aeefda14c7a0786b4e6cb49ce24394cd3f1eff98560c0e45",
+  "app/sign-up/[[...sign-up]]/page.tsx": "f1ca319e9c25aae58a45f163e1ee4d304c3f11be530358f1cf9427e4da2faf55"
+}

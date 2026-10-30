@@ -1,9 +1,9 @@
 import React from 'react';
 import KitsClient from './KitsClient';
-import { fetchProducts } from '@/src/actions/products';
+import { fetchAdminProducts } from '@/src/actions/products';
 
 export default async function KitsAndPromotionsPage() {
-  const products = await fetchProducts();
+  const products = await fetchAdminProducts();
   
   return (
     <KitsClient initialProducts={products} />

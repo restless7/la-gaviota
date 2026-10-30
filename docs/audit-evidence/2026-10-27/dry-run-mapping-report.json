@@ -1,0 +1,18 @@
+{
+  "total_rows_evaluated": 255,
+  "catalog_size": 255,
+  "validation_timestamp": "2026-10-27T03:30:00Z",
+  "dry_run_mode": "STRICT_READ_ONLY",
+  "database_writes_attempted": 0,
+  "database_writes_executed": 0,
+  "action_breakdown": {
+    "KEEP": 61,
+    "ASSIGN": 0,
+    "REPLACE": 0,
+    "DEFER": 194,
+    "REJECT": 0
+  },
+  "security_violations_detected": 0,
+  "anomalies_detected": [],
+  "preconditions_passed": true
+}

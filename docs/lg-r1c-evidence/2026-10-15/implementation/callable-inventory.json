@@ -1,0 +1,351 @@
+[
+  {
+    "file": "src/actions/analytics.ts",
+    "name": "getAdvancedFinancialSummary",
+    "line": 17,
+    "contract": "reports.read"
+  },
+  {
+    "file": "src/actions/analytics.ts",
+    "name": "getSalesProjectionData",
+    "line": 101,
+    "contract": "reports.read"
+  },
+  {
+    "file": "src/actions/analytics.ts",
+    "name": "getRealShrinkageMetrics",
+    "line": 141,
+    "contract": "reports.read"
+  },
+  {
+    "file": "src/actions/analytics.ts",
+    "name": "logAgriculturalShrinkage",
+    "line": 177,
+    "contract": "inventory.manage"
+  },
+  {
+    "file": "src/actions/analytics.ts",
+    "name": "fetchAllProducts",
+    "line": 194,
+    "contract": "reports.read"
+  },
+  {
+    "file": "src/actions/audit.ts",
+    "name": "fetchAuditLogs",
+    "line": 26,
+    "contract": "audit.read"
+  },
+  {
+    "file": "src/actions/b2b.ts",
+    "name": "getB2BProfile",
+    "line": 11,
+    "contract": "b2b.own"
+  },
+  {
+    "file": "src/actions/b2b.ts",
+    "name": "getBuyingTemplates",
+    "line": 24,
+    "contract": "b2b.own"
+  },
+  {
+    "file": "src/actions/b2b.ts",
+    "name": "getMonthlySpend",
+    "line": 37,
+    "contract": "b2b.own"
+  },
+  {
+    "file": "src/actions/b2b.ts",
+    "name": "getLastOrder",
+    "line": 57,
+    "contract": "b2b.own"
+  },
+  {
+    "file": "src/actions/b2b.ts",
+    "name": "getB2BOrders",
+    "line": 72,
+    "contract": "b2b.own"
+  },
+  {
+    "file": "src/actions/businessApplications.ts",
+    "name": "submitBusinessApplication",
+    "line": 8,
+    "contract": "application.own"
+  },
+  {
+    "file": "src/actions/businessApplications.ts",
+    "name": "fetchBusinessApplications",
+    "line": 54,
+    "contract": "customers.manage"
+  },
+  {
+    "file": "src/actions/businessApplications.ts",
+    "name": "approveApplication",
+    "line": 74,
+    "contract": "tiers.manage"
+  },
+  {
+    "file": "src/actions/businessApplications.ts",
+    "name": "rejectApplication",
+    "line": 133,
+    "contract": "tiers.manage"
+  },
+  {
+    "file": "src/actions/checkoutAction.ts",
+    "name": "submitCheckoutOrder",
+    "line": 12,
+    "contract": "checkout.own"
+  },
+  {
+    "file": "src/actions/customers.ts",
+    "name": "fetchCustomers",
+    "line": 29,
+    "contract": "customers.manage"
+  },
+  {
+    "file": "src/actions/customers.ts",
+    "name": "ensureCustomer",
+    "line": 49,
+    "contract": "customers.own-or-admin"
+  },
+  {
+    "file": "src/actions/customers.ts",
+    "name": "approveClientTier",
+    "line": 71,
+    "contract": "tiers.manage"
+  },
+  {
+    "file": "src/actions/dashboard.ts",
+    "name": "fetchDashboardMetrics",
+    "line": 17,
+    "contract": "reports.read"
+  },
+  {
+    "file": "src/actions/kits.ts",
+    "name": "createOrUpdateKit",
+    "line": 26,
+    "contract": "catalog.manage"
+  },
+  {
+    "file": "src/actions/kits.ts",
+    "name": "fetchKits",
+    "line": 115,
+    "contract": "catalog.manage"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "getLiveOperationalOrders",
+    "line": 38,
+    "contract": "orders.manage"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "fetchOrderById",
+    "line": 68,
+    "contract": "orders.own-or-admin"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "updateOrderStatus",
+    "line": 82,
+    "contract": "orders.manage"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "createOrder",
+    "line": 98,
+    "contract": "INTERNAL-MOVE"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "fetchOrderConsolidation",
+    "line": 153,
+    "contract": "orders.manage"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "flagOrderConflict",
+    "line": 206,
+    "contract": "orders.manage"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "cancelAndRefundOrder",
+    "line": 225,
+    "contract": "payments.manage"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "confirmCashPayment",
+    "line": 276,
+    "contract": "payments.manage"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "closeOperationalDay",
+    "line": 330,
+    "contract": "payments.manage"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "getHistoricLedgers",
+    "line": 437,
+    "contract": "reports.read"
+  },
+  {
+    "file": "src/actions/orders.ts",
+    "name": "fetchHistoricOrdersByDate",
+    "line": 450,
+    "contract": "reports.read"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "name": "fetchProducts",
+    "line": 35,
+    "contract": "catalog.public-projection"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "name": "updateProductStock",
+    "line": 104,
+    "contract": "inventory.manage"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "name": "updateProductSeasonStatus",
+    "line": 121,
+    "contract": "catalog.manage"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "name": "updateProductPricing",
+    "line": 137,
+    "contract": "pricing.manage"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "name": "updateProductPrices",
+    "line": 182,
+    "contract": "pricing.manage"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "name": "applyMacroMargins",
+    "line": 218,
+    "contract": "pricing.manage"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "name": "createProduct",
+    "line": 260,
+    "contract": "catalog.manage"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "name": "updateProduct",
+    "line": 314,
+    "contract": "catalog.manage"
+  },
+  {
+    "file": "src/actions/products.ts",
+    "name": "deleteProduct",
+    "line": 374,
+    "contract": "catalog.manage"
+  },
+  {
+    "file": "src/actions/settings.ts",
+    "name": "getInventorySettings",
+    "line": 11,
+    "contract": "public.boolean-setting"
+  },
+  {
+    "file": "src/actions/settings.ts",
+    "name": "toggleInventoryTracking",
+    "line": 25,
+    "contract": "settings.manage"
+  },
+  {
+    "file": "src/actions/suppliers.ts",
+    "name": "fetchSuppliers",
+    "line": 22,
+    "contract": "suppliers.manage"
+  },
+  {
+    "file": "src/actions/suppliers.ts",
+    "name": "createSupplier",
+    "line": 36,
+    "contract": "suppliers.manage"
+  },
+  {
+    "file": "src/actions/suppliers.ts",
+    "name": "updateSupplierStatus",
+    "line": 52,
+    "contract": "suppliers.manage"
+  },
+  {
+    "file": "src/actions/suppliers.ts",
+    "name": "updateSupplier",
+    "line": 67,
+    "contract": "suppliers.manage"
+  },
+  {
+    "file": "src/actions/systemSettings.ts",
+    "name": "fetchSystemSettings",
+    "line": 37,
+    "contract": "settings.read"
+  },
+  {
+    "file": "src/actions/systemSettings.ts",
+    "name": "updateSystemSettings",
+    "line": 76,
+    "contract": "settings.manage"
+  },
+  {
+    "file": "src/actions/users.ts",
+    "name": "fetchSystemUsers",
+    "line": 16,
+    "contract": "identity.read"
+  },
+  {
+    "file": "src/actions/users.ts",
+    "name": "updateUserRoleAndTier",
+    "line": 41,
+    "contract": "identity.manage"
+  },
+  {
+    "file": "src/actions/wompi.ts",
+    "name": "initializeWompiTransaction",
+    "line": 13,
+    "contract": "checkout.own"
+  },
+  {
+    "file": "src/actions/wompi.ts",
+    "name": "initializeWompiBalancePayment",
+    "line": 136,
+    "contract": "payment.own"
+  },
+  {
+    "file": "app/api/marketing/abandoned-cart/trigger/route.ts",
+    "name": "POST",
+    "contract": "scheduler.secret"
+  },
+  {
+    "file": "app/api/marketing/loyalty/reorder/route.ts",
+    "name": "POST",
+    "contract": "scheduler.secret"
+  },
+  {
+    "file": "app/api/marketing/abandoned-cart/sync/route.ts",
+    "name": "POST",
+    "contract": "owner.authenticated telemetry (partial proposal)"
+  },
+  {
+    "file": "app/api/marketing/lead-capture/route.ts",
+    "name": "POST",
+    "contract": "public limited lead submission (unchanged)"
+  },
+  {
+    "file": "app/api/webhooks/wompi/route.ts",
+    "name": "POST",
+    "contract": "provider signature/internal payments (unchanged; P0 deferred)"
+  }
+]

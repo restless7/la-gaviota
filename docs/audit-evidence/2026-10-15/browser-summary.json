@@ -1,0 +1,934 @@
+{
+  "method": "Fresh anonymous isolated contexts per width; all non-GET/HEAD requests and service workers blocked, no submissions, catalog-only cart state locally mutated",
+  "limitations": [
+    "Non-GET/HEAD blocked; expected blocking errors excluded",
+    "Authenticated/checkout/backend persistence NOT TESTED",
+    "Raw layout shifts variable, not canonical or field CLS",
+    "Timing is bounded unthrottled synthetic observation; not INP/p75/field acceptance",
+    "One focused mobile exploratory timeout excluded from accepted assertions",
+    "Five-width first Add: controls revealed by hover and mobile clicks forced; local state/persistence only, not natural touch discoverability."
+  ],
+  "widths": [
+    {
+      "width": 360,
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 75,
+          "top": 0,
+          "right": 360,
+          "bottom": 75,
+          "left": 0
+        },
+        "links": [
+          {
+            "text": "",
+            "href": "/",
+            "visible": true
+          },
+          {
+            "text": "Tienda General",
+            "href": "/",
+            "visible": false
+          },
+          {
+            "text": "Nuestra Granja",
+            "href": "/nosotros",
+            "visible": false
+          },
+          {
+            "text": "Nosotros",
+            "href": "/sobre-nosotros",
+            "visible": false
+          },
+          {
+            "text": "Precios Negocio",
+            "href": "/aplicar-negocio",
+            "visible": false
+          }
+        ],
+        "buttons": [
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 16,
+              "y": 17,
+              "width": 40,
+              "height": 40,
+              "top": 17,
+              "right": 56,
+              "bottom": 57,
+              "left": 16
+            }
+          },
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 244,
+              "y": 16,
+              "width": 42,
+              "height": 42,
+              "top": 16,
+              "right": 286,
+              "bottom": 58,
+              "left": 244
+            }
+          },
+          {
+            "text": "Ingresar",
+            "label": null,
+            "rect": {
+              "x": 298,
+              "y": 19,
+              "width": 88.875,
+              "height": 36,
+              "top": 19,
+              "right": 386.875,
+              "bottom": 55,
+              "left": 298
+            }
+          }
+        ]
+      },
+      "cards": 255,
+      "timing": [
+        {
+          "ttfbMs": 1233.5,
+          "dclMs": 1409.5999999642372
+        }
+      ],
+      "metrics": {
+        "lcp": [
+          {
+            "start": 1924,
+            "size": 9620
+          }
+        ],
+        "cls": [],
+        "longtasks": [
+          65,
+          61,
+          105
+        ]
+      },
+      "resources": {
+        "count": 38,
+        "transfer": 717428,
+        "encoded": 707228,
+        "scripts": 18,
+        "scriptTransfer": 504087
+      },
+      "local_add_refresh_steps": [
+        {
+          "name": "mobileMenu",
+          "links": [
+            "Tienda GeneralNuestra GranjaSobre Nosotros"
+          ],
+          "portalCount": 0,
+          "dialogCount": 0,
+          "expanded": null
+        },
+        {
+          "name": "mobileMenuEscape",
+          "stillVisible": true
+        },
+        {
+          "name": "firstAdd",
+          "elapsedMs": 216,
+          "url": "https://www.lagaviotafruver.com/",
+          "drawerVisible": true,
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "name": "refresh",
+          "url": "https://www.lagaviotafruver.com/",
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 75,
+          "top": 0,
+          "right": 390,
+          "bottom": 75,
+          "left": 0
+        },
+        "links": [
+          {
+            "text": "",
+            "href": "/",
+            "visible": true
+          },
+          {
+            "text": "Tienda General",
+            "href": "/",
+            "visible": false
+          },
+          {
+            "text": "Nuestra Granja",
+            "href": "/nosotros",
+            "visible": false
+          },
+          {
+            "text": "Nosotros",
+            "href": "/sobre-nosotros",
+            "visible": false
+          },
+          {
+            "text": "Precios Negocio",
+            "href": "/aplicar-negocio",
+            "visible": false
+          }
+        ],
+        "buttons": [
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 16,
+              "y": 17,
+              "width": 40,
+              "height": 40,
+              "top": 17,
+              "right": 56,
+              "bottom": 57,
+              "left": 16
+            }
+          },
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 244,
+              "y": 16,
+              "width": 42,
+              "height": 42,
+              "top": 16,
+              "right": 286,
+              "bottom": 58,
+              "left": 244
+            }
+          },
+          {
+            "text": "Ingresar",
+            "label": null,
+            "rect": {
+              "x": 298,
+              "y": 19,
+              "width": 88.875,
+              "height": 36,
+              "top": 19,
+              "right": 386.875,
+              "bottom": 55,
+              "left": 298
+            }
+          }
+        ]
+      },
+      "cards": 255,
+      "timing": [
+        {
+          "ttfbMs": 918.3999999761581,
+          "dclMs": 1209.5
+        }
+      ],
+      "metrics": {
+        "lcp": [
+          {
+            "start": 1220,
+            "size": 20034
+          }
+        ],
+        "cls": [
+          0.002114897119341564
+        ],
+        "longtasks": [
+          59,
+          127
+        ]
+      },
+      "resources": {
+        "count": 38,
+        "transfer": 717428,
+        "encoded": 707228,
+        "scripts": 18,
+        "scriptTransfer": 504087
+      },
+      "local_add_refresh_steps": [
+        {
+          "name": "mobileMenu",
+          "links": [
+            "Tienda GeneralNuestra GranjaSobre Nosotros"
+          ],
+          "portalCount": 0,
+          "dialogCount": 0,
+          "expanded": null
+        },
+        {
+          "name": "mobileMenuEscape",
+          "stillVisible": true
+        },
+        {
+          "name": "firstAdd",
+          "elapsedMs": 254,
+          "url": "https://www.lagaviotafruver.com/",
+          "drawerVisible": true,
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "name": "refresh",
+          "url": "https://www.lagaviotafruver.com/",
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 149,
+          "top": 0,
+          "right": 768,
+          "bottom": 149,
+          "left": 0
+        },
+        "links": [
+          {
+            "text": "",
+            "href": "/",
+            "visible": true
+          },
+          {
+            "text": "Tienda General",
+            "href": "/",
+            "visible": true
+          },
+          {
+            "text": "Nuestra Granja",
+            "href": "/nosotros",
+            "visible": true
+          },
+          {
+            "text": "Nosotros",
+            "href": "/sobre-nosotros",
+            "visible": true
+          },
+          {
+            "text": "Precios Negocio",
+            "href": "/aplicar-negocio",
+            "visible": true
+          }
+        ],
+        "buttons": [
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 898.140625,
+              "y": 53,
+              "width": 42,
+              "height": 42,
+              "top": 53,
+              "right": 940.140625,
+              "bottom": 95,
+              "left": 898.140625
+            }
+          },
+          {
+            "text": "Ingresar",
+            "label": null,
+            "rect": {
+              "x": 952.140625,
+              "y": 56,
+              "width": 88.875,
+              "height": 36,
+              "top": 56,
+              "right": 1041.015625,
+              "bottom": 92,
+              "left": 952.140625
+            }
+          }
+        ]
+      },
+      "cards": 255,
+      "timing": [
+        {
+          "ttfbMs": 856.5,
+          "dclMs": 1129.699999988079
+        }
+      ],
+      "metrics": {
+        "lcp": [
+          {
+            "start": 1148,
+            "size": 20034
+          },
+          {
+            "start": 1276,
+            "size": 20736
+          }
+        ],
+        "cls": [
+          0.5477777777777778,
+          0.3412572016460905
+        ],
+        "longtasks": [
+          75,
+          53,
+          84
+        ]
+      },
+      "resources": {
+        "count": 52,
+        "transfer": 826547,
+        "encoded": 812447,
+        "scripts": 19,
+        "scriptTransfer": 510190
+      },
+      "local_add_refresh_steps": [
+        {
+          "name": "firstAdd",
+          "elapsedMs": 243,
+          "url": "https://www.lagaviotafruver.com/",
+          "drawerVisible": true,
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "name": "refresh",
+          "url": "https://www.lagaviotafruver.com/",
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1024,
+          "height": 149,
+          "top": 0,
+          "right": 1024,
+          "bottom": 149,
+          "left": 0
+        },
+        "links": [
+          {
+            "text": "",
+            "href": "/",
+            "visible": true
+          },
+          {
+            "text": "Tienda General",
+            "href": "/",
+            "visible": true
+          },
+          {
+            "text": "Nuestra Granja",
+            "href": "/nosotros",
+            "visible": true
+          },
+          {
+            "text": "Nosotros",
+            "href": "/sobre-nosotros",
+            "visible": true
+          },
+          {
+            "text": "Precios Negocio",
+            "href": "/aplicar-negocio",
+            "visible": true
+          }
+        ],
+        "buttons": [
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 906.140625,
+              "y": 53,
+              "width": 42,
+              "height": 42,
+              "top": 53,
+              "right": 948.140625,
+              "bottom": 95,
+              "left": 906.140625
+            }
+          },
+          {
+            "text": "Ingresar",
+            "label": null,
+            "rect": {
+              "x": 960.140625,
+              "y": 56,
+              "width": 88.875,
+              "height": 36,
+              "top": 56,
+              "right": 1049.015625,
+              "bottom": 92,
+              "left": 960.140625
+            }
+          }
+        ]
+      },
+      "cards": 255,
+      "timing": [
+        {
+          "ttfbMs": 1054.5,
+          "dclMs": 1279.2999999523163
+        }
+      ],
+      "metrics": {
+        "lcp": [
+          {
+            "start": 1320,
+            "size": 18190
+          },
+          {
+            "start": 1440,
+            "size": 20736
+          }
+        ],
+        "cls": [
+          0.5477777777777778,
+          0.19385396321614584,
+          0.0035825290944841172
+        ],
+        "longtasks": [
+          60,
+          76
+        ]
+      },
+      "resources": {
+        "count": 64,
+        "transfer": 933813,
+        "encoded": 917313,
+        "scripts": 19,
+        "scriptTransfer": 510190
+      },
+      "local_add_refresh_steps": [
+        {
+          "name": "firstAdd",
+          "elapsedMs": 255,
+          "url": "https://www.lagaviotafruver.com/",
+          "drawerVisible": true,
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "name": "refresh",
+          "url": "https://www.lagaviotafruver.com/",
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 149,
+          "top": 0,
+          "right": 1440,
+          "bottom": 149,
+          "left": 0
+        },
+        "links": [
+          {
+            "text": "",
+            "href": "/",
+            "visible": true
+          },
+          {
+            "text": "Tienda General",
+            "href": "/",
+            "visible": true
+          },
+          {
+            "text": "Nuestra Granja",
+            "href": "/nosotros",
+            "visible": true
+          },
+          {
+            "text": "Nosotros",
+            "href": "/sobre-nosotros",
+            "visible": true
+          },
+          {
+            "text": "Precios Negocio",
+            "href": "/aplicar-negocio",
+            "visible": true
+          }
+        ],
+        "buttons": [
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          {
+            "text": "",
+            "label": null,
+            "rect": {
+              "x": 1185.125,
+              "y": 53,
+              "width": 42,
+              "height": 42,
+              "top": 53,
+              "right": 1227.125,
+              "bottom": 95,
+              "left": 1185.125
+            }
+          },
+          {
+            "text": "Ingresar",
+            "label": null,
+            "rect": {
+              "x": 1239.125,
+              "y": 56,
+              "width": 88.875,
+              "height": 36,
+              "top": 56,
+              "right": 1328,
+              "bottom": 92,
+              "left": 1239.125
+            }
+          }
+        ]
+      },
+      "cards": 255,
+      "timing": [
+        {
+          "ttfbMs": 1065.699999988079,
+          "dclMs": 1367.8999999761581
+        }
+      ],
+      "metrics": {
+        "lcp": [
+          {
+            "start": 1392,
+            "size": 20736
+          },
+          {
+            "start": 1916,
+            "size": 25888
+          },
+          {
+            "start": 1928,
+            "size": 25953
+          }
+        ],
+        "cls": [
+          0.5477777777777778,
+          0.16061712962962962,
+          0.0018212592230902778
+        ],
+        "longtasks": [
+          90,
+          52,
+          89
+        ]
+      },
+      "resources": {
+        "count": 67,
+        "transfer": 977917,
+        "encoded": 960517,
+        "scripts": 19,
+        "scriptTransfer": 510190
+      },
+      "local_add_refresh_steps": [
+        {
+          "name": "firstAdd",
+          "elapsedMs": 1158,
+          "url": "https://www.lagaviotafruver.com/",
+          "drawerVisible": true,
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "name": "refresh",
+          "url": "https://www.lagaviotafruver.com/",
+          "items": [
+            {
+              "id": "prd_0051",
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "axe_version": "4.11.1",
+  "axe": [
+    {
+      "path": "/",
+      "width": 390,
+      "violating_rules": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "node_observations": 2
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "node_observations": 262
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "node_observations": 3
+        }
+      ]
+    },
+    {
+      "path": "/",
+      "width": 1440,
+      "violating_rules": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "node_observations": 1
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "node_observations": 172
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "node_observations": 3
+        }
+      ]
+    },
+    {
+      "path": "/contacto",
+      "width": 390,
+      "violating_rules": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "node_observations": 2
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "node_observations": 13
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "node_observations": 3
+        },
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "node_observations": 1
+        }
+      ]
+    },
+    {
+      "path": "/sobre-nosotros",
+      "width": 1440,
+      "violating_rules": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "node_observations": 1
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "node_observations": 8
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "node_observations": 3
+        }
+      ]
+    }
+  ],
+  "public_routes": [
+    {
+      "requested_path": "/",
+      "final_origin": "www.lagaviotafruver.com",
+      "final_path": "/",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    },
+    {
+      "requested_path": "/nosotros",
+      "final_origin": "discrete-orca-86.accounts.dev",
+      "final_path": "/sign-in",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    },
+    {
+      "requested_path": "/sobre-nosotros",
+      "final_origin": "www.lagaviotafruver.com",
+      "final_path": "/sobre-nosotros",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    },
+    {
+      "requested_path": "/sign-in",
+      "final_origin": "www.lagaviotafruver.com",
+      "final_path": "/sign-in",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    },
+    {
+      "requested_path": "/retail",
+      "final_origin": "discrete-orca-86.accounts.dev",
+      "final_path": "/sign-in",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    },
+    {
+      "requested_path": "/cart",
+      "final_origin": "discrete-orca-86.accounts.dev",
+      "final_path": "/sign-in",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    },
+    {
+      "requested_path": "/checkout",
+      "final_origin": "discrete-orca-86.accounts.dev",
+      "final_path": "/sign-in",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    },
+    {
+      "requested_path": "/privacidad",
+      "final_origin": "discrete-orca-86.accounts.dev",
+      "final_path": "/sign-in",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    },
+    {
+      "requested_path": "/terminos",
+      "final_origin": "discrete-orca-86.accounts.dev",
+      "final_path": "/sign-in",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    },
+    {
+      "requested_path": "/pqrs",
+      "final_origin": "discrete-orca-86.accounts.dev",
+      "final_path": "/sign-in",
+      "status": 200,
+      "route_evidence_ephemeral": "browser-public.json"
+    }
+  ],
+  "production_sha": "UNVERIFIED",
+  "routing_followup": {
+    "category_paths": [
+      "/categoria/frutas",
+      "/categoria/verduras"
+    ],
+    "category_final": "/ unfiltered; direct uppercase /?category=... works",
+    "crawler_paths": [
+      "/robots.txt",
+      "/sitemap.xml"
+    ],
+    "crawler_final": "hosted Clerk development sign-in; final200 HTML, not crawler document",
+    "keyboard_followup": "Focused Add activeElement but parent opacity0; separate1440run zero layout shifts over2.4s"
+  }
+}

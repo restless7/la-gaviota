@@ -1,0 +1,59 @@
+{
+  "availability": {
+    "PUBLIC_200_DECODABLE": 65,
+    "NO_REFERENCE": 190
+  },
+  "category_images": {
+    "AROMÁTICAS Y HIERBAS X 125 GR": {
+      "total": 11,
+      "images": 1
+    },
+    "CARNES X 500 GRAMOS": {
+      "total": 46,
+      "images": 1
+    },
+    "CONDIMENTOS X 125 GR": {
+      "total": 11,
+      "images": 4
+    },
+    "FRUTAS": {
+      "total": 50,
+      "images": 24
+    },
+    "FRUTOS SECOS Y ESPECIAS": {
+      "total": 14,
+      "images": 4
+    },
+    "KITS NEGOCIOS": {
+      "total": 8,
+      "images": 0
+    },
+    "PULPAS": {
+      "total": 10,
+      "images": 1
+    },
+    "VARIOS": {
+      "total": 24,
+      "images": 6
+    },
+    "VERDURAS Y HORTALIZAS": {
+      "total": 81,
+      "images": 24
+    }
+  },
+  "bytes_available": 152619279,
+  "exact_hash_match_count": 32,
+  "formats": {
+    "PNG": 31,
+    "JPEG": 30,
+    "WEBP": 4
+  },
+  "largest_image_bytes": 7636738,
+  "over_2mib": 20,
+  "duplicate_hashes": [
+    [
+      "prd_0015",
+      "prd_0134"
+    ]
+  ]
+}

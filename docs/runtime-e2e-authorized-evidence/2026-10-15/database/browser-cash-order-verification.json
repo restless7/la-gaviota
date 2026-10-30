@@ -1,0 +1,43 @@
+{
+  "layer": "READ_ONLY_REAL_PG_DURABLE_ORDER_CHECK_AFTER_ROOT_BROWSER_CASH_CHECKOUT_IN_NEW_CLERK_TEST_INSTANCE",
+  "observedAtUtc": "2026-10-15T20:21:41.867587+00:00",
+  "order": {
+    "order_id": "0a314258-f323-4b20-ace7-1f920d038c50",
+    "owner_matches_new_retail_fixture": true,
+    "total_amount": 60000,
+    "payment_method": "cash",
+    "status": "Pendiente",
+    "items": [
+      {
+        "product_id": "SKU_TEST_A",
+        "quantity": 3,
+        "unit_price": 20000,
+        "subtotal": 60000,
+        "fixture_product_exists": true
+      }
+    ],
+    "items_subtotal": 60000
+  },
+  "checks": {
+    "owner_matches_retail": true,
+    "header_total_60000": true,
+    "payment_cash": true,
+    "status_Pendiente": true,
+    "exactly_one_item": true,
+    "fixture_SKU_TEST_A": true,
+    "quantity_3": true,
+    "unit_price_20000": true,
+    "line_subtotal_60000": true,
+    "header_equals_items_subtotal": true,
+    "FK_product_exists": true
+  },
+  "passed": true,
+  "readOnly": true,
+  "contactOrAddressColumnsSelected": false,
+  "existingBackendAccessed": false,
+  "sqlSha256": "4645ad0623e3001d50b8a2b4b1989733401a492ff4ba41046479e814b47afd20",
+  "limits": [
+    "Fixture database and independent Clerk test instance only",
+    "Confirms durable header+item after browser flow; not atomic rollback/crash/retry guarantee or real payment processing"
+  ]
+}

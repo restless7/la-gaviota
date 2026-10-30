@@ -1,0 +1,339 @@
+{
+  "scope": "CURRENT_WORKTREE_SOURCE_VM_WITH_FICTIONAL_STATEFUL_DB_AND_FAULTS",
+  "notProven": [
+    "HTTP dispatch",
+    "Clerk verification",
+    "Supabase/PostgREST/RLS",
+    "Wompi sandbox",
+    "real PostgreSQL semantics",
+    "process kill/durable crash recovery"
+  ],
+  "loadedSources": {
+    "src/lib/wompi.ts": "ee58cfed2c3890d18bfe7f751dc2b84e982af646a8a53ce6ca8970392fef0c76",
+    "src/lib/checkoutValidation.ts": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+    "app/api/webhooks/wompi/route.ts": "6196efce9b86f25289646ed90dcb5c3f4836449d9d3deca79370095dac619ba7",
+    "src/lib/server/orderWriter.ts": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187"
+  },
+  "sourceStable": true,
+  "forbiddenDependencies": 0,
+  "networkClientsLoaded": 0,
+  "diagnosticCases": 16,
+  "safetyPassModel": 5,
+  "safetyFail": 11,
+  "results": [
+    {
+      "id": "PAY-01-valid-approved-happy-path",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "status": "Pendiente",
+        "notifications": 1,
+        "settingsReads": 1,
+        "stock": 8
+      }
+    },
+    {
+      "id": "PAY-02-pending-no-financial-writes",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "operations": 0
+      }
+    },
+    {
+      "id": "PAY-03-invalid-signature-no-db",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "response": {
+          "status": 401,
+          "body": {
+            "error": "Unauthorized"
+          }
+        },
+        "operations": 0
+      }
+    },
+    {
+      "id": "PAY-04-reference-substitution-other-owner",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "signedOriginalReference": "order-a",
+        "acceptedReference": "order-b",
+        "acceptedOwner": "user_owner_b",
+        "orders": [
+          {
+            "id": "order-a",
+            "status": "Pago Pendiente",
+            "clerk_user_id": "user_owner_a"
+          },
+          {
+            "id": "order-b",
+            "status": "Pendiente",
+            "clerk_user_id": "user_owner_b"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PAY-05-sequential-callback-replay",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "responses": [
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          },
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          }
+        ],
+        "orderUpdates": 1,
+        "notifications": 1,
+        "settingsReads": 1
+      }
+    },
+    {
+      "id": "PAY-06-concurrent-identical-callbacks",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "responses": [
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          },
+          {
+            "status": 200,
+            "body": {
+              "received": true
+            }
+          }
+        ],
+        "orderUpdates": 2,
+        "notifications": 2,
+        "settingsReads": 2,
+        "stock": 8
+      }
+    },
+    {
+      "id": "PAY-07-fault-after-status-retry-skips-recovery",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "first": {
+          "status": 500,
+          "body": {
+            "error": "Webhook processing failed"
+          }
+        },
+        "second": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "status": "Pendiente",
+        "stock": 10,
+        "notifications": 1,
+        "settingsReads": 1,
+        "fault": "dependency error after durable status; not process crash"
+      }
+    },
+    {
+      "id": "PAY-08-stock-write-failure-acknowledged-and-not-recovered",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "first": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "second": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "stock": 10,
+        "attemptedStockUpdates": 1
+      }
+    },
+    {
+      "id": "PAY-09-BAL-truncated-subject-ambiguous-acknowledged",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "lookup": {
+          "table": "b2b_credit_profiles",
+          "verb": "select",
+          "filters": [
+            [
+              "ilike",
+              "user_id",
+              "user%"
+            ]
+          ],
+          "payload": null
+        },
+        "balances": [
+          {
+            "user_id": "user_owner_a",
+            "credit_balance": 100000
+          },
+          {
+            "user_id": "user_owner_b",
+            "credit_balance": 100000
+          }
+        ]
+      }
+    },
+    {
+      "id": "PAY-10-BAL-prefix-can-update-unrelated-single-profile",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "acceptedProfile": {
+          "user_id": "user_unrelated",
+          "credit_balance": 85000,
+          "updated_at": "2026-10-15T18:58:35.615Z"
+        },
+        "lookup": {
+          "table": "b2b_credit_profiles",
+          "verb": "select",
+          "filters": [
+            [
+              "ilike",
+              "user_id",
+              "user%"
+            ]
+          ],
+          "payload": null
+        }
+      }
+    },
+    {
+      "id": "PAY-11-BAL-identical-event-replay-double-credit",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "balance": 70000,
+        "duplicateIdenticalTransaction": true,
+        "creditUpdates": 2
+      }
+    },
+    {
+      "id": "PAY-12-unsigned-environment-mismatch-not-rejected",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "response": {
+          "status": 200,
+          "body": {
+            "received": true
+          }
+        },
+        "expectedFixtureEnvironment": "test",
+        "submittedEnvironment": "prod",
+        "status": "Pendiente"
+      }
+    },
+    {
+      "id": "PAY-13-writer-items-failure-persists-header",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "orders": 1,
+        "items": 0,
+        "operationSequence": [
+          {
+            "table": "orders",
+            "verb": "insert"
+          },
+          {
+            "table": "order_items",
+            "verb": "insert"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PAY-14-writer-failed-client-retry-duplicates-orphan-headers",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "orders": 2,
+        "items": 0
+      }
+    },
+    {
+      "id": "PAY-15-writer-concurrent-identical-submit-two-orders",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "FAIL",
+      "evidence": {
+        "responses": [
+          {
+            "success": true,
+            "orderId": "created-1"
+          },
+          {
+            "success": true,
+            "orderId": "created-2"
+          }
+        ],
+        "orders": 2,
+        "items": 2
+      }
+    },
+    {
+      "id": "PAY-16-writer-header-failure-no-items",
+      "diagnostic": "OBSERVATION_CONFIRMED",
+      "safety": "PASS_MODEL",
+      "evidence": {
+        "orders": 0,
+        "items": 0
+      }
+    }
+  ]
+}

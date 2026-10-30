@@ -1,0 +1,52 @@
+{
+  "typecheck": {
+    "exit_code": 0,
+    "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false --pretty false",
+    "output_bytes": 0
+  },
+  "eslint": {
+    "global_capture": {
+      "files": 175,
+      "errors": 178,
+      "warnings": 115
+    },
+    "app_src": {
+      "files": 135,
+      "errors": 64,
+      "warnings": 45
+    },
+    "other_config_scripts_tests": {
+      "files": 23,
+      "errors": 19,
+      "warnings": 7
+    },
+    "historical_evidence": {
+      "files": 17,
+      "errors": 95,
+      "warnings": 63
+    }
+  },
+  "eslint_exit_code": 1,
+  "eslint_capture": "before publishing current phase harnesses; no fresh final global run asserted",
+  "audits": {
+    "audit-all.json": {
+      "info": 0,
+      "low": 0,
+      "moderate": 3,
+      "high": 9,
+      "critical": 0,
+      "total": 12
+    },
+    "audit-production.json": {
+      "info": 0,
+      "low": 0,
+      "moderate": 3,
+      "high": 4,
+      "critical": 0,
+      "total": 7
+    }
+  },
+  "audit_install_or_upgrade": false,
+  "new_build_in_this_phase": false,
+  "previous_build": "PASS 42 static pages; carried forward with unchanged source; not E2E certificate"
+}

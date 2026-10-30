@@ -1,0 +1,86 @@
+{
+  "layer": "ACTUAL_LOCAL_NEXT_UI_REAL_NEW_CLERK_SESSION_LOCAL_POSTGREST_POSTGRES_SYNTHETIC_DATA",
+  "journeys": 3,
+  "flows": [
+    {
+      "cases": [
+        {
+          "name": "realSDK_ticketRetailSession",
+          "status": "PASS",
+          "path": "/retail"
+        },
+        {
+          "name": "realUI_catalogQuantity3_noAutoDrawer",
+          "status": "PASS",
+          "sku": "SKU_TEST_A",
+          "unitPrice": 20000,
+          "quantity": 3
+        },
+        {
+          "name": "realUI_cashCheckoutConfirmation",
+          "status": "PASS",
+          "orderId": "0a314258-f323-4b20-ace7-1f920d038c50",
+          "total": 60000,
+          "paymentMethod": "cash",
+          "scope": "ISOLATED_PG_FIXTURE_ONLY"
+        }
+      ],
+      "orderId": "0a314258-f323-4b20-ace7-1f920d038c50",
+      "browserClosed": true
+    },
+    {
+      "cases": [
+        {
+          "name": "realUI_B2B_catalogQuantity_noAutoDrawer_micro",
+          "status": "PASS",
+          "sku": "SKU_TEST_A",
+          "unitPrice": 15000,
+          "quantity": 10
+        },
+        {
+          "name": "realUI_B2B_cashCheckoutConfirmation_micro",
+          "status": "PASS",
+          "orderId": "ce9f9f46-fd0c-4cf1-929b-d892fac25832",
+          "total": 150000,
+          "quantity": 10,
+          "unitPrice": 15000,
+          "ownerId": "user_3KkIIEFAZ1V64yAkMlqyaO7mDus",
+          "paymentMethod": "cash",
+          "scope": "ISOLATED_PG_FIXTURE_ONLY"
+        }
+      ],
+      "orderId": "ce9f9f46-fd0c-4cf1-929b-d892fac25832",
+      "browserClosed": true
+    },
+    {
+      "cases": [
+        {
+          "name": "realUI_B2B_catalogQuantity_noAutoDrawer_restaurant",
+          "status": "PASS",
+          "sku": "SKU_TEST_A",
+          "unitPrice": 10000,
+          "quantity": 30
+        },
+        {
+          "name": "realUI_B2B_cashCheckoutConfirmation_restaurant",
+          "status": "PASS",
+          "orderId": "b16e153e-d63f-4463-a3d7-e6375435225e",
+          "total": 300000,
+          "quantity": 30,
+          "unitPrice": 10000,
+          "ownerId": "user_3KkIIZvviHQEnQQTeNOHnjWqdYU",
+          "paymentMethod": "cash",
+          "scope": "ISOLATED_PG_FIXTURE_ONLY"
+        }
+      ],
+      "orderId": "b16e153e-d63f-4463-a3d7-e6375435225e",
+      "browserClosed": true
+    }
+  ],
+  "databaseOracle": "../database/browser-cash-orders-verification.json;3flows33assertions shared oracle, intermediate overlapping reports not additive",
+  "limits": [
+    "Cash only. No external payments or Wompi certification.",
+    "Does not resolve demonstrated financial atomicity/idempotency/kit/stock defects.",
+    "Not production parity or release authorization."
+  ]
+}

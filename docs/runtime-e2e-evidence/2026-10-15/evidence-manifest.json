@@ -1,0 +1,254 @@
+{
+  "date": "2026-10-15",
+  "phase": "LG-RUNTIME-E2E",
+  "baseline": "current implemented worktree; historical HEAD 49add73ae90b837c36553a0f2b535267c9610143 alone does not identify implementation",
+  "outcome": "Financial FAIL; authenticated/provider E2E BLOCKED; commercial NO-GO",
+  "self_hash_excluded": true,
+  "files": {
+    "auth/NOTES.md": {
+      "bytes": 1284,
+      "sha256": "9bb63b1c3b09bc69aeaa82498bc1f8dc7d14cf38d437ce2cc4544be0459d1219"
+    },
+    "auth/anonymous-browser-results.json": {
+      "bytes": 2118,
+      "sha256": "02feedcec362e073ba5470b6f3a8809ba4e36ef28d6a7d82783cc620d2f1c2a5"
+    },
+    "auth/anonymous-http-initial-protocol-diagnostic.json": {
+      "bytes": 3323,
+      "sha256": "3480f313dd70a0176d6e25a82549a5669b9305a847d6739d7bdd0e8dea38b6c7"
+    },
+    "auth/anonymous-page-get-results.json": {
+      "bytes": 3537,
+      "sha256": "7701bf4069410845a3d87950e842039bdede82138cd62b996e8ad103b64d50d2"
+    },
+    "auth/auth-track-summary.json": {
+      "bytes": 6204,
+      "sha256": "b8ebe2c06272d2536297ed3e8e17b068791147e437f78d190619e5b2a6e36016"
+    },
+    "auth/current-source-hashes.json": {
+      "bytes": 799,
+      "sha256": "9d5080f04ce422b30f9a57b32aa88d5f42af0a8f52748a97db4663a0eeeee254"
+    },
+    "auth/independent-context-results.json": {
+      "bytes": 2421,
+      "sha256": "afb302c5df6d76d54249933e3867838e12d1a3aaa28c63bc8c393de5174199c2"
+    },
+    "auth/independent-extra-results.json": {
+      "bytes": 1364,
+      "sha256": "b5327488573ae124f668a5ac8d27781ae424748b2cfe5324cdd20193765d7784"
+    },
+    "auth/manifest.json": {
+      "bytes": 1615,
+      "sha256": "54fcf94782b47ecbaf6ba1c62117a4eebcb883f5faec76d74f580aea5b1db1b2"
+    },
+    "auth/reproduce-auth-context.cjs": {
+      "bytes": 15544,
+      "sha256": "2e00935d872b2b14123b822127fd4346a653a3654c1dd52114c5c43b0fbec0f5"
+    },
+    "auth/reproduce-auth-edges.cjs": {
+      "bytes": 15425,
+      "sha256": "d75151233bf1410ede5b22266f32ea82084751d1b0eea90e49505c935aec0881"
+    },
+    "payments/PAYMENT_RUNTIME_EVIDENCE_ES.md": {
+      "bytes": 8146,
+      "sha256": "a4829be00b7a269b6f5d623421e2280cd754de36bc6a86d48ebbf8a462cd0b01"
+    },
+    "payments/checkout-current.tap": {
+      "bytes": 3817,
+      "sha256": "c8b5c08ad2a85ce7e5f854e5efe630cb1c9a0949b9f3f30fc16357e8ec776365"
+    },
+    "payments/execution-provenance.json": {
+      "bytes": 1164,
+      "sha256": "d785c43a547f2eec3fb1887271e53486837797524590275a23d3076cbcaee184"
+    },
+    "payments/manifest.json": {
+      "bytes": 1400,
+      "sha256": "659002fffbe35f28e8cce5a09a7fa231f46764c26bf5bd77bd991792472602d4"
+    },
+    "payments/official-docs-summary.json": {
+      "bytes": 1540,
+      "sha256": "fbdaceaf7534860feab4d4e8e00ce9891e79e6d52432699ff529ea5e7055fc95"
+    },
+    "payments/payment-model-results.json": {
+      "bytes": 8224,
+      "sha256": "bcf61992abcfb6ab2ca03aee97acb130182f34acbed88298e3757ef239a437c6"
+    },
+    "payments/private-pg/cleanup.json": {
+      "bytes": 156,
+      "sha256": "edaf2051b54951ea17ed5126f7edb088e56e27a3d7c21b7f669a33e15bd92105"
+    },
+    "payments/private-pg/cluster-settings.json": {
+      "bytes": 279,
+      "sha256": "bed56d991e3c176fcc1a0ddc377de87a388d6988a38bba816fba7ce8a9222c13"
+    },
+    "payments/private-pg/fixture.sql": {
+      "bytes": 1043,
+      "sha256": "0e4301fe821947c0abcc854ce2fda433ddf00061e36e6677c2134f94b1960109"
+    },
+    "payments/private-pg/results.json": {
+      "bytes": 6046,
+      "sha256": "4df722aed44196eda84b50fe09b217a808206cee7a0c0fb21b3ce50988b5c9e6"
+    },
+    "payments/run-current-payment-models.cjs": {
+      "bytes": 14900,
+      "sha256": "d74ec26d948e57630b17c5f6a7218a65db69abde794ca624b613c748bf317aba"
+    },
+    "payments/run-current-writer-pg.cjs": {
+      "bytes": 4856,
+      "sha256": "fdc20d1056b4130f8c09fbe7d3bc15264a34e82c8054e26914c87592d9c70f9f"
+    },
+    "payments/run-writer-pg.py": {
+      "bytes": 5833,
+      "sha256": "c5a132c94ecd6fd0f8712a86de2faeccf45561a228c48364deaf90b44b0eedbe"
+    },
+    "payments/source-preflight.json": {
+      "bytes": 1105,
+      "sha256": "7be08ad20a2b09a984bbe9cdb3515197dc1b1f3cb33369ed66a2c86c3af0609d"
+    },
+    "preflight/audit-all.json": {
+      "bytes": 9021,
+      "sha256": "2227e98df1070a0d15988dc62400753c64dbe2fe745afd6a36ed3f98a314eb21"
+    },
+    "preflight/audit-production.json": {
+      "bytes": 6364,
+      "sha256": "5071d5f28783c4e969621e64e8b8353ba46fb385817da9dd297d5a868d05e472"
+    },
+    "preflight/baseline-source-manifest.json": {
+      "bytes": 21975,
+      "sha256": "81efdcf135e09fe1df4c2a8ea30aa5424f41d43f95fa5e71bf542a9b954fe498"
+    },
+    "preflight/child-manifest-verification.json": {
+      "bytes": 515,
+      "sha256": "b435c8565ea5f4cf6d646b53719a7232aff4977d3e2d98d00970e9cca242dd00"
+    },
+    "preflight/credential-scan.json": {
+      "bytes": 447,
+      "sha256": "f18e932d2d7c05caadc7a4faf8cb3a38b5db3775af08db71d3ca75beb5193509"
+    },
+    "preflight/execution-provenance.json": {
+      "bytes": 836,
+      "sha256": "77576d52f6ce10d261ad8e9c7d8cedf7cb0c49da5d64c0500856cd6f0cafefb9"
+    },
+    "preflight/graphify-hook.json": {
+      "bytes": 2152,
+      "sha256": "d92a1eb59d8ee8384d62cea887abbe559a26ef6b7481dd7099f01ea874ff43af"
+    },
+    "preflight/guard-media-results.json": {
+      "bytes": 12155,
+      "sha256": "f4442737b52a42d4eee24688e7b474876c2cf4d36d086e7c4cca1d68c4a9da60"
+    },
+    "preflight/lint-diagnostics.json": {
+      "bytes": 86470,
+      "sha256": "e03fe4fd333979df65e4fedf02918f87cac70ea8089011ac8f9405395770c022"
+    },
+    "preflight/payment-root-replay.json": {
+      "bytes": 8224,
+      "sha256": "f4fc84fded03b2b7877bac99b985ca31d934b8a8f3c9ff7b959d3ea76c37d0b4"
+    },
+    "preflight/quality-summary.json": {
+      "bytes": 1170,
+      "sha256": "ebe6a9f3d0480e54934cabc140f3a632c5bf7c78a0267a5e0f73a1c389f9b133"
+    },
+    "preflight/root-replays.json": {
+      "bytes": 832,
+      "sha256": "8b15cd467fc038f76dfbdd7c8f40f07d0b381c3842444712406712ede1a034cf"
+    },
+    "preflight/source-preservation.json": {
+      "bytes": 342,
+      "sha256": "9d7ba85ab54878291796d672c61d5bf952e5b837e72958f466b5d1f403793762"
+    },
+    "preflight/vercel-env-presence.json": {
+      "bytes": 446,
+      "sha256": "f46d9872f4cf24ce7775cad36ce833dacf4c77e5d16a6c9f1c5c73630a04a88c"
+    },
+    "root-verification.json": {
+      "bytes": 2458,
+      "sha256": "491dc76070e64e9557af442721c72bd38f80bf3ae9d8236d7ae164b9fa6c937e"
+    },
+    "security/SECURITY_GATE.md": {
+      "bytes": 9208,
+      "sha256": "54c8be7688f233432cab90d27ff8b74e594ed6d89d4e5da86f7a13f9887e284d"
+    },
+    "security/current-client-source-inventory.json": {
+      "bytes": 6279,
+      "sha256": "787bfc0332332e2ba4171e89e21350855adf97fb4d7afc2c2cd5bc7722a374c4"
+    },
+    "security/guard-media-model.cjs": {
+      "bytes": 13624,
+      "sha256": "38fcea6d0496af461302a2b206e8a5c946adc8475346230f2ce5e65b500337d0"
+    },
+    "security/guard-media-results.json": {
+      "bytes": 12155,
+      "sha256": "f4442737b52a42d4eee24688e7b474876c2cf4d36d086e7c4cca1d68c4a9da60"
+    },
+    "security/manifest.json": {
+      "bytes": 1580,
+      "sha256": "a53a10668de52e6f01083d568c6a3cd1a47155b60a14e5dbd398f0810fdd3fc9"
+    },
+    "security/metadata-attestation.sql.txt": {
+      "bytes": 5560,
+      "sha256": "8ebabe07d92ff9612d32547c411ee044679c6bbda02c609ffb0f037edb3b1dfd"
+    },
+    "security/replay-owned-cluster.py": {
+      "bytes": 2114,
+      "sha256": "2c54e7c6406cf7decd83b0c18893defcb896e50735c8e7ffaaa6a8201621a71b"
+    },
+    "security/security-summary.json": {
+      "bytes": 979,
+      "sha256": "1b33912306abbd4a62656cc9111a296a88037d8f01958abff8cd6231e41eb4ce"
+    },
+    "security/sql-cleanup.json": {
+      "bytes": 296,
+      "sha256": "5a4e3e29e901d647b1feab0d09ffaa8e4e233cd1ed17b76176219ebfb5dfced6"
+    },
+    "security/sql-model/fixture.sql": {
+      "bytes": 22099,
+      "sha256": "018c98ae260d2ce4be0eeed798811c0ef3ca27f1f93895cd4e34d55f836528c9"
+    },
+    "security/sql-model/proposal-reference.txt": {
+      "bytes": 238,
+      "sha256": "ffa6efecc93dcfbbf07416373373e73db69db687f18b963a77043947f2765b40"
+    },
+    "security/sql-model/provenance.json": {
+      "bytes": 1547,
+      "sha256": "91924f5b1d4ee6db02626f94159de5f3175f50ed790e0a7e1157c60f3f027738"
+    },
+    "security/sql-model/run-runtime-model.py": {
+      "bytes": 17648,
+      "sha256": "3737e9844293bf3d6a4827ddb67887d89a17b83fb529d4a930b9232a14f6f460"
+    },
+    "security/sql-model/schema-coverage.json": {
+      "bytes": 7860,
+      "sha256": "d6b842783a4533b14f09d083c1df935dd667c2bbc404fe73cee53bfd1f78d313"
+    },
+    "security/sql-model/storage-stub.sql": {
+      "bytes": 342,
+      "sha256": "47c79f48150f2997b4bc40b669e3cb44cd0b536885aeec2cbf287d763c2fa452"
+    },
+    "security/sql-model-results.json": {
+      "bytes": 89571,
+      "sha256": "262f61e5f3bbe5fbe3060b8aaed039707ca14954283ed4315f89be68aae7fd65"
+    },
+    "security/sql-model-summary.json": {
+      "bytes": 846,
+      "sha256": "6c21d952f2a69b455ca949e2c40b18c807f9dd2bf73f7c6e0c65421180e89bef"
+    }
+  },
+  "authoritative_documents": {
+    "README.md": {
+      "bytes": 13364,
+      "sha256": "83221f6def33e966af6968cae70dff4f5dabfd406725276084e6b2b4db6dd702"
+    },
+    "docs/LG_RUNTIME_E2E_AUTH_CHECKOUT_PAYMENT_CERTIFICATION.md": {
+      "bytes": 15115,
+      "sha256": "89d05081fd2046798395a81bf42b0b79e743e21a5bb2d7f2f2126f5d70caa31d"
+    },
+    "docs/LA_GAVIOTA_PRODUCTION_READINESS_AUDIT_AND_ROADMAP.md": {
+      "bytes": 90205,
+      "sha256": "58574c1532afc89346e916ce859b78bbc06760dcfebe0cd33604225d99849881"
+    }
+  },
+  "historical_manifests": "Earlier manifests retain their original document revision hashes; this manifest identifies current updates.",
+  "privacy": "Selected sanitized artifacts only; no env/cookies/node_modules/PGDATA/cache/raw Vercel values; known exact private credentials scanned with zero matches.",
+  "reproduction": "Source VM runners require current application and matched TypeScript. PG runners require fresh guarded private stage and installed PG binaries. SQL fixtures use helper stubs; no provider E2E certificate."
+}

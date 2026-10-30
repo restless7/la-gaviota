@@ -1,0 +1,17 @@
+{
+  "sourceHarness": "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015/authorization/run-synthetic.cjs",
+  "sourceHarnessSha256": "b49f79c73a7a41cf03e4d450d7aa61dae78e8e5a96b9887a9f31edbe953f49bb",
+  "adaptedHarnessSha256": "8dbcca1974a432780d9a31201023c582621e6d09a46c922e823d79beadc303df",
+  "changes": [
+    "TypeScript path changed to new clone dependency tree",
+    "Candidate loader resolves actual implemented clone ONLY; no proposal or original fallback",
+    "Baseline-only vulnerability demonstration reads preserved baseline users.ts",
+    "Writer marker proof reads actual cloned file",
+    "Loaded candidate file hashes before/after execution recorded",
+    "Owner-approved tiers.manage ADMIN/SUPER recorded; no capability code delta",
+    "Assertion delegation proxy counts runtime invocations and unique callsites without changing535 cases; final run after approved2file context compatibility fix"
+  ],
+  "testAssertionsUnchanged": true,
+  "status": "EXECUTABLE_AGAINST_REAL_APPLIED_CLONE",
+  "initialAdaptedHarnessSha256": "df74586e9030d4af1e9b4b419bedde3a8c4f6b9b653c139df6042694cc7dc6fd"
+}

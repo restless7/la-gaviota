@@ -1,0 +1,11 @@
+{
+  "started": true,
+  "pid": 482867,
+  "listen_addresses_configured": "",
+  "socket_directory": "/tmp/la-gaviota-runtime-e2e-20261015/security/private-pg/socket",
+  "preserved": true,
+  "stop_exit": 0,
+  "pid_alive": false,
+  "socket_entries_after": [],
+  "postmaster_pid_exists_after": false
+}

@@ -1,0 +1,34 @@
+product_id,product_name,category,current_classification,candidate_local_path,confidence,human_approval_required
+prd_0048,Aguacate choque,FRUTAS,LOW_QUALITY,public/PRODUCTS/download (2).jpeg,HIGH,YES
+prd_0047,Aguacate criollo,FRUTAS,HEALTHY,public/PRODUCTS/KBBNQRM5ZNKHNMT2TCXNHI5U4A.jpg,HIGH,YES
+prd_0049,Aguacate Hass,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_h3ukc8h3ukc8h3uk.png,HIGH,YES
+prd_0050,Aguacate papelillo,FRUTAS,LOW_QUALITY,public/PRODUCTS/download (3).jpeg,HIGH,YES
+prd_0002,Arándanos,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_fc2r3ofc2r3ofc2r.png,HIGH,YES
+prd_0003,Badea,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_w3yxw1w3yxw1w3yx.png,HIGH,YES
+prd_0006,Ciruela,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_dkzlp5dkzlp5dkzl.png,HIGH,YES
+prd_0007,Coco,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_k58dk6k58dk6k58d.png,HIGH,YES
+prd_0009,Durazno nacional,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_ganmprganmprganm.png,HIGH,YES
+prd_0010,Feijoa,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_fikte5fikte5fikt.png,HIGH,YES
+prd_0011,Fresa grande,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_rpdg9prpdg9prpdg.png,HIGH,YES
+prd_0012,Fresa jumbo,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_18qtrg18qtrg18qt.png,HIGH,YES
+prd_0013,Fresa pequeña,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_qrsrz0qrsrz0qrsr.png,HIGH,YES
+prd_0014,Granadilla,FRUTAS,HEALTHY,"public/PRODUCTS/ChatGPT Image May 12, 2026, 06_53_22 PM.png",HIGH,YES
+prd_0015,Guanábana,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_9u7krx9u7krx9u7k.png,HIGH,YES
+prd_0016,Guayaba,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_18ats918ats918at.png,HIGH,YES
+prd_0017,Kiwi,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_f77au1f77au1f77a.png,HIGH,YES
+prd_0022,Manzana roja,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_mtc5vlmtc5vlmtc5.png,HIGH,YES
+prd_0023,Manzana verde,FRUTAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_81puzn81puzn81pu.png,HIGH,YES
+prd_0134,Guanábana,PULPAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_9u7krx9u7krx9u7k.png,HIGH,YES
+prd_0135,Guayaba,PULPAS,MISSING_REFERENCE,public/PRODUCTS/Gemini_Generated_Image_18ats918ats918at.png,HIGH,YES
+prd_0149,Lenteja remojada x250g,VARIOS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_fj18mefj18mefj18.png,HIGH,YES
+prd_0051,Acelga,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_pund0lpund0lpund.png,HIGH,YES
+prd_0052,Ahuyama,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_6o430d6o430d6o43.png,HIGH,YES
+prd_0054,Ajo blanco,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_z9rhl9z9rhl9z9rh.png,HIGH,YES
+prd_0055,Ajo criollo,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_iqigl1iqigl1iqig.png,HIGH,YES
+prd_0057,Apio rama mata,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_9q1p359q1p359q1p.png,HIGH,YES
+prd_0056,Apio rama x3,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_sec8rpsec8rpsec8.png,HIGH,YES
+prd_0061,Berenjena blanca,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_n19mlon19mlon19m.png,HIGH,YES
+prd_0062,Berenjena morada,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_9wt3g69wt3g69wt3.png,HIGH,YES
+prd_0068,Cebolla blanca,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_y3henvy3henvy3he.png,HIGH,YES
+prd_0071,Cebolla puerro,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_l6rorkl6rorkl6ro.png,HIGH,YES
+prd_0069,Cebolla roja,VERDURAS Y HORTALIZAS,HEALTHY,public/PRODUCTS/Gemini_Generated_Image_d3pcwid3pcwid3pc.png,HIGH,YES

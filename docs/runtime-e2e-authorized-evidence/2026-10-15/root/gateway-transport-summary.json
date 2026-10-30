@@ -1,0 +1,29 @@
+{
+  "requests_observed": 319,
+  "methods": {
+    "GET": 256,
+    "PATCH": 44,
+    "POST": 9,
+    "HEAD": 10
+  },
+  "targets": [
+    "127.0.0.1:47775"
+  ],
+  "path_families": {
+    "products": 100,
+    "customers": 10,
+    "orders": 39,
+    "kits": 64,
+    "abandoned_carts": 86,
+    "global_settings": 3,
+    "order_items": 3,
+    "buying_templates": 4,
+    "daily_operational_ledgers": 2,
+    "suppliers": 4,
+    "business_applications": 2,
+    "b2b_credit_profiles": 2
+  },
+  "query_strings_or_bodies_or_headers_logged": false,
+  "scope": "gateway to local fixture only; not whole-host network capture",
+  "original_hosted_database_operations_by_this_gateway": false
+}

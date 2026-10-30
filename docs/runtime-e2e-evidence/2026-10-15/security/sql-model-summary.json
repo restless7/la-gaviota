@@ -1,0 +1,21 @@
+{
+  "executed": 322,
+  "passed": 322,
+  "failed": 0,
+  "scope": "real PostgreSQL18 synthetic SQL roles/RLS/ACL; auth.jwt and Storage operation stubs; NOT JWT/gateway/API/CDN/production proof",
+  "cleanup": {
+    "started": true,
+    "pid": 482867,
+    "listen_addresses_configured": "",
+    "socket_directory": "/tmp/la-gaviota-runtime-e2e-20261015/security/private-pg/socket",
+    "preserved": true,
+    "stop_exit": 0,
+    "pid_alive": false,
+    "socket_entries_after": [],
+    "postmaster_pid_exists_after": false
+  },
+  "candidate_sql_sha256": "88eff4933862913457e11e92474d4cf9d83501b8f9afcacb340e238cfb164def",
+  "fixture_sha256": "018c98ae260d2ce4be0eeed798811c0ef3ca27f1f93895cd4e34d55f836528c9",
+  "executed_harness_sha256": "3737e9844293bf3d6a4827ddb67887d89a17b83fb529d4a930b9232a14f6f460",
+  "free_bytes_at_completion": 15117660160
+}

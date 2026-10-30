@@ -1,0 +1,9 @@
+{
+  "source": "https://github.com/PostgREST/postgrest/releases/download/v16.4/postgrest-v16.4-linux-static-x86-64.tar.xz",
+  "release": "v16.4",
+  "archive_bytes": 4520444,
+  "archive_sha256": "b47ecc82fce1dcebbbc4183d839e52f07f7630c9d7ad0f54db753d1939299354",
+  "github_asset_digest_match": true,
+  "binary_sha256": "d6e3dd25b08b1ba0a953b9c834b465c3c20ba24c37a4cce076574f208a662ae6",
+  "scope": "private disposable stage only; not application dependency or maintainer signature attestation"
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "gateway subdirectory only; no changes to parent frozen manifest",
+  "files": {
+    "GATEWAY_HTTP_EVIDENCE_ES.md": "793fa8a04785497cd6d416057db5eea0ac53d790eda670096394f18d1734eba9",
+    "execution-provenance.json": "76e872aee94f7ffed0207b301ec22a7914da139ca268b821915e311bf101fec6",
+    "gateway-http-results.json": "aee4b09c3899f9ee0a8f7da294a0a8bf47bb75019fc37f861bfcf12d87f867a9",
+    "run-gateway-http.py": "285416f60e2f9c5d91b385761976fec174d5b32f98db120d1d850312bae0e765"
+  }
+}

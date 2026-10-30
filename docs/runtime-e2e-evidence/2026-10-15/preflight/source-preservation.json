@@ -1,0 +1,8 @@
+{
+  "baseline_kind": "current implemented worktree; HEAD alone is not implementation baseline",
+  "head": "49add73ae90b837c36553a0f2b535267c9610143",
+  "checked_files": 144,
+  "changed_or_missing": [],
+  "pass": true,
+  "scope": "144 current application/test/config files; does not assert clean Git tree or preserve historical docs hashes"
+}

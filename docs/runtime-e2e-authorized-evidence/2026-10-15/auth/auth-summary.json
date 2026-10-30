@@ -1,0 +1,42 @@
+{
+  "status": "PASS_BOUNDED_AUTH_AND_THREE_CASH_JOURNEYS_WITH_FINANCIAL_NO_GO_UNCHANGED",
+  "newIndependentClerkApplicationId": "app_3KkIBTc8ZkYA4xOqe1RISnl26qu",
+  "newIndependentClerkInstanceId": "ins_3KkIBUC69XmTCaePrSymXHwofVv",
+  "stableSyntheticAccounts": 10,
+  "realPasswordOTPLogin": true,
+  "realSignupOTPDefaultMetadataEmptyRetailFallback": true,
+  "realSessionReload": true,
+  "realSignoutAndProtectedDenial": true,
+  "realTicketRoleObservations": 24,
+  "realSameSessionFreshMetadataRevocation": true,
+  "adminMetadataExactlyRestored": true,
+  "realBrowserCashJourneys": 3,
+  "databaseOracleSeparate": "3flows33assertions, not summed with browser observations",
+  "cleanup": {
+    "ownScopedSessionsObserved": 11,
+    "activeSessionsRevoked": 10,
+    "alreadyEndedSignupSession": 1,
+    "accountsAndDevApplicationPreserved": true,
+    "privateRestoreDirectory": "/home/sebastiangarcia/.local/share/la-gaviota/authorized-e2e-20261015/auth",
+    "browsersClosed": true,
+    "runtimeServicesStoppedByRoot": true
+  },
+  "sourceComparison": {
+    "selectedFiles": 17,
+    "executedCopyEqualsOriginal": true,
+    "noEnvironmentOrNextConfigEquivalenceClaim": true
+  },
+  "limits": [
+    "Ticket tests bypass password/emailverification; distinct from real UI password/OTP/signup.",
+    "No production users/resources/payments used; original .env.local/application source unchanged by this track.",
+    "Financial atomicity/idempotency/kit/stock/provider failures remain NO-GO; these happy paths do not close them.",
+    "Webhook endpoint list unavailable through discovered API; no imported or configured hooks.",
+    "Portable wrappers packaged after runtime shutdown; executed test source transformed only paths/logging and removal of superseded signout diagnostic, not rerun after packaging."
+  ],
+  "references": [
+    "https://clerk.com/docs/guides/development/testing/playwright/overview",
+    "https://clerk.com/docs/guides/development/testing/playwright/test-helpers",
+    "https://clerk.com/docs/guides/development/testing/playwright/test-sign-up-flows",
+    "https://clerk.com/docs/guides/development/testing/test-emails-and-phones"
+  ]
+}

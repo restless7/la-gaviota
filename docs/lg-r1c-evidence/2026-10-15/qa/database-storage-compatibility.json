@@ -1,0 +1,405 @@
+{
+  "no_sql_applied": true,
+  "historical_sql315_not_rerun": true,
+  "scope": "actualimplementedclone static source only",
+  "items": [
+    {
+      "path": "src/actions/products.ts",
+      "sha256": "c1ad94674092a762674d2ad3f338740c29d5d077bdda7e2f5cacb6c8e90aa6f4",
+      "evidence": [
+        {
+          "line": 2,
+          "text": "import { requireCapability, getActor, assertTargetId } from '@/src/lib/server/authorization';"
+        },
+        {
+          "line": 38,
+          "text": "const actor = await requireCapability('catalog.manage');"
+        },
+        {
+          "line": 110,
+          "text": "const actor = await requireCapability('inventory.manage');"
+        },
+        {
+          "line": 131,
+          "text": "const actor = await requireCapability('catalog.manage');"
+        },
+        {
+          "line": 157,
+          "text": "const actor = await requireCapability('pricing.manage');"
+        },
+        {
+          "line": 200,
+          "text": "const actor = await requireCapability('pricing.manage');"
+        },
+        {
+          "line": 244,
+          "text": "const actor = await requireCapability('pricing.manage');"
+        },
+        {
+          "line": 285,
+          "text": "const actor = await requireCapability('catalog.manage');"
+        },
+        {
+          "line": 342,
+          "text": "const actor = await requireCapability('catalog.manage');"
+        },
+        {
+          "line": 406,
+          "text": "const actor = await requireCapability('catalog.manage');"
+        },
+        {
+          "line": 441,
+          "text": "const actor = await getActor();"
+        },
+        {
+          "line": 443,
+          "text": "const { data, error } = await publicDb.from('catalog_public').select('*');"
+        },
+        {
+          "line": 445,
+          "text": "const { data: kits, error: kitsError } = await publicDb.from('kits_public').select('*');"
+        },
+        {
+          "line": 450,
+          "text": "const column = actor.tier === 'Restaurantes' ? 'price_restaurant' : 'price_micro';"
+        },
+        {
+          "line": 451,
+          "text": "const previous = actor.tier === 'Restaurantes' ? 'previous_price_restaurant' : 'previous_price_micro';"
+        }
+      ],
+      "assessment": "public safeviews + fresh server-tier enrichment; SQL views not applied, exact deployed view/schema availability UNKNOWN"
+    },
+    {
+      "path": "src/lib/server/database.ts",
+      "sha256": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c",
+      "evidence": [
+        {
+          "line": 8,
+          "text": "assertIssuedActor(actor);"
+        },
+        {
+          "line": 12,
+          "text": "return createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});"
+        },
+        {
+          "line": 18,
+          "text": "return configuredServiceDatabase();"
+        },
+        {
+          "line": 20,
+          "text": "function configuredServiceDatabase() {"
+        },
+        {
+          "line": 23,
+          "text": "return createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});"
+        },
+        {
+          "line": 28,
+          "text": "if(Object.keys(payload).some(k=>!allowed.includes(k)) || Object.values(payload).some(v=>typeof v!=='string'||v.length>512) || !payload.fullName || !payload.phone || !payload.businessType) throw new Error('INVALID_LEAD');"
+        },
+        {
+          "line": 29,
+          "text": "const db=configuredServiceDatabase();"
+        },
+        {
+          "line": 35,
+          "text": "const db=configuredServiceDatabase();"
+        },
+        {
+          "line": 36,
+          "text": "const {data,error}=await db.from('global_settings').select('track_inventory').eq('id','default').single();"
+        },
+        {
+          "line": 37,
+          "text": "if(error || !data || typeof data.track_inventory!=='boolean') throw new Error('INVENTORY_SETTING_UNAVAILABLE');"
+        },
+        {
+          "line": 38,
+          "text": "return {track_inventory:data.track_inventory};"
+        }
+      ],
+      "assessment": "service_role bypassesRLS; issuedactors/scheduler orfixedpublicprojection required; productioncredentials neverloaded"
+    },
+    {
+      "path": "src/lib/server/orderWriter.ts",
+      "sha256": "8b41de7d273a596280182edd8d1e622cc67d478a23109b2ff1cf5d9fa32e1f7e",
+      "evidence": [
+        {
+          "line": 4,
+          "text": "import { requireOwnedSubject } from './authorization';"
+        },
+        {
+          "line": 5,
+          "text": "import { getServerDatabase } from './database';"
+        },
+        {
+          "line": 8,
+          "text": "const actor = await requireOwnedSubject(orderData.clerk_user_id);"
+        },
+        {
+          "line": 9,
+          "text": "const supabase = getServerDatabase(actor);"
+        },
+        {
+          "line": 12,
+          "text": ".from('orders')"
+        },
+        {
+          "line": 13,
+          "text": ".insert(orderData)"
+        },
+        {
+          "line": 29,
+          "text": ".from('order_items')"
+        },
+        {
+          "line": 30,
+          "text": ".insert(itemsWithOrderId);"
+        },
+        {
+          "line": 40,
+          "text": ".from('customers')"
+        },
+        {
+          "line": 46,
+          "text": ".from('customers')"
+        }
+      ],
+      "assessment": "private writer owner-bound; existing order/items/customerstats sequence preserved; no transaction/idempotency remediation"
+    },
+    {
+      "path": "src/lib/audit.ts",
+      "sha256": "1a2887e8a1166c720036f101d1d6cb2531efc5872428442f01aa0d14943f6729",
+      "evidence": [
+        {
+          "line": 2,
+          "text": "import { requireCapability } from '@/src/lib/server/authorization';"
+        },
+        {
+          "line": 3,
+          "text": "import { getServerDatabase } from '@/src/lib/server/database';"
+        },
+        {
+          "line": 16,
+          "text": "const actor = await requireCapability('audit.write');"
+        },
+        {
+          "line": 17,
+          "text": "const supabase = getServerDatabase(actor);"
+        },
+        {
+          "line": 26,
+          "text": "const actorName = user.firstName && user.lastName"
+        },
+        {
+          "line": 31,
+          "text": ".from('audit_logs')"
+        },
+        {
+          "line": 33,
+          "text": "actor: actorName,"
+        },
+        {
+          "line": 38,
+          "text": "metadata: { actor_clerk_id: userId }"
+        }
+      ],
+      "assessment": "lazy server-only audit.write sink; actual schema contract not proved"
+    },
+    {
+      "path": "app/api/webhooks/wompi/route.ts",
+      "sha256": "0b9f5b2d767ee08644850e457539c6362c2ede4a7d0f5fc8a6a316006eee1228",
+      "evidence": [
+        {
+          "line": 3,
+          "text": "import { createClient } from '@supabase/supabase-js';"
+        },
+        {
+          "line": 7,
+          "text": "const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;"
+        },
+        {
+          "line": 8,
+          "text": "const supabase = createClient(supabaseUrl, supabaseKey);"
+        },
+        {
+          "line": 42,
+          "text": ".from('b2b_credit_profiles')"
+        },
+        {
+          "line": 50,
+          "text": ".from('b2b_credit_profiles')"
+        },
+        {
+          "line": 65,
+          "text": ".from('orders')"
+        },
+        {
+          "line": 114,
+          "text": ".from('orders')"
+        },
+        {
+          "line": 145,
+          "text": ".from('order_items')"
+        },
+        {
+          "line": 153,
+          "text": "const { data: prod } = await supabase.from('products').select('stock_quantity').eq('id', item.product_id).single();"
+        },
+        {
+          "line": 155,
+          "text": "await supabase.from('products').update({ stock_quantity: Math.max(0, prod.stock_quantity - item.quantity) }).eq('id', item.product_id);"
+        },
+        {
+          "line": 163,
+          "text": ".from('abandoned_carts')"
+        },
+        {
+          "line": 175,
+          "text": "supabase.from('customers').select('total_spent, total_orders, email').eq('clerk_user_id', orderData.clerk_user_id).single()"
+        },
+        {
+          "line": 178,
+          "text": "supabase.from('customers').update({"
+        }
+      ],
+      "assessment": "unchanged anonymous direct callback writes would conflict with restrictive SQL; transition blocked, neverexecuted"
+    },
+    {
+      "path": "app/admin/orders/OrderKanbanBoard.tsx",
+      "sha256": "9c3124967a40ec8b5e26fe53a1217ae113790c3da7743fbd13468ed6e9893575",
+      "evidence": [
+        {
+          "line": 37,
+          "text": "const { createClient } = require('@supabase/supabase-js');"
+        },
+        {
+          "line": 39,
+          "text": "const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;"
+        },
+        {
+          "line": 40,
+          "text": "const supabase = createClient(supabaseUrl, supabaseKey);"
+        },
+        {
+          "line": 43,
+          "text": ".channel('schema-db-changes')"
+        },
+        {
+          "line": 45,
+          "text": "'postgres_changes',"
+        },
+        {
+          "line": 54,
+          "text": ".subscribe();"
+        }
+      ],
+      "assessment": "unchanged anon Realtime subscription remains separate gateway/RLStransition dependency; neverconnected"
+    },
+    {
+      "path": "src/components/portals/CustomerOrderHistory.tsx",
+      "sha256": "2c9efc2796a731315e31112cb8ab2930cbac83e968efbb23ed141ff13ec25df9",
+      "evidence": [
+        {
+          "line": 1,
+          "text": "import { getActor } from '@/src/lib/server/authorization';"
+        },
+        {
+          "line": 2,
+          "text": "import { getServerDatabase } from '@/src/lib/server/database';"
+        },
+        {
+          "line": 13,
+          "text": "const actor = await getActor();"
+        },
+        {
+          "line": 14,
+          "text": "const supabase = getServerDatabase(actor);"
+        },
+        {
+          "line": 17,
+          "text": ".from('orders')"
+        },
+        {
+          "line": 18,
+          "text": ".select('*, order_items(*)')"
+        },
+        {
+          "line": 19,
+          "text": ".eq('clerk_user_id', userId)"
+        }
+      ],
+      "assessment": "freshactor ownerfiltered service query; sourceVM coverage only, no real ownedrecords"
+    },
+    {
+      "path": "src/contexts/CartContext.tsx",
+      "sha256": "9205da2893fe9f05e2c9aef834e1b3b08b777f82a9461ae2a69e99ce5a88a97b",
+      "evidence": [
+        {
+          "line": 4,
+          "text": "import { Product, fetchProducts } from '@/src/actions/products';"
+        },
+        {
+          "line": 5,
+          "text": "import { parseCartDraft, reconcileCartDraft } from '@/src/lib/cartPersistence';"
+        },
+        {
+          "line": 22,
+          "text": "cartRestoreError: string | null;"
+        },
+        {
+          "line": 36,
+          "text": "const [cartRestoreError, setCartRestoreError] = useState<string | null>(null);"
+        },
+        {
+          "line": 48,
+          "text": "const draft = parseCartDraft(saved);"
+        },
+        {
+          "line": 50,
+          "text": "localStorage.setItem('gaviota_cart', JSON.stringify(draft));"
+        },
+        {
+          "line": 51,
+          "text": "const catalog = await fetchProducts();"
+        },
+        {
+          "line": 53,
+          "text": "const restored = reconcileCartDraft(draft, catalog, Date.now());"
+        },
+        {
+          "line": 68,
+          "text": "localStorage.setItem('gaviota_cart', JSON.stringify({ version: 2, items: items.map(item => ({ id: item.product.id, quantity: item.quantity })) }));"
+        },
+        {
+          "line": 93,
+          "text": "if (!isInitialized || cartRestoreError) return;"
+        },
+        {
+          "line": 113,
+          "text": "if (!isInitialized || cartRestoreError) return;"
+        },
+        {
+          "line": 142,
+          "text": "isCartOpen, setIsCartOpen, cartRestoreError, cartTotal, itemCount,"
+        },
+        {
+          "line": 145,
+          "text": "{cartRestoreError && <div role=\"alert\" className=\"p-4 bg-amber-50 text-amber-900\">{cartRestoreError}</div>}"
+        }
+      ],
+      "assessment": "v2IDs/qty stripslegacycost/prices and rehydrates public DTO, errors preserve draft/blockcheckout; livehydration notexercised"
+    }
+  ],
+  "transition_order": [
+    "metadata-only schema/grants/policies inventory",
+    "additive safeview preparation",
+    "server/client integration",
+    "Wompi+Realtime transitions",
+    "nativeClerkJWT/gateway/Storage verification",
+    "restrictiveSQL rehearsal",
+    "failclosed recovery",
+    "separatelyapprovedmigration"
+  ]
+}

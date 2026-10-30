@@ -1,0 +1,12 @@
+-- REQUEST ONLY; not executed against production. Requires separate approved metadata-only session.
+SELECT version();
+SELECT n.nspname,c.relname,c.relkind,c.relrowsecurity,c.relforcerowsecurity,c.reloptions,pg_get_userbyid(c.relowner) AS owner FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('public','storage') AND c.relkind IN ('r','p','v','m');
+SELECT schemaname,tablename,policyname,permissive,roles,cmd,qual,with_check FROM pg_policies WHERE schemaname IN ('public','storage');
+SELECT table_schema,table_name,grantee,privilege_type FROM information_schema.table_privileges WHERE table_schema IN ('public','storage');
+SELECT table_schema,table_name,column_name,grantee,privilege_type FROM information_schema.column_privileges WHERE table_schema IN ('public','storage');
+SELECT table_schema,table_name,column_name,data_type,udt_name,is_nullable,column_default FROM information_schema.columns WHERE table_schema IN ('public','storage');
+SELECT rolname,rolsuper,rolinherit,rolcreaterole,rolcreatedb,rolcanlogin,rolbypassrls FROM pg_roles WHERE rolname IN ('anon','authenticated','service_role','authenticator','postgres');
+SELECT pg_get_userbyid(roleid) AS granted_role,pg_get_userbyid(member) AS member,admin_option FROM pg_auth_members WHERE member IN ('anon'::regrole,'authenticated'::regrole,'service_role'::regrole,'authenticator'::regrole);
+SELECT pg_get_userbyid(defaclrole) AS creator,COALESCE(n.nspname,'ALL') AS schema,defaclobjtype,defaclacl FROM pg_default_acl d LEFT JOIN pg_namespace n ON n.oid=d.defaclnamespace;
+SELECT n.nspname,p.proname,pg_get_function_identity_arguments(p.oid),p.prosecdef,pg_get_userbyid(p.proowner),p.proacl FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname IN ('public','storage') AND (p.prosecdef OR p.proname='allow_any_operation');
+-- No customer rows, stored object contents, pg_authid/passwords, credentials or account lookup.

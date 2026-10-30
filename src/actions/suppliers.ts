@@ -1,11 +1,11 @@
 'use server';
+import { requireCapability, assertTargetId } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-import { createClient } from '@supabase/supabase-js';
+
+
 import { revalidatePath } from 'next/cache';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface Supplier {
   id: string;
@@ -20,6 +20,9 @@ export interface Supplier {
 }
 
 export async function fetchSuppliers(): Promise<Supplier[]> {
+  const actor = await requireCapability('suppliers.manage');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase
     .from('suppliers')
     .select('*')
@@ -34,6 +37,9 @@ export async function fetchSuppliers(): Promise<Supplier[]> {
 }
 
 export async function createSupplier(supplier: Omit<Supplier, 'id' | 'created_at'>) {
+  const actor = await requireCapability('suppliers.manage');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase
     .from('suppliers')
     .insert(supplier)
@@ -50,6 +56,10 @@ export async function createSupplier(supplier: Omit<Supplier, 'id' | 'created_at
 }
 
 export async function updateSupplierStatus(id: string, status: Supplier['status']) {
+  const actor = await requireCapability('suppliers.manage');
+  const supabase = getServerDatabase(actor);
+  assertTargetId(id);
+
   const { error } = await supabase
     .from('suppliers')
     .update({ status, updated_at: new Date().toISOString() })
@@ -65,6 +75,10 @@ export async function updateSupplierStatus(id: string, status: Supplier['status'
 }
 
 export async function updateSupplier(id: string, supplier: Partial<Omit<Supplier, 'id' | 'created_at'>>) {
+  const actor = await requireCapability('suppliers.manage');
+  const supabase = getServerDatabase(actor);
+  assertTargetId(id);
+
   const { data, error } = await supabase
     .from('suppliers')
     .update({ ...supplier, updated_at: new Date().toISOString() })

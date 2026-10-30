@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-15 America/Bogota",
+  "boundary": "Source transpiled in memory. All Clerk/Supabase/order/cache dependencies mocked. No source imports executed outside VM; no credentials/env loaded, network requests, DB or production writes. These reproduce source behavior, not deployed reachability.",
+  "results": [
+    {
+      "case": "unguarded privileged role action",
+      "observed": "privileged metadata stub write succeeds; auth never called",
+      "status": "REPRODUCED"
+    },
+    {
+      "case": "signature field coverage",
+      "observed": "same locally accepted checksum accepts changed reference/currency and different properties",
+      "status": "REPRODUCED"
+    },
+    {
+      "case": "balance reference user binding",
+      "observed": "BAL_user_FIC_1 parses owner as user; webhook profile prefix becomes user%",
+      "status": "REPRODUCED"
+    },
+    {
+      "case": "cash malformed quantity and stock",
+      "observed": "quantity -2 at stock 0 creates stub order total -15000 COP",
+      "status": "REPRODUCED"
+    },
+    {
+      "case": "empty order and unsupported city",
+      "observed": "empty items accepted; unsupported city gets default delivery charge and stub order",
+      "status": "REPRODUCED"
+    }
+  ],
+  "uniqueStubbedImports": [
+    "@clerk/nextjs/server",
+    "next/cache",
+    "crypto",
+    "./orders",
+    "@supabase/supabase-js"
+  ]
+}

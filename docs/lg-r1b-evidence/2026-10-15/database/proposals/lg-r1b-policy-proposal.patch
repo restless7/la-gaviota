@@ -1,0 +1,104 @@
+--- /dev/null
++++ b/REVIEW_ONLY/lg-r1b-policy-proposal.sql
+@@ -0,0 +1,101 @@
++-- REVIEW CANDIDATE ONLY; never applied to original repository/production.
++-- Requires coordinated new clients, exact schema/grant/policy metadata and native Clerk gateway validation.
++-- No role mirror: Clerk server metadata is staff authority; service_role bypasses RLS and MUST be guarded server-side.
++BEGIN;
++DO $$ BEGIN IF current_setting('lg_r1b.review_gate',true) IS DISTINCT FROM 'SYNTHETIC_OR_REVIEWED_METADATA_ONLY' THEN RAISE EXCEPTION 'LG-R1B reviewed metadata/client transition gate missing'; END IF; END $$;
++DO $$ DECLARE x record; BEGIN FOR x IN SELECT schemaname,tablename,policyname FROM pg_policies WHERE (schemaname='public' AND tablename=ANY(ARRAY['abandoned_carts','agricultural_shrinkage_logs','audit_logs','b2b_credit_profiles','business_applications','buying_templates','customers','daily_operational_ledgers','global_settings','kit_items','kits','marketing_leads','order_items','orders','products','suppliers','system_settings'])) OR (schemaname='storage' AND tablename='objects') LOOP IF x.policyname <> ALL(ARRAY['Admins can read all audit logs','Admins full access b2b_credit_profiles','Allow admin full access to abandoned carts','Allow admin full access to audit logs','Allow admin full access to kit items','Allow admin full access to kits','Allow admin full access to marketing leads','Allow admin insert to kit-banners','Allow admin insert to product-images','Allow admin update to kit-banners','Allow admin update to product-images','Allow log insertion','Allow public all on suppliers','Allow public inserts on abandoned carts','Allow public inserts on customers','Allow public inserts on marketing leads','Allow public inserts on order_items','Allow public inserts on orders','Allow public inserts on products','Allow public read access to active kits','Allow public read access to kit items','Allow public read access to kit-banners','Allow public read access to product-images','Allow public reads on customers','Allow public reads on global_settings','Allow public reads on order_items','Allow public reads on orders','Allow public reads on products','Allow public reads on suppliers','Allow public updates on customers','Allow public updates on orders','Allow public updates on own abandoned carts','Allow public updates on products','Allow select for all','Allow update for authenticated','Allow updates on global_settings','Ledgers son visibles para todos','Shrinkage insert access','Shrinkage read access','Solo admins/autenticados pueden insertar ledgers','Users can manage own templates','Users can read own credit profile','Users can read own templates','fixture_legacy_public_all']) THEN RAISE EXCEPTION 'Unreviewed policy %.%/%: abort', x.schemaname,x.tablename,x.policyname; END IF; END LOOP; END $$;
++DO $$ BEGIN IF EXISTS (SELECT 1 FROM pg_auth_members WHERE member IN ('anon'::regrole,'authenticated'::regrole)) THEN RAISE EXCEPTION 'Inherited role grants need independent review'; END IF; END $$;
++REVOKE CREATE ON SCHEMA public FROM PUBLIC,anon,authenticated;
++CREATE SCHEMA IF NOT EXISTS lg_private; REVOKE ALL ON SCHEMA lg_private FROM PUBLIC,anon,authenticated;
++-- No identity registry; helper reads only native gateway-provided Clerk subject and transport role.
++CREATE OR REPLACE FUNCTION lg_private.clerk_subject() RETURNS text LANGUAGE sql STABLE SECURITY INVOKER SET search_path = '' AS $$ SELECT CASE WHEN (auth.jwt()->>'role') = 'authenticated' AND (auth.jwt()->>'sub') ~ '^user_[A-Za-z0-9_]+$' THEN auth.jwt()->>'sub' ELSE NULL END $$;
++REVOKE ALL ON FUNCTION lg_private.clerk_subject() FROM PUBLIC; GRANT USAGE ON SCHEMA lg_private TO authenticated; GRANT EXECUTE ON FUNCTION lg_private.clerk_subject() TO authenticated;
++DO $$ DECLARE x record; BEGIN FOR x IN SELECT schemaname,tablename,policyname FROM pg_policies WHERE schemaname='public' AND tablename=ANY(ARRAY['abandoned_carts','agricultural_shrinkage_logs','audit_logs','b2b_credit_profiles','business_applications','buying_templates','customers','daily_operational_ledgers','global_settings','kit_items','kits','marketing_leads','order_items','orders','products','suppliers','system_settings']) LOOP EXECUTE format('DROP POLICY %I ON %I.%I',x.policyname,x.schemaname,x.tablename); END LOOP; END $$;
++ALTER TABLE public.abandoned_carts ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.abandoned_carts FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.abandoned_carts'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.abandoned_carts FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.agricultural_shrinkage_logs ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.agricultural_shrinkage_logs FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.agricultural_shrinkage_logs'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.agricultural_shrinkage_logs FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.audit_logs FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.audit_logs'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.audit_logs FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.b2b_credit_profiles ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.b2b_credit_profiles FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.b2b_credit_profiles'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.b2b_credit_profiles FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.business_applications ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.business_applications FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.business_applications'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.business_applications FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.buying_templates ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.buying_templates FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.buying_templates'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.buying_templates FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.customers ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.customers FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.customers'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.customers FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.daily_operational_ledgers ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.daily_operational_ledgers FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.daily_operational_ledgers'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.daily_operational_ledgers FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.global_settings ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.global_settings FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.global_settings'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.global_settings FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.kit_items ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.kit_items FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.kit_items'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.kit_items FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.kits ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.kits FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.kits'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.kits FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.marketing_leads ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.marketing_leads FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.marketing_leads'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.marketing_leads FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.order_items FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.order_items'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.order_items FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.orders FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.orders'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.orders FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.products FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.products'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.products FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.suppliers ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.suppliers FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.suppliers'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.suppliers FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++ALTER TABLE public.system_settings ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON TABLE public.system_settings FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='public.system_settings'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE public.system_settings FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++GRANT SELECT (id,name,category,subcategory,unit,price_retail,previous_price_retail,stock_quantity,is_active,is_in_season,image_url,description) ON public.products TO anon,authenticated;
++CREATE POLICY lg_products_public_read ON public.products FOR SELECT TO anon,authenticated USING (is_active IS TRUE);
++CREATE OR REPLACE VIEW public.catalog_public WITH (security_invoker=true,security_barrier=true) AS SELECT id,name,category,subcategory,unit,price_retail,previous_price_retail,stock_quantity,is_active,is_in_season,image_url,description FROM public.products WHERE is_active IS TRUE;
++REVOKE ALL ON public.catalog_public FROM PUBLIC; GRANT SELECT ON public.catalog_public TO anon,authenticated;
++GRANT SELECT (id,name,slug,fixed_price,banner_url,status) ON public.kits TO anon,authenticated;
++CREATE POLICY lg_kits_public_read ON public.kits FOR SELECT TO anon,authenticated USING(status='active');
++CREATE OR REPLACE VIEW public.kits_public WITH (security_invoker=true,security_barrier=true) AS SELECT id,name,slug,fixed_price,banner_url,status FROM public.kits WHERE status='active';
++REVOKE ALL ON public.kits_public FROM PUBLIC; GRANT SELECT ON public.kits_public TO anon,authenticated;
++GRANT SELECT (clerk_user_id,full_name,email,phone,address,business_name,nit,tier,credit_limit,current_balance,payment_terms,total_orders,total_spent,last_order_at) ON public.customers TO authenticated;
++CREATE POLICY lg_customers_owner_read ON public.customers FOR SELECT TO authenticated USING (clerk_user_id=(SELECT lg_private.clerk_subject()));
++GRANT SELECT (id,clerk_user_id,customer_name,customer_email,customer_phone,delivery_address,delivery_municipality,total_amount,status,payment_method,notes,created_at,scheduled_delivery_date,purchase_tier) ON public.orders TO authenticated;
++CREATE POLICY lg_orders_owner_read ON public.orders FOR SELECT TO authenticated USING (clerk_user_id=(SELECT lg_private.clerk_subject()));
++GRANT SELECT (id,user_id,tier,credit_limit,credit_balance,credit_days_remaining,updated_at) ON public.b2b_credit_profiles TO authenticated;
++CREATE POLICY lg_b2b_credit_profiles_owner_read ON public.b2b_credit_profiles FOR SELECT TO authenticated USING (user_id=(SELECT lg_private.clerk_subject()));
++GRANT SELECT (id,user_id,template_name,product_list,last_used_at,created_at) ON public.buying_templates TO authenticated;
++CREATE POLICY lg_buying_templates_owner_read ON public.buying_templates FOR SELECT TO authenticated USING (user_id=(SELECT lg_private.clerk_subject()));
++GRANT SELECT (id,clerk_user_id,applicant_name,applicant_email,business_name,business_type,nit,phone,address,municipality,monthly_volume,notes,status,created_at) ON public.business_applications TO authenticated;
++CREATE POLICY lg_business_applications_owner_read ON public.business_applications FOR SELECT TO authenticated USING (clerk_user_id=(SELECT lg_private.clerk_subject()));
++GRANT SELECT (id,order_id,product_id,product_name,quantity,price_at_purchase,created_at) ON public.order_items TO authenticated;
++CREATE POLICY lg_order_items_owner_read ON public.order_items FOR SELECT TO authenticated USING (EXISTS (SELECT 1 FROM public.orders o WHERE o.id=order_items.order_id AND o.clerk_user_id=(SELECT lg_private.clerk_subject())));
++CREATE INDEX IF NOT EXISTS lg_orders_owner_idx ON public.orders(clerk_user_id);
++CREATE INDEX IF NOT EXISTS lg_order_items_order_idx ON public.order_items(order_id);
++-- No direct owner INSERT/UPDATE/DELETE: guarded server writers preserve statuses/credit/ownership.
++-- No staff/admin JWT policy; app role/tier claims never turn user JWT into a privileged DB credential.
++-- Existing service_role grants preserved; effective privileges/bypass MUST be attested before deployment.
++DO $$ BEGIN IF to_regprocedure('storage.allow_any_operation(text[])') IS NULL THEN RAISE EXCEPTION 'Storage operation helper missing; reconcile installed API before applying'; END IF; END $$;
++-- Public buckets keep normal public URL delivery; row access below is operation-aware, not unrestricted listing.
++DO $$ DECLARE x record; BEGIN FOR x IN SELECT policyname FROM pg_policies WHERE schemaname='storage' AND tablename='objects' LOOP EXECUTE format('DROP POLICY %I ON storage.objects',x.policyname); END LOOP; END $$;
++REVOKE ALL ON TABLE storage.objects FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='storage.objects'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE storage.objects FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++GRANT SELECT ON storage.objects TO anon,authenticated;
++CREATE POLICY lg_media_public_read ON storage.objects FOR SELECT TO anon,authenticated USING (bucket_id IN ('product-images','kit-banners') AND storage.allow_any_operation(ARRAY['object.get_authenticated_info','object.get_authenticated']));
++-- No public/user storage DML policies/grants. Admin upload/update/delete uses fresh guard then server-only service client.
++-- Public bucket bytes intentionally remain public; private buckets NOT exposed by this proposal.
++REVOKE ALL ON TABLE storage.buckets FROM PUBLIC,anon,authenticated;
++DO $$ DECLARE cols text; BEGIN SELECT string_agg(quote_ident(attname),',') INTO cols FROM pg_attribute WHERE attrelid='storage.buckets'::regclass AND attnum>0 AND NOT attisdropped; EXECUTE format('REVOKE SELECT (%s), INSERT (%s), UPDATE (%s), REFERENCES (%s) ON TABLE storage.buckets FROM PUBLIC,anon,authenticated',cols,cols,cols,cols); END $$;
++COMMIT;

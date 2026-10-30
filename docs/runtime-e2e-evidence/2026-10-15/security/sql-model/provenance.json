@@ -1,0 +1,31 @@
+{
+  "retained_baseline_summary": {
+    "executed": 315,
+    "passed": 315,
+    "failed": 0,
+    "scope": "real PostgreSQL18 synthetic SQL roles/RLS/ACL; auth.jwt and Storage operation stubs; NOT JWT/gateway/API/CDN/production proof",
+    "cleanup": {
+      "started": true,
+      "pid": 81489,
+      "listen_addresses_configured": "",
+      "socket_directory": "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015/database/socket",
+      "preserved": true,
+      "stop_exit": 0,
+      "pid_alive": false,
+      "socket_entries_after": [],
+      "postmaster_pid_exists_after": false
+    },
+    "candidate_sql_sha256": "88eff4933862913457e11e92474d4cf9d83501b8f9afcacb340e238cfb164def",
+    "fixture_sha256": "018c98ae260d2ce4be0eeed798811c0ef3ca27f1f93895cd4e34d55f836528c9",
+    "executed_harness_sha256": "d204f8ddf9c713a85bf3c3205c8ec743348a74c8c98a63937409c001b7ee7244",
+    "free_bytes_at_completion": 2045669376
+  },
+  "current_inputs": {
+    "fixture.sql": "018c98ae260d2ce4be0eeed798811c0ef3ca27f1f93895cd4e34d55f836528c9",
+    "storage-stub.sql": "47c79f48150f2997b4bc40b669e3cb44cd0b536885aeec2cbf287d763c2fa452",
+    "schema-coverage.json": "d6b842783a4533b14f09d083c1df935dd667c2bbc404fe73cee53bfd1f78d313",
+    "proposals/lg-r1b-policy-proposal.sql.txt": "88eff4933862913457e11e92474d4cf9d83501b8f9afcacb340e238cfb164def",
+    "run-runtime-model.py": "3737e9844293bf3d6a4827ddb67887d89a17b83fb529d4a930b9232a14f6f460"
+  },
+  "changes": "new stage/sentinel/resource guard plus seven exact current-query compatibility models"
+}

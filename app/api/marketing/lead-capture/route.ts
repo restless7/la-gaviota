@@ -1,33 +1,24 @@
+import { insertPublicLead } from '@/src/lib/server/database';
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+
 import { triggerOrderNotification } from '@/src/lib/notifications';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 export async function POST(req: Request) {
   try {
-    const payload = await req.json();
-    const { fullName, businessName, businessType, phone, email, source } = payload;
+    const raw = await req.text();
+    if (new TextEncoder().encode(raw).length > 8192) return NextResponse.json({error:'Payload too large'},{status:413});
+    const payload = JSON.parse(raw);
+    if (!payload || typeof payload !== 'object' || Array.isArray(payload) || Object.keys(payload).some(k => !['fullName','businessName','businessType','phone','email','source'].includes(k))) return NextResponse.json({error:'Invalid payload'},{status:400});
+    if (Object.values(payload).some(v => typeof v !== 'string' || v.length > 512)) return NextResponse.json({error:'Invalid field'},{status:400});
+    const { fullName, businessName, businessType, phone } = payload;
 
     if (!fullName || !phone || !businessType) {
       return NextResponse.json({ error: 'Faltan campos requeridos (nombre, telefono, tipo)' }, { status: 400 });
     }
 
-    const { data: lead, error } = await supabase
-      .from('marketing_leads')
-      .insert({
-        full_name: fullName,
-        business_name: businessName,
-        business_type: businessType,
-        phone: phone,
-        email: email,
-        source: source || 'Landing Page',
-        status: 'Nuevo'
-      })
-      .select()
-      .single();
+    const { data: lead, error } = await insertPublicLead(payload);
 
     if (error) {
       throw error;

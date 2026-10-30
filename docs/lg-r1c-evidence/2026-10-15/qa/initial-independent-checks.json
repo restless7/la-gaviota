@@ -1,0 +1,23 @@
+{
+  "timestamp_utc": "2026-10-15T14:36:34.768787+00:00",
+  "implemented": "/tmp/la-gaviota-lg-r1c-20261015/application",
+  "files": 53,
+  "all_frozen_app_hashes_match": true,
+  "manifest_sha256": "7bcb5bf41cf599dffd487cb3c1032b1cb81350ace0e2f43bd009a0587b8e8c6b",
+  "lock_sha256": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157",
+  "harness_sha256": "df74586e9030d4af1e9b4b419bedde3a8c4f6b9b653c139df6042694cc7dc6fd",
+  "runs": {
+    "author-replay": {
+      "exitcode": 0,
+      "stdout": "{\n  \"total\": 535,\n  \"passed\": 535,\n  \"failed\": []\n}\n",
+      "stderr": ""
+    },
+    "independent-extra": {
+      "exitcode": 0,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"mode\": \"INDEPENDENT_SOURCE_VM_SYNTHETIC_NOT_HTTP\",\n  \"node\": \"v24.13.0\",\n  \"total\": 12,\n  \"passed\": 12,\n  \"failed\": 0,\n  \"results\": [\n    {\n      \"name\": \"fresh banned actor denied before targets\",\n      \"status\": \"PASS\"\n    ",
+      "stderr": ""
+    }
+  },
+  "network_attempts": 0,
+  "runtime_layer": "sourceVMwithmocks actualimplementedfiles, NOTHTTP/realauth"
+}

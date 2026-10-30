@@ -1,0 +1,38 @@
+{
+  "command": "npm_config_offline=true npx --no-install graphify hook-rebuild",
+  "cwd": "/home/sebastiangarcia/planmaestro-ecosystem/packages",
+  "runs_in_this_gate": 1,
+  "exit_code": 0,
+  "ast_files": 1702,
+  "nodes": 7417,
+  "edges": 13259,
+  "communities": 571,
+  "changed_maintenance_files": [
+    ".graphify/.graphify_detect.json",
+    ".graphify/GRAPH_REPORT.md",
+    ".graphify/branch.json",
+    ".graphify/graph.json",
+    ".graphify/manifest.json",
+    ".graphify/worktree.json"
+  ],
+  "before": {
+    ".graphify/worktree.json": "5840693741e2b55ddfbd182154b1d5349cf3b4213c5a16aa4b58da49c172b360",
+    ".graphify/scope.json": "716e8783996ad392a416d5aa602646080bc4c6c8bfd69fb74280d85702bc6395",
+    ".graphify/manifest.json": "ec758cf9ed5c85a04f4387cbbcb1426f5f9f9ae6c8d08e4c5a9c6a76d35037a5",
+    ".graphify/graph.json": "873e9edd2a9cb37356ae1acd742e789383aac35b78ff84b8c58f8aec96e4816d",
+    ".graphify/GRAPH_REPORT.md": "3c6505ede59091ac439eac2ca1dd9a9bbfa80c572049826e49a67acaee3d2871",
+    ".graphify/.graphify_detect.json": "4098b4f75673d08bc7ad3d97a643cf04d94b7c18e5a3d7f8fa9b6522f7aac9c5",
+    ".graphify/branch.json": "5e72a59ff1b17cf14269720f184f64663440717c8920bd08918003fffea3cf70"
+  },
+  "after": {
+    ".graphify/worktree.json": "b9469d14d67ad6d844bc4ad3cbbf4e610d2d51095deb0bba0be92677aad22c63",
+    ".graphify/scope.json": "716e8783996ad392a416d5aa602646080bc4c6c8bfd69fb74280d85702bc6395",
+    ".graphify/manifest.json": "23bfc582ca2a630c71f0a971a029fe7dc488abd912f044ef49dbafb524e51480",
+    ".graphify/graph.json": "50cd15a16842964c60f8b43914eca8d8e2d4a2a26a126391fa4bc23887fbed06",
+    ".graphify/GRAPH_REPORT.md": "c34bd4c028f7f803ed69c6a049f4e2c46b59053348f9bcec46152fc4ccd9728d",
+    ".graphify/.graphify_detect.json": "d411ae2f947a801044e3143e2a6166e1c92adf831e5c9f5493ce3233abe80c00",
+    ".graphify/branch.json": "c408aba0a19d6dc4a24e70aab5d353f4178e0024217fa9cb65b850076beeed97"
+  },
+  "log_sha256": "6eec3b363277bd827c846b8fd54cf5b1e4e435f1dddb297176be1bf2934926af",
+  "limitation": "committed monorepo corpus; untracked local implementation and evidence harnesses excluded; not semantic security certification"
+}

@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-15 America/Bogota",
+  "scope": "Sanitized public storefront/catalog/media metadata and anonymous screenshots plus mocked/static diagnostics; no secrets or private customer DB/media. Source files unchanged.",
+  "canonical_report": {
+    "path": "../../LA_GAVIOTA_PRODUCTION_READINESS_AUDIT_AND_ROADMAP.md",
+    "sha256": "d2ff0db856ff2de1629f8347a4b8a1618387899f1d8dc488082ec24be7aca350"
+  },
+  "artifacts": [
+    {
+      "file": "asset-summary.json",
+      "bytes": 12404,
+      "sha256": "41329d7f41189429bba2aabd3a941bd8198949e4a3d05d4dbdce19071feeeaa5"
+    },
+    {
+      "file": "browser-summary.json",
+      "bytes": 21465,
+      "sha256": "cbf142c46b157dcacbcb5194ecafee8a8840b8503e4b70f2fe41f0c5306f62db"
+    },
+    {
+      "file": "commerce-isolated.json",
+      "bytes": 1386,
+      "sha256": "86523399f34362e320ebde4a0cd04a6804431366fba09a3fa981e5809766053d"
+    },
+    {
+      "file": "desktop--nosotros.png",
+      "bytes": 49333,
+      "sha256": "839e17c7941f8e2c30c86f359af7e130af4a7e2eb9997f071741c4d2717e0fff"
+    },
+    {
+      "file": "execution-plan.json",
+      "bytes": 1008,
+      "sha256": "6bd58c875f7f4e14b5dd7db54f183a4850ae162d2b065e0033446dbf5ff47d4a"
+    },
+    {
+      "file": "home-1440.png",
+      "bytes": 466182,
+      "sha256": "1c80c0b7ccd092d8eb4ca7ca419dbcf5313a732260dfd2ac4c003e8e3198cb45"
+    },
+    {
+      "file": "home-360.png",
+      "bytes": 112665,
+      "sha256": "0690d5b5504adbea965f6999abb580ad81f3ec97da3552ac9914b10a6e0ee0b9"
+    },
+    {
+      "file": "home-768.png",
+      "bytes": 182160,
+      "sha256": "4b54c585a124964ae60f129ac1e405cd1058185c6c71a804ac49647dd68e1bf2"
+    },
+    {
+      "file": "local-asset-inventory.json",
+      "bytes": 72311,
+      "sha256": "b739c810377a1d5afa00ff599fa248e594aee3f696e854a640ba5adf119dca39"
+    },
+    {
+      "file": "lock-consistency.json",
+      "bytes": 901,
+      "sha256": "538e2af0155a4316f465998b089e5c7967bdc365d44557927bd84bba442103d8"
+    },
+    {
+      "file": "menu-390.png",
+      "bytes": 48839,
+      "sha256": "ace11e24c134ec75eb1a265aaca637bd7731079ca395d5c08bfc7aaee5fc4f16"
+    },
+    {
+      "file": "photography-contact-sheet.json",
+      "bytes": 2264,
+      "sha256": "25130701e76cc97f9201f9259d85201d8fd58c041e47f4856a4149adbc0fd15c"
+    },
+    {
+      "file": "photography-contact-sheet.png",
+      "bytes": 916239,
+      "sha256": "cbb542973c53b1684635f896b352c0900472252cef8c8dc49e3eb073fd1b94b7"
+    },
+    {
+      "file": "public-asset-http.json",
+      "bytes": 2949,
+      "sha256": "6ce18602284c344cc2ede84c71aeab2d914c77b6c9df5c60680e3c7575f92491"
+    },
+    {
+      "file": "public-image-health-summary.json",
+      "bytes": 1000,
+      "sha256": "dc5fcc2dd2b4135d4b4abe25d931f190e3cc856351025aea1fec82134b219e60"
+    },
+    {
+      "file": "public-product-image-inventory.json",
+      "bytes": 136221,
+      "sha256": "389247816302a9f68dd17796f653d223f324c2d75857599b0d51353c326b5866"
+    },
+    {
+      "file": "public-product-image-summary.json",
+      "bytes": 439,
+      "sha256": "f9a0055e5b03ea99cf97e5bd25653d2771bf32a9b90baca729cc615f24a74580"
+    },
+    {
+      "file": "quality-summary.json",
+      "bytes": 26145,
+      "sha256": "c164dc9b024c0759c2136ef75f1d0cbca3c63fef408cd2f67ae44016c5c5b8fb"
+    },
+    {
+      "file": "source-preservation.json",
+      "bytes": 37806,
+      "sha256": "3b71dcf519f2e14d3f81e8f826a689625e3c3af469b976db1c166a224df5c0dc"
+    }
+  ]
+}

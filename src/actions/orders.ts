@@ -1,11 +1,12 @@
 'use server';
+import { requireCapability, getActor, hasCapability, assertTargetId } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-import { createClient } from '@supabase/supabase-js';
+
+
 import { revalidatePath } from 'next/cache';
+import { logAdminAction } from '@/src/lib/audit';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface OrderItem {
   id: string;
@@ -27,6 +28,8 @@ export interface Order {
   total_amount: number;
   status: 'Pago Pendiente' | 'Pendiente' | 'En Preparación' | 'En Ruta' | 'Entregado' | 'Cancelado' | 'ARCHIVED_DELIVERED';
   payment_method: string;
+  payment_status?: string | null;
+  idempotency_key?: string | null;
   notes: string | null;
   created_at: string;
   scheduled_delivery_date?: string;
@@ -36,6 +39,9 @@ export interface Order {
 }
 
 export async function getLiveOperationalOrders(): Promise<Order[]> {
+  const actor = await requireCapability('orders.manage');
+  const supabase = getServerDatabase(actor);
+
   const today = new Date().toISOString().split('T')[0];
 
   const [{ data: ordersData, error }, { data: ledgersData }] = await Promise.all([
@@ -66,11 +72,14 @@ export async function getLiveOperationalOrders(): Promise<Order[]> {
 }
 
 export async function fetchOrderById(orderId: string): Promise<Order | null> {
-  const { data, error } = await supabase
-    .from('orders')
-    .select('*, order_items(*)')
-    .eq('id', orderId)
-    .single();
+  const actor = await getActor();
+  if (!actor.userId) throw new Error('UNAUTHORIZED');
+  assertTargetId(orderId);
+  const supabase = getServerDatabase(actor);
+
+  let query = supabase.from('orders').select('*, order_items(*)').eq('id', orderId);
+  if (!hasCapability(actor, 'orders.manage')) query = query.eq('clerk_user_id', actor.userId);
+  const { data, error } = await query.single();
 
   if (error) {
     console.error('Error fetching order by id:', error);
@@ -80,6 +89,10 @@ export async function fetchOrderById(orderId: string): Promise<Order | null> {
 }
 
 export async function updateOrderStatus(orderId: string, newStatus: Order['status']) {
+  const actor = await requireCapability('orders.manage');
+  const supabase = getServerDatabase(actor);
+  assertTargetId(orderId);
+
   const { error } = await supabase
     .from('orders')
     .update({ status: newStatus, updated_at: new Date().toISOString() })
@@ -90,67 +103,18 @@ export async function updateOrderStatus(orderId: string, newStatus: Order['statu
     throw new Error('Failed to update order status');
   }
 
+  await logAdminAction('ORDERS', 'UPDATE_STATUS', `Orden ${orderId} actualizada a ${newStatus}`, orderId);
+
   revalidatePath('/admin/orders');
   revalidatePath('/admin'); // Revalidate dashboard stats
   return { success: true };
 }
 
-export async function createOrder(orderData: Omit<Order, 'id' | 'created_at' | 'order_items'>, items: Omit<OrderItem, 'id' | 'order_id'>[], incrementLTV: boolean = false) {
-  // 1. Insert order
-  const { data: order, error: orderError } = await supabase
-    .from('orders')
-    .insert(orderData)
-    .select()
-    .single();
 
-  if (orderError) {
-    console.error('Error creating order:', orderError);
-    throw new Error('Failed to create order');
-  }
-
-  // 2. Insert order items
-  const itemsWithOrderId = items.map(item => ({
-    ...item,
-    order_id: order.id
-  }));
-
-  const { error: itemsError } = await supabase
-    .from('order_items')
-    .insert(itemsWithOrderId);
-
-  if (itemsError) {
-    console.error('Error creating order items:', itemsError);
-    throw new Error('Failed to create order items');
-  }
-
-  // 3. Update customer stats if requested (Two-Phase Commit for Wompi)
-  if (incrementLTV && orderData.clerk_user_id) {
-    const { data: customer } = await supabase
-      .from('customers')
-      .select('total_orders, total_spent')
-      .eq('clerk_user_id', orderData.clerk_user_id)
-      .single();
-
-    await supabase
-      .from('customers')
-      .upsert({
-        clerk_user_id: orderData.clerk_user_id,
-        full_name: orderData.customer_name,
-        email: orderData.customer_email,
-        phone: orderData.customer_phone,
-        address: orderData.delivery_address,
-        total_orders: (customer?.total_orders || 0) + 1,
-        total_spent: (customer?.total_spent || 0) + orderData.total_amount,
-        last_order_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      });
-  }
-
-  revalidatePath('/admin/orders');
-  revalidatePath('/admin/clientes');
-  return { success: true, orderId: order.id };
-}
 export async function fetchOrderConsolidation(statuses: string[] = ['Pendiente', 'En Preparación']) {
+  const actor = await requireCapability('orders.manage');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase
     .from('order_items')
     .select(`
@@ -204,6 +168,10 @@ export async function fetchOrderConsolidation(statuses: string[] = ['Pendiente',
 }
 
 export async function flagOrderConflict(orderId: string, reason: string) {
+  const actor = await requireCapability('orders.manage');
+  assertTargetId(orderId);
+  const supabase = getServerDatabase(actor);
+
   const { error } = await supabase
     .from('orders')
     .update({ 
@@ -223,6 +191,10 @@ export async function flagOrderConflict(orderId: string, reason: string) {
 }
 
 export async function cancelAndRefundOrder(orderId: string, reason: string) {
+  const actor = await requireCapability('payments.manage');
+  assertTargetId(orderId);
+  const supabase = getServerDatabase(actor);
+
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .select('total_amount, clerk_user_id')
@@ -274,6 +246,10 @@ export async function cancelAndRefundOrder(orderId: string, reason: string) {
 }
 
 export async function confirmCashPayment(orderId: string) {
+  const actor = await requireCapability('payments.manage');
+  assertTargetId(orderId);
+  const supabase = getServerDatabase(actor);
+
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .select('total_amount, clerk_user_id, payment_method, notes')
@@ -328,6 +304,10 @@ export async function confirmCashPayment(orderId: string) {
 }
 
 export async function closeOperationalDay(date: string, userId: string) {
+  void userId; // Legacy call signature retained; attribution uses the issued actor.
+  const actor = await requireCapability('payments.manage');
+  const supabase = getServerDatabase(actor);
+
   // 1. Fetch active orders and closed ledgers
   const [{ data: activeOrdersRaw, error: fetchError }, { data: ledgersData }] = await Promise.all([
     supabase
@@ -423,7 +403,7 @@ export async function closeOperationalDay(date: string, userId: string) {
             operational_date: opDate,
             total_orders_processed: metrics.orders,
             total_revenue_collected: metrics.revenue,
-            closed_by_user: userId
+            closed_by_user: actor.userId
           });
           
         if (insertError) throw new Error(`Failed to insert ledger for ${opDate}`);
@@ -435,6 +415,9 @@ export async function closeOperationalDay(date: string, userId: string) {
   return { success: true, postponedCount: conflictedOrders.length, archivedCount: deliveredOrders.length };
 }
 export async function getHistoricLedgers() {
+  const actor = await requireCapability('reports.read');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase
     .from('daily_operational_ledgers')
     .select('*')
@@ -448,6 +431,9 @@ export async function getHistoricLedgers() {
 }
 
 export async function fetchHistoricOrdersByDate(date: string): Promise<Order[]> {
+  const actor = await requireCapability('reports.read');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase
     .from('orders')
     .select('*, order_items(*)')

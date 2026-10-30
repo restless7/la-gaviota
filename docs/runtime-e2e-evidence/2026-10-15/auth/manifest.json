@@ -1,0 +1,46 @@
+{
+  "scope": "AUTH_RUNTIME_E2E_SANITIZED_EVIDENCE_ONLY",
+  "sourceStatus": "No app source edits by auth QA",
+  "files": {
+    "NOTES.md": {
+      "bytes": 1284,
+      "sha256": "9bb63b1c3b09bc69aeaa82498bc1f8dc7d14cf38d437ce2cc4544be0459d1219"
+    },
+    "anonymous-browser-results.json": {
+      "bytes": 2118,
+      "sha256": "02feedcec362e073ba5470b6f3a8809ba4e36ef28d6a7d82783cc620d2f1c2a5"
+    },
+    "anonymous-http-initial-protocol-diagnostic.json": {
+      "bytes": 3323,
+      "sha256": "3480f313dd70a0176d6e25a82549a5669b9305a847d6739d7bdd0e8dea38b6c7"
+    },
+    "anonymous-page-get-results.json": {
+      "bytes": 3537,
+      "sha256": "7701bf4069410845a3d87950e842039bdede82138cd62b996e8ad103b64d50d2"
+    },
+    "auth-track-summary.json": {
+      "bytes": 6204,
+      "sha256": "b8ebe2c06272d2536297ed3e8e17b068791147e437f78d190619e5b2a6e36016"
+    },
+    "current-source-hashes.json": {
+      "bytes": 799,
+      "sha256": "9d5080f04ce422b30f9a57b32aa88d5f42af0a8f52748a97db4663a0eeeee254"
+    },
+    "independent-context-results.json": {
+      "bytes": 2421,
+      "sha256": "afb302c5df6d76d54249933e3867838e12d1a3aaa28c63bc8c393de5174199c2"
+    },
+    "independent-extra-results.json": {
+      "bytes": 1364,
+      "sha256": "b5327488573ae124f668a5ac8d27781ae424748b2cfe5324cdd20193765d7784"
+    },
+    "reproduce-auth-context.cjs": {
+      "bytes": 15544,
+      "sha256": "2e00935d872b2b14123b822127fd4346a653a3654c1dd52114c5c43b0fbec0f5"
+    },
+    "reproduce-auth-edges.cjs": {
+      "bytes": 15425,
+      "sha256": "d75151233bf1410ede5b22266f32ea82084751d1b0eea90e49505c935aec0881"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "observedUTC": "2026-10-15T20:15:39.882957+00:00",
+  "realTransport": true,
+  "privateInputs": "root-generated synthetic-service-env.json and postgrest.conf consumed privately; never copied",
+  "implementation": "Python3 standard-library real HTTP; no Supabase SDK claimed",
+  "sourceFixture": "docs/runtime-e2e-authorized-evidence/2026-10-15/database/seed-stable.sql",
+  "sourceFixtureSha256": "c2acea05f27befc91459cfadd412680fe3c0e293f024b931c6b9eb23f31c7c11",
+  "endpointAllowlist": [
+    "http://127.0.0.1:47776/rest/v1"
+  ],
+  "requests": 14,
+  "positiveDML": 0,
+  "servicesOwnedByAgent": 0,
+  "cleanupOwner": "root; tests finished, no process started by payments agent"
+}

@@ -1,0 +1,14 @@
+{
+  "exitcode": 0,
+  "stdout": "",
+  "stderr": "",
+  "patch_sha256": "910b8fce50bc87dfa269a22969e463c52563eadd7ceb0dd7b58b7db6e852c3d1",
+  "baseline_files": 47,
+  "before_after_identical": true,
+  "original_source_untouched": true,
+  "no_git_no_env_no_dependencies": true,
+  "final_manifest_count": 53,
+  "overlay_hashes_all_match": true,
+  "harness_hash_matches_author": true,
+  "harness_sha256": "b49f79c73a7a41cf03e4d450d7aa61dae78e8e5a96b9887a9f31edbe953f49bb"
+}

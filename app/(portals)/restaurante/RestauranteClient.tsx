@@ -7,12 +7,6 @@ import { useCart } from '@/src/contexts/CartContext';
 import { initializeWompiBalancePayment } from '@/src/actions/wompi';
 import Script from 'next/script';
 
-declare global {
-  interface Window {
-    WidgetCheckout: any;
-  }
-}
-
 export default function RestauranteClient({ 
   wholesalePicks, 
   monthlySpend, 
@@ -27,6 +21,11 @@ export default function RestauranteClient({
   const { addToCart } = useCart();
 
   const handlePayWithWompi = async () => {
+    const Widget = window.WidgetCheckout;
+    if (!process.env.NEXT_PUBLIC_WOMPI_PUB_KEY || !Widget) {
+      alert('El pago en línea no está disponible en este momento.');
+      return;
+    }
     // Redirect to Bold / Wompi integration with the balance
     // In our ecosystem, we have the Wompi payment flow.
     const amount = creditProfile?.credit_balance || 0;
@@ -37,7 +36,7 @@ export default function RestauranteClient({
     
     try {
       const wompiData = await initializeWompiBalancePayment(amount);
-      const widget = new window.WidgetCheckout({
+      const widget = new Widget({
         currency: wompiData.currency,
         amountInCents: wompiData.amountInCents,
         reference: wompiData.reference,
@@ -46,13 +45,12 @@ export default function RestauranteClient({
         customerData: wompiData.customerData
       });
 
-      widget.open((result: any) => {
-        const transaction = result.transaction;
-        if (transaction.status === 'APPROVED') {
-           alert(`¡Pago de saldo aprobado! Referencia #${wompiData.reference}.`);
-           // Here we could trigger a revalidation or redirect
+      widget.open((result) => {
+        const status = result.transaction?.status;
+        if (status === 'APPROVED' || status === 'PENDING') {
+           alert(`Respuesta de pago recibida. Verifica la confirmación de tu saldo en Mi Portal. Referencia #${wompiData.reference}.`);
         } else {
-           alert(`El pago no fue aprobado. Estado: ${transaction.status}.`);
+           alert('El pago no se completó. Revisa el estado antes de reintentar.');
         }
       });
     } catch (error) {
@@ -76,7 +74,7 @@ export default function RestauranteClient({
 
   return (
     <div className="animate-fade-in">
-      <Script src="https://checkout.wompi.co/widget.js" strategy="lazyOnload" />
+      {process.env.NEXT_PUBLIC_WOMPI_PUB_KEY && <Script src="https://checkout.wompi.co/widget.js" strategy="lazyOnload" />}
       {/* Welcome & Wholesale Banner Premium UI */}
       <div className="w-full relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl mb-12 flex flex-col md:flex-row min-h-[400px] lg:min-h-[450px]">
         <div className="absolute inset-0 md:w-1/2 right-0 left-auto z-0 h-64 md:h-full">
@@ -111,7 +109,7 @@ export default function RestauranteClient({
             <span className="text-2xl font-black text-slate-800 mt-2">{templates.length} Activas</span>
          </div>
          <button onClick={handlePayWithWompi} className="bg-[#1C2059] hover:bg-[#151842] text-white p-5 rounded-2xl shadow-sm flex items-center justify-between group transition-colors">
-            <span className="font-bold text-lg">Pagar Saldo <br/>con Bold</span>
+            <span className="font-bold text-lg">Pagar Saldo <br/>con Wompi</span>
             <span className="text-3xl group-hover:translate-x-2 transition-transform">→</span>
          </button>
       </div>

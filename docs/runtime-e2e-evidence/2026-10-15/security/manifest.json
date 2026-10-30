@@ -1,0 +1,18 @@
+{
+  "SECURITY_GATE.md": "54c8be7688f233432cab90d27ff8b74e594ed6d89d4e5da86f7a13f9887e284d",
+  "current-client-source-inventory.json": "787bfc0332332e2ba4171e89e21350855adf97fb4d7afc2c2cd5bc7722a374c4",
+  "guard-media-model.cjs": "38fcea6d0496af461302a2b206e8a5c946adc8475346230f2ce5e65b500337d0",
+  "guard-media-results.json": "f4442737b52a42d4eee24688e7b474876c2cf4d36d086e7c4cca1d68c4a9da60",
+  "metadata-attestation.sql.txt": "8ebabe07d92ff9612d32547c411ee044679c6bbda02c609ffb0f037edb3b1dfd",
+  "replay-owned-cluster.py": "2c54e7c6406cf7decd83b0c18893defcb896e50735c8e7ffaaa6a8201621a71b",
+  "security-summary.json": "1b33912306abbd4a62656cc9111a296a88037d8f01958abff8cd6231e41eb4ce",
+  "sql-cleanup.json": "5a4e3e29e901d647b1feab0d09ffaa8e4e233cd1ed17b76176219ebfb5dfced6",
+  "sql-model/fixture.sql": "018c98ae260d2ce4be0eeed798811c0ef3ca27f1f93895cd4e34d55f836528c9",
+  "sql-model/proposal-reference.txt": "ffa6efecc93dcfbbf07416373373e73db69db687f18b963a77043947f2765b40",
+  "sql-model/provenance.json": "91924f5b1d4ee6db02626f94159de5f3175f50ed790e0a7e1157c60f3f027738",
+  "sql-model/run-runtime-model.py": "3737e9844293bf3d6a4827ddb67887d89a17b83fb529d4a930b9232a14f6f460",
+  "sql-model/schema-coverage.json": "d6b842783a4533b14f09d083c1df935dd667c2bbc404fe73cee53bfd1f78d313",
+  "sql-model/storage-stub.sql": "47c79f48150f2997b4bc40b669e3cb44cd0b536885aeec2cbf287d763c2fa452",
+  "sql-model-results.json": "262f61e5f3bbe5fbe3060b8aaed039707ca14954283ed4315f89be68aae7fd65",
+  "sql-model-summary.json": "6c21d952f2a69b455ca949e2c40b18c807f9dd2bf73f7c6e0c65421180e89bef"
+}

@@ -1,0 +1,197 @@
+{
+  "classification": "STATIC_CURRENT_WORKTREE_CALLSITE_COUNTS_NOT_REACHABILITY",
+  "files": [
+    {
+      "path": "app/admin/marketing/page.tsx",
+      "sha256": "f8a3c4af63b5616db1359c6c1d3c5f1997a08057691fdaa4b854e6d6a292193f",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "app/admin/orders/OrderKanbanBoard.tsx",
+      "sha256": "9c3124967a40ec8b5e26fe53a1217ae113790c3da7743fbd13468ed6e9893575",
+      "serverClientCalls": 0,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 1,
+      "storageCalls": 0
+    },
+    {
+      "path": "app/api/marketing/loyalty/reorder/route.ts",
+      "sha256": "a284a05f7bc6dc11746186b96e81a4a0f3ed01cd7acbfdc258fd9899cdc5a8f2",
+      "serverClientCalls": 0,
+      "schedulerClientCalls": 1,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "app/api/marketing/abandoned-cart/trigger/route.ts",
+      "sha256": "d87c3ae53698cc9cb94f4c484ba37903adb815b6389ed1f641a9a20aeedfd8f7",
+      "serverClientCalls": 0,
+      "schedulerClientCalls": 1,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "app/api/marketing/abandoned-cart/sync/route.ts",
+      "sha256": "e9b04f16078f8adf7534fcc0785bce6a828241ffb38a419013b352b4051841db",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "app/api/webhooks/wompi/route.ts",
+      "sha256": "6196efce9b86f25289646ed90dcb5c3f4836449d9d3deca79370095dac619ba7",
+      "serverClientCalls": 0,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 1,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/b2b.ts",
+      "sha256": "bca589e68e3f5405d3da1744b8cf374735138ec98c131c7ec4cddcef5e2d3498",
+      "serverClientCalls": 5,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/kits.ts",
+      "sha256": "8efef6abf5a552243d13ee47cca2b9b356d20ce62d59d091de7d4bc6e15258d0",
+      "serverClientCalls": 2,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/audit.ts",
+      "sha256": "b7cbe1d4019c6d7fa762c41043bf27848b0f367f4eee919d01ffe6b3f7a7bb37",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/analytics.ts",
+      "sha256": "fc95a99b8dde7b37978c69de4f04a3f04f43c99bc702a2fd787b86c3400df3c8",
+      "serverClientCalls": 5,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/products.ts",
+      "sha256": "bbe908054e505daa160911d01d0af17dfd8ec589e8e8430b3ad520f27b150c20",
+      "serverClientCalls": 10,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 1,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/businessApplications.ts",
+      "sha256": "d6a35db102943047d2d3a17816d50299af0bb93a11061f20653039d30cdd7147",
+      "serverClientCalls": 4,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/customers.ts",
+      "sha256": "926663a523c63c042c81297c3f67e62a2327adea3ac6db7c0f724b05d269cfe4",
+      "serverClientCalls": 3,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/suppliers.ts",
+      "sha256": "c305590af5f6794d213a740e8261760512e46c1dfc63f075d16980832d664fdf",
+      "serverClientCalls": 4,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/orders.ts",
+      "sha256": "47999d46a2fe09df4aea74b1a59855fe71c27c4d13b4c0faa74205371bea2f81",
+      "serverClientCalls": 10,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/settings.ts",
+      "sha256": "605dc760d4c298a8d99b79af685e0919eec622d15fc69088988b2528a68a458e",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/systemSettings.ts",
+      "sha256": "d7ad2c98020a7937ecba76726427548b5fbb4bcfe5a02ed9ce28f80acce4a959",
+      "serverClientCalls": 2,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/dashboard.ts",
+      "sha256": "7c1fa96adad8e91b38312ce7cc9fa21245b84c32221a8aadc792985904dba30a",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/actions/media.ts",
+      "sha256": "4b378ed0140f1c36e60241933461a9d99bbcdd033f1bbea026098ce4b0cd24b5",
+      "serverClientCalls": 3,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 3
+    },
+    {
+      "path": "src/lib/audit.ts",
+      "sha256": "1a2887e8a1166c720036f101d1d6cb2531efc5872428442f01aa0d14943f6729",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/components/portals/CustomerOrderHistory.tsx",
+      "sha256": "2c9efc2796a731315e31112cb8ab2930cbac83e968efbb23ed141ff13ec25df9",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/lib/server/orderWriter.ts",
+      "sha256": "10f9f48aa5767e940010fbe09370a809ad2d578fbbe9b7f853dfb8ebd5198187",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/lib/server/database.ts",
+      "sha256": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 1,
+      "rawClientCalls": 2,
+      "storageCalls": 0
+    },
+    {
+      "path": "src/lib/server/checkout.ts",
+      "sha256": "dcdbf4ebb52b7589ae5f2adaaa9a58fc26753cc1fe19f718bbc84f710f5bd4c8",
+      "serverClientCalls": 1,
+      "schedulerClientCalls": 0,
+      "rawClientCalls": 0,
+      "storageCalls": 0
+    }
+  ]
+}

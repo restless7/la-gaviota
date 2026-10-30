@@ -1,0 +1,98 @@
+{
+  "layer": "ACTUAL_LOCAL_NEXT_ANONYMOUS_BROWSER;NO_LOGIN_OR_SUBMISSION",
+  "startedAt": "2026-10-15T18:54:22.508Z",
+  "cases": [
+    {
+      "route": "/sign-in",
+      "final": {
+        "local": true,
+        "path": "/sign-in"
+      },
+      "http": 200,
+      "localBrandShell": true,
+      "signInRoot": false,
+      "signUpRoot": false,
+      "visibleAuthInputs": 0,
+      "status": "PASS_ANONYMOUS_GATE_OR_AUTH_PAGE"
+    },
+    {
+      "route": "/dashboard",
+      "final": {
+        "local": true,
+        "path": "/sign-in"
+      },
+      "http": 200,
+      "localBrandShell": true,
+      "signInRoot": false,
+      "signUpRoot": false,
+      "visibleAuthInputs": 0,
+      "status": "PASS_ANONYMOUS_GATE_OR_AUTH_PAGE"
+    },
+    {
+      "route": "/admin",
+      "final": {
+        "local": true,
+        "path": "/sign-in"
+      },
+      "http": 200,
+      "localBrandShell": true,
+      "signInRoot": true,
+      "signUpRoot": false,
+      "visibleAuthInputs": 2,
+      "status": "PASS_ANONYMOUS_GATE_OR_AUTH_PAGE"
+    },
+    {
+      "route": "/sign-up",
+      "final": {
+        "local": true,
+        "path": "/sign-up"
+      },
+      "http": 200,
+      "localBrandShell": true,
+      "signInRoot": false,
+      "signUpRoot": true,
+      "visibleAuthInputs": 2,
+      "status": "PASS_ANONYMOUS_GATE_OR_AUTH_PAGE"
+    }
+  ],
+  "blockedWrites": [
+    {
+      "method": "POST",
+      "path": "/api/marketing/abandoned-cart/sync",
+      "provider": "LOCAL"
+    },
+    {
+      "method": "POST",
+      "path": "/sign-in",
+      "provider": "LOCAL"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/environment",
+      "provider": "CLERK"
+    },
+    {
+      "method": "POST",
+      "path": "/sign-in",
+      "provider": "LOCAL"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/environment",
+      "provider": "CLERK"
+    },
+    {
+      "method": "POST",
+      "path": "/sign-up",
+      "provider": "LOCAL"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/environment",
+      "provider": "CLERK"
+    }
+  ],
+  "pageErrors": [],
+  "browserClosed": true,
+  "endedAt": "2026-10-15T18:54:27.888Z"
+}

@@ -1,0 +1,55 @@
+{
+  "timestamp_utc": "2026-10-15T14:39:24.552044+00:00",
+  "command": [
+    "/usr/bin/unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "--",
+    "/usr/bin/strace",
+    "-f",
+    "-e",
+    "trace=network",
+    "-o",
+    "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/runtime/build-network.strace",
+    "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/node",
+    "/tmp/la-gaviota-lg-r1c-20261015/application/node_modules/next/dist/bin/next",
+    "build"
+  ],
+  "environment": {
+    "PATH": "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin:/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "CI": "1",
+    "NODE_ENV": "production",
+    "NEXT_TELEMETRY_DISABLED": "1",
+    "NEXT_PUBLIC_CLERK_KEYLESS_DISABLED": "true",
+    "NEXT_PUBLIC_CLERK_TELEMETRY_DISABLED": "true"
+  },
+  "credentials_supplied": false,
+  "kernel_isolation": "new user+network namespace; no network interfaces except down loopback/no routes; strace captures network calls",
+  "exitcode": 1,
+  "stop_reason": null,
+  "elapsed_seconds": 26.071,
+  "resources_before": {
+    "root_free": 3676594176,
+    "tmp_free": 14264446976,
+    "mem_available": 12112097280
+  },
+  "observed_minima": {
+    "root_free": 3675922432,
+    "tmp_free": 14142640128,
+    "mem_available": 10202521600
+  },
+  "tracked_count": 366,
+  "tracked_generated_changes": [],
+  "tracked_restored_identical": true,
+  "stdout_sha256": "f8900f653c038bd3278f529cea28290d2d4ad0cd1357d50acd15083f270f02a4",
+  "stderr_sha256": "623a6588fd840ad01f4687da72aabf1bdf3bd8a2612c8074cd60785856f7d7f1",
+  "network_log_sha256": "0d6bd930d8868b653be4aa4e67fa6c7377d2924f40bba7ec00b80e61e58ef97d",
+  "status": "BLOCKED_OR_FAILURE_REQUIRES_LOG_REVIEW",
+  "not_proven": [
+    "Real Clerk authentication",
+    "Supabase gateway/RLS/Storage",
+    "HTTP/customer/admin/checkout workflows"
+  ]
+}

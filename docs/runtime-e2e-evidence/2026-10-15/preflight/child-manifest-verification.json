@@ -1,0 +1,20 @@
+[
+  {
+    "track": "auth",
+    "manifest_sha256": "54fcf94782b47ecbaf6ba1c62117a4eebcb883f5faec76d74f580aea5b1db1b2",
+    "verified_files": 10,
+    "mismatches": []
+  },
+  {
+    "track": "security",
+    "manifest_sha256": "a53a10668de52e6f01083d568c6a3cd1a47155b60a14e5dbd398f0810fdd3fc9",
+    "verified_files": 16,
+    "mismatches": []
+  },
+  {
+    "track": "payments",
+    "manifest_sha256": "659002fffbe35f28e8cce5a09a7fa231f46764c26bf5bd77bd991792472602d4",
+    "verified_files": 13,
+    "mismatches": []
+  }
+]

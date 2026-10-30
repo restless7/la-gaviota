@@ -1,0 +1,482 @@
+{
+  "original_count": 59,
+  "original_actions": 54,
+  "original_routes": 5,
+  "candidate_count": 62,
+  "candidate_actions": 57,
+  "candidate_routes": 5,
+  "original_inventory_count": 59,
+  "original_missing_from_inventory": [],
+  "inventory_missing_from_original": [],
+  "added": [
+    "src/actions/media.ts:uploadCatalogMedia",
+    "src/actions/media.ts:replaceCatalogMedia",
+    "src/actions/media.ts:deleteCatalogMedia",
+    "src/actions/products.ts:fetchAdminProducts"
+  ],
+  "removed": [
+    "src/actions/orders.ts:createOrder"
+  ],
+  "candidate_surface": [
+    {
+      "file": "src/actions/analytics.ts",
+      "name": "getAdvancedFinancialSummary",
+      "line": 17,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/analytics.ts",
+      "name": "getSalesProjectionData",
+      "line": 104,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/analytics.ts",
+      "name": "getRealShrinkageMetrics",
+      "line": 147,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/analytics.ts",
+      "name": "logAgriculturalShrinkage",
+      "line": 186,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/analytics.ts",
+      "name": "fetchAllProducts",
+      "line": 206,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/audit.ts",
+      "name": "fetchAuditLogs",
+      "line": 26,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/b2b.ts",
+      "name": "getB2BProfile",
+      "line": 10,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/b2b.ts",
+      "name": "getBuyingTemplates",
+      "line": 25,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/b2b.ts",
+      "name": "getMonthlySpend",
+      "line": 40,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/b2b.ts",
+      "name": "getLastOrder",
+      "line": 62,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/b2b.ts",
+      "name": "getB2BOrders",
+      "line": 79,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/businessApplications.ts",
+      "name": "submitBusinessApplication",
+      "line": 11,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/businessApplications.ts",
+      "name": "fetchBusinessApplications",
+      "line": 61,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/businessApplications.ts",
+      "name": "approveApplication",
+      "line": 84,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/businessApplications.ts",
+      "name": "rejectApplication",
+      "line": 150,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/checkoutAction.ts",
+      "name": "submitCheckoutOrder",
+      "line": 14,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/customers.ts",
+      "name": "fetchCustomers",
+      "line": 29,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/customers.ts",
+      "name": "ensureCustomer",
+      "line": 52,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/customers.ts",
+      "name": "approveClientTier",
+      "line": 78,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/dashboard.ts",
+      "name": "fetchDashboardMetrics",
+      "line": 17,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/kits.ts",
+      "name": "createOrUpdateKit",
+      "line": 26,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/kits.ts",
+      "name": "fetchKits",
+      "line": 118,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/media.ts",
+      "name": "uploadCatalogMedia",
+      "line": 17,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/media.ts",
+      "name": "replaceCatalogMedia",
+      "line": 35,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/media.ts",
+      "name": "deleteCatalogMedia",
+      "line": 46,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "getLiveOperationalOrders",
+      "line": 38,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "fetchOrderById",
+      "line": 71,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "updateOrderStatus",
+      "line": 88,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "fetchOrderConsolidation",
+      "line": 109,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "flagOrderConflict",
+      "line": 165,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "cancelAndRefundOrder",
+      "line": 188,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "confirmCashPayment",
+      "line": 243,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "closeOperationalDay",
+      "line": 301,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "getHistoricLedgers",
+      "line": 412,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/orders.ts",
+      "name": "fetchHistoricOrdersByDate",
+      "line": 428,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "fetchAdminProducts",
+      "line": 37,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "updateProductStock",
+      "line": 109,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "updateProductSeasonStatus",
+      "line": 130,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "updateProductPricing",
+      "line": 150,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "updateProductPrices",
+      "line": 199,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "applyMacroMargins",
+      "line": 239,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "createProduct",
+      "line": 284,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "updateProduct",
+      "line": 341,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "deleteProduct",
+      "line": 405,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/products.ts",
+      "name": "fetchProducts",
+      "line": 440,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/settings.ts",
+      "name": "getInventorySettings",
+      "line": 13,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/settings.ts",
+      "name": "toggleInventoryTracking",
+      "line": 17,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/suppliers.ts",
+      "name": "fetchSuppliers",
+      "line": 22,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/suppliers.ts",
+      "name": "createSupplier",
+      "line": 39,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/suppliers.ts",
+      "name": "updateSupplierStatus",
+      "line": 58,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/suppliers.ts",
+      "name": "updateSupplier",
+      "line": 77,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/systemSettings.ts",
+      "name": "fetchSystemSettings",
+      "line": 37,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/systemSettings.ts",
+      "name": "updateSystemSettings",
+      "line": 79,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/users.ts",
+      "name": "fetchSystemUsers",
+      "line": 19,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/users.ts",
+      "name": "updateUserRoleAndTier",
+      "line": 46,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/wompi.ts",
+      "name": "initializeWompiTransaction",
+      "line": 12,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "src/actions/wompi.ts",
+      "name": "initializeWompiBalancePayment",
+      "line": 136,
+      "async": true,
+      "authority": "server-action"
+    },
+    {
+      "file": "app/api/marketing/abandoned-cart/sync/route.ts",
+      "name": "POST",
+      "line": 8,
+      "async": true,
+      "authority": "route-handler"
+    },
+    {
+      "file": "app/api/marketing/abandoned-cart/trigger/route.ts",
+      "name": "POST",
+      "line": 9,
+      "async": true,
+      "authority": "route-handler"
+    },
+    {
+      "file": "app/api/marketing/lead-capture/route.ts",
+      "name": "POST",
+      "line": 8,
+      "async": true,
+      "authority": "route-handler"
+    },
+    {
+      "file": "app/api/marketing/loyalty/reorder/route.ts",
+      "name": "POST",
+      "line": 8,
+      "async": true,
+      "authority": "route-handler"
+    },
+    {
+      "file": "app/api/webhooks/wompi/route.ts",
+      "name": "POST",
+      "line": 10,
+      "async": true,
+      "authority": "route-handler"
+    }
+  ],
+  "financial_token_comparison": [
+    {
+      "name": "submitCheckoutOrder",
+      "equal_after_explicit_authority_client_prefix_removed": false
+    },
+    {
+      "name": "initializeWompiTransaction",
+      "equal_after_explicit_authority_client_prefix_removed": true
+    },
+    {
+      "name": "initializeWompiBalancePayment",
+      "equal_after_explicit_authority_client_prefix_removed": true
+    },
+    {
+      "name": "cancelAndRefundOrder",
+      "equal_after_explicit_authority_client_prefix_removed": false
+    },
+    {
+      "name": "confirmCashPayment",
+      "equal_after_explicit_authority_client_prefix_removed": false
+    },
+    {
+      "name": "closeOperationalDay",
+      "equal_after_explicit_authority_client_prefix_removed": false
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 import React from 'react';
 import AdminDashboardClient from './AdminDashboardClient';
-import { fetchProducts } from '@/src/actions/products';
+import { fetchAdminProducts } from '@/src/actions/products';
 import { getLiveOperationalOrders as fetchOrders } from '@/src/actions/orders';
 
 import { fetchDashboardMetrics } from '@/src/actions/dashboard';
 
 export default async function AdminDashboardPage() {
   const [products, orders, metrics] = await Promise.all([
-    fetchProducts(),
+    fetchAdminProducts(),
     fetchOrders(),
     fetchDashboardMetrics()
   ]);

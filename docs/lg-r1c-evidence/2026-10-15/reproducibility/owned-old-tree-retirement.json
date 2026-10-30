@@ -1,0 +1,21 @@
+{
+  "path": "/tmp/la-gaviota-lg-r1b-20261015/candidate-final/node_modules",
+  "authorized_exact_owned_tree": true,
+  "manifest_hashes": {
+    "package.json": "7bcb5bf41cf599dffd487cb3c1032b1cb81350ace0e2f43bd009a0587b8e8c6b",
+    "package-lock.json": "1906288202e7b4c44e61659787ea3f9577ea9b37f7404098dd5c89b1c56b7157"
+  },
+  "no_active_process_refs": true,
+  "pre_resources": {
+    "root_free": 3681882112,
+    "tmp_free": 14282817536,
+    "memory_available": 11862360064
+  },
+  "old_hidden_lock_sha256": "001df502d56658d0b80cbeb163e5a7f2a328f7068530761c90da10f69cffee67",
+  "removed": true,
+  "post_resources": {
+    "root_free": 3681882112,
+    "tmp_free": 15363002368,
+    "memory_available": 13065379840
+  }
+}

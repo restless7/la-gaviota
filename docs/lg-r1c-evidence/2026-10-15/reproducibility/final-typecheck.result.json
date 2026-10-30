@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/home/sebastiangarcia/.nvm/versions/node/v24.13.0/bin/node",
+    "--require",
+    "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1c-20261015/reproducibility/deny-network.cjs",
+    "/tmp/la-gaviota-lg-r1c-20261015/application/node_modules/typescript/bin/tsc",
+    "--noEmit",
+    "--incremental",
+    "false",
+    "--pretty",
+    "false"
+  ],
+  "exitcode": 0,
+  "elapsed_s": 8.068,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "environment_keys": [
+    "CI",
+    "LANG",
+    "LG_R1B_IO_LOG",
+    "NEXT_TELEMETRY_DISABLED",
+    "PATH"
+  ]
+}

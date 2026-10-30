@@ -1,0 +1,46 @@
+{
+  "mode": "LG-R1B_AUTHORIZED_ISOLATED_RESUMPTION",
+  "known_parity_escalation_reviewed": true,
+  "baseline": "49add73ae90b837c36553a0f2b535267c9610143",
+  "stage": "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015",
+  "tasks": [
+    {
+      "id": "A",
+      "owner": "Freya/QA",
+      "task": "Preservation/isolation baseline",
+      "status": "done_preparation",
+      "production_approval": "NOT_GRANTED"
+    },
+    {
+      "id": "BC",
+      "owner": "ApplicationSecurity",
+      "task": "Full callable inventory/contracts/diffs/source tests",
+      "status": "done_preparation",
+      "production_approval": "NOT_GRANTED"
+    },
+    {
+      "id": "D",
+      "owner": "PostgreSQLSecurity",
+      "task": "Identity ADR/SQL proposal/real localPG integration",
+      "status": "done_preparation",
+      "production_approval": "NOT_GRANTED"
+    },
+    {
+      "id": "E",
+      "owner": "ReleaseEngineering",
+      "task": "Candidate lock/clean install/diagnostics/advisories",
+      "status": "done_preparation",
+      "production_approval": "NOT_GRANTED"
+    },
+    {
+      "id": "F",
+      "owner": "Freya/IndependentQA",
+      "task": "Independent proposal review/regression/final gate",
+      "status": "done_preparation",
+      "production_approval": "NOT_GRANTED"
+    }
+  ],
+  "remote_mission_control": "UNAVAILABLE",
+  "accounting": "Exact tokens/tier/cost unavailable",
+  "result": "ISOLATED_PREPARATION_COMPLETE; candidate/runtime quality PARTIAL; production NO-GO"
+}

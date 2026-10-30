@@ -1,0 +1,62 @@
+[
+  {
+    "package": "next@16.2.1",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"16.2.1\",\n  \"engines\": {\n    \"node\": \">=20.9.0\"\n  },\n  \"peerDependencies\": {\n    \"sass\": \"^1.3.0\",\n    \"react\": \"^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0\",\n    \"react-dom\": \"^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0\",\n    \"@playwright/test\": \"^1.51.1\",\n    \"@opentelemetry/api\": \"^1.1.0\",\n    \"babel-plugin-react-compiler\": \"*\"\n  },\n  \"dist.integrity\": \"sha512-VaChzNL7o9rbfdt60HUj8tev4m6d7iC1igAy157526+cJlXOQu5LzsBXNT+xaJnTP/k+utSX5vMv7m0G+zKH+Q==\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "package": "next@16.2.9",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"16.2.9\",\n  \"engines\": {\n    \"node\": \">=20.9.0\"\n  },\n  \"peerDependencies\": {\n    \"sass\": \"^1.3.0\",\n    \"react\": \"^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0\",\n    \"react-dom\": \"^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0\",\n    \"@playwright/test\": \"^1.51.1\",\n    \"@opentelemetry/api\": \"^1.1.0\",\n    \"babel-plugin-react-compiler\": \"*\"\n  },\n  \"dist.integrity\": \"sha512-MEOJiq/UvuezAdqVSceHbqDgZt1kDw2tpGVOlsdIoJsQdbN2JY2hpVG4xnXGkbdJUOEWhnRfiu/O4Hpc9Juwww==\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "package": "next@latest",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"16.4.1\",\n  \"engines\": {\n    \"node\": \">=20.9.0\"\n  },\n  \"peerDependencies\": {\n    \"sass\": \"^1.3.0\",\n    \"react\": \"^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0\",\n    \"react-dom\": \"^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0\",\n    \"@playwright/test\": \"^1.51.1\",\n    \"@opentelemetry/api\": \"^1.1.0\",\n    \"babel-plugin-react-compiler\": \"*\"\n  },\n  \"dist.integrity\": \"sha512-uc657V62E34fOI6W5NtG9IzwsPcms0Z60grz2MJGtglgD+pTFnNt4Yw2PzaU622tfX4vhrDgLZzicE2YlhI20Q==\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "package": "@clerk/nextjs@6.37.0",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"6.37.0\",\n  \"engines\": {\n    \"node\": \">=18.17.0\"\n  },\n  \"peerDependencies\": {\n    \"next\": \"^13.5.7 || ^14.2.25 || ^15.2.3 || ^16\",\n    \"react\": \"^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0\",\n    \"react-dom\": \"^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0\"\n  },\n  \"dist.integrity\": \"sha512-FezOmuvxjxYyopcBCAvkjDaMsI6IXk1t4BZgsD7sKZ7Hzs5slExERoao/KuvW4SlYtI6Nx6vYMvAh9bMKcBJ1Q==\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "package": "@clerk/localizations@4.6.2",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"4.6.2\",\n  \"engines\": {\n    \"node\": \">=20.9.0\"\n  },\n  \"dist.integrity\": \"sha512-wcA+BcXHJyoZWh7aRfSp56u3uSLHHDlBHLfJ86DoC8fCxwMkl4/njwjN8sahFm5fRN5gOkUd2qnxYwBHCLeDoQ==\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "package": "@supabase/supabase-js@2.106.2",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"2.106.2\",\n  \"engines\": {\n    \"node\": \">=20.0.0\"\n  },\n  \"dist.integrity\": \"sha512-2/RZ/1fmJx/MRSEDG2Xk8+J4JVk5clM9V0uSI6kUTrcS32KA89DtqI5RUOC9r6mzY3WBC9qexLjssIHjbLyVJA==\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "package": "@supabase/ssr@0.7.0",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"0.7.0\",\n  \"peerDependencies\": {\n    \"@supabase/supabase-js\": \"^2.43.4\"\n  },\n  \"dist.integrity\": \"sha512-G65t5EhLSJ5c8hTCcXifSL9Q/ZRXvqgXeNo+d3P56f4U1IxwTqjB64UfmfixvmMcjuxnq2yGqEWVJqUcO+AzAg==\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "package": "prisma@7.8.0",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"7.8.0\",\n  \"engines\": {\n    \"node\": \"^20.19 || ^22.12 || >=24.0\"\n  },\n  \"peerDependencies\": {\n    \"typescript\": \">=5.4.0\",\n    \"better-sqlite3\": \">=9.0.0\"\n  },\n  \"dist.integrity\": \"sha512-yfN4yrw7HV9kEJhoy1+jgah0jafEIQsf7uWouSsM8MvJtlubsk+kM7AIBWZ8+GJl74Yj3c+nbYqBkMOxtsZ3Lw==\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "package": "@prisma/client@7.8.0",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"7.8.0\",\n  \"engines\": {\n    \"node\": \"^20.19 || ^22.12 || >=24.0\"\n  },\n  \"peerDependencies\": {\n    \"prisma\": \"*\",\n    \"typescript\": \">=5.4.0\"\n  },\n  \"dist.integrity\": \"sha512-HFp3Dawv/3sU3JtlPha90IB+48lS7zHiH4LKZPjmcE8YH5P9DOXGPvo8dqOtO7MqLDd1p2hOWMcFlRT1DMblHw==\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "package": "eslint-config-next@16.2.1",
+    "exitcode": 0,
+    "stdout": "{\n  \"version\": \"16.2.1\",\n  \"peerDependencies\": {\n    \"eslint\": \">=9.0.0\",\n    \"typescript\": \">=3.3.1\"\n  },\n  \"dist.integrity\": \"sha512-qhabwjQZ1Mk53XzXvmogf8KQ0tG0CQXF0CZ56+2/lVhmObgmaqj7x5A1DSrWdZd3kwI7GTPGUjFne+krRxYmFg==\"\n}\n",
+    "stderr": ""
+  }
+]

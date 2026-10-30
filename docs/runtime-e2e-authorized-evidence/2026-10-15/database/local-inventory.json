@@ -1,0 +1,23 @@
+{
+  "scope": "LOCAL_TOOL_INVENTORY_NO_PRIVATE_CONFIG_VALUES_READ",
+  "supabaseCli": false,
+  "docker": {
+    "clientVersion": "28.5.2+dfsg4",
+    "existingDaemonAvailable": true,
+    "supabasePostgrestGoTrueImagesCached": 0,
+    "imagesPulled": 0,
+    "containersCreatedByThisAgent": 0
+  },
+  "postgresInstalled": [
+    "16",
+    "17",
+    "18"
+  ],
+  "postgresSelected": "18.6",
+  "knownSupabaseConfigOrProjectRefPresent": false,
+  "privateConfigValuesRead": false,
+  "classification": "Full Supabase local not selected: missing CLI/images and root disk budget; independent real PostgreSQL18 chosen. Root separately owns native PostgREST gateway.",
+  "rootFreeBytesAtPrecreation": 1905106944,
+  "tmpFreeBytesAtPrecreation": 14959177728,
+  "memAvailableKiBAtPrecreation": 11155504
+}

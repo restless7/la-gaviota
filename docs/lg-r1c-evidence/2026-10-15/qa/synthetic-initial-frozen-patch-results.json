@@ -1,0 +1,2192 @@
+{
+  "status": "PASS",
+  "mode": "IMPLEMENTED_CLONE_SOURCE_VM_MOCKS_NOT_HTTP_OR_PRODUCTION",
+  "node": "v24.13.0",
+  "total": 535,
+  "passed": 535,
+  "failed": 0,
+  "results": [
+    {
+      "name": "fixture rejects real service URL",
+      "status": "PASS"
+    },
+    {
+      "name": "fixture rejects secret/file reference",
+      "status": "PASS"
+    },
+    {
+      "name": "baseline role vulnerability reproduced only in mocks",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "getAdvancedFinancialSummary allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "getSalesProjectionData allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "getRealShrinkageMetrics allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "logAgriculturalShrinkage allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAllProducts allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchAuditLogs allow super",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchBusinessApplications allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchCustomers allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchDashboardMetrics allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "createOrUpdateKit allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchKits allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "getLiveOperationalOrders allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderConsolidation allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "closeOperationalDay allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "getHistoricLedgers allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchHistoricOrdersByDate allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductSeasonStatus allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPricing allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "applyMacroMargins allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "createProduct allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "toggleInventoryTracking allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSuppliers allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "createSupplier allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplier allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemSettings allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSystemSettings allow admin",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers allow super",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier deny legacytier",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier deny lowercase",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier allow super",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier denies ADMIN identity privilege",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchSystemUsers denies ADMIN identity privilege",
+      "status": "PASS"
+    },
+    {
+      "name": "approveApplication rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "rejectApplication rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "approveClientTier rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "updateOrderStatus rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "flagOrderConflict rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelAndRefundOrder rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "confirmCashPayment rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductStock rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProductPrices rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "updateProduct rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteProduct rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "updateSupplierStatus rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "updateUserRoleAndTier rejects invalid target",
+      "status": "PASS"
+    },
+    {
+      "name": "fresh actor revocation overrides stale SUPER_ADMIN claims",
+      "status": "PASS"
+    },
+    {
+      "name": "actor lookup failure denies before target",
+      "status": "PASS"
+    },
+    {
+      "name": "actual owned order read retail",
+      "status": "PASS"
+    },
+    {
+      "name": "actual owned order read newretail",
+      "status": "PASS"
+    },
+    {
+      "name": "actual owned order read micro",
+      "status": "PASS"
+    },
+    {
+      "name": "actual owned order read restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "actual cross-owner order query excludes row",
+      "status": "PASS"
+    },
+    {
+      "name": "actual admin order read preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "owned profile positive",
+      "status": "PASS"
+    },
+    {
+      "name": "profile cross-owner denied before DB",
+      "status": "PASS"
+    },
+    {
+      "name": "profile tier injection denied before DB",
+      "status": "PASS"
+    },
+    {
+      "name": "public-safe catalog actual output guest",
+      "status": "PASS"
+    },
+    {
+      "name": "public-safe catalog actual output retail",
+      "status": "PASS"
+    },
+    {
+      "name": "public-safe catalog actual output micro",
+      "status": "PASS"
+    },
+    {
+      "name": "public-safe catalog actual output restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "public-safe catalog actual output invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "admin typed catalog retains costs and tier fields",
+      "status": "PASS"
+    },
+    {
+      "name": "retail cannot call admin catalog projection",
+      "status": "PASS"
+    },
+    {
+      "name": "callable createOrder removed",
+      "status": "PASS"
+    },
+    {
+      "name": "private writer marker and no use server directive",
+      "status": "PASS"
+    },
+    {
+      "name": "internal owned writer positive; existing insert sequence retained",
+      "status": "PASS"
+    },
+    {
+      "name": "internal writer rejects forged owner",
+      "status": "PASS"
+    },
+    {
+      "name": "internal writer denies guest",
+      "status": "PASS"
+    },
+    {
+      "name": "app/api/marketing/abandoned-cart/trigger/route.ts secret denial undefined",
+      "status": "PASS"
+    },
+    {
+      "name": "app/api/marketing/abandoned-cart/trigger/route.ts secret denial Bearer invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "app/api/marketing/abandoned-cart/trigger/route.ts correct secret positive",
+      "status": "PASS"
+    },
+    {
+      "name": "app/api/marketing/loyalty/reorder/route.ts secret denial undefined",
+      "status": "PASS"
+    },
+    {
+      "name": "app/api/marketing/loyalty/reorder/route.ts secret denial Bearer invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "app/api/marketing/loyalty/reorder/route.ts correct secret positive",
+      "status": "PASS"
+    },
+    {
+      "name": "uploadCatalogMedia deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "uploadCatalogMedia deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "uploadCatalogMedia deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "uploadCatalogMedia deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "uploadCatalogMedia deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "uploadCatalogMedia deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "uploadCatalogMedia deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "replaceCatalogMedia deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "replaceCatalogMedia deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "replaceCatalogMedia deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "replaceCatalogMedia deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "replaceCatalogMedia deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "replaceCatalogMedia deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "replaceCatalogMedia deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteCatalogMedia deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteCatalogMedia deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteCatalogMedia deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteCatalogMedia deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteCatalogMedia deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteCatalogMedia deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "deleteCatalogMedia deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "media admin upload safe generated key",
+      "status": "PASS"
+    },
+    {
+      "name": "media admin replacement positive preserves old blob",
+      "status": "PASS"
+    },
+    {
+      "name": "media admin delete trusted managed reference",
+      "status": "PASS"
+    },
+    {
+      "name": "media reject arbitrary bucket before storage",
+      "status": "PASS"
+    },
+    {
+      "name": "media reject content signature before storage",
+      "status": "PASS"
+    },
+    {
+      "name": "media untrusted URL never deleted",
+      "status": "PASS"
+    },
+    {
+      "name": "media shared mapping never deleted",
+      "status": "PASS"
+    },
+    {
+      "name": "media upload failure prevents mapping update",
+      "status": "PASS"
+    },
+    {
+      "name": "public lead invalid injected field zero DB",
+      "status": "PASS"
+    },
+    {
+      "name": "public lead valid fixed projection positive",
+      "status": "PASS"
+    },
+    {
+      "name": "cart telemetry guest denied no DB",
+      "status": "PASS"
+    },
+    {
+      "name": "public inventory fixed boolean preserves true",
+      "status": "PASS"
+    },
+    {
+      "name": "public inventory setting failure does not default false",
+      "status": "PASS"
+    },
+    {
+      "name": "admin marketing page deny guest",
+      "status": "PASS"
+    },
+    {
+      "name": "admin marketing page deny retail",
+      "status": "PASS"
+    },
+    {
+      "name": "admin marketing page deny micro",
+      "status": "PASS"
+    },
+    {
+      "name": "admin marketing page deny restaurant",
+      "status": "PASS"
+    },
+    {
+      "name": "admin marketing page deny invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "admin marketing page deny commercial",
+      "status": "PASS"
+    },
+    {
+      "name": "admin marketing page deny operario",
+      "status": "PASS"
+    },
+    {
+      "name": "admin marketing page real server function positive",
+      "status": "PASS"
+    },
+    {
+      "name": "internal audit sink denial zero target guest",
+      "status": "PASS"
+    },
+    {
+      "name": "internal audit sink denial zero target retail",
+      "status": "PASS"
+    },
+    {
+      "name": "internal audit sink denial zero target invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "internal audit sink admin positive",
+      "status": "PASS"
+    },
+    {
+      "name": "getB2BProfile guest no private target",
+      "status": "PASS"
+    },
+    {
+      "name": "getB2BProfile authenticated owner constrained",
+      "status": "PASS"
+    },
+    {
+      "name": "getBuyingTemplates guest no private target",
+      "status": "PASS"
+    },
+    {
+      "name": "getBuyingTemplates authenticated owner constrained",
+      "status": "PASS"
+    },
+    {
+      "name": "getMonthlySpend guest no private target",
+      "status": "PASS"
+    },
+    {
+      "name": "getMonthlySpend authenticated owner constrained",
+      "status": "PASS"
+    },
+    {
+      "name": "getLastOrder guest no private target",
+      "status": "PASS"
+    },
+    {
+      "name": "getLastOrder authenticated owner constrained",
+      "status": "PASS"
+    },
+    {
+      "name": "getB2BOrders guest no private target",
+      "status": "PASS"
+    },
+    {
+      "name": "getB2BOrders authenticated owner constrained",
+      "status": "PASS"
+    },
+    {
+      "name": "actual CustomerOrderHistory owned query preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "actual CustomerOrderHistory cross owner excluded",
+      "status": "PASS"
+    },
+    {
+      "name": "actual cash checkout private writer flow preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "actual Wompi initialization private writer flow preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "submitCheckoutOrder guest no privileged target",
+      "status": "PASS"
+    },
+    {
+      "name": "initializeWompiTransaction guest no privileged target",
+      "status": "PASS"
+    },
+    {
+      "name": "initializeWompiBalancePayment guest no privileged target",
+      "status": "PASS"
+    },
+    {
+      "name": "balance signature invalid app actor denied",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy cart snapshot becomes ID quantity draft without cost",
+      "status": "PASS"
+    },
+    {
+      "name": "cart corrupt JSON fails explicitly",
+      "status": "PASS"
+    },
+    {
+      "name": "cart missing inactive or invalid price preserves rejected draft IDs",
+      "status": "PASS"
+    },
+    {
+      "name": "media file limit rejects oversized bytes before storage",
+      "status": "PASS"
+    },
+    {
+      "name": "entitled previous null never becomes retail markdown",
+      "status": "PASS"
+    },
+    {
+      "name": "missing entitled price row fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "role mutation invalid role rejected before target Clerk",
+      "status": "PASS"
+    },
+    {
+      "name": "role mutation privileged tier alias rejected before target Clerk",
+      "status": "PASS"
+    },
+    {
+      "name": "business application owner-bound positive",
+      "status": "PASS"
+    },
+    {
+      "name": "business application cross owner denied before insert",
+      "status": "PASS"
+    },
+    {
+      "name": "media cross-table product and kit reference never deleted",
+      "status": "PASS"
+    },
+    {
+      "name": "business review attribution uses authenticated actor not adminName",
+      "status": "PASS"
+    },
+    {
+      "name": "operational close attribution ignores forged caller userId",
+      "status": "PASS"
+    },
+    {
+      "name": "actor subject mismatch denied before target",
+      "status": "PASS"
+    },
+    {
+      "name": "forged in-process actor cannot construct service database",
+      "status": "PASS"
+    },
+    {
+      "name": "missing configured scheduler secret rejects before DB",
+      "status": "PASS"
+    },
+    {
+      "name": "balance initialization authenticated metadata-only positive",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderById own capability denies guest",
+      "status": "PASS"
+    },
+    {
+      "name": "ensureCustomer own capability denies guest",
+      "status": "PASS"
+    },
+    {
+      "name": "submitBusinessApplication own capability denies guest",
+      "status": "PASS"
+    },
+    {
+      "name": "fetchOrderById own capability denies invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "ensureCustomer own capability denies invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "submitBusinessApplication own capability denies invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown capability denied even for issued SUPER_ADMIN",
+      "status": "PASS"
+    }
+  ],
+  "limitations": [
+    "Not HTTP/action dispatch, Next build or real SDK verification.",
+    "Clerk identity reads and Supabase/storage/crypto-adjacent dependencies synthetic.",
+    "No transaction/idempotency/payment algorithm remediation.",
+    "Database/gateway/JWT and actual revocation propagation separate evidence."
+  ],
+  "environment": "env -i PATH=/usr/bin:/bin LANG=C.UTF-8; strict actual-clone importer with NO proposal/original source fallback; fixture URL and keys only",
+  "implementationRoot": "/tmp/la-gaviota-lg-r1c-20261015/application",
+  "baselineOnlyRoot": "/home/sebastiangarcia/.local/share/la-gaviota/lg-r1b-20261015/authorization/baseline",
+  "loadedImplemented": {
+    "src/actions/analytics.ts": "fc95a99b8dde7b37978c69de4f04a3f04f43c99bc702a2fd787b86c3400df3c8",
+    "src/lib/server/authorization.ts": "d73c26dd5b82d419519db70be67d75ddaefe85619ab0603490d1ab5ad5e5be04",
+    "src/lib/server/database.ts": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c",
+    "src/lib/server/scheduler.ts": "4581173ae5cf49ac4d05a2c23a9833bae6e7682f025437a33d76bea795059412",
+    "src/actions/audit.ts": "b7cbe1d4019c6d7fa762c41043bf27848b0f367f4eee919d01ffe6b3f7a7bb37",
+    "src/actions/businessApplications.ts": "d6a35db102943047d2d3a17816d50299af0bb93a11061f20653039d30cdd7147",
+    "src/actions/customers.ts": "926663a523c63c042c81297c3f67e62a2327adea3ac6db7c0f724b05d269cfe4",
+    "src/actions/dashboard.ts": "7c1fa96adad8e91b38312ce7cc9fa21245b84c32221a8aadc792985904dba30a",
+    "src/actions/kits.ts": "8efef6abf5a552243d13ee47cca2b9b356d20ce62d59d091de7d4bc6e15258d0",
+    "src/actions/orders.ts": "47999d46a2fe09df4aea74b1a59855fe71c27c4d13b4c0faa74205371bea2f81",
+    "src/actions/products.ts": "c1ad94674092a762674d2ad3f338740c29d5d077bdda7e2f5cacb6c8e90aa6f4",
+    "src/actions/settings.ts": "605dc760d4c298a8d99b79af685e0919eec622d15fc69088988b2528a68a458e",
+    "src/actions/suppliers.ts": "c305590af5f6794d213a740e8261760512e46c1dfc63f075d16980832d664fdf",
+    "src/actions/systemSettings.ts": "d7ad2c98020a7937ecba76726427548b5fbb4bcfe5a02ed9ce28f80acce4a959",
+    "src/actions/users.ts": "6833361086b3d251707a714355d2ec369a3f0a53ee337fdd84d89181feaad62d",
+    "src/lib/server/orderWriter.ts": "8b41de7d273a596280182edd8d1e622cc67d478a23109b2ff1cf5d9fa32e1f7e",
+    "app/api/marketing/abandoned-cart/trigger/route.ts": "d87c3ae53698cc9cb94f4c484ba37903adb815b6389ed1f641a9a20aeedfd8f7",
+    "app/api/marketing/loyalty/reorder/route.ts": "a284a05f7bc6dc11746186b96e81a4a0f3ed01cd7acbfdc258fd9899cdc5a8f2",
+    "src/actions/media.ts": "4b378ed0140f1c36e60241933461a9d99bbcdd033f1bbea026098ce4b0cd24b5",
+    "app/api/marketing/lead-capture/route.ts": "6fc2af399674431ba833d521d753a8bde767f24dc06f6227bb6548da0f3b991a",
+    "app/api/marketing/abandoned-cart/sync/route.ts": "e9b04f16078f8adf7534fcc0785bce6a828241ffb38a419013b352b4051841db",
+    "app/admin/marketing/page.tsx": "f8a3c4af63b5616db1359c6c1d3c5f1997a08057691fdaa4b854e6d6a292193f",
+    "src/lib/audit.ts": "1a2887e8a1166c720036f101d1d6cb2531efc5872428442f01aa0d14943f6729",
+    "src/actions/b2b.ts": "bca589e68e3f5405d3da1744b8cf374735138ec98c131c7ec4cddcef5e2d3498",
+    "src/components/portals/CustomerOrderHistory.tsx": "2c9efc2796a731315e31112cb8ab2930cbac83e968efbb23ed141ff13ec25df9",
+    "src/actions/checkoutAction.ts": "359fe21d3270d24500a1371bc0b2afe490981923e82dab63652a287c0c217863",
+    "src/actions/wompi.ts": "e2abe2626c7fca20bee6670b1d2eeff1f3ac3e6ecc09c27d6feff4700a2f2934",
+    "src/lib/wompi.ts": "5a1ee89eb9b9646a6c3b7cc935a5c8ab219e746f4b1c953c2a9fdca69957eb84",
+    "src/lib/cartPersistence.ts": "0754418435544091c1f8cfa86f1b19bb887d4f4220d5588cc287b12f883bffdb"
+  },
+  "loadedSourcesUnchanged": true,
+  "tierDecision": "OWNER_APPROVED: ADMIN and SUPER_ADMIN retain tiers.manage frozen semantics"
+}

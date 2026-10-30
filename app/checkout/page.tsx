@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import Image from 'next/image';
+import Link from 'next/link';
 import { useCart } from '@/src/contexts/CartContext';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { DeliveryScheduler } from '@/src/components/checkout/DeliveryScheduler';
@@ -9,18 +9,17 @@ import { submitCheckoutOrder } from '@/src/actions/checkoutAction';
 import { initializeWompiTransaction } from '@/src/actions/wompi';
 import Script from 'next/script';
 
-declare global {
-  interface Window {
-    WidgetCheckout: any;
-  }
-}
+const wompiConfigured = Boolean(process.env.NEXT_PUBLIC_WOMPI_PUB_KEY);
 
 export default function CheckoutPage() {
-   const { items, cartTotal, remainingForFreeShipping, clearCart } = useCart();
+   const { items, cartTotal, remainingForFreeShipping, clearCart, cartRestoreError } = useCart();
    const { role } = useUserRole();
-   const [paymentMethod, setPaymentMethod] = useState<'wompi' | 'cash'>('wompi');
+   const [paymentMethod, setPaymentMethod] = useState<'wompi' | 'cash'>(wompiConfigured ? 'wompi' : 'cash');
    const [isSubmitting, setIsSubmitting] = useState(false);
    const [selectedCity, setSelectedCity] = useState('');
+   const [wompiReady, setWompiReady] = useState(false);
+   const [submitError, setSubmitError] = useState('');
+   const [confirmation, setConfirmation] = useState<{ orderId: string; total: number; paymentPending: boolean } | null>(null);
 
    const formatPrice = (price: number) => {
      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(price);
@@ -38,58 +37,78 @@ export default function CheckoutPage() {
 
 
 
-   const handleOrderSubmit = async (e: React.FormEvent) => {
+   const handleOrderSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      if (isSubmitting) return;
+      setSubmitError('');
+      if (paymentMethod === 'wompi' && (!wompiReady || !window.WidgetCheckout)) {
+         setSubmitError('El pago en línea aún no está listo. Espera un momento o elige contra entrega.');
+         return;
+      }
       setIsSubmitting(true);
       try {
-         const formData = new FormData(e.target as HTMLFormElement);
+         const formData = new FormData(e.currentTarget);
          const checkoutItems = items.map(i => ({ product: i.product, quantity: i.quantity }));
-
          if (paymentMethod === 'wompi') {
-            // 1. Get secure server-side transaction data
-            const wompiData = await initializeWompiTransaction(formData, checkoutItems);
-
-            // 2. Open Wompi Widget
-            const widget = new window.WidgetCheckout({
-              currency: wompiData.currency,
-              amountInCents: wompiData.amountInCents,
-              reference: wompiData.reference,
-              publicKey: wompiData.publicKey,
-              signature: { integrity: wompiData.signature },
-              customerData: wompiData.customerData
+            const wompiData = await initializeWompiTransaction(formData, checkoutItems, finalTotal);
+            const Widget = window.WidgetCheckout;
+            if (!Widget) throw new Error('No se pudo abrir el medio de pago.');
+            const widget = new Widget({
+               currency: wompiData.currency,
+               amountInCents: wompiData.amountInCents,
+               reference: wompiData.reference,
+               publicKey: wompiData.publicKey,
+               signature: { integrity: wompiData.signature },
+               customerData: wompiData.customerData,
             });
-
-            widget.open((result: any) => {
-              const transaction = result.transaction;
-              if (transaction.status === 'APPROVED') {
-                 alert(`¡Pago aprobado! Pedido #${wompiData.reference} generado exitosamente.\nTotal: ${formatPrice(finalTotal)}`);
-                 clearCart();
-                 window.location.href = '/';
-              } else {
-                 alert(`El pago no fue aprobado. Estado: ${transaction.status}. Por favor intente con otro método.`);
-              }
-              setIsSubmitting(false);
+            widget.open((result) => {
+               const status = result.transaction?.status;
+               if (status === 'APPROVED' || status === 'PENDING') {
+                  // The widget response is not authoritative payment confirmation.
+                  setConfirmation({ orderId: wompiData.orderId, total: wompiData.totalAmount, paymentPending: true });
+                  if (status === 'APPROVED') clearCart();
+               } else {
+                  setSubmitError('El pago no se completó. Tu carrito se conserva; revisa el estado del pedido en Mi Portal antes de reintentar.');
+               }
+               setIsSubmitting(false);
             });
          } else {
-            // Cash on delivery flow
             const result = await submitCheckoutOrder(formData, checkoutItems, finalTotal);
-            alert(`Pedido #${result.orderId} generado exitosamente (Contra Entrega).\nTotal: ${formatPrice(finalTotal)}`);
+            setConfirmation({ orderId: result.orderId, total: result.totalAmount, paymentPending: false });
             clearCart();
-            window.location.href = '/';
+            setIsSubmitting(false);
          }
-      } catch (err) {
-         console.error(err);
-         alert('Error al procesar el pedido. Por favor intente de nuevo.');
+      } catch (error) {
+         setSubmitError(error instanceof Error ? error.message : 'No pudimos procesar tu pedido. Intenta nuevamente.');
          setIsSubmitting(false);
       }
    };
+
+   if (confirmation) {
+      return (
+         <section className="mx-auto max-w-2xl px-4 py-20 text-center" aria-live="polite">
+            <h1 className="mb-4 text-3xl font-black text-slate-900">Tu pedido está registrado</h1>
+            <p className="break-all text-slate-600">Pedido #{confirmation.orderId}</p>
+            <p className="my-6 text-2xl font-bold text-slate-900">Total: {formatPrice(confirmation.total)}</p>
+            <p className="mb-8 text-slate-600">{confirmation.paymentPending
+               ? 'El estado definitivo del pago se confirma en Mi Portal. Una respuesta del medio de pago puede tardar en actualizarse.'
+               : 'Elegiste pago contra entrega. Puedes consultar los detalles y el estado en Mi Portal.'}</p>
+            <div className="flex flex-wrap justify-center gap-4">
+               <Link href="/dashboard" className="rounded-xl bg-gaviota-red px-6 py-3 font-bold text-white">Ver Mi Portal</Link>
+               <Link href="/" className="rounded-xl border border-slate-300 px-6 py-3 font-bold text-slate-800">Seguir comprando</Link>
+            </div>
+         </section>
+      );
+   }
+
+   if (cartRestoreError) return <div role="alert" className="p-8">{cartRestoreError}</div>;
 
    if (items.length === 0) {
       return (
          <div className="max-w-3xl mx-auto px-4 py-32 text-center text-slate-800">
             <span className="text-6xl mb-6 block">💳</span>
             <h1 className="text-3xl font-black font-serif mb-4">No hay pedido por finalizar</h1>
-            <a href="/" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Volver a la tienda</a>
+            <Link href="/" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Volver a la tienda</Link>
          </div>
       );
    }
@@ -104,7 +123,7 @@ export default function CheckoutPage() {
             <h1 className="text-3xl font-black font-serif mb-4">No se ha alcanzado el pedido mínimo</h1>
             <p className="text-gray-500 mb-6">El pedido mínimo para tu perfil (Micromercados) es de {formatPrice(minOrderMicromercados)}.</p>
             <p className="font-bold text-yellow-600 mb-8">Faltan {formatPrice(minOrderMicromercados - cartTotal)} para poder proceder.</p>
-            <a href="/" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</a>
+            <Link href="/" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</Link>
          </div>
       );
    }
@@ -116,28 +135,25 @@ export default function CheckoutPage() {
             <h1 className="text-3xl font-black font-serif mb-4">No se ha alcanzado el pedido mínimo</h1>
             <p className="text-gray-500 mb-6">El pedido mínimo para tu perfil (Restaurantes) es de {formatPrice(minOrderRestaurantes)}.</p>
             <p className="font-bold text-green-600 mb-8">Faltan {formatPrice(minOrderRestaurantes - cartTotal)} para poder proceder.</p>
-            <a href="/" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</a>
+            <Link href="/" className="text-[#83b745] font-bold underline hover:text-[#6c9c36]">Seguir comprando</Link>
          </div>
       );
    }
 
    return (
       <div className="bg-white min-h-screen">
-         <Script src="https://checkout.wompi.co/widget.js" strategy="lazyOnload" />
+         {wompiConfigured && <Script src="https://checkout.wompi.co/widget.js" strategy="lazyOnload" onReady={() => setWompiReady(true)} onError={() => setSubmitError('No se pudo cargar el pago en línea. Puedes elegir contra entrega.')} />}
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-slate-800">
             
             {/* Breadcrumbs matching Cart */}
             <div className="flex justify-center items-center gap-2 sm:gap-4 text-[10px] sm:text-xs font-bold tracking-widest uppercase mb-12 sm:mb-16 flex-wrap">
-               <a href="/cart" className="text-gray-400 hover:text-slate-900 transition-colors">Shopping Cart</a>
+               <Link href="/cart" className="text-gray-400 hover:text-slate-900 transition-colors">Carrito</Link>
                <span className="text-gray-300">›</span>
-               <span className="text-slate-900 border-b-2 border-slate-900 pb-1">Checkout Details</span>
+               <span className="text-slate-900 border-b-2 border-slate-900 pb-1">Finalizar pedido</span>
                <span className="text-gray-300">›</span>
-               <span className="text-gray-400">Order Complete</span>
+               <span className="text-gray-400">Confirmación</span>
             </div>
 
-            <p className="text-sm font-bold text-gray-500 mb-8 border-t border-gray-100 pt-8">
-               ¿Tienes un cupón? <a href="#" className="text-slate-800 hover:text-[#83b745] underline">Haz clic aquí para introducir tu código</a>
-            </p>
 
             <form onSubmit={handleOrderSubmit} className="flex flex-col lg:flex-row gap-12 items-start">
                <input type="hidden" name="paymentMethod" value={paymentMethod} />
@@ -149,17 +165,17 @@ export default function CheckoutPage() {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                      <div className="flex flex-col gap-1.5 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Nombre *</label>
-                        <input required name="firstName" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
+                        <label htmlFor="checkout-firstName" className="text-[13px] font-bold text-slate-800">Nombre *</label>
+                        <input required id="checkout-firstName" name="firstName" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
                      </div>
                      <div className="flex flex-col gap-1.5 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Apellidos *</label>
-                        <input required name="lastName" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
+                        <label htmlFor="checkout-lastName" className="text-[13px] font-bold text-slate-800">Apellidos *</label>
+                        <input required id="checkout-lastName" name="lastName" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
                      </div>
                      
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Nombre de la empresa (opcional)</label>
-                        <input name="company" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <label htmlFor="checkout-company" className="text-[13px] font-bold text-slate-800">Nombre de la empresa (opcional)</label>
+                        <input id="checkout-company" name="company" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
@@ -169,21 +185,21 @@ export default function CheckoutPage() {
                      </div>
 
                      <div className="flex flex-col gap-1.5 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Dirección de la calle *</label>
-                        <input required name="address" type="text" placeholder="Número de la casa y nombre de la calle" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <label htmlFor="checkout-address" className="text-[13px] font-bold text-slate-800">Dirección de la calle *</label>
+                        <input required id="checkout-address" name="address" type="text" placeholder="Número de la casa y nombre de la calle" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
                      <div className="flex flex-col gap-1.5 justify-end min-w-0">
-                        <input name="apartment" type="text" placeholder="Apartamento, habitación, etc. (opcional)" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <input aria-label="Apartamento, habitación u otra indicación" name="apartment" type="text" placeholder="Apartamento, habitación, etc. (opcional)" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Barrio (opcional)</label>
-                        <input name="neighborhood" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <label htmlFor="checkout-neighborhood" className="text-[13px] font-bold text-slate-800">Barrio (opcional)</label>
+                        <input id="checkout-neighborhood" name="neighborhood" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Estado / Municipio *</label>
-                        <select required name="state" className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745]">
+                        <label htmlFor="checkout-state" className="text-[13px] font-bold text-slate-800">Estado / Municipio *</label>
+                        <select required id="checkout-state" name="state" className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745]">
                            <option>Santander</option>
                            <option>Bogotá D.C.</option>
                            <option>Cundinamarca</option>
@@ -191,8 +207,8 @@ export default function CheckoutPage() {
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Localidad / Ciudad *</label>
-                        <select required name="city" value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745]">
+                        <label htmlFor="checkout-city" className="text-[13px] font-bold text-slate-800">Localidad / Ciudad *</label>
+                        <select required id="checkout-city" name="city" value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745]">
                            <option value="">Elige una opción...</option>
                            <option value="Bucaramanga">Bucaramanga</option>
                            <option value="Floridablanca">Floridablanca</option>
@@ -204,31 +220,22 @@ export default function CheckoutPage() {
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Código postal (opcional)</label>
-                        <input name="zipcode" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <label htmlFor="checkout-zipcode" className="text-[13px] font-bold text-slate-800">Código postal (opcional)</label>
+                        <input id="checkout-zipcode" name="zipcode" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Teléfono *</label>
-                        <input required name="phone" type="tel" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <label htmlFor="checkout-phone" className="text-[13px] font-bold text-slate-800">Teléfono *</label>
+                        <input required id="checkout-phone" name="phone" type="tel" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
                      <div className="flex flex-col gap-1.5 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Dirección de correo electrónico *</label>
-                        <input required name="email" type="email" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
-                     </div>
-
-                     <div className="flex items-center gap-3 md:col-span-2 mt-2">
-                        <input type="checkbox" id="create-account" className="w-4 h-4 accent-[#83b745]" />
-                        <label htmlFor="create-account" className="text-[13px] font-bold text-slate-800 cursor-pointer">¿Crear una cuenta?</label>
-                     </div>
-                     <div className="flex items-center gap-3 md:col-span-2">
-                        <input type="checkbox" id="diff-address" className="w-4 h-4 accent-[#83b745]" />
-                        <label htmlFor="diff-address" className="text-[13px] font-bold text-slate-800 cursor-pointer">¿Enviar a una dirección diferente?</label>
+                        <label htmlFor="checkout-email" className="text-[13px] font-bold text-slate-800">Dirección de correo electrónico *</label>
+                        <input required id="checkout-email" name="email" type="email" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 mt-4 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">Notas del pedido (opcional)</label>
-                        <textarea name="notes" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors h-24 resize-none" placeholder="Notas sobre tu pedido, por ejemplo, notas especiales para la entrega."></textarea>
+                        <label htmlFor="checkout-notes" className="text-[13px] font-bold text-slate-800">Notas del pedido (opcional)</label>
+                        <textarea id="checkout-notes" name="notes" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors h-24 resize-none" placeholder="Notas sobre tu pedido, por ejemplo, notas especiales para la entrega."></textarea>
                      </div>
                   </div>
                </div>
@@ -247,7 +254,7 @@ export default function CheckoutPage() {
 
                      <div className="flex flex-col gap-4 mb-6 pb-6 border-b border-gray-200">
                         {items.map(item => {
-                           const price = role === 'Restaurantes' ? item.product.priceRestaurant : role === 'Micromercados' ? item.product.priceMicro : item.product.priceRetail;
+                           const price = role === 'Restaurantes' ? item.product.price : role === 'Micromercados' ? item.product.price : item.product.price;
                            return (
                               <div key={item.product.id} className="flex justify-between items-start gap-4">
                                  <div className="text-[13px] text-gray-600 font-semibold leading-tight pr-6">
@@ -293,15 +300,15 @@ export default function CheckoutPage() {
                         {/* Wompi Payment Option */}
                         <label 
                            className={`relative border-2 rounded-xl p-4 cursor-pointer transition-all ${paymentMethod === 'wompi' ? 'border-[#1C2059] bg-blue-50/30 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}
-                           onClick={() => setPaymentMethod('wompi')}
+                           onClick={() => { if (wompiConfigured) setPaymentMethod('wompi'); }}
                         >
                            <div className="flex items-center justify-between mb-4">
                               <span className="font-black text-slate-800 text-sm flex items-center gap-3">
-                                 <input type="radio" checked={paymentMethod === 'wompi'} readOnly className="accent-[#1C2059] w-4 h-4 scale-125" />
+                                 <input type="radio" checked={paymentMethod === 'wompi'} disabled={!wompiConfigured} readOnly className="accent-[#1C2059] w-4 h-4 scale-125" />
                                  💳 Paga en línea de forma segura
                               </span>
                               <div className="flex gap-2 shrink-0 h-6">
-                                 <Image src="/IMAGES/wompi-logo.png" alt="Wompi" width={60} height={20} className="object-contain opacity-50 grayscale" />
+                                 <span className="font-black tracking-tight text-[#1C2059]">Wompi</span>
                               </div>
                            </div>
                            
@@ -312,16 +319,17 @@ export default function CheckoutPage() {
                                     Pagos con <span className="text-blue-600">Wompi</span>
                                  </h4>
                                  <p className="text-[11px] text-gray-500 font-semibold leading-relaxed mb-4 max-w-[200px] mx-auto">
-                                    Tarjetas de Crédito, PSE, Nequi y más. Operación 100% segura por Bancolombia.
+                                    Tarjetas de Crédito, PSE, Nequi y más. Pago procesado por Wompi.
                                  </p>
                                  <div className="flex justify-center items-center gap-2 pt-2 border-t border-gray-100 uppercase text-[9px] font-extrabold tracking-widest text-blue-600/70">
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                                    Compra 100% Protegida
+                                    Pago en línea con Wompi
                                  </div>
                               </div>
                            )}
                         </label>
 
+                        {!wompiConfigured && <p className="text-sm text-slate-600">El pago en línea todavía no está habilitado. Puedes elegir contra entrega.</p>}
                         {/* Cash on Delivery Option */}
                         <label 
                            className={`relative border-2 rounded-xl p-4 cursor-pointer transition-all ${paymentMethod === 'cash' ? 'border-[#83b745] bg-[#83b745]/5' : 'border-gray-200 hover:border-gray-300'}`}
@@ -336,6 +344,7 @@ export default function CheckoutPage() {
                         </label>
                      </div>
 
+                     {submitError && <p role="alert" className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">{submitError}</p>}
                      <button 
                         type="submit"
                         disabled={isSubmitting}

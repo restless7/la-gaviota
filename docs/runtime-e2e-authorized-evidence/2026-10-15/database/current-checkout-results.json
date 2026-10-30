@@ -1,0 +1,119 @@
+{
+  "executed": 19,
+  "passed": 19,
+  "failed": 0,
+  "sourceHashes": {
+    "src/lib/server/authorization.ts": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12",
+    "src/lib/server/database.ts": "66ff3653863e3cc173ccfbbf914ae2370bcb40bd204e0a38d71ff40689d0652c",
+    "src/lib/server/scheduler.ts": "4581173ae5cf49ac4d05a2c23a9833bae6e7682f025437a33d76bea795059412",
+    "src/lib/server/checkout.ts": "dcdbf4ebb52b7589ae5f2adaaa9a58fc26753cc1fe19f718bbc84f710f5bd4c8",
+    "src/lib/checkoutValidation.ts": "8774ea8a65d5563841e5e65803f88bf335c245bc188bf960e4c13970cccd5efe",
+    "src/actions/products.ts": "bbe908054e505daa160911d01d0af17dfd8ec589e8e8430b3ad520f27b150c20",
+    "src/constants/productConstants.ts": "07e0d08a10b99e843112e99c07bdb96d33863338572f61b1d49bd98a4cc0f4f8"
+  },
+  "sourceUnchanged": true,
+  "queries": 28,
+  "tests": [
+    {
+      "name": "retail_ignores_client_price_role_owner",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "micro_authoritative_price_and_minimum",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "restaurant_authoritative_price_and_minimum",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "micro_below_minimum_denied",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "retail_expected_total_tamper_denied",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "stock_insufficient_denied",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "inactive_product_denied",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "fractional_quantity_denied_before_db",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "guest_checkout_denied_before_db",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "catalog_Personas Naturales_price_safe_projection",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "catalog_Micromercados_price_safe_projection",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "catalog_Restaurantes_price_safe_projection",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "kit_visible_but_checkout_product_lookup_denies_DOCUMENTED_GAP",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "parallel_quotes_do_not_reserve_last_stock_DOCUMENTED_LIMITATION",
+      "scope": "CURRENT_SOURCE_REAL_PG_READS_SYNTHETIC_AUTH_SDK_ADAPTER",
+      "passed": true
+    },
+    {
+      "name": "owner_SQL_user_TEST_RETAIL_A_1",
+      "scope": "REAL_PG_RLS_SYNTHETIC_AUTH_JWT_STUB",
+      "passed": true
+    },
+    {
+      "name": "owner_SQL_user_TEST_RETAIL_A_0",
+      "scope": "REAL_PG_RLS_SYNTHETIC_AUTH_JWT_STUB",
+      "passed": true
+    },
+    {
+      "name": "owner_SQL_user_TEST_RETAIL_B_1",
+      "scope": "REAL_PG_RLS_SYNTHETIC_AUTH_JWT_STUB",
+      "passed": true
+    },
+    {
+      "name": "anonymous_cost_sql_denied",
+      "scope": "REAL_PG_COLUMN_ACL",
+      "passed": true
+    },
+    {
+      "name": "atomic_conditional_stock_SQL_model_only",
+      "scope": "SEPARATE_CONDITIONAL_SQL_CONCURRENCY_MODEL_NOT_APPLICATION_IMPLEMENTATION",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Actual app source uses finite transport adapter to psql with synthetic Clerk identity; not actual Supabase HTTP/JWT/Clerk validation",
+    "Parallel quotes approved same last stock because quote does not reserve: no false atomic checkout claim",
+    "Atomic stock decrement is a separate SQL demonstrator, not implemented app behavior",
+    "Synthetic kit advertised in catalog fails current products-only quote lookup"
+  ]
+}

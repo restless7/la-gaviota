@@ -1,13 +1,13 @@
 'use server';
+import { requireCapability } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-import { createClient } from '@supabase/supabase-js';
+
+
 import { revalidatePath } from 'next/cache';
 import { auth } from '@clerk/nextjs/server';
 import { logAdminAction } from '@/src/lib/audit';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface KitItemPayload {
   product_id: string;
@@ -24,6 +24,9 @@ export interface KitPayload {
 }
 
 export async function createOrUpdateKit(kitData: KitPayload) {
+  const actor = await requireCapability('catalog.manage');
+  const supabase = getServerDatabase(actor);
+
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -113,6 +116,9 @@ export async function createOrUpdateKit(kitData: KitPayload) {
 }
 
 export async function fetchKits() {
+  const actor = await requireCapability('catalog.manage');
+  const supabase = getServerDatabase(actor);
+
   const { data, error } = await supabase
     .from('kits')
     .select(`

@@ -1,0 +1,27 @@
+{
+  "status": "APPLIED_ONLY_TO_INDEPENDENT_CLONE_AFTER_ROOT_AND_INDEPENDENT_QA_REVIEW",
+  "reason": "Clerk middleware callback has verified identity before downstream request auth headers are decorated; exported auth() uses next/headers instead",
+  "scope": [
+    {
+      "file": "middleware.ts",
+      "beforeSha256": "8b5d7ff52ef6fad5a8f8aac77238de8b2eed74ca010ecb5bee2e02ed1e474b9a",
+      "proposedSha256": "d679d31e2968c4f10302b457c4314f14844957a73d445c21ef81aa99725411d8",
+      "observedAfterApplySha256": "d679d31e2968c4f10302b457c4314f14844957a73d445c21ef81aa99725411d8"
+    },
+    {
+      "file": "src/lib/server/authorization.ts",
+      "beforeSha256": "d73c26dd5b82d419519db70be67d75ddaefe85619ab0603490d1ab5ad5e5be04",
+      "proposedSha256": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12",
+      "observedAfterApplySha256": "9d7c557f8e44dcb3a9d7b474cd981d98c79f771e54b9221d0952337d5903ce12"
+    }
+  ],
+  "patchSha256": "30f8b701b6e289b2fbad0c3100e11f18557338f8d023f9be210f003494e5b9a1",
+  "invariants": [
+    "Fresh users.getUser lookup retained",
+    "Issued actors/capability/role/tier/ownership unchanged",
+    "Normal server action getActor still uses exported auth()",
+    "No raw request headers/IDs accepted as actor authority",
+    "New helper internal server-only, not in use-server module"
+  ],
+  "authorization": "Root explicit GO after QA approval; LG-R1C narrow compatibility within existing53"
+}

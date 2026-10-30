@@ -1,11 +1,13 @@
+import { getSchedulerDatabase } from '@/src/lib/server/database';
+import { requireScheduler } from '@/src/lib/server/scheduler';
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+
 
 export async function POST(req: Request) {
+  try { requireScheduler(req); } catch { return NextResponse.json({error:'Unauthorized'},{status:401}); }
+  const supabase = getSchedulerDatabase(req);
   try {
     // 1. Validate Cron Secret (Skipped for demo but necessary for production)
     // const authHeader = req.headers.get('Authorization');

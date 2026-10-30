@@ -1,0 +1,23 @@
+{
+  "tool": "mcp__codex_apps__github_get_commit_combined_status",
+  "calls": 2,
+  "arguments": {
+    "repo_full_name": "restless7/la-gaviota",
+    "commit_sha": "49add73ae90b837c36553a0f2b535267c9610143"
+  },
+  "structured_response": {
+    "statuses": [
+      {
+        "context": "Vercel",
+        "state": "success",
+        "target_url": "https://vercel.com/restless7s-projects/la-gaviota/7akmDyb1H4VCuuzFBhjqCsoHqkv1"
+      }
+    ]
+  },
+  "capture_timestamp": "Exact tool-call timestamp not separately captured; occurred before npm registry metadata completion and parity evidence file mtime; no invented timestamp",
+  "latest_evidence_write_utc": "2026-10-15T12:40:09.815259+00:00",
+  "npm_ci_log_EUSAGE_confirmed": true,
+  "candidate_install_directory": "Only manifest+original lock copied; no candidate lock generated, no install command executed in candidate-install, no node_modules",
+  "baseline_install_directory": "npm ci --dry-run only; config failure then EUSAGE; no successful clean install",
+  "cleanup": "All three owned unified-exec sessions completed; scoped process inspection found zero running stage processes; no kill required; network stopped"
+}

@@ -1,0 +1,46 @@
+{
+  "mismatches": [
+    {
+      "package": "@clerk/localizations",
+      "manifest": "^4.6.2",
+      "lock_root": null,
+      "resolved": null
+    },
+    {
+      "package": "@clerk/nextjs",
+      "manifest": "^6.37.0",
+      "lock_root": null,
+      "resolved": null
+    },
+    {
+      "package": "@prisma/client",
+      "manifest": "^7.8.0",
+      "lock_root": null,
+      "resolved": null
+    },
+    {
+      "package": "@supabase/ssr",
+      "manifest": "^0.7.0",
+      "lock_root": null,
+      "resolved": null
+    },
+    {
+      "package": "@supabase/supabase-js",
+      "manifest": "^2.106.2",
+      "lock_root": null,
+      "resolved": null
+    },
+    {
+      "package": "prisma",
+      "manifest": "^7.8.0",
+      "lock_root": null,
+      "resolved": null
+    }
+  ],
+  "manifest_scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  }
+}

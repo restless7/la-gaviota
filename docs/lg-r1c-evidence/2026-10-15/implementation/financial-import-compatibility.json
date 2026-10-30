@@ -1,0 +1,56 @@
+{
+  "originalBaseline": "49add73ae90b837c36553a0f2b535267c9610143",
+  "writerBusinessBodyPreserved": true,
+  "originalFunctionSha256": "a69d05230bd2678278cde50cedd716bc6c8c0c230ed01d4093e7ab74d9388b82",
+  "implementedFunctionAfterRemovingOnlyTwoAddedGuardLinesSha256": "a69d05230bd2678278cde50cedd716bc6c8c0c230ed01d4093e7ab74d9388b82",
+  "internalWriter": "src/lib/server/orderWriter.ts",
+  "publicCallableExportRemoved": true,
+  "privateMarker": true,
+  "privateNoUseServer": true,
+  "imports": [
+    {
+      "file": "src/actions/wompi.ts",
+      "line": 6,
+      "text": "import { createOrder } from '@/src/lib/server/orderWriter';"
+    },
+    {
+      "file": "src/actions/checkoutAction.ts",
+      "line": 4,
+      "text": "import { createOrder } from '@/src/lib/server/orderWriter';"
+    },
+    {
+      "file": "src/lib/server/orderWriter.ts",
+      "line": 7,
+      "text": "export async function createOrder(orderData: Omit<Order, 'id' | 'created_at' | 'order_items'>, items: Omit<OrderItem, 'id' | 'order_id'>[], incrementLTV: boolean = false) {"
+    }
+  ],
+  "untouchedFinancialFiles": [
+    {
+      "file": "src/lib/wompi.ts",
+      "sha256": "5a1ee89eb9b9646a6c3b7cc935a5c8ab219e746f4b1c953c2a9fdca69957eb84",
+      "baselineEqual": true
+    },
+    {
+      "file": "app/api/webhooks/wompi/route.ts",
+      "sha256": "0b9f5b2d767ee08644850e457539c6362c2ede4a7d0f5fc8a6a316006eee1228",
+      "baselineEqual": true
+    },
+    {
+      "file": "prisma/schema.prisma",
+      "sha256": "185025bc8da83981ae59b0ebaed93a57aef2182cb8be603bffd876135c2d1ad4",
+      "baselineEqual": true
+    },
+    {
+      "file": "supabase/setup.sql",
+      "sha256": "c2d954bac16af1bce98a24c60daf8a4c9654a645c5eb53bc313645a34113d3db",
+      "baselineEqual": true
+    }
+  ],
+  "financialLimitations": [
+    "No atomic transaction/idempotency/stock-reservation or callback-state remediation",
+    "Approved frozen setting read now fails closed on missing inventory setting rather than silently false",
+    "Only synthetic cash/Wompi initialization source paths tested; no provider transaction",
+    "Existing balance reference ownership, callback replay/amount/currency and refund implementation remain R2",
+    "ADMIN and SUPER_ADMIN tiers.manage retained by explicit owner decision"
+  ]
+}

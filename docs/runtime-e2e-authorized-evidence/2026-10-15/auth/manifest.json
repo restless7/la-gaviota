@@ -1,0 +1,65 @@
+{
+  "scope": "NEW_INDEPENDENT_CLERK_DEV_AND_LOCAL_SYNTHETIC_PG_AUTH_RUNTIME_EVIDENCE",
+  "files": {
+    "REPRODUCTION.md": {
+      "bytes": 2520,
+      "sha256": "77c84f0b85e7160097f5a06d483ef5ee804da312740dfe0fa78ad9ba2c42d2dd"
+    },
+    "auth-summary.json": {
+      "bytes": 2152,
+      "sha256": "93ef1be882b01e966bf84c033625969dab8ec8a9e328983f7aae78743173467d"
+    },
+    "environment-inventory.json": {
+      "bytes": 1140,
+      "sha256": "b1d385050ce8c0b51c6c0545a70dd3b72742721bc7a8bd6e5367ad0ea570581f"
+    },
+    "executed-source-hashes.json": {
+      "bytes": 4756,
+      "sha256": "a1b17606c95f50ebfd811185751c7fbf72484b47fc409dd47339ff3170d252f0"
+    },
+    "fixtures.json": {
+      "bytes": 2790,
+      "sha256": "cab94a4bfd7f10d7315dffdc361511e664657833d53e014443c302040c5c6909"
+    },
+    "independent-instance.json": {
+      "bytes": 1027,
+      "sha256": "067575ea7ef05cc9bc8e80433d73a8002b1839a45d7c02580e2c50a736cb20c7"
+    },
+    "metadata-revocation-results.json": {
+      "bytes": 416,
+      "sha256": "bb84608cf68b59630b8cd3e95420f74dce0f53624ad1a5ef86e5956bec268e7c"
+    },
+    "own-session-cleanup-results.json": {
+      "bytes": 2681,
+      "sha256": "02017d1b4bfa9ef2483073b2abd920e6dd5e24ba4182a173f4e291dc20e1cd83"
+    },
+    "real-browser-cash-results.json": {
+      "bytes": 2671,
+      "sha256": "ab2608ec2b81ceb69237f0c6855cf07468da2ac68fa27a17ed75c392255fdae2"
+    },
+    "real-sdk-role-results.json": {
+      "bytes": 4410,
+      "sha256": "575e2982c4d766b0a3fa98fe342093f8f1168ef8ef8126d88557ff860a7d4752"
+    },
+    "real-ui-auth-results.json": {
+      "bytes": 1710,
+      "sha256": "c91fc48776972af969e3ab4ce65b35e797bb3ea517a3272244b50fefcac7dcf6"
+    },
+    "reproduce-b2b-cash.cjs": {
+      "bytes": 6240,
+      "sha256": "bfcecfa30d4b386e5230cedead99f58eabc6918f11bb24b0e055239728ded663"
+    },
+    "reproduce-password-otp.cjs": {
+      "bytes": 5166,
+      "sha256": "22606381ff9910e38247e10542ba129aab791b5a9a159d5a245a22b606f61292"
+    },
+    "reproduce-role-ticket.cjs": {
+      "bytes": 6668,
+      "sha256": "c4272fbb6ae66821815ecb96f457ff89d181f45bc60f12571bf6425b16356c0a"
+    },
+    "reproduce-signup.cjs": {
+      "bytes": 6171,
+      "sha256": "3fcd3603ee952c7318190951526a00c0ab41a8cc03c902909faa55811318ca2d"
+    }
+  }
+}

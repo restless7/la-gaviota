@@ -2,7 +2,7 @@
 
 import { useUser } from '@clerk/nextjs';
 
-export type UserRole = 'SUPER_ADMIN' | 'COMMERCIAL' | 'CLIENT' | 'USER';
+export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'OPERARIO' | 'COMMERCIAL' | 'CLIENT' | 'USER';
 
 export function useRBAC() {
   const { user: clerkUser, isLoaded } = useUser();
@@ -14,8 +14,12 @@ export function useRBAC() {
   
   // Reconcile logic: Check explicitly for the 'role' field first, then fallback to implicit admin from 'tier'
   let mappedRole: UserRole = 'USER';
-  if (rawRole === 'ADMIN' || rawRole === 'SUPER_ADMIN' || tier === 'admin' || tier === 'SUPER_ADMIN') {
+  if (rawRole === 'SUPER_ADMIN') {
     mappedRole = 'SUPER_ADMIN';
+  } else if (rawRole === 'ADMIN') {
+    mappedRole = 'ADMIN';
+  } else if (rawRole === 'OPERARIO') {
+    mappedRole = 'OPERARIO';
   } else if (rawRole === 'COMMERCIAL') {
     mappedRole = 'COMMERCIAL';
   } else if (rawRole === 'CLIENT' || tier === 'Restaurantes' || tier === 'Micromercados') {
@@ -25,17 +29,10 @@ export function useRBAC() {
   const isSuperAdmin = mappedRole === 'SUPER_ADMIN';
   const isCommercial = mappedRole === 'COMMERCIAL';
   const isClient = mappedRole === 'CLIENT';
-  const isAdminAreaUser = isSuperAdmin || isCommercial;
+  const isAdminAreaUser = isSuperAdmin || mappedRole === 'ADMIN';
 
   // Function to check if the current commercial user owns a resource
-  const canAccessResource = (ownerId?: string, assignedTo?: string) => {
-    if (isSuperAdmin) return true;
-    if (isCommercial) {
-      if (!clerkUser?.id) return false;
-      return clerkUser.id === ownerId || clerkUser.id === assignedTo;
-    }
-    return false;
-  };
+  const canAccessResource = (_ownerId?: string, _assignedTo?: string) => { void _ownerId; void _assignedTo; return isSuperAdmin || mappedRole === 'ADMIN'; };
 
   // Create a compatible user object for the admin layout to consume
   const user = clerkUser ? {

@@ -1,0 +1,35 @@
+{
+  "financial_token_comparison": [
+    {
+      "name": "submitCheckoutOrder",
+      "equal_after_authority_client_validation_and_attribution_excluded": true,
+      "excluded_changes": "fresh capability/service client and target ID validation"
+    },
+    {
+      "name": "initializeWompiTransaction",
+      "equal_after_authority_client_validation_and_attribution_excluded": true,
+      "excluded_changes": "fresh capability/service client and target ID validation"
+    },
+    {
+      "name": "initializeWompiBalancePayment",
+      "equal_after_authority_client_validation_and_attribution_excluded": true,
+      "excluded_changes": "fresh capability/service client and target ID validation"
+    },
+    {
+      "name": "cancelAndRefundOrder",
+      "equal_after_authority_client_validation_and_attribution_excluded": true,
+      "excluded_changes": "fresh capability/service client and target ID validation"
+    },
+    {
+      "name": "confirmCashPayment",
+      "equal_after_authority_client_validation_and_attribution_excluded": true,
+      "excluded_changes": "fresh capability/service client and target ID validation"
+    },
+    {
+      "name": "closeOperationalDay",
+      "equal_after_authority_client_validation_and_attribution_excluded": true,
+      "excluded_changes": "fresh capability/service client and caller attribution replaced with issued actor"
+    }
+  ],
+  "private_writer_financial_body_unchanged": true
+}

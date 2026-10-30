@@ -1,11 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
-import { auth, clerkClient } from '@clerk/nextjs/server';
+import 'server-only';
+import { requireCapability } from '@/src/lib/server/authorization';
+import { getServerDatabase } from '@/src/lib/server/database';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-// Use service role for audit logs to bypass RLS, or ensure admin token is used. We use ANON for now as RLS is "true" for admins, 
-// but to securely write server-side without a custom jwt, we should use the service role if available, or just anon if policies allow.
-const supabase = createClient(supabaseUrl, process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseKey);
+import { auth, clerkClient } from '@clerk/nextjs/server';
 
 type AuditCategory = 'PRICING' | 'KITS' | 'SUPPLIER' | 'ORDERS' | 'SYSTEM';
 
@@ -16,6 +13,8 @@ export async function logAdminAction(
   reference_id?: string
 ) {
   try {
+    const actor = await requireCapability('audit.write');
+    const supabase = getServerDatabase(actor);
     const { userId } = await auth();
     if (!userId) {
       console.warn('[Audit Log] Failed to log action: No authenticated user.');
@@ -31,12 +30,12 @@ export async function logAdminAction(
     const { error } = await supabase
       .from('audit_logs')
       .insert({
-        user_id: userId,
-        actor_name: actorName,
+        actor: actorName,
+        action: action_type,
+        target: reference_id || 'System',
         category,
-        action_type,
-        description,
-        reference_id: reference_id || null
+        details: description,
+        metadata: { actor_clerk_id: userId }
       });
 
     if (error) {

@@ -1,12 +1,14 @@
+import { getSchedulerDatabase } from '@/src/lib/server/database';
+import { requireScheduler } from '@/src/lib/server/scheduler';
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
 // Note: Requires service role key to bypass RLS in a cron, but we'll use anon for now if RLS allows it
-const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 export async function POST(req: Request) {
+  try { requireScheduler(req); } catch { return NextResponse.json({error:'Unauthorized'},{status:401}); }
+  const supabase = getSchedulerDatabase(req);
   try {
     // 1. Authenticate the cron job (e.g. check a secret Bearer token from Vercel)
     const authHeader = req.headers.get('Authorization');
