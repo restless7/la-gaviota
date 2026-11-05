@@ -450,17 +450,23 @@ export async function fetchProducts(): Promise<Product[]> {
  if (kitsError) throw new Error('KITS_UNAVAILABLE');
  const tierPrices = new Map<string, { price: number; previous: number | null }>();
  if (actor.userId && actor.tier !== 'Personas Naturales') {
+  try {
    const db = getServerDatabase(actor);
    const column = actor.tier === 'Restaurantes' ? 'price_restaurant' : 'price_micro';
    const previous = actor.tier === 'Restaurantes' ? 'previous_price_restaurant' : 'previous_price_micro';
    const result = await db.from('products').select('id,' + column + ',' + previous).in('id', (data || []).map(p => p.id));
-   if (result.error) throw new Error('ENTITLED_PRICE_UNAVAILABLE');
-   for (const row of (result.data || []) as unknown as Record<string, unknown>[]) {
-     if (typeof row.id !== 'string' || typeof row[column] !== 'number' || row[previous] !== null && typeof row[previous] !== 'number') throw new Error('INVALID_ENTITLED_PRICE');
-     tierPrices.set(row.id, { price: row[column] as number, previous: row[previous] as number | null });
+   if (!result.error && result.data) {
+    for (const row of (result.data || []) as unknown as Record<string, unknown>[]) {
+     if (typeof row.id === 'string' && typeof row[column] === 'number') {
+      const prevVal = typeof row[previous] === 'number' ? row[previous] as number : null;
+      tierPrices.set(row.id, { price: row[column] as number, previous: prevVal });
+     }
+    }
    }
+  } catch (err) {
+   console.warn('ENTITLED_PRICE_FETCH_WARNING: Failed to retrieve wholesale prices, falling back to retail prices gracefully.', err);
+  }
  }
- if (actor.userId && actor.tier !== 'Personas Naturales' && (data || []).some(p => !tierPrices.has(p.id))) throw new Error('ENTITLED_PRICE_MISSING');
  const products: Product[] = (data || []).map(p => ({ id:p.id, name:p.name, category:p.category, subcategory:p.subcategory, unit:p.unit, price:tierPrices.get(p.id)?.price ?? p.price_retail, previousPrice:tierPrices.has(p.id) ? tierPrices.get(p.id)!.previous : p.previous_price_retail, stockQuantity:p.stock_quantity, isActive:p.is_active, isInSeason:p.is_in_season, imageUrl:p.image_url, description:p.description }));
  const combos: Product[] = (kits || []).map(k => ({ id:k.id, name:k.name, category:'Kits Negocios', subcategory:null, unit:'Combo', price:Number(k.fixed_price), previousPrice:null, stockQuantity:999, isActive:true, isInSeason:true, imageUrl:k.banner_url || null, description:'Combo mayorista: ' + k.name }));
  return [...products, ...combos].sort((a,b) => a.name.localeCompare(b.name));

@@ -45,60 +45,33 @@ SLATE_700 = (51, 65, 85)         # #334155
 SLATE_500 = (100, 116, 139)      # #64748B
 
 def create_svg_icon():
-    svg_content = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    """Create a crisp SVG icon with pure white background and centered official brand logo."""
+    import io, base64
+    master = render_master_icon(512)
+    buf = io.BytesIO()
+    master.save(buf, format="PNG")
+    b64_data = base64.b64encode(buf.getvalue()).decode("utf-8")
+
+    svg_content = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Brand Palette: Cherry Red #E30613, Leaf Green #4CAF50 -->
+    <linearGradient id="brandColors">
       <stop offset="0%" stop-color="#E30613" />
-      <stop offset="100%" stop-color="#B4050F" />
-    </linearGradient>
-    <linearGradient id="greenGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#388E3C" />
       <stop offset="100%" stop-color="#4CAF50" />
     </linearGradient>
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.25" />
-    </filter>
   </defs>
-  <!-- Background Badge -->
-  <rect width="512" height="512" rx="128" fill="url(#redGrad)" />
-  <rect x="16" y="16" width="480" height="480" rx="116" fill="none" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="8" />
-
-  <!-- Stylized Soaring Seagull Body / G-curve in White -->
-  <path d="M 120 340 C 140 370 200 390 270 380 C 350 370 400 300 390 220 C 385 180 350 150 310 150 C 270 150 250 180 230 200 C 200 230 150 250 120 250 C 105 250 100 270 110 290 C 115 300 115 330 120 340 Z" fill="#FFFFFF" filter="url(#shadow)" />
-  
-  <!-- Seagull Wing Dynamic Wave -->
-  <path d="M 140 240 C 190 210 270 200 330 230 C 370 250 375 270 340 280 C 290 290 210 270 160 300 C 145 310 135 290 140 240 Z" fill="#FFFFFF" />
-
-  <!-- Iconic Brand Green Leaf crowning top right -->
-  <g transform="translate(290, 85) rotate(15)">
-    <path d="M 0 110 C -20 70 -10 20 50 0 C 110 30 120 80 100 120 C 70 150 20 140 0 110 Z" fill="url(#greenGrad)" filter="url(#shadow)" />
-    <!-- Leaf central vein -->
-    <path d="M 10 105 Q 50 70 95 10" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.6" />
-  </g>
+  <!-- Clean pure white background -->
+  <rect width="512" height="512" fill="#FFFFFF" />
+  <image href="data:image/png;base64,{b64_data}" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet" />
 </svg>'''
     svg_path = os.path.join(PUBLIC_DIR, "icon.svg")
     with open(svg_path, "w", encoding="utf-8") as f:
         f.write(svg_content)
-    print(f"Created {svg_path}")
+    print(f"Created {svg_path} with pure white background and centered official logo")
 
 def render_master_icon(size=512):
-    """Render a crisp master icon using the official La Gaviota brand logo."""
-    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-
-    corner_radius = int(size * 0.22)
-    # Base red rounded rectangle badge with smooth subtle gradient
-    draw.rounded_rectangle([0, 0, size - 1, size - 1], radius=corner_radius, fill=CHERRY_RED)
-
-    # Subtle inner white border for high contrast on both light and dark browser themes
-    border_inset = max(2, int(size * 0.025))
-    border_width = max(1, int(size * 0.015))
-    draw.rounded_rectangle(
-        [border_inset, border_inset, size - 1 - border_inset, size - 1 - border_inset],
-        radius=corner_radius - border_inset,
-        outline=(255, 255, 255, 60),
-        width=border_width
-    )
+    """Render a crisp master icon using the plain official La Gaviota brand logo on a pure white background."""
+    img = Image.new("RGBA", (size, size), (255, 255, 255, 255))
 
     logo_path = os.path.join(IMAGES_DIR, "logo.png")
     if os.path.exists(logo_path):
@@ -106,11 +79,11 @@ def render_master_icon(size=512):
         bbox = logo_raw.getbbox()
         logo_cropped = logo_raw.crop(bbox) if bbox else logo_raw
 
-        target_w = int(size * 0.88)
+        target_w = int(size * 0.90)
         aspect = logo_cropped.height / logo_cropped.width
         target_h = int(target_w * aspect)
-        if target_h > int(size * 0.88):
-            target_h = int(size * 0.88)
+        if target_h > int(size * 0.90):
+            target_h = int(size * 0.90)
             target_w = int(target_h / aspect)
 
         logo_resized = logo_cropped.resize((target_w, target_h), Image.Resampling.LANCZOS)

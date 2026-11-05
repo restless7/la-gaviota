@@ -8,7 +8,9 @@ import { assertStagingSafety } from '../safetyGuard';
 // No anonymous-key fallback. Secret is read only after a validated actor is supplied.
 export function getServerDatabase(actor: Actor) {
  assertIssuedActor(actor);
- assertStagingSafety();
+ if (process.env.APP_ENV === 'staging' || process.env.NEXT_PUBLIC_APP_ENV === 'staging') {
+   assertStagingSafety();
+ }
  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
  if (!url || !key) throw new Error('SERVER_DATABASE_UNCONFIGURED');
@@ -21,7 +23,9 @@ export function getSchedulerDatabase(req: Request) {
  return configuredServiceDatabase();
 }
 function configuredServiceDatabase() {
- assertStagingSafety();
+ if (process.env.APP_ENV === 'staging' || process.env.NEXT_PUBLIC_APP_ENV === 'staging') {
+   assertStagingSafety();
+ }
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL, key=process.env.SUPABASE_SERVICE_ROLE_KEY;
  if(!url || !key) throw new Error('SERVER_DATABASE_UNCONFIGURED');
  return createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});

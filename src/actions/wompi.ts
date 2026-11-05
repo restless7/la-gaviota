@@ -9,6 +9,9 @@ import { prepareCheckout } from '@/src/lib/server/checkout';
 import type { CheckoutItem } from './checkoutAction';
 
 export async function initializeWompiTransaction(formData: FormData, items: CheckoutItem[], expectedTotal?: number, idempotencyKey?: string) {
+  if (process.env.APP_ENV === 'production' && process.env.ENABLE_ONLINE_PAYMENTS !== 'true') {
+    throw new Error('ELECTRONIC_PAYMENTS_DISABLED: Los pagos electrónicos (Wompi) están desactivados en el backend. Seleccione Pago Contra Entrega.');
+  }
   const checkout = await prepareCheckout(formData, items, expectedTotal);
   // Fail before inserting an order when the widget cannot be configured.
   const publicKey = assertWompiCheckoutConfigured();
@@ -41,6 +44,9 @@ export async function initializeWompiTransaction(formData: FormData, items: Chec
 }
 
 export async function initializeWompiBalancePayment(amount: number) {
+  if (process.env.APP_ENV === 'production' && process.env.ENABLE_ONLINE_PAYMENTS !== 'true') {
+    throw new Error('ELECTRONIC_PAYMENTS_DISABLED: Los pagos electrónicos (Wompi) están desactivados en el backend. Seleccione Pago Contra Entrega.');
+  }
   const actor = await getActor();
   assertIssuedActor(actor);
   try {
