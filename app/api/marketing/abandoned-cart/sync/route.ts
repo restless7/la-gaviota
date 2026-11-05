@@ -39,48 +39,52 @@ export async function POST(req: Request) {
     // For Phase 1, tracking authenticated users is the priority.
     
     if (userId) {
-      // Find existing active cart
-      const { data: existingCart } = await supabase
-        .from('abandoned_carts')
-        .select('id')
-        .eq('clerk_user_id', userId)
-        .in('status', ['active', 'abandoned'])
-        .order('updated_at', { ascending: false })
-        .limit(1)
-        .single();
-
-      if (existingCart) {
-        await supabase
+      try {
+        // Find existing active cart
+        const { data: existingCart } = await supabase
           .from('abandoned_carts')
-          .update({
-            cart_data: items,
-            total_amount: cartTotal,
-            customer_phone: customerPhone,
-            customer_email: customerEmail,
-            status: isCompleted ? 'recovered' : 'active',
-            last_active_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', existingCart.id);
-      } else {
-        if (!isCompleted) {
+          .select('id')
+          .eq('clerk_user_id', userId)
+          .in('status', ['active', 'abandoned'])
+          .order('updated_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (existingCart) {
           await supabase
             .from('abandoned_carts')
-            .insert({
-              clerk_user_id: userId,
-              customer_phone: customerPhone,
-              customer_email: customerEmail,
+            .update({
               cart_data: items,
               total_amount: cartTotal,
-              status: 'active'
-            });
+              customer_phone: customerPhone,
+              customer_email: customerEmail,
+              status: isCompleted ? 'recovered' : 'active',
+              last_active_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', existingCart.id);
+        } else {
+          if (!isCompleted) {
+            await supabase
+              .from('abandoned_carts')
+              .insert({
+                clerk_user_id: userId,
+                customer_phone: customerPhone,
+                customer_email: customerEmail,
+                cart_data: items,
+                total_amount: cartTotal,
+                status: 'active'
+              });
+          }
         }
+      } catch (dbErr) {
+        console.warn('[Abandoned Cart DB Sync Warning]', dbErr);
       }
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('[Abandoned Cart Sync Error]', error);
-    return NextResponse.json({ error: 'Failed to sync cart' }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Telemetry sync non-fatal' }, { status: 200 });
   }
 }

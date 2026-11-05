@@ -9,6 +9,7 @@ import { auth, clerkClient } from '@clerk/nextjs/server';
 import { logAdminAction } from '@/src/lib/audit';
 
 import { CATEGORIES } from '@/src/constants/productConstants';
+import { resolveProductImageUrl } from '@/src/lib/catalogImages';
 
 // We initialize the Supabase client here for server actions
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -76,7 +77,7 @@ export async function fetchAdminProducts(): Promise<AdminProduct[]> {
     stockQuantity: p.stock_quantity,
     isActive: p.is_active,
     isInSeason: p.is_in_season,
-    imageUrl: p.image_url,
+    imageUrl: resolveProductImageUrl(p.id, p.image_url),
     description: p.description
   }));
 
@@ -467,7 +468,7 @@ export async function fetchProducts(): Promise<Product[]> {
    console.warn('ENTITLED_PRICE_FETCH_WARNING: Failed to retrieve wholesale prices, falling back to retail prices gracefully.', err);
   }
  }
- const products: Product[] = (data || []).map(p => ({ id:p.id, name:p.name, category:p.category, subcategory:p.subcategory, unit:p.unit, price:tierPrices.get(p.id)?.price ?? p.price_retail, previousPrice:tierPrices.has(p.id) ? tierPrices.get(p.id)!.previous : p.previous_price_retail, stockQuantity:p.stock_quantity, isActive:p.is_active, isInSeason:p.is_in_season, imageUrl:p.image_url, description:p.description }));
+ const products: Product[] = (data || []).map(p => ({ id:p.id, name:p.name, category:p.category, subcategory:p.subcategory, unit:p.unit, price:tierPrices.get(p.id)?.price ?? p.price_retail, previousPrice:tierPrices.has(p.id) ? tierPrices.get(p.id)!.previous : p.previous_price_retail, stockQuantity:p.stock_quantity, isActive:p.is_active, isInSeason:p.is_in_season, imageUrl:resolveProductImageUrl(p.id, p.image_url), description:p.description }));
  const combos: Product[] = (kits || []).map(k => ({ id:k.id, name:k.name, category:'Kits Negocios', subcategory:null, unit:'Combo', price:Number(k.fixed_price), previousPrice:null, stockQuantity:999, isActive:true, isInSeason:true, imageUrl:k.banner_url || null, description:'Combo mayorista: ' + k.name }));
  return [...products, ...combos].sort((a,b) => a.name.localeCompare(b.name));
 }
