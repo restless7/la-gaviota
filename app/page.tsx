@@ -9,7 +9,31 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   alternates: { canonical: 'https://www.lagaviotafruver.com/' },
   title: 'Inicio | Surtifruver La Gaviota',
-  description: 'Explora nuestro catálogo fresco y haz tu pedido con precios mayoristas en Bogotá y Bucaramanga.',
+  description: 'Explora nuestro catálogo fresco y haz tu pedido con precios mayoristas en Bucaramanga y Santander.',
+  openGraph: {
+    type: 'website',
+    locale: 'es_CO',
+    url: 'https://www.lagaviotafruver.com',
+    siteName: 'Surtifruver La Gaviota',
+    title: 'Surtifruver La Gaviota | Frutas y Verduras Frescas a Domicilio',
+    description: 'Mercado fresco directo del campo a tu mesa. La forma chévere de mercar en Bucaramanga.',
+    images: [
+      {
+        url: 'https://www.lagaviotafruver.com/IMAGES/og-lagaviota.jpg',
+        secureUrl: 'https://www.lagaviotafruver.com/IMAGES/og-lagaviota.jpg',
+        width: 1200,
+        height: 630,
+        type: 'image/jpeg',
+        alt: 'Surtifruver La Gaviota - La forma chévere de mercar',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Surtifruver La Gaviota | Frescura de Santander a tu mesa',
+    description: 'Frutas y verduras frescas directo del campo. La forma chévere de mercar en Bucaramanga.',
+    images: ['https://www.lagaviotafruver.com/IMAGES/og-lagaviota.jpg'],
+  },
 };
 
 export default async function Home() {

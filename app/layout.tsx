@@ -27,6 +27,7 @@ export const metadata: Metadata = {
       { url: '/favicon.ico', sizes: 'any' },
       { url: '/icon-32x32.png', type: 'image/png', sizes: '32x32' },
       { url: '/icon-16x16.png', type: 'image/png', sizes: '16x16' },
+      { url: '/icon-48x48.png', type: 'image/png', sizes: '48x48' },
       { url: '/icon.svg', type: 'image/svg+xml' },
     ],
     apple: [
@@ -42,9 +43,11 @@ export const metadata: Metadata = {
     description: 'Mercado fresco directo del campo a tu mesa. Frutas y verduras de Santander en Bucaramanga. La forma chévere de mercar.',
     images: [
       {
-        url: '/IMAGES/og-lagaviota.png',
+        url: 'https://www.lagaviotafruver.com/IMAGES/og-lagaviota.jpg',
+        secureUrl: 'https://www.lagaviotafruver.com/IMAGES/og-lagaviota.jpg',
         width: 1200,
         height: 630,
+        type: 'image/jpeg',
         alt: 'Surtifruver La Gaviota - Frescura de Santander a tu mesa',
       },
     ],
@@ -53,7 +56,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Surtifruver La Gaviota | Frescura de Santander a tu mesa',
     description: 'Frutas y verduras frescas directo del campo. La forma chévere de mercar en Bucaramanga.',
-    images: ['/IMAGES/og-lagaviota.png'],
+    images: ['https://www.lagaviotafruver.com/IMAGES/og-lagaviota.jpg'],
   },
 };
 

@@ -82,91 +82,41 @@ def create_svg_icon():
     print(f"Created {svg_path}")
 
 def render_master_icon(size=512):
-    """Draw a rich raster master icon using PIL matching the SVG brand identity."""
+    """Render a crisp master icon using the official La Gaviota brand logo."""
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    corner_radius = int(size * 0.25)
-    # Red rounded rectangle badge with subtle gradient
-    for i in range(size):
-        ratio = i / size
-        r = int(CHERRY_RED[0] * (1 - ratio * 0.2) + DARK_RED[0] * (ratio * 0.2))
-        g = int(CHERRY_RED[1] * (1 - ratio * 0.2) + DARK_RED[1] * (ratio * 0.2))
-        b = int(CHERRY_RED[2] * (1 - ratio * 0.2) + DARK_RED[2] * (ratio * 0.2))
-
-    # Base badge
+    corner_radius = int(size * 0.22)
+    # Base red rounded rectangle badge with smooth subtle gradient
     draw.rounded_rectangle([0, 0, size - 1, size - 1], radius=corner_radius, fill=CHERRY_RED)
-    
-    # Subtle inner border for contrast on dark/light tabs
-    border_inset = max(2, int(size * 0.03))
+
+    # Subtle inner white border for high contrast on both light and dark browser themes
+    border_inset = max(2, int(size * 0.025))
     border_width = max(1, int(size * 0.015))
     draw.rounded_rectangle(
         [border_inset, border_inset, size - 1 - border_inset, size - 1 - border_inset],
         radius=corner_radius - border_inset,
-        outline=(255, 255, 255, 55),
+        outline=(255, 255, 255, 60),
         width=border_width
     )
 
-    # Stylized White Seagull flight silhouette (G-form)
-    # Scale polygon coordinates to size
-    scale = size / 512.0
-    pts_seagull = [
-        (int(110 * scale), int(330 * scale)),
-        (int(140 * scale), int(365 * scale)),
-        (int(210 * scale), int(380 * scale)),
-        (int(280 * scale), int(370 * scale)),
-        (int(360 * scale), int(330 * scale)),
-        (int(390 * scale), int(270 * scale)),
-        (int(385 * scale), int(210 * scale)),
-        (int(350 * scale), int(160 * scale)),
-        (int(305 * scale), int(165 * scale)),
-        (int(275 * scale), int(195 * scale)),
-        (int(235 * scale), int(225 * scale)),
-        (int(185 * scale), int(245 * scale)),
-        (int(135 * scale), int(250 * scale)),
-        (int(115 * scale), int(275 * scale)),
-    ]
-    draw.polygon(pts_seagull, fill=(255, 255, 255, 255))
-    # Smooth curves with circles
-    draw.ellipse([int(110 * scale), int(260 * scale), int(160 * scale), int(310 * scale)], fill=(255, 255, 255, 255))
-    draw.ellipse([int(260 * scale), int(170 * scale), int(380 * scale), int(290 * scale)], fill=(255, 255, 255, 255))
+    logo_path = os.path.join(IMAGES_DIR, "logo.png")
+    if os.path.exists(logo_path):
+        logo_raw = Image.open(logo_path).convert("RGBA")
+        bbox = logo_raw.getbbox()
+        logo_cropped = logo_raw.crop(bbox) if bbox else logo_raw
 
-    # Inner cut / wing dynamic curve
-    pts_wing_cut = [
-        (int(140 * scale), int(240 * scale)),
-        (int(220 * scale), int(215 * scale)),
-        (int(300 * scale), int(230 * scale)),
-        (int(340 * scale), int(270 * scale)),
-        (int(280 * scale), int(275 * scale)),
-        (int(200 * scale), int(265 * scale)),
-        (int(150 * scale), int(285 * scale)),
-    ]
-    draw.polygon(pts_wing_cut, fill=(255, 255, 255, 255))
+        target_w = int(size * 0.88)
+        aspect = logo_cropped.height / logo_cropped.width
+        target_h = int(target_w * aspect)
+        if target_h > int(size * 0.88):
+            target_h = int(size * 0.88)
+            target_w = int(target_h / aspect)
 
-    # Green Leaf on top right
-    leaf_center_x = int(370 * scale)
-    leaf_center_y = int(140 * scale)
-    leaf_w = int(75 * scale)
-    leaf_h = int(55 * scale)
-
-    # Draw leaf using overlapping curves / rotated ellipse
-    leaf_img = Image.new("RGBA", (int(200 * scale), int(200 * scale)), (0, 0, 0, 0))
-    leaf_draw = ImageDraw.Draw(leaf_img)
-    leaf_draw.ellipse([int(20 * scale), int(40 * scale), int(170 * scale), int(130 * scale)], fill=LEAF_GREEN)
-    leaf_draw.polygon([
-        (int(170 * scale), int(85 * scale)),
-        (int(140 * scale), int(45 * scale)),
-        (int(195 * scale), int(35 * scale)),
-    ], fill=LEAF_GREEN)
-    # Leaf stem
-    leaf_draw.line([int(30 * scale), int(115 * scale), int(10 * scale), int(145 * scale)], fill=DARK_GREEN, width=int(5 * scale))
-    # Leaf vein
-    leaf_draw.line([int(35 * scale), int(110 * scale), int(175 * scale), int(45 * scale)], fill=(255, 255, 255, 140), width=int(4 * scale))
-
-    # Rotate leaf ~ -25 deg
-    rotated_leaf = leaf_img.rotate(-25, resample=Image.Resampling.BICUBIC)
-    img.alpha_composite(rotated_leaf, (int(280 * scale), int(50 * scale)))
-
+        logo_resized = logo_cropped.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        paste_x = (size - target_w) // 2
+        paste_y = (size - target_h) // 2
+        img.alpha_composite(logo_resized, (paste_x, paste_y))
     return img
 
 def generate_icon_system():
