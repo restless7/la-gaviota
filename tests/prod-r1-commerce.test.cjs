@@ -350,3 +350,70 @@ test('Commerce: Wompi balance payment regex binds to exact full clerk user ID', 
   assert.ok(!invalidPrefix.startsWith('BAL_'));
   assert.ok(!malformedRef.match(/^BAL_(user_[A-Za-z0-9]+)_([0-9]+)$/));
 });
+
+test('Commerce: Guest checkout and 3-tier pricing validation (Personas Naturales, Micromercados, Restaurantes)', async () => {
+  const validation = loadModule('src/lib/checkoutValidation.ts');
+
+  const sampleCatalog = [
+    {
+      id: 'prd_0001',
+      name: 'Tomate Chonto',
+      is_active: true,
+      stock_quantity: 100,
+      price_retail: 4000,
+      price_micro: 3400,
+      price_restaurant: 3000,
+    },
+    {
+      id: 'prd_0002',
+      name: 'Papa Pastusa (wholesale null fallback)',
+      is_active: true,
+      stock_quantity: 100,
+      price_retail: 2500,
+      price_micro: null,
+      price_restaurant: 0,
+    },
+  ];
+
+  // 1. Personas Naturales (Retail / Guest) - no minimum order, free shipping >= 50k
+  const retailQuote = validation.quoteCheckout(
+    [{ productId: 'prd_0001', quantity: 5 }, { productId: 'prd_0002', quantity: 2 }],
+    sampleCatalog,
+    'Personas Naturales',
+    'Bucaramanga',
+    false
+  );
+  assert.equal(retailQuote.subtotal, 5 * 4000 + 2 * 2500);
+  assert.equal(retailQuote.deliveryCost, 5000);
+  assert.equal(retailQuote.totalAmount, 30000);
+
+  // 2. Micromercados - enforces $150,000 minimum order and falls back when price_micro is null
+  assert.throws(
+    () => validation.quoteCheckout([{ productId: 'prd_0001', quantity: 10 }], sampleCatalog, 'Micromercados', 'Bucaramanga', false),
+    /pedido mínimo/
+  );
+  const microQuote = validation.quoteCheckout(
+    [{ productId: 'prd_0001', quantity: 50 }, { productId: 'prd_0002', quantity: 2 }],
+    sampleCatalog,
+    'Micromercados',
+    'Bucaramanga',
+    false
+  );
+  assert.equal(microQuote.subtotal, 50 * 3400 + 2 * 2500);
+  assert.equal(microQuote.deliveryCost, 0);
+
+  // 3. Restaurantes - enforces $300,000 minimum order and falls back when price_restaurant is 0
+  assert.throws(
+    () => validation.quoteCheckout([{ productId: 'prd_0001', quantity: 50 }], sampleCatalog, 'Restaurantes', 'Bucaramanga', false),
+    /pedido mínimo/
+  );
+  const restQuote = validation.quoteCheckout(
+    [{ productId: 'prd_0001', quantity: 100 }, { productId: 'prd_0002', quantity: 2 }],
+    sampleCatalog,
+    'Restaurantes',
+    'Bucaramanga',
+    false
+  );
+  assert.equal(restQuote.subtotal, 100 * 3000 + 2 * 2500);
+  assert.equal(restQuote.deliveryCost, 0);
+});

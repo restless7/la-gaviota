@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import type { Product } from '@/src/actions/products';
 import { useCart } from '@/src/contexts/CartContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { CatalogImage } from './CatalogImage';
 import { QuantitySelector } from './QuantitySelector';
 
@@ -11,9 +12,18 @@ const formatPrice = (price: number) => new Intl.NumberFormat('es-CO', { style: '
 
 export function ProductCard({ product }: { product: Product }) {
   const { items, addToCart, updateQuantity, cartReady } = useCart();
+  const { role } = useUserRole();
   const quantity = items.find(item => item.product.id === product.id)?.quantity ?? 0;
   const [expanded, setExpanded] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const tierTag = role === 'Restaurantes'
+    ? { label: 'Tarifa Restaurante', classes: 'bg-emerald-50 text-emerald-800 border-emerald-200' }
+    : role === 'Micromercados'
+      ? { label: 'Tarifa Mayorista', classes: 'bg-amber-50 text-amber-800 border-amber-200' }
+      : { label: 'Precio Detal', classes: 'bg-slate-100 text-slate-600 border-slate-200' };
+
+  const hasSavings = typeof product.previousPrice === 'number' && product.previousPrice > product.price;
 
   useEffect(() => {
     if (expanded) dialogRef.current?.showModal();
@@ -72,8 +82,20 @@ export function ProductCard({ product }: { product: Product }) {
             </button>
           </h3>
           <div className="mt-auto">
-            <p className="text-lg font-black text-slate-900">{formatPrice(product.price)}</p>
-            <p className="text-xs text-slate-600">/ {product.unit}</p>
+            {hasSavings && (
+              <p className="text-[11px] font-medium text-slate-400 line-through">
+                {formatPrice(product.previousPrice!)}
+              </p>
+            )}
+            <div className="flex flex-wrap items-baseline justify-between gap-1">
+              <div>
+                <p className="text-lg font-black text-slate-900">{formatPrice(product.price)}</p>
+                <p className="text-xs text-slate-600">/ {product.unit}</p>
+              </div>
+              <span className={`rounded-md border px-1.5 py-0.5 text-[10px] font-bold leading-tight ${tierTag.classes}`}>
+                {tierTag.label}
+              </span>
+            </div>
           </div>
           <div className="mt-1">
             <QuantitySelector

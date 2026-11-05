@@ -24,14 +24,14 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon-32x32.png', type: 'image/png', sizes: '32x32' },
-      { url: '/icon-16x16.png', type: 'image/png', sizes: '16x16' },
-      { url: '/icon-48x48.png', type: 'image/png', sizes: '48x48' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico?v=white4', sizes: 'any' },
+      { url: '/icon-32x32.png?v=white4', type: 'image/png', sizes: '32x32' },
+      { url: '/icon-16x16.png?v=white4', type: 'image/png', sizes: '16x16' },
+      { url: '/icon-48x48.png?v=white4', type: 'image/png', sizes: '48x48' },
+      { url: '/icon.svg?v=white4', type: 'image/svg+xml' },
     ],
     apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-touch-icon.png?v=white4', sizes: '180x180', type: 'image/png' },
     ],
   },
   openGraph: {

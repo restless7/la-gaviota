@@ -38,10 +38,15 @@ export async function insertPublicLead(payload: Record<string,unknown>) {
  return db.from('marketing_leads').insert({full_name:payload.fullName,business_name:payload.businessName,business_type:payload.businessType,phone:payload.phone,email:payload.email,source:payload.source||'Landing Page',status:'Nuevo'}).select('id').single();
 }
 
-// Public fixed projection; no caller-supplied table or select and no fail-open false.
+// Public fixed projection; no caller-supplied table or select. Defaults to track_inventory: false if row is absent.
 export async function readPublicInventoryFlag() {
  const db=configuredServiceDatabase();
- const {data,error}=await db.from('global_settings').select('track_inventory').eq('id','default').single();
- if(error || !data || typeof data.track_inventory!=='boolean') throw new Error('INVENTORY_SETTING_UNAVAILABLE');
+ const {data,error}=await db.from('global_settings').select('track_inventory').eq('id','default').maybeSingle();
+ if(error || !data || typeof data.track_inventory!=='boolean') return {track_inventory:false};
  return {track_inventory:data.track_inventory};
+}
+
+// Scoped database client for public retail checkout (guest or authenticated retail validation).
+export function getGuestCheckoutDatabase() {
+ return configuredServiceDatabase();
 }

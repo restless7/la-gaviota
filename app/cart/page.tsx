@@ -4,12 +4,17 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/src/contexts/CartContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { CartItems } from '@/src/components/cart/CartItems';
 
 export default function CartPage() {
-   const { items, cartTotal, cartReady } = useCart();
+   const { items, cartTotal, cartReady, remainingForFreeShipping } = useCart();
+   const { role } = useUserRole();
 
    const formatPrice = (p: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(p);
+
+   const minOrder = role === 'Restaurantes' ? 300000 : role === 'Micromercados' ? 150000 : 0;
+   const remainingForMinOrder = Math.max(0, minOrder - cartTotal);
 
    const emptyImage = '/IMAGES/empty-cart-seagull.jpeg';
 
@@ -70,20 +75,55 @@ export default function CartPage() {
             {/* Right side: Carrito Totals */}
             <div className="w-full lg:w-1/3">
                <div className="bg-slate-50 border border-gray-100 rounded-3xl p-5 sm:p-8 sticky top-28">
-                  <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-200 pb-4">Total del Carrito</h2>
-                  
+                  <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-5">
+                     <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total del Carrito</h2>
+                     <span className="rounded-full bg-white border border-gray-200 px-3 py-1 text-[11px] font-black text-slate-800">
+                        {role}
+                     </span>
+                  </div>
+
+                  {minOrder > 0 ? (
+                     remainingForMinOrder > 0 ? (
+                        <div className="mb-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900">
+                           <p className="font-bold">Pedido mínimo para {role}: {formatPrice(minOrder)}</p>
+                           <p className="mt-1">Agrega <strong>{formatPrice(remainingForMinOrder)}</strong> más para habilitar el pago mayorista.</p>
+                        </div>
+                     ) : (
+                        <div className="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-xs font-bold text-emerald-800">
+                           ✓ Pedido mínimo mayorista alcanzado ({formatPrice(minOrder)}).
+                        </div>
+                     )
+                  ) : remainingForFreeShipping > 0 ? (
+                     <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700">
+                        <p>Agrega <strong>{formatPrice(remainingForFreeShipping)}</strong> más para obtener <strong>domicilio gratis</strong>.</p>
+                     </div>
+                  ) : (
+                     <div className="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-xs font-bold text-emerald-800">
+                        🎉 ¡Tienes domicilio gratis activado en tu pedido!
+                     </div>
+                  )}
+
                   <p className="text-sm leading-relaxed text-slate-600">El envío, los precios y la disponibilidad se confirman al finalizar.</p>
                   <div className="my-8 flex flex-wrap items-end justify-between gap-3">
                      <span className="text-lg font-black text-slate-800">Subtotal estimado</span>
                      <span className="text-3xl font-black text-slate-900">{formatPrice(cartTotal)}</span>
                   </div>
 
-                  <Link 
-                     href="/checkout"
-                     className="w-full bg-slate-800 hover:bg-slate-900 text-white rounded-xl py-4 flex items-center justify-center font-bold text-lg transition-all shadow-md hover:shadow-xl hover:-translate-y-1"
-                  >
-                     Proceder al pago
-                  </Link>
+                  {remainingForMinOrder > 0 ? (
+                     <Link 
+                        href="/"
+                        className="w-full bg-[#4CAF50] hover:bg-[#3d8c40] text-white rounded-xl py-4 flex items-center justify-center font-bold text-base transition-all shadow-md"
+                     >
+                        Agregar más productos ({formatPrice(remainingForMinOrder)})
+                     </Link>
+                  ) : (
+                     <Link 
+                        href="/checkout"
+                        className="w-full bg-slate-800 hover:bg-slate-900 text-white rounded-xl py-4 flex items-center justify-center font-bold text-lg transition-all shadow-md hover:shadow-xl hover:-translate-y-1"
+                     >
+                        Proceder al pago
+                     </Link>
+                  )}
                </div>
             </div>
          </div>

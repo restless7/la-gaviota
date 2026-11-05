@@ -17,7 +17,7 @@ export async function initializeWompiTransaction(formData: FormData, items: Chec
   const publicKey = assertWompiCheckoutConfigured();
   const amountInCents = formatToCents(checkout.totalAmount);
   const { details } = checkout;
-  const intentId = `INTENT_${Date.now()}_${checkout.userId.substring(0, 12)}`;
+  const intentId = `INTENT_${Date.now()}_${(checkout.userId || 'guest').substring(0, 12)}`;
   const orderResult = await createOrder({
     clerk_user_id: checkout.userId,
     customer_name: `${details.firstName} ${details.lastName}`,

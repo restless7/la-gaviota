@@ -257,15 +257,40 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
              <DeliveryScheduler />
            </div>
 
-           {/* Subtle Partnership Banner */}
-           <div className="mb-6 w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div>
-                 <h4 className="text-sm font-bold text-slate-800">¿Compras grandes volúmenes para tu negocio?</h4>
-                 <p className="text-xs text-gray-500 mt-0.5">Aplica a nuestro programa de aliados y obtén tarifas mayoristas exclusivas.</p>
+           {/* Customer Tiers Identification & Partnership Banner */}
+           <div className="mb-6 w-full rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                 <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                       <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">Nivel de Cliente Activo:</span>
+                       <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-xs font-extrabold ${
+                          role === 'Restaurantes'
+                             ? 'border-emerald-300 bg-emerald-50 text-emerald-800'
+                             : role === 'Micromercados'
+                                ? 'border-amber-300 bg-amber-50 text-amber-800'
+                                : 'border-slate-300 bg-slate-100 text-slate-800'
+                       }`}>
+                          {role === 'Restaurantes' ? '👨‍🍳 Mayorista · Restaurantes (Pedido mín. $300.000)' : role === 'Micromercados' ? '🏪 Mayorista · Micromercados (Pedido mín. $150.000)' : '🏠 Personas Naturales · Detal (Envío gratis desde $50.000)'}
+                       </span>
+                    </div>
+                    <p className="mt-1.5 text-xs text-slate-600">
+                       {role === 'Personas Naturales'
+                          ? 'Estás viendo precios al detal para hogar. ¿Tienes un restaurante o micromercado? Aplica a tarifas mayoristas verificadas.'
+                          : `Estás comprando con tarifa preferencial verificada para ${role}.`}
+                    </p>
+                 </div>
+                 <div className="flex shrink-0 items-center gap-2">
+                    {role === 'Personas Naturales' ? (
+                       <a href="/aplicar-negocio" className="whitespace-nowrap rounded-full bg-slate-900 px-5 py-2.5 text-xs font-black text-[#FFCC00] shadow-sm transition-colors hover:bg-slate-800">
+                          Solicitar Tarifa Mayorista
+                       </a>
+                    ) : (
+                       <a href="/dashboard" className="whitespace-nowrap rounded-full bg-emerald-700 px-5 py-2.5 text-xs font-black text-white shadow-sm transition-colors hover:bg-emerald-800">
+                          Ir a Mi Portal B2B
+                       </a>
+                    )}
+                 </div>
               </div>
-              <a href="/aplicar-negocio" className="text-xs font-black text-white bg-slate-800 hover:bg-slate-900 px-5 py-2.5 rounded-full shadow-sm transition-colors whitespace-nowrap">
-                 Aplicar para Negocio
-              </a>
            </div>
 
            <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">

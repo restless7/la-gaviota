@@ -73,17 +73,40 @@ def render_master_icon(size=512):
     """Render a crisp master icon using the plain official La Gaviota brand logo on a pure white background."""
     img = Image.new("RGBA", (size, size), (255, 255, 255, 255))
 
-    logo_path = os.path.join(IMAGES_DIR, "logo.png")
-    if os.path.exists(logo_path):
-        logo_raw = Image.open(logo_path).convert("RGBA")
-        bbox = logo_raw.getbbox()
-        logo_cropped = logo_raw.crop(bbox) if bbox else logo_raw
+    # Prefer logo.jpeg (pristine white interior & background) over logo.png
+    logo_jpeg_path = os.path.join(IMAGES_DIR, "logo.jpeg")
+    logo_png_path = os.path.join(IMAGES_DIR, "logo.png")
+    source_path = logo_jpeg_path if os.path.exists(logo_jpeg_path) else logo_png_path
 
-        target_w = int(size * 0.90)
+    if os.path.exists(source_path):
+        logo_raw = Image.open(source_path).convert("RGBA")
+        # Find tight bounding box of non-white pixels (threshold < 245)
+        pixels = logo_raw.load()
+        w, h = logo_raw.size
+        min_x, min_y, max_x, max_y = w, h, 0, 0
+        for y in range(h):
+            for x in range(w):
+                r, g, b, a = pixels[x, y]
+                if a > 20 and (r < 245 or g < 245 or b < 245):
+                    if x < min_x: min_x = x
+                    if y < min_y: min_y = y
+                    if x > max_x: max_x = x
+                    if y > max_y: max_y = y
+                else:
+                    # Force background pixels to pure crisp #FFFFFF
+                    pixels[x, y] = (255, 255, 255, 255)
+
+        if max_x > min_x and max_y > min_y:
+            logo_cropped = logo_raw.crop((min_x, min_y, max_x + 1, max_y + 1))
+        else:
+            logo_cropped = logo_raw
+
+        # Scale to 80% of canvas so pure white #FFFFFF background clearly frames the logo at 16x16 & 32x32
+        target_w = int(size * 0.80)
         aspect = logo_cropped.height / logo_cropped.width
         target_h = int(target_w * aspect)
-        if target_h > int(size * 0.90):
-            target_h = int(size * 0.90)
+        if target_h > int(size * 0.80):
+            target_h = int(size * 0.80)
             target_w = int(target_h / aspect)
 
         logo_resized = logo_cropped.resize((target_w, target_h), Image.Resampling.LANCZOS)

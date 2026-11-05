@@ -1,8 +1,8 @@
 import 'server-only';
 import type { Order, OrderItem } from '@/src/actions/orders';
 import { revalidatePath } from 'next/cache';
-import { requireOwnedSubject } from './authorization';
-import { getServerDatabase, readPublicInventoryFlag } from './database';
+import { requireOwnedSubject, getActor } from './authorization';
+import { getServerDatabase, getGuestCheckoutDatabase, readPublicInventoryFlag } from './database';
 import { assertOrderWrite } from '@/src/lib/checkoutValidation';
 import { computeCheckoutFingerprint } from '@/src/lib/idempotency';
 
@@ -36,8 +36,17 @@ export async function createOrder(
     }
   }
 
-  const actor = await requireOwnedSubject(orderData.clerk_user_id);
-  const supabase = getServerDatabase(actor);
+  let supabase: ReturnType<typeof getServerDatabase>;
+  if (orderData.clerk_user_id === null) {
+    const actor = typeof getActor === 'function' ? await getActor() : { userId: null, role: 'GUEST' as const, tier: 'Personas Naturales' as const };
+    if (actor && actor.role === 'INVALID') {
+      throw new Error('INVALID_ACTOR');
+    }
+    supabase = typeof getGuestCheckoutDatabase === 'function' ? getGuestCheckoutDatabase() : getServerDatabase({ userId: 'guest', role: 'USER', tier: 'Personas Naturales' });
+  } else {
+    const actor = await requireOwnedSubject(orderData.clerk_user_id);
+    supabase = getServerDatabase(actor);
+  }
 
   // Compute canonical checkout fingerprint if idempotency key is present
   if (orderData.idempotency_key && !orderData.idempotency_fingerprint) {

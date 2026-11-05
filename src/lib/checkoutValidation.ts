@@ -36,7 +36,9 @@ export function quoteCheckout(lines: CheckoutLine[], products: CheckoutProduct[]
     const product = matches[0];
     if (matches.length !== 1 || product.is_active !== true) throw new Error('Producto no disponible');
     if (trackInventory && (!Number.isSafeInteger(product.stock_quantity) || product.stock_quantity < line.quantity)) throw new Error(`Stock insuficiente para ${product.name}`);
-    const price = money(tier === 'Micromercados' ? product.price_micro : tier === 'Restaurantes' ? product.price_restaurant : product.price_retail);
+    const retailPrice = money(product.price_retail);
+    const rawTierPrice = tier === 'Micromercados' ? product.price_micro : tier === 'Restaurantes' ? product.price_restaurant : retailPrice;
+    const price = money(typeof rawTierPrice === 'number' && rawTierPrice > 0 ? Math.round(rawTierPrice) : retailPrice);
     money(price * line.quantity);
     return { product_id: product.id, product_name: product.name, quantity: line.quantity, price_at_purchase: price };
   });

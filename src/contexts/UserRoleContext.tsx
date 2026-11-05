@@ -10,6 +10,9 @@ interface UserRoleContextType {
   isLoading: boolean;
   isSignedIn: boolean;
   userName: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  userEmail: string | null;
   businessName: string | null;
 }
 
@@ -29,6 +32,9 @@ export function UserRoleProvider({
         isLoading: true,
         isSignedIn: false,
         userName: null,
+        firstName: null,
+        lastName: null,
+        userEmail: null,
         businessName: null,
       };
     }
@@ -39,6 +45,9 @@ export function UserRoleProvider({
         isLoading: false,
         isSignedIn: false,
         userName: null,
+        firstName: null,
+        lastName: null,
+        userEmail: null,
         businessName: null,
       };
     }
@@ -54,6 +63,9 @@ export function UserRoleProvider({
       isLoading: false,
       isSignedIn: true,
       userName: user.firstName || user.fullName || user.primaryEmailAddress?.emailAddress || null,
+      firstName: user.firstName || null,
+      lastName: user.lastName || null,
+      userEmail: user.primaryEmailAddress?.emailAddress || null,
       businessName: (metadata?.businessName as string) || null,
     };
   }, [user, isLoaded, isSignedIn]);

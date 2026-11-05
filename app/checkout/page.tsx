@@ -13,13 +13,20 @@ const wompiConfigured = Boolean(process.env.NEXT_PUBLIC_WOMPI_PUB_KEY);
 
 export default function CheckoutPage() {
    const { items, cartTotal, remainingForFreeShipping, clearCart, cartRestoreError } = useCart();
-   const { role } = useUserRole();
-   const [paymentMethod, setPaymentMethod] = useState<'wompi' | 'cash'>(wompiConfigured ? 'wompi' : 'cash');
+   const { role, firstName, lastName, userEmail, businessName } = useUserRole();
+   const [paymentMethod, setPaymentMethod] = useState<'wompi' | 'cash'>('cash');
    const [isSubmitting, setIsSubmitting] = useState(false);
-   const [selectedCity, setSelectedCity] = useState('');
+   const [selectedCity, setSelectedCity] = useState('Bucaramanga');
    const [wompiReady, setWompiReady] = useState(false);
    const [submitError, setSubmitError] = useState('');
-   const [confirmation, setConfirmation] = useState<{ orderId: string; total: number; paymentPending: boolean } | null>(null);
+   const [confirmation, setConfirmation] = useState<{
+      orderId: string;
+      total: number;
+      paymentPending: boolean;
+      customerName?: string;
+      city?: string;
+      address?: string;
+   } | null>(null);
 
    const formatPrice = (price: number) => {
      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(price);
@@ -73,8 +80,19 @@ export default function CheckoutPage() {
                setIsSubmitting(false);
             });
          } else {
-            const result = await submitCheckoutOrder(formData, checkoutItems, finalTotal);
-            setConfirmation({ orderId: result.orderId, total: result.totalAmount, paymentPending: false });
+            const idempotencyKey = `CHK-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+            const result = await submitCheckoutOrder(formData, checkoutItems, finalTotal, idempotencyKey);
+            const customerFullName = `${formData.get('firstName') || ''} ${formData.get('lastName') || ''}`.trim();
+            const customerCity = String(formData.get('city') || selectedCity || '');
+            const customerAddress = String(formData.get('address') || '');
+            setConfirmation({
+               orderId: result.orderId,
+               total: result.totalAmount,
+               paymentPending: false,
+               customerName: customerFullName,
+               city: customerCity,
+               address: customerAddress,
+            });
             clearCart();
             setIsSubmitting(false);
          }
@@ -85,17 +103,48 @@ export default function CheckoutPage() {
    };
 
    if (confirmation) {
+      const whatsappMessage = encodeURIComponent(
+         `¡Hola Surtifruver La Gaviota! 🧺 Acabo de registrar mi pedido #${confirmation.orderId} (${role}) por valor de ${formatPrice(confirmation.total)}${confirmation.city ? ` para entrega en ${confirmation.city}` : ''}${confirmation.address ? ` (${confirmation.address})` : ''}. ¡Gracias!`
+      );
+      const whatsappUrl = `https://wa.me/573184990826?text=${whatsappMessage}`;
+
       return (
-         <section className="mx-auto max-w-2xl px-4 py-20 text-center" aria-live="polite">
-            <h1 className="mb-4 text-3xl font-black text-slate-900">Tu pedido está registrado</h1>
-            <p className="break-all text-slate-600">Pedido #{confirmation.orderId}</p>
-            <p className="my-6 text-2xl font-bold text-slate-900">Total: {formatPrice(confirmation.total)}</p>
-            <p className="mb-8 text-slate-600">{confirmation.paymentPending
+         <section className="mx-auto max-w-2xl px-4 py-16 text-center" aria-live="polite">
+            <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 text-4xl">
+               ✅
+            </div>
+            <span className="mb-2 inline-block rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-800">
+               Nivel de Cliente: {role}
+            </span>
+            <h1 className="mb-3 text-3xl font-black text-slate-900">¡Tu pedido está registrado!</h1>
+            <p className="break-all font-mono text-sm font-bold text-slate-600">Pedido #{confirmation.orderId}</p>
+            <div className="my-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+               <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Confirmado</p>
+               <p className="mt-1 text-3xl font-black text-slate-900">{formatPrice(confirmation.total)}</p>
+               {confirmation.city && (
+                  <p className="mt-2 text-xs font-semibold text-slate-600">
+                     Destino: {confirmation.address ? `${confirmation.address}, ` : ''}{confirmation.city}
+                  </p>
+               )}
+            </div>
+            <p className="mb-8 text-sm text-slate-600">{confirmation.paymentPending
                ? 'El estado definitivo del pago se confirma en Mi Portal. Una respuesta del medio de pago puede tardar en actualizarse.'
-               : 'Elegiste pago contra entrega. Puedes consultar los detalles y el estado en Mi Portal.'}</p>
-            <div className="flex flex-wrap justify-center gap-4">
-               <Link href="/dashboard" className="rounded-xl bg-gaviota-red px-6 py-3 font-bold text-white">Ver Mi Portal</Link>
-               <Link href="/" className="rounded-xl border border-slate-300 px-6 py-3 font-bold text-slate-800">Seguir comprando</Link>
+               : 'Elegiste Pago Contra Entrega. Alistaremos tus productos frescos del campo y puedes consultar el estado en Mi Portal o confirmar por WhatsApp.'}</p>
+            <div className="flex flex-wrap justify-center gap-3">
+               <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-xl bg-[#25D366] px-6 py-3 font-black text-white shadow-md hover:bg-[#1ebe57]"
+               >
+                  📲 Enviar Comprobante por WhatsApp
+               </a>
+               <Link href="/dashboard" className="rounded-xl bg-[#E30613] px-6 py-3 font-bold text-white shadow-sm hover:bg-[#c90510]">
+                  Ver Mi Portal
+               </Link>
+               <Link href="/" className="rounded-xl border border-slate-300 px-6 py-3 font-bold text-slate-800 hover:bg-slate-50">
+                  Seguir comprando
+               </Link>
             </div>
          </section>
       );
@@ -161,21 +210,21 @@ export default function CheckoutPage() {
                <div className="w-full lg:w-7/12">
                   <DeliveryScheduler />
 
-                  <h2 className="text-lg font-black text-slate-800 mb-6 uppercase tracking-wider">Detalles de Facturación</h2>
+                  <h2 className="text-lg font-black text-slate-800 mb-6 uppercase tracking-wider">Detalles de Facturación y Entrega</h2>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                      <div className="flex flex-col gap-1.5 min-w-0">
                         <label htmlFor="checkout-firstName" className="text-[13px] font-bold text-slate-800">Nombre *</label>
-                        <input required id="checkout-firstName" name="firstName" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
+                        <input required id="checkout-firstName" name="firstName" type="text" defaultValue={firstName || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
                      </div>
                      <div className="flex flex-col gap-1.5 min-w-0">
                         <label htmlFor="checkout-lastName" className="text-[13px] font-bold text-slate-800">Apellidos *</label>
-                        <input required id="checkout-lastName" name="lastName" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
+                        <input required id="checkout-lastName" name="lastName" type="text" defaultValue={lastName || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
                      </div>
                      
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
                         <label htmlFor="checkout-company" className="text-[13px] font-bold text-slate-800">Nombre de la empresa (opcional)</label>
-                        <input id="checkout-company" name="company" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <input id="checkout-company" name="company" type="text" defaultValue={businessName || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
@@ -230,7 +279,7 @@ export default function CheckoutPage() {
                      </div>
                      <div className="flex flex-col gap-1.5 min-w-0">
                         <label htmlFor="checkout-email" className="text-[13px] font-bold text-slate-800">Dirección de correo electrónico *</label>
-                        <input required id="checkout-email" name="email" type="email" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <input required id="checkout-email" name="email" type="email" defaultValue={userEmail || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 mt-4 min-w-0">
@@ -243,9 +292,14 @@ export default function CheckoutPage() {
                {/* Order Summary - Right */}
                <div className="w-full lg:w-5/12">
                   <div className="border border-green-700 p-6 md:p-8 bg-white top-8 z-10 sticky outline outline-4 outline-[#83b745] outline-offset-[-4px]">
-                     <h2 className="text-xl font-bold mb-6 text-slate-800 border-b border-gray-300 pb-2 uppercase tracking-wide">
-                        Tu Pedido
-                     </h2>
+                     <div className="flex flex-wrap items-center justify-between gap-2 mb-6 border-b border-gray-300 pb-3">
+                        <h2 className="text-xl font-bold text-slate-800 uppercase tracking-wide">
+                           Tu Pedido
+                        </h2>
+                        <span className="rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-[11px] font-black text-emerald-800">
+                           Tarifa: {role}
+                        </span>
+                     </div>
                      
                      <div className="flex justify-between items-center text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-200 pb-2">
                         <span>Producto</span>
