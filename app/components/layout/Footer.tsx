@@ -82,14 +82,32 @@ export default function Footer() {
               Llevando la frescura del campo colombiano a tu mesa. Somos la conexión directa entre el productor y tu familia.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gaviota-red transition-all border border-white/10 group">
+              <a 
+                href="https://www.instagram.com/lagaviotafruver/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gaviota-red transition-all border border-white/10 group"
+                aria-label="Instagram de La Gaviota"
+              >
                 <Instagram size={18} className="text-gray-400 group-hover:text-white" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gaviota-red transition-all border border-white/10 group">
+              <a 
+                href="https://www.facebook.com/lagaviotafruver/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gaviota-red transition-all border border-white/10 group"
+                aria-label="Facebook de La Gaviota"
+              >
                 <Facebook size={18} className="text-gray-400 group-hover:text-white" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gaviota-red transition-all border border-white/10 group">
-                <Twitter size={18} className="text-gray-400 group-hover:text-white" />
+              <a 
+                href="https://wa.me/573112694676" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gaviota-green transition-all border border-white/10 group"
+                aria-label="WhatsApp de La Gaviota"
+              >
+                <Phone size={18} className="text-gray-400 group-hover:text-white" />
               </a>
             </div>
           </div>
@@ -142,7 +160,9 @@ export default function Footer() {
               <div className="flex gap-4">
                 <div className="mt-1 text-gaviota-red"><Phone size={18} /></div>
                 <div className="text-sm text-gray-400">
-                  <p className="text-white font-medium">+57 318 499 0826</p>
+                  <a href="https://wa.me/573112694676" target="_blank" rel="noopener noreferrer" className="text-white font-medium hover:text-gaviota-green transition-colors block">
+                    +57 311 269 4676
+                  </a>
                   <p>Lun - Sab, 6:00 AM - 8:00 PM</p>
                 </div>
               </div>

@@ -4,8 +4,9 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 
 export default function ContactoPage() {
   const email = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'pedidos@lagaviota.co';
-  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '') || '573184990826';
-  const hasWhatsApp = Boolean(phone && /^\d{10,15}$/.test(phone));
+  const rawPhone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '') || '573112694676';
+  const phone = /^\d{10,15}$/.test(rawPhone) ? rawPhone : '573112694676';
+  const hasWhatsApp = true;
   return (
     <div className="min-h-screen bg-slate-50 animate-fade-in relative pb-24">
       
@@ -48,7 +49,14 @@ export default function ContactoPage() {
                      <Phone className="w-6 h-6 shrink-0 mt-1" />
                      <div>
                         <p className="font-bold text-lg mb-1">Teléfono / WhatsApp</p>
-                        {hasWhatsApp ? <a href={`https://wa.me/${phone}`} className="underline">+57 318 499 0826</a> : <p>+57 318 499 0826</p>}
+                        <a 
+                          href={`https://wa.me/${phone}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="underline hover:text-white/80 transition-colors"
+                        >
+                          +57 311 269 4676
+                        </a>
                      </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -56,6 +64,29 @@ export default function ContactoPage() {
                      <div>
                         <p className="font-bold text-lg mb-1">Correo electrónico</p>
                         {email ? <a href={`mailto:${email}`} className="underline">{email}</a> : <p>pedidos@lagaviota.co</p>}
+                     </div>
+                  </div>
+                  <div className="pt-4 border-t border-white/20">
+                     <p className="font-bold text-sm mb-3">Síguenos en redes</p>
+                     <div className="flex gap-4">
+                        <a 
+                          href="https://www.instagram.com/lagaviotafruver/" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all"
+                          aria-label="Instagram"
+                        >
+                          Instagram
+                        </a>
+                        <a 
+                          href="https://www.facebook.com/lagaviotafruver/" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all"
+                          aria-label="Facebook"
+                        >
+                          Facebook
+                        </a>
                      </div>
                   </div>
                </div>

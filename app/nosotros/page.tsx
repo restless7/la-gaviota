@@ -123,7 +123,7 @@ export default function NosotrosPage() {
                 <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="mt-4 text-slate-600 text-sm leading-relaxed">
-                Nuestra sede principal y punto comercial está ubicada en la <strong>Plaza de Mercado San Francisco, Calle 13 #22-49, Local 10</strong>, en Bucaramanga, Santander, Colombia. Propietario registrado: <strong>Eduard Iván Velazco López</strong>. Línea oficial de atención: <strong>+57 318 499 0826</strong>.
+                Nuestra sede principal y punto comercial está ubicada en la <strong>Plaza de Mercado San Francisco, Calle 13 #22-49, Local 10</strong>, en Bucaramanga, Santander, Colombia. Propietario registrado: <strong>Eduard Iván Velazco López</strong>. Línea oficial de atención: <strong>+57 311 269 4676</strong>.
               </p>
             </details>
 

@@ -51,7 +51,7 @@ export async function fetchSystemSettings(): Promise<SystemSettings> {
       business_name: 'Surtifruver La Gaviota',
       nit: '900.123.456-7',
       address: 'Centro de Abastos - Bucaramanga',
-      phone: '+57 315 XXX XXXX',
+      phone: '+57 311 269 4676',
       hours: 'Lunes a Sábado: 3:00 AM - 6:00 PM | Domingos: 4:00 AM - 2:00 PM',
       delivery_zones: [
         { name: 'Bucaramanga Centro', enabled: true, minOrder: 25000 },

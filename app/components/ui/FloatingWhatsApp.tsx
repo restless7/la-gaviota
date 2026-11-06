@@ -16,9 +16,10 @@ export default function FloatingWhatsApp() {
   }, []);
 
   const shouldBeLarge = !isShrunk || isHovered;
-  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '');
-  const hasWhatsApp = Boolean(phone && /^\d{10,15}$/.test(phone));
-  const contactUrl = hasWhatsApp ? `https://wa.me/${phone}` : '/contacto';
+  const rawPhone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '') || '573112694676';
+  const phone = /^\d{10,15}$/.test(rawPhone) ? rawPhone : '573112694676';
+  const whatsappMsg = encodeURIComponent('Hola La Gaviota, me gustaría solicitar información o realizar un pedido.');
+  const contactUrl = `https://wa.me/${phone}?text=${whatsappMsg}`;
 
   return (
     <div 
@@ -40,7 +41,7 @@ export default function FloatingWhatsApp() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gaviota-green opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-gaviota-green"></span>
             </span>
-            <span className="text-xs font-bold text-slate-800 whitespace-nowrap">{hasWhatsApp ? 'Chatea con Gaviota' : 'Contacta con Gaviota'}</span>
+            <span className="text-xs font-bold text-slate-800 whitespace-nowrap">Chatea con La Gaviota</span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -61,7 +62,9 @@ export default function FloatingWhatsApp() {
         }}
         className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 bg-white rounded-full flex items-center justify-center shadow-[0_15px_50px_-10px_rgba(37,211,102,0.5)] relative overflow-hidden border-2 md:border-4 border-gaviota-green group origin-bottom-left md:origin-bottom-right"
         href={contactUrl}
-        aria-label={hasWhatsApp ? "Contactar con La Gaviota por WhatsApp" : "Contactar con La Gaviota"}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Contactar con La Gaviota por WhatsApp"
       >
         <div className="absolute inset-0 bg-gaviota-green opacity-0 group-hover:opacity-10 transition-opacity z-0"></div>
         <Image 

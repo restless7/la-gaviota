@@ -106,7 +106,7 @@ export default function CheckoutPage() {
       const whatsappMessage = encodeURIComponent(
          `¡Hola Surtifruver La Gaviota! 🧺 Acabo de registrar mi pedido #${confirmation.orderId} (${role}) por valor de ${formatPrice(confirmation.total)}${confirmation.city ? ` para entrega en ${confirmation.city}` : ''}${confirmation.address ? ` (${confirmation.address})` : ''}. ¡Gracias!`
       );
-      const whatsappUrl = `https://wa.me/573184990826?text=${whatsappMessage}`;
+      const whatsappUrl = `https://wa.me/573112694676?text=${whatsappMessage}`;
 
       return (
          <section className="mx-auto max-w-2xl px-4 py-16 text-center" aria-live="polite">

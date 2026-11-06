@@ -68,7 +68,7 @@ const jsonLd = {
   image: 'https://www.lagaviotafruver.com/IMAGES/og-lagaviota.png',
   description: 'Comercialización de frutas y verduras frescas de calidad en Bucaramanga. Sede en Plaza de Mercado San Francisco.',
   url: 'https://www.lagaviotafruver.com',
-  telephone: '+573184990826',
+  telephone: '+573112694676',
   founder: {
     '@type': 'Person',
     name: 'Eduard Iván Velazco López'

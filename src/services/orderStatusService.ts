@@ -222,7 +222,7 @@ export function computeOrderLifeCycle(order: Order): ActiveOrderTrackingDetails 
   const whatsappMessage = encodeURIComponent(
     `Hola Surtifruver La Gaviota 🧺, consulto por favor el estado de mi pedido ${displayNumber} (${order.status}) a nombre de ${order.customer_name} por valor de ${formattedTotal}. ¡Gracias!`
   );
-  const supportWhatsAppUrl = `https://wa.me/573184990826?text=${whatsappMessage}`;
+  const supportWhatsAppUrl = `https://wa.me/573112694676?text=${whatsappMessage}`;
 
   return {
     orderId: order.id,
