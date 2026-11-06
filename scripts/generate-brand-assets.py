@@ -215,6 +215,7 @@ def generate_social_image():
 
     # 2. Left Side: Official Logo
     logo_path = os.path.join(IMAGES_DIR, "logo.png")
+    logo_bottom = 210
     if os.path.exists(logo_path):
         logo_raw = Image.open(logo_path).convert("RGBA")
         # Crop tight around logo
@@ -224,12 +225,14 @@ def generate_social_image():
         else:
             logo_cropped = logo_raw
         
-        # Scale to max width 380, max height 130
-        logo_w = 380
+        # Scale cleanly to width 270 with proper height so it never overlaps text below
+        logo_w = 270
         aspect = logo_cropped.height / logo_cropped.width
         logo_h = int(logo_w * aspect)
         logo_resized = logo_cropped.resize((logo_w, logo_h), Image.Resampling.LANCZOS)
-        base.alpha_composite(logo_resized, (80, 70))
+        logo_top = 40
+        base.alpha_composite(logo_resized, (75, logo_top))
+        logo_bottom = logo_top + logo_h
     else:
         print("Warning: logo.png not found!")
 
@@ -238,37 +241,38 @@ def generate_social_image():
     font_bold_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
     font_regular_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 
-    font_headline = ImageFont.truetype(font_bold_path, 46)
-    font_badge = ImageFont.truetype(font_bold_path, 20)
-    font_sub = ImageFont.truetype(font_regular_path, 21)
-    font_pills = ImageFont.truetype(font_bold_path, 16)
+    font_headline = ImageFont.truetype(font_bold_path, 40)
+    font_badge = ImageFont.truetype(font_bold_path, 18)
+    font_sub = ImageFont.truetype(font_regular_path, 20)
+    font_sub_small = ImageFont.truetype(font_regular_path, 17)
+    font_pills = ImageFont.truetype(font_bold_path, 15)
 
-    # Primary Headline: "Frescura de Santander a tu mesa"
-    y_text = 220
-    draw.text((80, y_text), "Frescura de Santander", fill=SLATE_900, font=font_headline)
-    draw.text((80, y_text + 54), "a tu mesa", fill=CHERRY_RED, font=font_headline)
+    # Primary Headline: "Frescura de Santander a tu mesa" positioned cleanly below logo
+    y_text = logo_bottom + 25
+    draw.text((75, y_text), "Frescura de Santander", fill=SLATE_900, font=font_headline)
+    draw.text((75, y_text + 48), "a tu mesa", fill=CHERRY_RED, font=font_headline)
 
     # Campaign Badge Pill: "La forma chévere de mercar"
-    badge_x = 80
-    badge_y = y_text + 130
-    badge_w = 330
-    badge_h = 44
-    draw.rounded_rectangle([badge_x, badge_y, badge_x + badge_w, badge_y + badge_h], radius=22, fill=CHERRY_RED)
-    draw.text((badge_x + 22, badge_y + 10), "★  La forma chévere de mercar", fill=GOLD_YELLOW, font=font_badge)
+    badge_x = 75
+    badge_y = y_text + 110
+    badge_w = 320
+    badge_h = 40
+    draw.rounded_rectangle([badge_x, badge_y, badge_x + badge_w, badge_y + badge_h], radius=20, fill=CHERRY_RED)
+    draw.text((badge_x + 20, badge_y + 9), "★  La forma chévere de mercar", fill=GOLD_YELLOW, font=font_badge)
 
     # Supporting Subtitle
-    sub_y = badge_y + 64
-    draw.text((80, sub_y), "Frutas y verduras seleccionadas del campo.", fill=SLATE_700, font=font_sub)
-    draw.text((80, sub_y + 30), "Domicilios en Bucaramanga y área metropolitana.", fill=SLATE_500, font=font_sub)
+    sub_y = badge_y + 55
+    draw.text((75, sub_y), "Frutas y verduras seleccionadas del campo.", fill=SLATE_700, font=font_sub)
+    draw.text((75, sub_y + 28), "Domicilios en Bucaramanga y área metropolitana.", fill=SLATE_500, font=font_sub_small)
 
     # Trust Badges (Free shipping & wholesale)
-    pill_y = sub_y + 78
+    pill_y = sub_y + 68
     # Pill 1: Envíos gratis desde $50.000
-    draw.rounded_rectangle([80, pill_y, 350, pill_y + 36], radius=18, fill=(238, 242, 246, 255), outline=(203, 213, 225, 255), width=1)
-    draw.text((95, pill_y + 8), "🚚 Envíos gratis desde $50.000", fill=SLATE_700, font=font_pills)
+    draw.rounded_rectangle([75, pill_y, 345, pill_y + 34], radius=17, fill=(238, 242, 246, 255), outline=(203, 213, 225, 255), width=1)
+    draw.text((90, pill_y + 7), "🚚 Envíos gratis desde $50.000", fill=SLATE_700, font=font_pills)
     # Pill 2: Precios mayoristas
-    draw.rounded_rectangle([365, pill_y, 550, pill_y + 36], radius=18, fill=(238, 242, 246, 255), outline=(203, 213, 225, 255), width=1)
-    draw.text((380, pill_y + 8), "🏷️ Tarifas para tu negocio", fill=SLATE_700, font=font_pills)
+    draw.rounded_rectangle([360, pill_y, 550, pill_y + 34], radius=17, fill=(238, 242, 246, 255), outline=(203, 213, 225, 255), width=1)
+    draw.text((375, pill_y + 7), "🏷️ Tarifas para tu negocio", fill=SLATE_700, font=font_pills)
 
     # 4. Right Side: Authentic Seagull Mascot Holding Basket
     mascota_path = os.path.join(PUBLIC_DIR, "mascota.png")
@@ -308,17 +312,21 @@ def generate_social_image():
     og_png_public = os.path.join(IMAGES_DIR, "og-lagaviota.png")
     og_jpg_public = os.path.join(IMAGES_DIR, "og-lagaviota.jpg")
     og_png_app = os.path.join(APP_DIR, "opengraph-image.png")
+    og_jpg_app = os.path.join(APP_DIR, "opengraph-image.jpg")
     tw_png_app = os.path.join(APP_DIR, "twitter-image.png")
+    tw_jpg_app = os.path.join(APP_DIR, "twitter-image.jpg")
 
     base.save(og_png_public, format="PNG")
     rgb_master.save(og_jpg_public, format="JPEG", quality=92, optimize=True)
     base.save(og_png_app, format="PNG")
+    rgb_master.save(og_jpg_app, format="JPEG", quality=92, optimize=True)
     base.save(tw_png_app, format="PNG")
+    rgb_master.save(tw_jpg_app, format="JPEG", quality=92, optimize=True)
 
     print(f"Saved {og_png_public} (1200x630)")
     print(f"Saved {og_jpg_public} (1200x630)")
-    print(f"Saved {og_png_app} (1200x630 App Router default)")
-    print(f"Saved {tw_png_app} (1200x630 App Router default)")
+    print(f"Saved {og_png_app} and {og_jpg_app} (1200x630 App Router default)")
+    print(f"Saved {tw_png_app} and {tw_jpg_app} (1200x630 App Router default)")
 
 if __name__ == "__main__":
     generate_icon_system()

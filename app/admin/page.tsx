@@ -31,7 +31,8 @@ export default async function AdminDashboardPage() {
     orderCount: 0,
     supplierCount: 0,
     activeSuppliers: 0,
-    pendingApplications: 0
+    pendingApplications: 0,
+    activeKit: null
   };
 
   if (productsResult.status === 'rejected') {
@@ -72,6 +73,7 @@ export default async function AdminDashboardPage() {
       initialSupplierCount={metrics.supplierCount}
       initialActiveSuppliers={metrics.activeSuppliers}
       initialPendingApplications={metrics.pendingApplications}
+      initialActiveKit={metrics.activeKit}
     />
   );
 }

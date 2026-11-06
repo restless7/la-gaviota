@@ -94,3 +94,22 @@ export async function updateSupplier(id: string, supplier: Partial<Omit<Supplier
   revalidatePath('/admin/suppliers');
   return { success: true, data };
 }
+
+export async function deleteSupplier(id: string) {
+  const actor = await requireCapability('suppliers.manage');
+  const supabase = getServerDatabase(actor);
+  assertTargetId(id);
+
+  const { error } = await supabase
+    .from('suppliers')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting supplier:', error);
+    throw new Error('Failed to delete supplier');
+  }
+
+  revalidatePath('/admin/suppliers');
+  return { success: true };
+}

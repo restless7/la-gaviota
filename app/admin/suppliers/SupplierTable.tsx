@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { Search, Plus, MapPin, Phone, Truck, X, Loader2, Save } from 'lucide-react';
-import { Supplier, createSupplier, updateSupplier } from '@/src/actions/suppliers';
+import { Search, Plus, MapPin, Phone, Truck, X, Loader2, Save, Trash2 } from 'lucide-react';
+import { Supplier, createSupplier, updateSupplier, deleteSupplier } from '@/src/actions/suppliers';
 
 export function SupplierTable({ initialSuppliers }: { initialSuppliers: Supplier[] }) {
   const [suppliers, setSuppliers] = useState<Supplier[]>(initialSuppliers);
@@ -70,6 +70,21 @@ export function SupplierTable({ initialSuppliers }: { initialSuppliers: Supplier
     }
   };
 
+  const handleDeleteSupplier = async (supplier: Supplier) => {
+    if (!window.confirm(`¿Está seguro de eliminar el proveedor "${supplier.name}"?`)) {
+      return;
+    }
+    try {
+      const result = await deleteSupplier(supplier.id);
+      if (result.success) {
+        setSuppliers(prev => prev.filter(s => s.id !== supplier.id));
+      }
+    } catch (error) {
+      console.error('Failed to delete supplier:', error);
+      alert('Error al eliminar el proveedor.');
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
@@ -134,14 +149,45 @@ export function SupplierTable({ initialSuppliers }: { initialSuppliers: Supplier
                      {getStatusBadge(supplier.status)}
                   </td>
                   <td className="px-6 py-4 text-right">
-                     <button onClick={() => openEditModal(supplier)} className="text-[#E30613] font-bold hover:underline text-xs">Editar</button>
+                     <div className="flex items-center justify-end gap-3">
+                       <button onClick={() => openEditModal(supplier)} className="text-[#E30613] font-bold hover:underline text-xs">
+                         Editar
+                       </button>
+                       <button 
+                         onClick={() => handleDeleteSupplier(supplier)} 
+                         title="Eliminar proveedor"
+                         className="text-gray-400 hover:text-red-600 transition-colors p-1 rounded-md"
+                       >
+                         <Trash2 className="w-4 h-4" />
+                       </button>
+                     </div>
                   </td>
                 </tr>
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="p-12 text-center text-gray-400 font-medium italic">
-                    No hay proveedores registrados en esta vista.
+                  <td colSpan={5} className="p-12 text-center">
+                    {suppliers.length === 0 ? (
+                      <div className="max-w-sm mx-auto text-center space-y-3">
+                        <div className="w-12 h-12 bg-green-50 text-[#4CAF50] rounded-full flex items-center justify-center mx-auto">
+                          <Truck className="w-6 h-6" />
+                        </div>
+                        <h4 className="font-bold text-slate-800 text-base">Directorio de Proveedores Listo</h4>
+                        <p className="text-gray-500 text-xs">
+                          No hay proveedores registrados aún. Agregue su primera granja o productor aliado para empezar a gestionar la cadena de abastecimiento.
+                        </p>
+                        <button
+                          onClick={openAddModal}
+                          className="inline-flex items-center gap-2 bg-[#4CAF50] hover:bg-[#3d8c40] text-white px-4 py-2 rounded-xl text-xs font-bold shadow transition-all"
+                        >
+                          <Plus className="w-4 h-4" /> Registrar Primera Granja
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-gray-400 font-medium italic">
+                        No se encontraron proveedores que coincidan con &quot;{searchTerm}&quot;.
+                      </span>
+                    )}
                   </td>
                 </tr>
               )}

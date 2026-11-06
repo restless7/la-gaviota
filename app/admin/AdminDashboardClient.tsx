@@ -15,6 +15,7 @@ import {
 import Link from 'next/link';
 
 import { Order } from '@/src/actions/orders';
+import { ActiveKitMetric } from '@/src/actions/dashboard';
 
 interface LowStockItem {
   name: string;
@@ -33,6 +34,7 @@ interface AdminDashboardClientProps {
   initialSupplierCount: number;
   initialActiveSuppliers: number;
   initialPendingApplications: number;
+  initialActiveKit?: ActiveKitMetric | null;
 }
 interface StatCardProps {
   title: string;
@@ -132,7 +134,8 @@ export default function AdminDashboardClient({
   initialRecentOrders,
   initialSupplierCount,
   initialActiveSuppliers,
-  initialPendingApplications
+  initialPendingApplications,
+  initialActiveKit
 }: AdminDashboardClientProps) {
   const [loading, setLoading] = useState(true);
 
@@ -212,11 +215,11 @@ export default function AdminDashboardClient({
         />
         <StatCard
           title="Proveedores Activos"
-          value={`${initialActiveSuppliers}/${initialSupplierCount}`}
+          value={initialSupplierCount > 0 ? `${initialActiveSuppliers}/${initialSupplierCount}` : '0'}
           icon={Users}
           color="text-[#1C2059]"
           bgColor="bg-[#1C2059]"
-          trend={`${initialActiveSuppliers} verificados`}
+          trend={initialSupplierCount > 0 ? `${initialActiveSuppliers} verificados` : 'Directorio listo'}
           href="/admin/suppliers"
         />
         <StatCard
@@ -301,24 +304,73 @@ export default function AdminDashboardClient({
 
          {/* Right Sidebar Status */}
          <div className="space-y-6">
-            <div className="bg-[#4CAF50] text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
-               <div className="absolute -right-4 -bottom-4 opacity-20">
-                  <PackageSearch size={120} />
-               </div>
-               <h3 className="font-black text-xl mb-1 relative z-10 font-serif">Kit Chévere Activo</h3>
-               <p className="text-green-100 font-medium text-sm mb-4 relative z-10">Kit de Mercado Familiar (15 items)</p>
-               
-               <div className="bg-white/20 p-4 rounded-xl backdrop-blur-sm relative z-10">
-                  <div className="flex justify-between items-center mb-2">
-                     <span className="text-xs uppercase font-bold text-green-100">Ventas del Kit (Semana)</span>
-                     <span className="font-black text-xl">142</span>
-                  </div>
-                  <div className="w-full bg-white/30 rounded-full h-1.5 mt-2">
-                     <div className="bg-white h-1.5 rounded-full w-[70%]"></div>
-                  </div>
-                  <p className="text-[10px] text-green-100 mt-2">70% de la meta semanal</p>
-               </div>
-            </div>
+            {initialActiveKit ? (
+              <div className="bg-[#4CAF50] text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
+                 <div className="absolute -right-4 -bottom-4 opacity-20">
+                    <PackageSearch size={120} />
+                 </div>
+                 <div className="flex justify-between items-start mb-2 relative z-10">
+                    <div>
+                      <span className="inline-block bg-white/20 text-white text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full mb-1">
+                        En Vitrina Principal
+                      </span>
+                      <h3 className="font-black text-xl relative z-10 font-serif">{initialActiveKit.name}</h3>
+                    </div>
+                    <Link href="/admin/catalog/kits" className="text-xs bg-white text-[#4CAF50] px-3 py-1 rounded-lg font-bold hover:bg-green-50 transition-colors shadow-sm">
+                      Gestionar
+                    </Link>
+                 </div>
+                 <p className="text-green-100 font-medium text-sm mb-4 relative z-10">
+                    {initialActiveKit.itemCount} productos vinculados · ${Number(initialActiveKit.fixed_price).toLocaleString('es-CO')}
+                 </p>
+                 
+                 <div className="bg-white/20 p-4 rounded-xl backdrop-blur-sm relative z-10">
+                    <div className="flex justify-between items-center mb-2">
+                       <span className="text-xs uppercase font-bold text-green-100">Ventas del Kit (Semana)</span>
+                       <span className="font-black text-xl">{initialActiveKit.weeklySales}</span>
+                    </div>
+                    <div className="w-full bg-white/30 rounded-full h-1.5 mt-2">
+                       <div className="bg-white h-1.5 rounded-full" style={{ width: `${initialActiveKit.percentage}%` }}></div>
+                    </div>
+                    <p className="text-[10px] text-green-100 mt-2">{initialActiveKit.percentage}% de la meta semanal ({initialActiveKit.targetWeeklySales} kits)</p>
+                 </div>
+              </div>
+            ) : (
+              <div className="bg-slate-800 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden border border-slate-700">
+                 <div className="absolute -right-4 -bottom-4 opacity-10">
+                    <PackageSearch size={120} />
+                 </div>
+                 <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-2">
+                       <span className="inline-block bg-amber-500/20 text-amber-300 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border border-amber-500/30">
+                         Sin Kit Activo
+                       </span>
+                    </div>
+                    <h3 className="font-black text-xl mb-1 font-serif">Kit Chévere Semanal</h3>
+                    <p className="text-slate-300 text-xs mb-4">
+                       No hay ningún kit activo rotando en la vitrina principal. Configure o active un kit para destacar en la tienda.
+                    </p>
+                    
+                    <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-700/60 mb-4">
+                       <div className="flex justify-between items-center text-xs text-slate-400">
+                          <span>Kits en vitrina:</span>
+                          <span className="font-bold text-white">0 activos</span>
+                       </div>
+                       <div className="flex justify-between items-center text-xs text-slate-400 mt-1">
+                          <span>Ventas semanales:</span>
+                          <span className="font-bold text-white">0 pedidos</span>
+                       </div>
+                    </div>
+
+                    <Link 
+                      href="/admin/catalog/kits" 
+                      className="inline-flex items-center justify-center w-full bg-[#4CAF50] hover:bg-green-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow transition-colors"
+                    >
+                      + Configurar Kit Chévere
+                    </Link>
+                 </div>
+              </div>
+            )}
 
             <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                <h3 className="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">
