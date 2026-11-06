@@ -9,7 +9,7 @@ export function useRBAC() {
   
   // Extract role and tier from Clerk publicMetadata
   const metadata = clerkUser?.publicMetadata as Record<string, string> | undefined;
-  const rawRole = metadata?.role;
+  const rawRole = typeof metadata?.role === 'string' ? metadata.role.toUpperCase() : metadata?.role;
   const tier = metadata?.tier;
   
   // Reconcile logic: Check explicitly for the 'role' field first, then fallback to implicit admin from 'tier'

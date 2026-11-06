@@ -26,7 +26,7 @@ async function actorFromVerifiedSubject(userId: string | null): Promise<Actor> {
  const user = await (await clerkClient()).users.getUser(userId);
  if (!user || user.id !== userId || user.banned || user.locked) throw new Error('INVALID_ACTOR');
  const meta = user.publicMetadata || {};
- const raw = meta.role;
+ const raw = typeof meta.role === 'string' ? meta.role.toUpperCase() : meta.role;
  const role: Role = raw == null || raw === 'USER' || raw === 'CLIENT' ? 'USER' : ['ADMIN','SUPER_ADMIN','OPERARIO','COMMERCIAL'].includes(raw as string) ? raw as Role : 'INVALID';
  // Tier is never a source of privileged role elevation. Unknown pricing tier is retail.
  const tier: Tier = role !== 'INVALID' && tiers.includes(meta.tier as Tier) ? meta.tier as Tier : 'Personas Naturales';

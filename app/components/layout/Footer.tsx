@@ -20,7 +20,8 @@ import { useUser } from '@clerk/nextjs';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const { user } = useUser();
-  const isAdmin = user?.publicMetadata?.role === 'admin';
+  const userRole = typeof user?.publicMetadata?.role === 'string' ? user.publicMetadata.role.toUpperCase() : user?.publicMetadata?.role;
+  const isAdmin = userRole === 'ADMIN' || userRole === 'SUPER_ADMIN';
 
   return (
     <footer className="bg-slate-950 text-white relative overflow-hidden border-t border-white/5">
