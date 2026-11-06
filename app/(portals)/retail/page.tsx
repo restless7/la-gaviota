@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { ProductCard } from '@/src/components/store/ProductCard';
 import { fetchProducts } from '@/src/actions/products';
 import { CustomerOrderHistory } from '@/src/components/portals/CustomerOrderHistory';
+import { ActiveCustomerOrderBanner } from '@/src/components/orders/ActiveCustomerOrderBanner';
 
 export default async function RetailDashboard() {
   const products = await fetchProducts();
@@ -12,6 +13,9 @@ export default async function RetailDashboard() {
 
   return (
     <div className="animate-fade-in">
+      {/* Active Live Order Tracker (Senior Level Service) */}
+      <ActiveCustomerOrderBanner />
+
       {/* Welcome & Mascot */}
       <div className="flex flex-col md:flex-row items-center bg-white rounded-3xl p-8 lg:p-12 shadow-sm border border-gray-100 gap-8 mb-10 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-red-50 rounded-full blur-3xl -mr-20 -mt-20 z-0"></div>

@@ -5,6 +5,7 @@ import RestauranteClient from './RestauranteClient';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { CustomerOrderHistory } from '@/src/components/portals/CustomerOrderHistory';
+import { ActiveCustomerOrderBanner } from '@/src/components/orders/ActiveCustomerOrderBanner';
 
 export default async function RestauranteDashboard() {
   const { userId } = await auth();
@@ -28,6 +29,7 @@ export default async function RestauranteDashboard() {
 
   return (
     <div className="space-y-12">
+      <ActiveCustomerOrderBanner />
       <RestauranteClient 
         wholesalePicks={wholesalePicks}
         monthlySpend={monthlySpend}

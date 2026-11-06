@@ -131,6 +131,12 @@ export default function CheckoutPage() {
                ? 'El estado definitivo del pago se confirma en Mi Portal. Una respuesta del medio de pago puede tardar en actualizarse.'
                : 'Elegiste Pago Contra Entrega. Alistaremos tus productos frescos del campo y puedes consultar el estado en Mi Portal o confirmar por WhatsApp.'}</p>
             <div className="flex flex-wrap justify-center gap-3">
+               <Link 
+                  href={`/pedidos/${confirmation.orderId}`}
+                  className="rounded-xl bg-slate-900 px-6 py-3 font-black text-white shadow-md hover:bg-slate-800 transition-colors flex items-center gap-2"
+               >
+                  <span>🚚 Rastrear Pedido en Vivo</span>
+               </Link>
                <a
                   href={whatsappUrl}
                   target="_blank"

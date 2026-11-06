@@ -5,6 +5,7 @@ import MicromercadoClient from './MicromercadoClient';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { CustomerOrderHistory } from '@/src/components/portals/CustomerOrderHistory';
+import { ActiveCustomerOrderBanner } from '@/src/components/orders/ActiveCustomerOrderBanner';
 
 export default async function MicromercadoDashboard() {
   const { userId } = await auth();
@@ -26,6 +27,7 @@ export default async function MicromercadoDashboard() {
 
   return (
     <div className="space-y-12">
+      <ActiveCustomerOrderBanner />
       <MicromercadoClient 
         bulkPicks={bulkPicks}
         lastOrder={lastOrder}

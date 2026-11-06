@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Package, Truck, CheckCircle2, Clock, XCircle, ChevronDown, ChevronUp, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/src/contexts/CartContext';
 import { useRouter } from 'next/navigation';
@@ -119,7 +120,15 @@ export function OrderHistoryClient({ orders, catalogProducts }: { orders: any[],
                     {order.status}
                   </span>
                   
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href={`/pedidos/${order.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 text-[11px] font-bold text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition-colors"
+                    >
+                      <Truck size={13} />
+                      <span>Rastrear en Vivo</span>
+                    </Link>
                     <button 
                       onClick={(e) => handleReorder(e, order)}
                       className="bg-[#4CAF50] hover:bg-[#3d8c40] text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-colors uppercase tracking-wider hidden md:block"
