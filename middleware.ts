@@ -5,6 +5,8 @@ import { getMiddlewareActor, hasCapability } from '@/src/lib/server/authorizatio
 const isPublicRoute = createRouteMatcher([
   '/',
   '/shop(.*)',
+  '/cart(.*)',
+  '/checkout(.*)',
   '/sobre-nosotros(.*)',
   '/nosotros(.*)',
   '/privacidad',
@@ -37,7 +39,12 @@ export default clerkMiddleware(async (auth, request) => {
   }
 
   // All other routes require authentication
-  await auth.protect();
+  const authObj = await auth();
+  if (!authObj.userId) {
+    const signInUrl = new URL('/sign-in', request.url);
+    signInUrl.searchParams.set('redirect_url', request.url);
+    return NextResponse.redirect(signInUrl);
+  }
 
   // Admin routes — require admin role in metadata
   if (isAdminRoute(request)) {
