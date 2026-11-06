@@ -15,10 +15,12 @@ import {
   EyeOff,
   Package,
   Layers,
-  Info
+  Info,
+  Check,
+  X
 } from 'lucide-react';
 import { AdminProduct as Product } from '@/src/actions/products';
-import { createOrUpdateKit, updateKitStatus, deleteKit, KitPayload } from '@/src/actions/kits';
+import { createOrUpdateKit, updateKitStatus, updateKitName, deleteKit, KitPayload } from '@/src/actions/kits';
 import { uploadCatalogMedia } from '@/src/actions/media';
 
 interface KitRecord {
@@ -67,6 +69,8 @@ export default function KitsClient({
   const [customBannerUrl, setCustomBannerUrl] = useState<string | null>('/IMAGES/kit-chevere-semana.jpg');
   const [isSaving, setIsSaving] = useState(false);
   const [toast, setToast] = useState('');
+  const [editingNameId, setEditingNameId] = useState<string | null>(null);
+  const [inlineNameValue, setInlineNameValue] = useState<string>('');
 
   const activeKits = kits.filter(k => k.status === 'active');
   const filteredProducts = initialProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -171,6 +175,28 @@ export default function KitsClient({
     setBannerFile(null);
     setBannerPreview('/IMAGES/kit-chevere-semana.jpg');
     setCustomBannerUrl('/IMAGES/kit-chevere-semana.jpg');
+  };
+
+  const handleStartRename = (kit: KitRecord) => {
+    setEditingNameId(kit.id);
+    setInlineNameValue(kit.name);
+  };
+
+  const handleSaveRename = async (kitId: string) => {
+    if (!inlineNameValue.trim()) return;
+    try {
+      await updateKitName(kitId, inlineNameValue.trim());
+      setKits(prev => prev.map(k => k.id === kitId ? { ...k, name: inlineNameValue.trim() } : k));
+      if (editingKitId === kitId) {
+        setKitName(inlineNameValue.trim());
+      }
+      setEditingNameId(null);
+      setToast(`Kit renombrado a "${inlineNameValue.trim()}"`);
+      setTimeout(() => setToast(''), 3000);
+    } catch (err) {
+      console.error(err);
+      alert('Error al renombrar el kit');
+    }
   };
 
   const handleToggleStatus = async (kit: KitRecord) => {
@@ -373,7 +399,7 @@ export default function KitsClient({
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <div>
+                    <div className="flex-1 min-w-0">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider ${
                         isActive 
                           ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' 
@@ -381,10 +407,55 @@ export default function KitsClient({
                       }`}>
                         {isActive ? <><Eye size={10} /> En Vitrina (Activo)</> : <><EyeOff size={10} /> Borrador</>}
                       </span>
-                      <h3 className="font-bold text-slate-900 mt-1 line-clamp-1">{kit.name}</h3>
-                      <p className="text-xs text-slate-400 font-mono">/shop?category=kits/{kit.slug}</p>
+
+                      {editingNameId === kit.id ? (
+                        <div className="flex items-center gap-1 mt-1.5">
+                          <input
+                            autoFocus
+                            type="text"
+                            value={inlineNameValue}
+                            onChange={(e) => setInlineNameValue(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') handleSaveRename(kit.id);
+                              if (e.key === 'Escape') setEditingNameId(null);
+                            }}
+                            className="text-xs font-bold px-2 py-1 border border-red-500 rounded-lg outline-none w-full bg-white text-slate-900 shadow-sm"
+                            placeholder="Nombre del Kit"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleSaveRename(kit.id)}
+                            className="p-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors shrink-0"
+                            title="Guardar nombre"
+                          >
+                            <Check size={12} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setEditingNameId(null)}
+                            className="p-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg transition-colors shrink-0"
+                            title="Cancelar"
+                          >
+                            <X size={12} />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1.5 mt-1 group/title">
+                          <h3 className="font-bold text-slate-900 text-sm line-clamp-1">{kit.name}</h3>
+                          <button
+                            type="button"
+                            onClick={() => handleStartRename(kit)}
+                            className="opacity-70 group-hover/title:opacity-100 text-slate-400 hover:text-red-600 p-0.5 rounded transition-all shrink-0"
+                            title="Editar nombre del kit"
+                          >
+                            <Edit size={12} />
+                          </button>
+                        </div>
+                      )}
+                      
+                      <p className="text-xs text-slate-400 font-mono mt-0.5">/shop?category=kits/{kit.slug}</p>
                     </div>
-                    <span className="text-base font-black text-slate-900 whitespace-nowrap">
+                    <span className="text-base font-black text-slate-900 whitespace-nowrap shrink-0">
                       ${Number(kit.fixed_price).toLocaleString('es-CO')}
                     </span>
                   </div>
@@ -498,10 +569,11 @@ export default function KitsClient({
          >
             <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-red-500/5 via-amber-500/5 to-transparent flex flex-col sm:flex-row justify-between items-start gap-4">
                <div className="flex-1 w-full">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center justify-between mb-1">
                     <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-red-100 text-red-800">
                       {editingKitId ? 'Modo Edición de Kit' : 'Nuevo Kit Chévere'}
                     </span>
+                    <span className="text-[11px] text-slate-400 font-medium">Nombre visible en vitrina y carrito</span>
                   </div>
                   <input 
                     type="text" 
@@ -512,10 +584,29 @@ export default function KitsClient({
                         setKitSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
                       }
                     }}
-                    placeholder="Nombre del Kit Chévere"
+                    placeholder="Nombre del Kit Chévere (ej. Kit Semanal, Kit Familiar)"
                     className="text-2xl sm:text-3xl font-black text-slate-800 bg-transparent border-none outline-none w-full hover:bg-white focus:bg-white rounded-xl p-1 transition-colors" 
                   />
-                  <div className="flex items-center gap-1 mt-1 text-xs text-red-700 font-bold">
+
+                  {/* Quick Name Presets */}
+                  <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase">Sugerencias:</span>
+                    {['Kit Semanal', 'Kit Familiar', 'Kit Restaurante', 'Kit Mayorista'].map(preset => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => {
+                          setKitName(preset);
+                          if (!editingKitId) setKitSlug(preset.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+                        }}
+                        className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-600 border border-slate-200 transition-colors"
+                      >
+                        {preset}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-1 mt-2 text-xs text-red-700 font-bold">
                      <Settings2 className="h-3.5 w-3.5" /> URL Slug: /shop?category=kits/{kitSlug}
                   </div>
                </div>

@@ -175,6 +175,37 @@ export async function updateKitStatus(kitId: string, status: 'active' | 'draft' 
   return { success: true };
 }
 
+export async function updateKitName(kitId: string, name: string) {
+  const actor = await requireCapability('catalog.manage');
+  const supabase = getServerDatabase(actor);
+
+  const cleanName = name.trim();
+  if (!cleanName) throw new Error('El nombre del kit no puede estar vacío');
+
+  const { error } = await supabase
+    .from('kits')
+    .update({ name: cleanName, updated_at: new Date().toISOString() })
+    .eq('id', kitId);
+
+  if (error) {
+    console.error('Error updating kit name:', error);
+    throw new Error('Failed to update kit name');
+  }
+
+  await logAdminAction(
+    'KITS',
+    'Renombró Kit',
+    `Kit ${kitId} renombrado a: "${cleanName}"`,
+    kitId
+  );
+
+  revalidatePath('/admin/catalog/kits');
+  revalidatePath('/shop');
+  revalidatePath('/');
+
+  return { success: true, name: cleanName };
+}
+
 export async function deleteKit(kitId: string) {
   const actor = await requireCapability('catalog.manage');
   const supabase = getServerDatabase(actor);
