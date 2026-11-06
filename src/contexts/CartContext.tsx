@@ -35,7 +35,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [cartRestoreError, setCartRestoreError] = useState<string | null>(null);
-  const { role } = useUserRole();
+  const { role, isSignedIn } = useUserRole();
 
   useEffect(() => {
     let cancelled = false;
@@ -68,7 +68,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (isInitialized) {
       localStorage.setItem('gaviota_cart', JSON.stringify({ version: 2, items: items.map(item => ({ id: item.product.id, quantity: item.quantity })) }));
       
-      // Debounce Sync with Abandoned Cart Backend to avoid clogging network during rapid clicks
+      // Debounce Sync with Abandoned Cart Backend for authenticated users only
+      if (!isSignedIn || items.length === 0) return;
+
       const handler = setTimeout(() => {
         const cartTotal = items.reduce((total, item) => {
           const activePrice = role === 'Restaurantes' 
@@ -92,7 +94,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       return () => clearTimeout(handler);
     }
-  }, [items, isInitialized, role]);
+  }, [items, isInitialized, role, isSignedIn]);
 
   const addToCart = (product: Product, quantity = 1) => {
     if (!isInitialized || cartRestoreError || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 1000000 || !product.isActive) return;

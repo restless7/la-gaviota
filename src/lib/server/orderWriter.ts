@@ -135,11 +135,34 @@ export async function createOrder(
   }
 
   // Insert order header
-  const { data: order, error: orderError } = await supabase
+  let { data: order, error: orderError } = await supabase
     .from('orders')
     .insert(orderData)
     .select()
     .single();
+
+  if (orderError || !order) {
+    console.warn('Primary order header insert failed, retrying with core schema columns:', orderError);
+    const coreOrderData = {
+      clerk_user_id: orderData.clerk_user_id,
+      customer_name: orderData.customer_name,
+      customer_email: orderData.customer_email,
+      customer_phone: orderData.customer_phone,
+      delivery_address: orderData.delivery_address,
+      delivery_municipality: orderData.delivery_municipality,
+      total_amount: orderData.total_amount,
+      status: orderData.status || 'Pendiente',
+      payment_method: orderData.payment_method || 'cash',
+      notes: orderData.notes || null,
+    };
+    const retryResult = await supabase
+      .from('orders')
+      .insert(coreOrderData)
+      .select()
+      .single();
+    order = retryResult.data;
+    orderError = retryResult.error;
+  }
 
   if (orderError || !order) {
     console.error('Error creating order header:', orderError);

@@ -81,3 +81,4 @@ export function buildCustomerGreetingMessage(customerName: string, businessName?
   const displayName = businessName || customerName;
   return `¡Hola *${displayName}*! 🥑 Te saludamos de *Surtifruver La Gaviota*. Nos comunicamos para acompañar tus pedidos y compras de frutas y verduras frescas del campo. ¿En qué podemos ayudarte el día de hoy? 🥦✨`;
 }
+

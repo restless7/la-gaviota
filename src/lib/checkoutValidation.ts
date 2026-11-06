@@ -61,7 +61,12 @@ export function readCheckoutDetails(formData: FormData) {
   const email = field('email', true), phone = field('phone', true, 40);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('Correo inválido');
   const address = field('address', true), apartment = field('apartment'), neighborhood = field('neighborhood');
-  return { firstName, lastName, email, phone, city: field('city', true, 100), notes: field('notes', false, 2000),
+  const deliveryTimeRange = field('deliveryTimeRange', false, 120);
+  const rawNotes = field('notes', false, 2000);
+  const notes = deliveryTimeRange
+    ? `[Franja deseada: ${deliveryTimeRange}]${rawNotes ? ` ${rawNotes}` : ''}`.slice(0, 2000)
+    : rawNotes;
+  return { firstName, lastName, email, phone, city: field('city', true, 100), notes,
     fullAddress: `${address}${apartment ? `, ${apartment}` : ''}${neighborhood ? `, ${neighborhood}` : ''}` };
 }
 

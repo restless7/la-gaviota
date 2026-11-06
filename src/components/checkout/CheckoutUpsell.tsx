@@ -2,63 +2,68 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/src/contexts/CartContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 import type { Product } from '@/src/actions/products';
 
 export function CheckoutUpsell() {
   const { addToCart, items } = useCart();
+  const { role } = useUserRole();
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
-  // Real catalog SKU recommendations (Limón Tahití, Aguacate Papelillo, Miel Pura)
+  // Real catalog SKU recommendations aligned with database IDs, prices, and public/PRODUCTS assets
   const recommendations: (Product & { details: string; isEco?: boolean })[] = React.useMemo(() => {
+    const pickTierPrice = (retail: number, micro: number, restaurant: number) =>
+      role === 'Restaurantes' ? restaurant : role === 'Micromercados' ? micro : retail;
+
     return [
       {
-        id: 'prd_0023',
-        name: 'Limón Tahití',
+        id: 'prd_0019',
+        name: 'Limón taití',
         category: 'FRUTAS',
         subcategory: 'Cítricos',
         unit: '500 gr',
-        price: 2100,
+        price: pickTierPrice(3494, 3214, 2935),
         previousPrice: null,
         stockQuantity: 100,
         isActive: true,
         isInSeason: true,
-        imageUrl: '/PRODUCTS/prd_0023-limon-tahiti.jpg',
-        description: 'Limón Tahití fresco y jugoso de Santander.',
+        imageUrl: '/PRODUCTS/prd_0019-limon-taiti.jpg',
+        description: 'Limón Taití fresco y jugoso de Santander.',
         details: '500 gr · Fresco del campo',
         isEco: true,
       },
       {
-        id: 'prd_0003',
-        name: 'Aguacate Papelillo',
+        id: 'prd_0050',
+        name: 'Aguacate papelillo',
         category: 'FRUTAS',
         subcategory: null,
         unit: '500 gr',
-        price: 6125,
+        price: pickTierPrice(3575, 3289, 3003),
         previousPrice: null,
         stockQuantity: 100,
         isActive: true,
         isInSeason: true,
-        imageUrl: '/PRODUCTS/prd_0003-aguacate-papelillo.jpg',
+        imageUrl: '/PRODUCTS/prd_0050-aguacate-papelillo.jpg',
         description: 'Aguacate Papelillo cremoso seleccionado.',
         details: '500 gr · Selección especial',
       },
       {
-        id: 'prd_0131',
-        name: 'Miel Pura',
+        id: 'prd_0155',
+        name: 'Miel botella grande',
         category: 'VARIOS',
         subcategory: null,
         unit: 'Botella',
-        price: 15750,
+        price: pickTierPrice(3494, 3214, 2935),
         previousPrice: null,
         stockQuantity: 100,
         isActive: true,
         isInSeason: true,
-        imageUrl: '/PRODUCTS/prd_0131-miel-pura.jpg',
+        imageUrl: '/PRODUCTS/prd_0155-miel-de-abejas-botella-grande.jpg',
         description: 'Miel de abejas 100% pura.',
         details: 'Botella · 100% Natural',
       },
     ];
-  }, []);
+  }, [role]);
 
   const formatPrice = (p: number) =>
     new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(p);
@@ -89,7 +94,7 @@ export function CheckoutUpsell() {
                 </span>
               )}
               <div className="w-14 h-14 bg-slate-50 rounded-lg overflow-hidden relative shrink-0 border border-gray-100">
-                <Image src={rec.imageUrl || '/IMAGES/product-display.jpeg'} alt={rec.name} fill sizes="56px" className="object-contain p-1" />
+                <Image src={rec.imageUrl || '/IMAGES/product-display.jpeg'} alt={rec.name} fill sizes="56px" unoptimized className="object-contain p-1" />
               </div>
               <div className="flex-1 min-w-0 flex flex-col justify-center">
                 <h4 className="font-extrabold text-[13px] text-slate-800 leading-tight truncate">{rec.name}</h4>

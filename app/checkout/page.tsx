@@ -1,22 +1,37 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/src/contexts/CartContext';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
-import { DeliveryScheduler } from '@/src/components/checkout/DeliveryScheduler';
+import { DeliveryScheduler, DELIVERY_TIME_RANGES } from '@/src/components/checkout/DeliveryScheduler';
 import { CheckoutUpsell } from '@/src/components/checkout/CheckoutUpsell';
-import { submitCheckoutOrder } from '@/src/actions/checkoutAction';
+import { submitCashCheckoutAction } from '@/src/actions/checkoutAction';
 import { initializeWompiTransaction } from '@/src/actions/wompi';
 import Script from 'next/script';
 
 const wompiConfigured = Boolean(process.env.NEXT_PUBLIC_WOMPI_PUB_KEY);
 
+interface SavedCheckoutProfile {
+   firstName?: string;
+   lastName?: string;
+   company?: string;
+   address?: string;
+   apartment?: string;
+   neighborhood?: string;
+   city?: string;
+   phone?: string;
+   email?: string;
+}
+
 export default function CheckoutPage() {
    const { items, cartTotal, remainingForFreeShipping, clearCart, cartRestoreError } = useCart();
-   const { role, firstName, lastName, userEmail, businessName } = useUserRole();
+   const { role, isSignedIn, firstName, lastName, userEmail, businessName } = useUserRole();
    const [paymentMethod, setPaymentMethod] = useState<'wompi' | 'cash'>('cash');
    const [isSubmitting, setIsSubmitting] = useState(false);
    const [selectedCity, setSelectedCity] = useState('Bucaramanga');
+   const [selectedTimeRange, setSelectedTimeRange] = useState<string>(DELIVERY_TIME_RANGES[0].value);
+   const [savedProfile, setSavedProfile] = useState<SavedCheckoutProfile>({});
    const [wompiReady, setWompiReady] = useState(false);
    const [submitError, setSubmitError] = useState('');
    const [confirmation, setConfirmation] = useState<{
@@ -26,13 +41,29 @@ export default function CheckoutPage() {
       customerName?: string;
       city?: string;
       address?: string;
+      timeRange?: string;
    } | null>(null);
+
+   useEffect(() => {
+      try {
+         const raw = localStorage.getItem('gaviota_saved_checkout_profile');
+         if (raw) {
+            const parsed = JSON.parse(raw) as SavedCheckoutProfile;
+            setSavedProfile(parsed);
+            if (parsed.city && ['Bucaramanga', 'Floridablanca', 'Girón'].includes(parsed.city)) {
+               setSelectedCity(parsed.city);
+            }
+         }
+      } catch {
+         // ignore localStorage read errors
+      }
+   }, []);
 
    const formatPrice = (price: number) => {
      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(price);
    };
 
-   let deliveryCost = 10000;
+   let deliveryCost = 8000;
    if (items.length === 0 || remainingForFreeShipping === 0) {
       deliveryCost = 0;
    } else {
@@ -55,6 +86,24 @@ export default function CheckoutPage() {
       setIsSubmitting(true);
       try {
          const formData = new FormData(e.currentTarget);
+         // Persist customer details locally so repeat orders prefill automatically
+         try {
+            const profileToSave: SavedCheckoutProfile = {
+               firstName: String(formData.get('firstName') || ''),
+               lastName: String(formData.get('lastName') || ''),
+               company: String(formData.get('company') || ''),
+               address: String(formData.get('address') || ''),
+               apartment: String(formData.get('apartment') || ''),
+               neighborhood: String(formData.get('neighborhood') || ''),
+               city: String(formData.get('city') || selectedCity || 'Bucaramanga'),
+               phone: String(formData.get('phone') || ''),
+               email: String(formData.get('email') || ''),
+            };
+            localStorage.setItem('gaviota_saved_checkout_profile', JSON.stringify(profileToSave));
+         } catch {
+            // ignore storage errors
+         }
+
          const checkoutItems = items.map(i => ({ product: i.product, quantity: i.quantity }));
          if (paymentMethod === 'wompi') {
             const wompiData = await initializeWompiTransaction(formData, checkoutItems, finalTotal);
@@ -81,10 +130,16 @@ export default function CheckoutPage() {
             });
          } else {
             const idempotencyKey = `CHK-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-            const result = await submitCheckoutOrder(formData, checkoutItems, finalTotal, idempotencyKey);
+            const result = await submitCashCheckoutAction(formData, checkoutItems, idempotencyKey);
+            if (!result.ok) {
+               setSubmitError(result.error || 'No pudimos procesar tu pedido. Verifica tus datos e intenta nuevamente.');
+               setIsSubmitting(false);
+               return;
+            }
             const customerFullName = `${formData.get('firstName') || ''} ${formData.get('lastName') || ''}`.trim();
             const customerCity = String(formData.get('city') || selectedCity || '');
             const customerAddress = String(formData.get('address') || '');
+            const customerTimeRange = String(formData.get('deliveryTimeRange') || selectedTimeRange || '');
             setConfirmation({
                orderId: result.orderId,
                total: result.totalAmount,
@@ -92,19 +147,23 @@ export default function CheckoutPage() {
                customerName: customerFullName,
                city: customerCity,
                address: customerAddress,
+               timeRange: customerTimeRange,
             });
             clearCart();
             setIsSubmitting(false);
          }
       } catch (error) {
-         setSubmitError(error instanceof Error ? error.message : 'No pudimos procesar tu pedido. Intenta nuevamente.');
+         const msg = error instanceof Error && !error.message.includes('Minified React error')
+            ? error.message
+            : 'No pudimos procesar tu pedido en este momento. Verifica tus datos e intenta nuevamente.';
+         setSubmitError(msg);
          setIsSubmitting(false);
       }
    };
 
    if (confirmation) {
       const whatsappMessage = encodeURIComponent(
-         `¡Hola Surtifruver La Gaviota! 🧺 Acabo de registrar mi pedido #${confirmation.orderId} (${role}) por valor de ${formatPrice(confirmation.total)}${confirmation.city ? ` para entrega en ${confirmation.city}` : ''}${confirmation.address ? ` (${confirmation.address})` : ''}. ¡Gracias!`
+         `¡Hola Surtifruver La Gaviota! 🧺 Acabo de registrar mi pedido #${confirmation.orderId} (${role}) por valor de ${formatPrice(confirmation.total)}${confirmation.city ? ` para entrega en ${confirmation.city}` : ''}${confirmation.address ? ` (${confirmation.address})` : ''}${confirmation.timeRange ? ` · Franja: ${confirmation.timeRange}` : ''}. ¡Gracias!`
       );
       const whatsappUrl = `https://wa.me/573112694676?text=${whatsappMessage}`;
 
@@ -123,13 +182,43 @@ export default function CheckoutPage() {
                <p className="mt-1 text-3xl font-black text-slate-900">{formatPrice(confirmation.total)}</p>
                {confirmation.city && (
                   <p className="mt-2 text-xs font-semibold text-slate-600">
-                     Destino: {confirmation.address ? `${confirmation.address}, ` : ''}{confirmation.city}
+                     Destino: {confirmation.address ? `${confirmation.address}, ` : ''}{confirmation.city}, Santander
+                  </p>
+               )}
+               {confirmation.timeRange && (
+                  <p className="mt-1 text-xs font-bold text-emerald-700">
+                     ⏰ Franja horaria deseada: {confirmation.timeRange}
                   </p>
                )}
             </div>
-            <p className="mb-8 text-sm text-slate-600">{confirmation.paymentPending
+            <p className="mb-6 text-sm text-slate-600">{confirmation.paymentPending
                ? 'El estado definitivo del pago se confirma en Mi Portal. Una respuesta del medio de pago puede tardar en actualizarse.'
                : 'Elegiste Pago Contra Entrega. Alistaremos tus productos frescos del campo y puedes consultar el estado en Mi Portal o confirmar por WhatsApp.'}</p>
+
+            {!isSignedIn && (
+               <div className="mb-8 rounded-2xl border-2 border-[#83b745]/40 bg-emerald-50/60 p-5 text-left shadow-sm">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                     <div>
+                        <p className="text-xs font-black uppercase tracking-wider text-[#5b8726] mb-1">
+                           ⚡ Ahorra tiempo en tu próximo mercado
+                        </p>
+                        <h3 className="text-base font-black text-slate-900">
+                           ¡Crea tu cuenta gratis y guarda tu dirección!
+                        </h3>
+                        <p className="text-xs text-slate-600 mt-1">
+                           No vuelvas a digitar tus datos en futuros pedidos, consulta tu historial y repite tu mercado en 1 clic.
+                        </p>
+                     </div>
+                     <Link
+                        href="/sign-up"
+                        className="shrink-0 rounded-xl bg-[#83b745] hover:bg-[#6c9c36] px-5 py-3 text-xs font-black uppercase tracking-wider text-white shadow-md transition-colors"
+                     >
+                        Crear Cuenta Gratis →
+                     </Link>
+                  </div>
+               </div>
+            )}
+
             <div className="flex flex-wrap justify-center gap-3">
                <Link 
                   href={`/pedidos/${confirmation.orderId}`}
@@ -214,83 +303,120 @@ export default function CheckoutPage() {
                <input type="hidden" name="paymentMethod" value={paymentMethod} />
                {/* Checkout Form - Left */}
                <div className="w-full lg:w-7/12">
-                  <DeliveryScheduler />
+                  <DeliveryScheduler
+                     selectedTimeRange={selectedTimeRange}
+                     onTimeRangeChange={setSelectedTimeRange}
+                  />
+
+                  {/* Account Creation Incentive Banner for Guest Shoppers */}
+                  {!isSignedIn ? (
+                     <div className="mb-8 rounded-2xl border-2 border-[#83b745]/35 bg-gradient-to-r from-[#f4faeb] via-white to-[#f4faeb] p-5 shadow-sm relative overflow-hidden">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                           <div className="relative h-16 w-16 shrink-0 rounded-xl overflow-hidden border border-[#83b745]/30 bg-white hidden sm:block">
+                              <Image
+                                 src="/IMAGES/checkoutimage.jpeg"
+                                 alt="Cuenta La Gaviota"
+                                 fill
+                                 sizes="64px"
+                                 unoptimized
+                                 className="object-cover"
+                              />
+                           </div>
+                           <div className="flex-1 min-w-0">
+                              <span className="inline-block rounded-full bg-[#83b745]/15 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#4d751f] mb-1">
+                                 ⚡ Compra más rápido la próxima vez
+                              </span>
+                              <h3 className="text-base font-black text-slate-900 leading-snug">
+                                 ¿No quieres volver a digitar tus datos en futuros pedidos?
+                              </h3>
+                              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                                 Crea tu cuenta gratis en segundos con Google o tu correo para guardar tu dirección en Bucaramanga, Floridablanca o Girón y repetir tu mercado en 1 clic.
+                              </p>
+                           </div>
+                           <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto shrink-0">
+                              <Link
+                                 href="/sign-up?redirect_url=/checkout"
+                                 className="flex-1 sm:flex-none text-center rounded-xl bg-[#83b745] hover:bg-[#6c9c36] px-4 py-2.5 text-xs font-black uppercase tracking-wide text-white shadow-sm transition-colors"
+                              >
+                                 Crear Cuenta Gratis
+                              </Link>
+                              <Link
+                                 href="/sign-in?redirect_url=/checkout"
+                                 className="flex-1 sm:flex-none text-center rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-4 py-2 text-xs font-bold text-slate-700 transition-colors"
+                              >
+                                 Iniciar Sesión
+                              </Link>
+                           </div>
+                        </div>
+                     </div>
+                  ) : (
+                     <div className="mb-8 rounded-xl border border-emerald-200 bg-emerald-50/70 px-4 py-3 flex items-center justify-between gap-3">
+                        <p className="text-xs font-bold text-emerald-900">
+                           ✅ Sesión activa{firstName ? ` como ${firstName}` : ''} — Tus datos de entrega se guardarán automáticamente para tus próximos pedidos.
+                        </p>
+                     </div>
+                  )}
 
                   <h2 className="text-lg font-black text-slate-800 mb-6 uppercase tracking-wider">Detalles de Facturación y Entrega</h2>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                      <div className="flex flex-col gap-1.5 min-w-0">
                         <label htmlFor="checkout-firstName" className="text-[13px] font-bold text-slate-800">Nombre *</label>
-                        <input required id="checkout-firstName" name="firstName" type="text" defaultValue={firstName || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
+                        <input required id="checkout-firstName" name="firstName" type="text" key={`fn-${firstName || savedProfile.firstName || ''}`} defaultValue={firstName || savedProfile.firstName || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
                      </div>
                      <div className="flex flex-col gap-1.5 min-w-0">
                         <label htmlFor="checkout-lastName" className="text-[13px] font-bold text-slate-800">Apellidos *</label>
-                        <input required id="checkout-lastName" name="lastName" type="text" defaultValue={lastName || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
+                        <input required id="checkout-lastName" name="lastName" type="text" key={`ln-${lastName || savedProfile.lastName || ''}`} defaultValue={lastName || savedProfile.lastName || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] focus:ring-1 focus:ring-[#83b745] transition-colors" />
                      </div>
                      
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
                         <label htmlFor="checkout-company" className="text-[13px] font-bold text-slate-800">Nombre de la empresa (opcional)</label>
-                        <input id="checkout-company" name="company" type="text" defaultValue={businessName || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <input id="checkout-company" name="company" type="text" key={`co-${businessName || savedProfile.company || ''}`} defaultValue={businessName || savedProfile.company || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
-                        <label className="text-[13px] font-bold text-slate-800">País / Región *</label>
-                        <p className="font-bold text-slate-900 border border-transparent py-2">Colombia</p>
+                        <label className="text-[13px] font-bold text-slate-800">Región de Cobertura</label>
+                        <p className="font-bold text-slate-900 bg-slate-50 border border-gray-200 rounded-sm px-3 py-2 text-sm flex items-center gap-2">
+                           <span>🇨🇴</span> Colombia — Área Metropolitana de Santander
+                        </p>
                         <input type="hidden" name="country" value="Colombia" />
-                     </div>
-
-                     <div className="flex flex-col gap-1.5 min-w-0">
-                        <label htmlFor="checkout-address" className="text-[13px] font-bold text-slate-800">Dirección de la calle *</label>
-                        <input required id="checkout-address" name="address" type="text" placeholder="Número de la casa y nombre de la calle" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
-                     </div>
-                     <div className="flex flex-col gap-1.5 justify-end min-w-0">
-                        <input aria-label="Apartamento, habitación u otra indicación" name="apartment" type="text" placeholder="Apartamento, habitación, etc. (opcional)" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
-                     </div>
-
-                     <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
-                        <label htmlFor="checkout-neighborhood" className="text-[13px] font-bold text-slate-800">Barrio (opcional)</label>
-                        <input id="checkout-neighborhood" name="neighborhood" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
-                     </div>
-
-                     <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
-                        <label htmlFor="checkout-state" className="text-[13px] font-bold text-slate-800">Estado / Municipio *</label>
-                        <select required id="checkout-state" name="state" className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745]">
-                           <option>Santander</option>
-                           <option>Bogotá D.C.</option>
-                           <option>Cundinamarca</option>
-                        </select>
+                        <input type="hidden" name="state" value="Santander" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
                         <label htmlFor="checkout-city" className="text-[13px] font-bold text-slate-800">Localidad / Ciudad *</label>
-                        <select required id="checkout-city" name="city" value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745]">
-                           <option value="">Elige una opción...</option>
+                        <select required id="checkout-city" name="city" value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745] font-semibold text-slate-800">
                            <option value="Bucaramanga">Bucaramanga</option>
                            <option value="Floridablanca">Floridablanca</option>
                            <option value="Girón">Girón</option>
-                           <option value="Piedecuesta">Piedecuesta</option>
-                           <option value="Bogotá Norte">Bogotá Norte</option>
-                           <option value="Bogotá Sur">Bogotá Sur</option>
                         </select>
                      </div>
 
+                     <div className="flex flex-col gap-1.5 min-w-0">
+                        <label htmlFor="checkout-address" className="text-[13px] font-bold text-slate-800">Dirección de la calle *</label>
+                        <input required id="checkout-address" name="address" type="text" key={`ad-${savedProfile.address || ''}`} defaultValue={savedProfile.address || ''} placeholder="Número de la casa y nombre de la calle" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                     </div>
+                     <div className="flex flex-col gap-1.5 justify-end min-w-0">
+                        <input aria-label="Apartamento, habitación u otra indicación" name="apartment" type="text" key={`ap-${savedProfile.apartment || ''}`} defaultValue={savedProfile.apartment || ''} placeholder="Apartamento, conjunto, torre, etc. (opcional)" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                     </div>
+
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
-                        <label htmlFor="checkout-zipcode" className="text-[13px] font-bold text-slate-800">Código postal (opcional)</label>
-                        <input id="checkout-zipcode" name="zipcode" type="text" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <label htmlFor="checkout-neighborhood" className="text-[13px] font-bold text-slate-800">Barrio (opcional)</label>
+                        <input id="checkout-neighborhood" name="neighborhood" type="text" key={`nb-${savedProfile.neighborhood || ''}`} defaultValue={savedProfile.neighborhood || ''} placeholder="Ej. Cabecera, Cañaveral, Provenza..." className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 min-w-0">
-                        <label htmlFor="checkout-phone" className="text-[13px] font-bold text-slate-800">Teléfono *</label>
-                        <input required id="checkout-phone" name="phone" type="tel" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <label htmlFor="checkout-phone" className="text-[13px] font-bold text-slate-800">Teléfono / WhatsApp *</label>
+                        <input required id="checkout-phone" name="phone" type="tel" key={`ph-${savedProfile.phone || ''}`} defaultValue={savedProfile.phone || ''} placeholder="Ej. 311 269 4676" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
                      <div className="flex flex-col gap-1.5 min-w-0">
                         <label htmlFor="checkout-email" className="text-[13px] font-bold text-slate-800">Dirección de correo electrónico *</label>
-                        <input required id="checkout-email" name="email" type="email" defaultValue={userEmail || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
+                        <input required id="checkout-email" name="email" type="email" key={`em-${userEmail || savedProfile.email || ''}`} defaultValue={userEmail || savedProfile.email || ''} className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors" />
                      </div>
 
                      <div className="flex flex-col gap-1.5 md:col-span-2 mt-4 min-w-0">
                         <label htmlFor="checkout-notes" className="text-[13px] font-bold text-slate-800">Notas del pedido (opcional)</label>
-                        <textarea id="checkout-notes" name="notes" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors h-24 resize-none" placeholder="Notas sobre tu pedido, por ejemplo, notas especiales para la entrega."></textarea>
+                        <textarea id="checkout-notes" name="notes" className="w-full border border-gray-300 rounded-sm px-3 py-2 outline-none focus:border-[#83b745] transition-colors h-24 resize-none" placeholder="Notas sobre tu pedido, por ejemplo, portería, punto de referencia o indicaciones de madurez de la fruta."></textarea>
                      </div>
                   </div>
                </div>
