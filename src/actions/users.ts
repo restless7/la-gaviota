@@ -17,9 +17,8 @@ export interface SystemUser {
 }
 
 export async function fetchSystemUsers(): Promise<SystemUser[]> {
-  await requireCapability('identity.read');
-
   try {
+    await requireCapability('identity.read');
     const client = await clerkClient();
     const response = await client.users.getUserList({
       limit: 100,

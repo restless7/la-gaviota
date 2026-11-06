@@ -1,11 +1,17 @@
 import React from 'react';
-import { fetchSystemUsers } from '@/src/actions/users';
+import { fetchSystemUsers, SystemUser } from '@/src/actions/users';
 import UserManagementClient from './UserManagementClient';
 
 export const dynamic = 'force-dynamic';
 
 export default async function UserManagementPage() {
-  const users = await fetchSystemUsers();
+  let users: SystemUser[] = [];
+  try {
+    users = await fetchSystemUsers();
+  } catch (err) {
+    console.error('Failed to load system users on SSR:', err);
+    users = [];
+  }
   
   return (
     <div className="animate-fade-in space-y-6">

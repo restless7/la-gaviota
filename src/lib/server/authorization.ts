@@ -5,8 +5,25 @@ export type Tier = 'Personas Naturales' | 'Micromercados' | 'Restaurantes';
 export type Capability = 'identity.read' | 'identity.manage' | 'catalog.manage' | 'pricing.manage' | 'inventory.manage' | 'customers.manage' | 'tiers.manage' | 'orders.manage' | 'payments.manage' | 'reports.read' | 'audit.read' | 'settings.read' | 'settings.manage' | 'suppliers.manage' | 'storage.manage' | 'audit.write';
 export interface Actor { readonly userId: string | null; readonly role: Role; readonly tier: Tier }
 const issued = new WeakSet<object>();
-const staff: Capability[] = ['catalog.manage','pricing.manage','inventory.manage','customers.manage','tiers.manage','orders.manage','payments.manage','reports.read','settings.read','settings.manage','suppliers.manage','storage.manage','audit.write'];
-const knownCapabilities: Capability[] = [...staff, 'identity.read', 'identity.manage', 'audit.read'];
+const staff: Capability[] = [
+  'identity.read',
+  'identity.manage',
+  'audit.read',
+  'catalog.manage',
+  'pricing.manage',
+  'inventory.manage',
+  'customers.manage',
+  'tiers.manage',
+  'orders.manage',
+  'payments.manage',
+  'reports.read',
+  'settings.read',
+  'settings.manage',
+  'suppliers.manage',
+  'storage.manage',
+  'audit.write'
+];
+const knownCapabilities: Capability[] = [...staff];
 const tiers: Tier[] = ['Personas Naturales','Micromercados','Restaurantes'];
 export function assertTargetId(value: unknown): asserts value is string { if (typeof value !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(value)) throw new Error('INVALID_TARGET'); }
 export function validateTier(value: unknown): Tier { if (!tiers.includes(value as Tier)) throw new Error('INVALID_TIER'); return value as Tier; }
