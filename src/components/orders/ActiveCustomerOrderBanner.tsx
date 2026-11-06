@@ -12,3 +12,4 @@ export async function ActiveCustomerOrderBanner() {
     </div>
   );
 }
+
