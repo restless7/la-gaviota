@@ -1,8 +1,6 @@
 'use server';
 import { requireCapability, validateTier, validateRole, assertTargetId } from '@/src/lib/server/authorization';
-
-
-
+import { getServerDatabase } from '@/src/lib/server/database';
 import { clerkClient } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 
@@ -64,7 +62,28 @@ export async function updateUserRoleAndTier(userId: string, role: string, tier: 
       }
     });
 
+    // Also sync customer tier in Supabase so CRM tables (/admin/clientes/micro, /restaurantes, /personas) reflect the change
+    try {
+      const supabase = getServerDatabase(actor);
+      const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.primaryEmailAddress?.emailAddress || 'Cliente';
+      await supabase
+        .from('customers')
+        .upsert({
+          clerk_user_id: userId,
+          full_name: fullName,
+          email: user.primaryEmailAddress?.emailAddress || 'Sin email',
+          tier: safeTier,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'clerk_user_id' });
+    } catch (syncErr) {
+      console.warn('Could not sync user tier to customers table:', syncErr);
+    }
+
     revalidatePath('/admin/clientes/usuarios');
+    revalidatePath('/admin/clientes/personas');
+    revalidatePath('/admin/clientes/micro');
+    revalidatePath('/admin/clientes/restaurantes');
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error('Error updating user:', error);

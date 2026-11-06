@@ -8,10 +8,12 @@ import { useRouter } from 'next/navigation';
 
 export default function MicromercadoClient({ 
   bulkPicks, 
+  allProducts = [],
   lastOrder,
   templates
 }: { 
   bulkPicks: any[]; 
+  allProducts?: any[];
   lastOrder: any;
   templates: any[];
 }) {
@@ -19,18 +21,25 @@ export default function MicromercadoClient({
   const router = useRouter();
 
   const handleQuickReorder = () => {
-    if (!lastOrder || !lastOrder.order_items) {
+    if (!lastOrder || !lastOrder.order_items || lastOrder.order_items.length === 0) {
       alert('No se encontró una orden previa para repetir.');
       return;
     }
     
+    let addedCount = 0;
+    const catalogPool = allProducts.length > 0 ? allProducts : bulkPicks;
     lastOrder.order_items.forEach((item: any) => {
-       if (item.products && item.quantity) {
-         addToCart(item.products, item.quantity);
+       const matchedProduct = item.products || catalogPool.find((p: any) => p.id === item.product_id);
+       if (matchedProduct && item.quantity) {
+         addToCart(matchedProduct, item.quantity);
+         addedCount++;
        }
     });
-    alert(`Se agregaron ${lastOrder.order_items.length} productos al carrito exitosamente.`);
-    router.push('/cart');
+    if (addedCount > 0) {
+      router.push('/cart');
+    } else {
+      alert('No pudimos encontrar los productos de su orden anterior en el catálogo activo.');
+    }
   };
 
   const handleAddTemplateToCart = (tpl: any) => {

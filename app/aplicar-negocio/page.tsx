@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useUser, SignInButton } from '@clerk/nextjs';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useUser } from '@clerk/nextjs';
 import Image from 'next/image';
-import { submitBusinessApplication } from '@/src/actions/businessApplications';
-import { Building2, Store, ChefHat, ArrowRight, ArrowLeft, CheckCircle2, Shield, Truck, Percent, Send, Loader2 } from 'lucide-react';
-import type { BusinessTier } from '@/src/lib/supabase';
+import { submitBusinessApplication, fetchMyBusinessApplication } from '@/src/actions/businessApplications';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
+import { Store, ChefHat, ArrowRight, ArrowLeft, CheckCircle2, Shield, Truck, Percent, Send, Loader2, Clock, AlertCircle } from 'lucide-react';
+import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
+import type { BusinessTier, BusinessApplication } from '@/src/lib/supabase';
 
 const TIERS = [
   {
@@ -46,16 +49,22 @@ const TIERS = [
 ];
 
 const MUNICIPALITIES = [
-  'Bucaramanga', 'Floridablanca', 'Girón', 'Piedecuesta',
-  'Lebrija', 'San Gil', 'Socorro', 'Barichara', 'Cúcuta', 'Otro',
+  'Bucaramanga',
+  'Floridablanca',
+  'Girón',
 ];
+
+const B2B_DRAFT_STORAGE_KEY = 'gaviota_b2b_application_draft';
 
 export default function AplicarNegocioPage() {
   const { user, isSignedIn, isLoaded } = useUser();
+  const { role: activeUserTier, businessName: activeBusinessName } = useUserRole();
   const [step, setStep] = useState(1);
   const [selectedTier, setSelectedTier] = useState<BusinessTier | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [existingApp, setExistingApp] = useState<BusinessApplication | null>(null);
 
   // Form state
   const [form, setForm] = useState({
@@ -68,6 +77,41 @@ export default function AplicarNegocioPage() {
     notes: '',
   });
 
+  // Restore draft from localStorage (so signing in at Step 3 never loses form data)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(B2B_DRAFT_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.selectedTier) setSelectedTier(parsed.selectedTier);
+        if (parsed.form) setForm(prev => ({ ...prev, ...parsed.form }));
+        if (parsed.step && parsed.selectedTier) setStep(parsed.step);
+      }
+    } catch {
+      // Ignore storage errors
+    }
+  }, []);
+
+  // Save draft to localStorage as user progresses
+  useEffect(() => {
+    if (!selectedTier && !form.businessName) return;
+    try {
+      localStorage.setItem(B2B_DRAFT_STORAGE_KEY, JSON.stringify({ selectedTier, form, step }));
+    } catch {
+      // Ignore storage errors
+    }
+  }, [selectedTier, form, step]);
+
+  // Fetch existing application if signed in
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn) return;
+    fetchMyBusinessApplication().then(res => {
+      if (res.success && res.data) {
+        setExistingApp(res.data as BusinessApplication);
+      }
+    });
+  }, [isLoaded, isSignedIn]);
+
   const updateForm = (key: string, value: string) => {
     setForm(prev => ({ ...prev, [key]: value }));
   };
@@ -75,6 +119,7 @@ export default function AplicarNegocioPage() {
   const handleSubmit = async () => {
     if (!user || !selectedTier) return;
     setIsSubmitting(true);
+    setSubmitError(null);
 
     const result = await submitBusinessApplication({
       clerkUserId: user.id,
@@ -92,7 +137,14 @@ export default function AplicarNegocioPage() {
 
     setIsSubmitting(false);
     if (result.success) {
+      try {
+        localStorage.removeItem(B2B_DRAFT_STORAGE_KEY);
+      } catch {
+        // Ignore
+      }
       setSubmitted(true);
+    } else {
+      setSubmitError(result.error || 'No pudimos enviar tu solicitud. Intenta nuevamente.');
     }
   };
 
@@ -107,9 +159,17 @@ export default function AplicarNegocioPage() {
 
   // ── Success State ──
   if (submitted) {
+    const fastTrackMsg = encodeURIComponent(
+      `Hola Surtifruver La Gaviota 👋 Acabo de enviar mi solicitud mayorista en la web:\n` +
+      `• Negocio: ${form.businessName}\n` +
+      `• Categoría: ${selectedTier}\n` +
+      `• NIT: ${form.nit || 'En trámite'}\n` +
+      `• Municipio: ${form.municipality}\n` +
+      `¿Me ayudan por favor con la activación de tarifas mayoristas?`
+    );
     return (
-      <div className="min-h-[70vh] flex items-center justify-center px-4">
-        <div className="max-w-lg text-center">
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
+        <div className="max-w-lg text-center bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-10 h-10 text-[#4CAF50]" />
           </div>
@@ -117,16 +177,28 @@ export default function AplicarNegocioPage() {
           <p className="text-gray-600 mb-2 text-lg">
             Tu solicitud para <strong className="text-[#E30613]">{form.businessName}</strong> como <strong>{selectedTier}</strong> ha sido recibida.
           </p>
-          <p className="text-gray-500 text-sm mb-8">
-            Nuestro equipo revisará tu aplicación en las próximas 24-48 horas. Te notificaremos por correo electrónico cuando sea aprobada.
+          <p className="text-gray-500 text-sm mb-6">
+            Nuestro equipo comercial revisará tu solicitud. Una vez aprobada, tu cuenta verá automáticamente los precios mayoristas de <strong>{selectedTier}</strong> en todo el catálogo.
           </p>
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-gray-500 mb-8">
-            <p className="font-bold text-slate-700 mb-1">¿Qué sigue?</p>
-            <p>Una vez aprobada, tu cuenta se actualizará automáticamente con los precios especiales de tu tier. Podrás ver el cambio reflejado inmediatamente al iniciar sesión.</p>
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-sm text-gray-600 mb-6 text-left">
+            <p className="font-bold text-slate-800 mb-1">💡 ¿Necesitas activación inmediata hoy mismo?</p>
+            <p className="text-xs leading-relaxed">Envíanos un mensaje directo por WhatsApp para que nuestro equipo valide tu negocio y active tus precios mayoristas en minutos.</p>
           </div>
-          <a href="/" className="inline-flex items-center gap-2 bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] px-8 py-3 rounded-full font-bold shadow-lg transition-all">
-            Seguir comprando <ArrowRight className="w-4 h-4" />
-          </a>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href={`https://wa.me/573112694676?text=${fastTrackMsg}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1da851] text-white px-6 py-3 rounded-full font-black text-sm shadow-md transition-all"
+            >
+              <WhatsAppIcon className="w-4 h-4 fill-current" />
+              <span>Agilizar por WhatsApp</span>
+            </a>
+            <Link href="/" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] px-6 py-3 rounded-full font-bold text-sm shadow-lg transition-all">
+              <span>Ir a la tienda</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -166,6 +238,52 @@ export default function AplicarNegocioPage() {
         )}
 
         <div className={`max-w-4xl mx-auto px-4 pb-20 ${step === 1 ? '-mt-4' : 'pt-16'}`}>
+          {/* Live Status Banner if User Already Has a B2B Tier or Pending Application */}
+          {activeUserTier !== 'Personas Naturales' ? (
+            <div className="mb-8 rounded-2xl border border-emerald-300 bg-emerald-50 p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-6 h-6 text-emerald-700 shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="text-sm font-black text-emerald-950 uppercase tracking-wide">
+                    Cuenta Mayorista Activa: {activeUserTier} {activeBusinessName ? `(${activeBusinessName})` : ''}
+                  </h3>
+                  <p className="text-xs text-emerald-800 mt-0.5">
+                    Tus precios preferenciales ya están activos en toda la tienda y en tu portal exclusivo B2B.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/dashboard"
+                className="shrink-0 rounded-full bg-emerald-700 hover:bg-emerald-800 px-5 py-2.5 text-xs font-black text-white shadow-sm transition-colors"
+              >
+                Ir a Mi Portal B2B →
+              </Link>
+            </div>
+          ) : existingApp?.status === 'pending' ? (
+            <div className="mb-8 rounded-2xl border border-amber-300 bg-amber-50 p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <Clock className="w-6 h-6 text-amber-700 shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="text-sm font-black text-amber-950 uppercase tracking-wide">
+                    Solicitud en Revisión: {existingApp.business_name} ({existingApp.business_type})
+                  </h3>
+                  <p className="text-xs text-amber-900 mt-0.5">
+                    Recibimos tu solicitud. Puedes actualizar tus datos abajo o escribirnos por WhatsApp para activación inmediata.
+                  </p>
+                </div>
+              </div>
+              <a
+                href={`https://wa.me/573112694676?text=${encodeURIComponent(`Hola La Gaviota 👋 Consulto el estado de mi solicitud mayorista para ${existingApp.business_name} (${existingApp.business_type}).`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#25D366] hover:bg-[#1da851] px-4 py-2 text-xs font-black text-white shadow-sm transition-colors"
+              >
+                <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+                <span>Consultar por WhatsApp</span>
+              </a>
+            </div>
+          ) : null}
+
           {/* Step Indicator */}
           <div className="flex items-center justify-center gap-2 mb-12">
             {[1, 2, 3].map(s => (
@@ -419,23 +537,43 @@ export default function AplicarNegocioPage() {
               </div>
             </div>
 
+            {/* Error Banner */}
+            {submitError && (
+              <div className="max-w-2xl mx-auto mt-6 bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3 text-red-800 text-sm font-bold">
+                <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
+                <span>{submitError}</span>
+              </div>
+            )}
+
             {/* Auth Gate */}
             {!isSignedIn ? (
-              <div className="max-w-2xl mx-auto mt-8 bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
-                <p className="text-yellow-800 font-bold mb-3">Debes iniciar sesión para enviar tu solicitud</p>
-                <SignInButton mode="modal">
-                  <button className="bg-[#E30613] text-[#FFCC00] px-6 py-2.5 rounded-full font-bold shadow-md">
-                    Iniciar Sesión
-                  </button>
-                </SignInButton>
+              <div className="max-w-2xl mx-auto mt-8 bg-amber-50 border border-amber-300 rounded-2xl p-6 text-center shadow-lg">
+                <p className="text-amber-950 font-black text-base mb-1">Crea tu cuenta o inicia sesión para vincular tu negocio</p>
+                <p className="text-amber-800 text-xs mb-4">
+                  Los datos que acabas de ingresar para <strong>{form.businessName}</strong> están guardados y no se perderán.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <Link
+                    href="/sign-up?redirect_url=/aplicar-negocio"
+                    className="bg-[#E30613] hover:bg-[#c90510] text-[#FFCC00] px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-wider shadow-md transition-all"
+                  >
+                    ✨ Crear Cuenta Ahora
+                  </Link>
+                  <Link
+                    href="/sign-in?redirect_url=/aplicar-negocio"
+                    className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+                  >
+                    Ya tengo cuenta · Iniciar Sesión
+                  </Link>
+                </div>
               </div>
             ) : (
               <div className="flex justify-between mt-8 max-w-2xl mx-auto">
                 <button
                   onClick={() => setStep(2)}
-                  className="text-gray-500 hover:text-gray-700 font-bold flex items-center gap-2 transition-colors"
+                  className="text-gray-300 hover:text-white font-bold flex items-center gap-2 transition-colors"
                 >
-                  <ArrowLeft className="w-4 h-4" /> Editar
+                  <ArrowLeft className="w-4 h-4" /> Editar datos
                 </button>
                 <button
                   onClick={handleSubmit}

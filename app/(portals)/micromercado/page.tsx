@@ -30,6 +30,7 @@ export default async function MicromercadoDashboard() {
       <ActiveCustomerOrderBanner />
       <MicromercadoClient 
         bulkPicks={bulkPicks}
+        allProducts={activeProducts}
         lastOrder={lastOrder}
         templates={templates}
       />

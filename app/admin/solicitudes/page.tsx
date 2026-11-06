@@ -4,7 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { fetchBusinessApplications, approveApplication, rejectApplication } from '@/src/actions/businessApplications';
 import { Building2, CheckCircle2, XCircle, Clock, Search, ChevronDown, Loader2, Store, ChefHat, Eye } from 'lucide-react';
 import { useUser } from '@clerk/nextjs';
-import type { BusinessApplication } from '@/src/lib/supabase';
+import { buildWhatsAppChatUrl } from '@/src/lib/whatsapp';
+import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
+import type { BusinessApplication, BusinessTier } from '@/src/lib/supabase';
 
 const STATUS_CONFIG = {
   pending: {
@@ -54,12 +56,13 @@ export default function SolicitudesNegocioPage() {
     loadApplications();
   }, []);
 
-  const handleApprove = async (app: BusinessApplication) => {
+  const handleApprove = async (app: BusinessApplication, overrideTier?: BusinessTier) => {
     setProcessingId(app.id);
+    const targetTier = overrideTier || app.business_type;
     const result = await approveApplication(
       app.id,
       app.clerk_user_id,
-      app.business_type,
+      targetTier,
       app.business_name,
       getAdminName()
     );
@@ -195,9 +198,27 @@ export default function SolicitudesNegocioPage() {
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 flex-shrink-0">
+                    {app.phone && (
+                      <a
+                        href={buildWhatsAppChatUrl(
+                          app.phone,
+                          app.status === 'approved'
+                            ? `¡Hola ${app.applicant_name}! 🎉 Te confirmamos que tu solicitud mayorista para *${app.business_name}* ha sido *APROBADA* en el nivel *${app.business_type}* en Surtifruver La Gaviota. Ya puedes ingresar a https://www.lagaviotafruver.com/dashboard con tu cuenta para comprar con precios mayoristas.`
+                            : `Hola ${app.applicant_name} 👋 Te escribimos de Surtifruver La Gaviota respecto a tu solicitud mayorista para *${app.business_name}* (${app.business_type}).`
+                        )}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={app.status === 'approved' ? 'Notificar aprobación por WhatsApp' : 'Contactar solicitante por WhatsApp'}
+                        className="inline-flex items-center gap-1.5 bg-[#25D366]/10 hover:bg-[#25D366] text-[#1da851] hover:text-white px-3 py-2 rounded-lg font-bold text-xs transition-colors border border-[#25D366]/30"
+                      >
+                        <WhatsAppIcon className="w-4 h-4 fill-current" />
+                        <span className="hidden sm:inline">{app.status === 'approved' ? 'Notificar Aprobación' : 'WhatsApp'}</span>
+                      </a>
+                    )}
                     <button
                       onClick={() => setExpandedId(isExpanded ? null : app.id)}
                       className="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-slate-50 transition-colors"
+                      title="Ver detalles completos"
                     >
                       <Eye className="w-5 h-5" />
                     </button>
@@ -254,13 +275,33 @@ export default function SolicitudesNegocioPage() {
                           <span className="font-medium text-slate-700 text-sm">{app.notes}</span>
                         </div>
                       )}
-                      {app.reviewed_by && (
-                        <div className="col-span-full border-t border-gray-200 pt-3 mt-2">
-                          <span className="text-xs text-gray-400">
-                            Revisado por <strong>{app.reviewed_by}</strong> el {new Date(app.reviewed_at!).toLocaleDateString('es-CO')}
-                          </span>
+                      <div className="col-span-full border-t border-gray-200 pt-3 mt-2 flex flex-wrap items-center justify-between gap-3">
+                        <span className="text-xs text-gray-400">
+                          {app.reviewed_by ? (
+                            <>Revisado por <strong>{app.reviewed_by}</strong> el {new Date(app.reviewed_at!).toLocaleDateString('es-CO')}</>
+                          ) : (
+                            <>Creada el {new Date(app.created_at).toLocaleDateString('es-CO')}</>
+                          )}
+                        </span>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <button
+                            type="button"
+                            disabled={isProcessing}
+                            onClick={() => handleApprove(app, 'Micromercados')}
+                            className="text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 disabled:opacity-50"
+                          >
+                            Activar como Micromercado
+                          </button>
+                          <button
+                            type="button"
+                            disabled={isProcessing}
+                            onClick={() => handleApprove(app, 'Restaurantes')}
+                            className="text-xs font-bold px-3 py-1.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 disabled:opacity-50"
+                          >
+                            Activar como Restaurante
+                          </button>
                         </div>
-                      )}
+                      </div>
                     </div>
                   </div>
                 )}
