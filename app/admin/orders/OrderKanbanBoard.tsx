@@ -1,16 +1,57 @@
 "use client";
 
 import React, { useState, useTransition } from 'react';
+import Link from 'next/link';
 import { DndContext, closestCorners, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { KanbanColumn } from './KanbanColumn';
-import { Order, updateOrderStatus, closeOperationalDay, fetchHistoricOrdersByDate } from '@/src/actions/orders';
+import { Order, CustomerTierType, updateOrderStatus, closeOperationalDay, fetchHistoricOrdersByDate, getLiveOperationalOrders } from '@/src/actions/orders';
 import { OrderSummarySheet } from './OrderSummarySheet';
 import { ProcurementSheet } from './ProcurementSheet';
-import { AlertTriangle, Archive, CalendarDays } from 'lucide-react';
+import { getOrderTierPresentation } from './OrderCard';
+import { Archive, CalendarDays, Printer, Users, User, Store, UtensilsCrossed } from 'lucide-react';
 import { useUser } from '@clerk/nextjs';
 
 const COLUMNS: Order['status'][] = ['Pendiente', 'En Preparación', 'En Ruta', 'Entregado'];
+
+type TierFilterOption = 'ALL' | CustomerTierType;
+
+const TIER_FILTERS: {
+  id: TierFilterOption;
+  label: string;
+  shortLabel: string;
+  Icon: React.ComponentType<{ className?: string }>;
+  activeClass: string;
+}[] = [
+  {
+    id: 'ALL',
+    label: 'Todos los Clientes',
+    shortLabel: 'Todos',
+    Icon: Users,
+    activeClass: 'bg-[#1C2059] text-white border-[#1C2059]',
+  },
+  {
+    id: 'Personas Naturales',
+    label: '🏠 Personas Naturales',
+    shortLabel: 'Personas Naturales',
+    Icon: User,
+    activeClass: 'bg-blue-600 text-white border-blue-600',
+  },
+  {
+    id: 'Micromercados',
+    label: '🏪 Micromercados',
+    shortLabel: 'Micromercados',
+    Icon: Store,
+    activeClass: 'bg-emerald-600 text-white border-emerald-600',
+  },
+  {
+    id: 'Restaurantes',
+    label: '👨‍🍳 Restaurantes',
+    shortLabel: 'Restaurantes',
+    Icon: UtensilsCrossed,
+    activeClass: 'bg-amber-600 text-white border-amber-600',
+  },
+];
 
 export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOrders: Order[], historicLedgers: any[] }) {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
@@ -21,13 +62,32 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
   const [selectedLedgerDate, setSelectedLedgerDate] = useState<string | null>(null);
   const [historicOrders, setHistoricOrders] = useState<Order[]>([]);
   const [filterText, setFilterText] = useState('');
+  const [selectedTierFilter, setSelectedTierFilter] = useState<TierFilterOption>('ALL');
   const { user } = useUser();
 
-  const filteredOrders = orders.filter(o => 
-    o.customer_name.toLowerCase().includes(filterText.toLowerCase()) || 
-    o.id.toLowerCase().includes(filterText.toLowerCase()) ||
-    o.delivery_address.toLowerCase().includes(filterText.toLowerCase())
-  );
+  const resolveOrderTier = (o: Order): CustomerTierType => {
+    if (o.customer_tier === 'Micromercados' || o.customer_tier === 'Restaurantes' || o.customer_tier === 'Personas Naturales') {
+      return o.customer_tier;
+    }
+    return 'Personas Naturales';
+  };
+
+  const matchesSearchAndTier = (o: Order) => {
+    const tierMatch = selectedTierFilter === 'ALL' || resolveOrderTier(o) === selectedTierFilter;
+    if (!tierMatch) return false;
+    if (!filterText.trim()) return true;
+    const q = filterText.toLowerCase();
+    return (
+      o.customer_name?.toLowerCase().includes(q) ||
+      o.customer_business_name?.toLowerCase().includes(q) ||
+      o.id.toLowerCase().includes(q) ||
+      o.delivery_address?.toLowerCase().includes(q) ||
+      o.delivery_municipality?.toLowerCase().includes(q)
+    );
+  };
+
+  const filteredOrders = orders.filter(matchesSearchAndTier);
+  const filteredHistoricOrders = historicOrders.filter(matchesSearchAndTier);
 
   React.useEffect(() => {
     setOrders(initialOrders);
@@ -46,9 +106,21 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
         { event: 'UPDATE', schema: 'public', table: 'orders' },
         (payload: any) => {
           const updatedOrder = payload.new;
-          setOrders((prev) => 
+          setOrders((prev) =>
             prev.map((o) => (o.id === updatedOrder.id ? { ...o, ...updatedOrder } : o))
           );
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'orders' },
+        async () => {
+          try {
+            const refreshed = await getLiveOperationalOrders();
+            setOrders(refreshed);
+          } catch (err) {
+            console.warn('Could not refresh live orders after INSERT:', err);
+          }
         }
       )
       .subscribe();
@@ -124,25 +196,44 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
     });
   };
 
+  const countByTier = (tier: TierFilterOption) => {
+    const source = activeTab === 'ACTIVE' ? orders : historicOrders;
+    if (tier === 'ALL') return source.length;
+    return source.filter((o) => resolveOrderTier(o) === tier).length;
+  };
+
+  const revenueByTier = (tier: TierFilterOption) => {
+    const source = activeTab === 'ACTIVE' ? orders : historicOrders;
+    const list = tier === 'ALL' ? source : source.filter((o) => resolveOrderTier(o) === tier);
+    return list.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+  };
+
   return (
-    <div className="flex flex-col h-[calc(100vh-160px)]">
-      <div className="flex items-center justify-between mb-4">
+    <div className="flex flex-col min-h-[calc(100vh-160px)]">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
          <div>
             <h1 className="text-3xl font-black text-slate-800 font-serif">Gestión de Pedidos</h1>
-            <p className="text-gray-500">Centro de control logístico empresarial.</p>
+            <p className="text-gray-500 text-sm">Centro de control logístico empresarial con segmentación por Tipo de Cliente.</p>
          </div>
-         <div className="flex items-center gap-4">
+         <div className="flex flex-wrap items-center gap-2.5">
             <button 
               onClick={() => setIsProcurementSheetOpen(true)}
-              className="flex bg-[#1C2059] hover:bg-[#2A2F7A] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-colors items-center gap-2 text-sm uppercase tracking-wider"
+              className="flex bg-[#1C2059] hover:bg-[#2A2F7A] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-colors items-center gap-2 text-xs uppercase tracking-wider"
             >
-              <Archive className="w-4 h-4" /> Consolidado
+              <Archive className="w-4 h-4" /> Consolidado Rápido
             </button>
+            <Link
+              href="/admin/reports/consolidation"
+              className="flex bg-white hover:bg-slate-50 text-[#1C2059] border border-[#1C2059]/20 font-bold py-2.5 px-4 rounded-xl shadow-sm transition-colors items-center gap-2 text-xs uppercase tracking-wider"
+            >
+              <Printer className="w-4 h-4" /> Consolidado PDF / Excel
+            </Link>
             <button 
               onClick={handleDayClosure}
               disabled={!canCloseDay || isClosingDay}
               title={!canCloseDay ? 'No puedes cerrar el día con órdenes activas en ruta o preparación' : 'Cerrar libro diario'}
-              className={`flex font-bold py-2 px-4 rounded-xl shadow-md transition-colors items-center gap-2 text-sm uppercase tracking-wider ${
+              className={`flex font-bold py-2.5 px-4 rounded-xl shadow-md transition-colors items-center gap-2 text-xs uppercase tracking-wider ${
                 canCloseDay ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
             >
@@ -151,13 +242,51 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
          </div>
       </div>
 
-      <div className="flex items-center justify-between mb-4 border-b border-gray-200">
+      {/* Client Type (Tier) Filter Pills */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        {TIER_FILTERS.map((tf) => {
+          const isSelected = selectedTierFilter === tf.id;
+          const count = countByTier(tf.id);
+          const revenue = revenueByTier(tf.id);
+          return (
+            <button
+              key={tf.id}
+              type="button"
+              onClick={() => setSelectedTierFilter(tf.id)}
+              className={`p-3.5 rounded-2xl border text-left transition-all flex items-center justify-between ${
+                isSelected
+                  ? `${tf.activeClass} shadow-md`
+                  : 'bg-white border-gray-200 text-slate-700 hover:border-gray-300 hover:bg-slate-50'
+              }`}
+            >
+              <div className="min-w-0">
+                <p className={`text-xs font-black truncate ${isSelected ? 'text-white' : 'text-slate-800'}`}>
+                  {tf.label}
+                </p>
+                <p className={`text-[11px] font-bold mt-0.5 ${isSelected ? 'text-white/80' : 'text-[#4CAF50]'}`}>
+                  ${revenue.toLocaleString('es-CO')}
+                </p>
+              </div>
+              <span
+                className={`px-2.5 py-1 rounded-full text-xs font-black shrink-0 ${
+                  isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700'
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Tabs + Search Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b border-gray-200 pb-2">
         <div className="flex gap-4">
           <button
             onClick={() => setActiveTab('ACTIVE')}
             className={`pb-2 px-4 font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === 'ACTIVE' ? 'text-[#E30613] border-b-2 border-[#E30613]' : 'text-gray-400 hover:text-gray-600'}`}
           >
-            Tablero Activo
+            Tablero Activo ({filteredOrders.length})
           </button>
           <button
             onClick={() => setActiveTab('HISTORIC')}
@@ -166,22 +295,29 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
             Historial de Cierres
           </button>
         </div>
-        {activeTab === 'ACTIVE' && (
-          <div className="mb-2">
-            <input 
-              type="text" 
-              placeholder="Buscar por cliente, ID o dirección..." 
-              value={filterText}
-              onChange={(e) => setFilterText(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:border-[#1C2059] focus:ring-1 focus:ring-[#1C2059] w-72"
-            />
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          {selectedTierFilter !== 'ALL' && (
+            <button
+              type="button"
+              onClick={() => setSelectedTierFilter('ALL')}
+              className="text-xs font-bold text-[#E30613] hover:underline px-2 py-1"
+            >
+              Limpiar filtro ({selectedTierFilter})
+            </button>
+          )}
+          <input 
+            type="text" 
+            placeholder="Buscar cliente, negocio, ID o municipio..." 
+            value={filterText}
+            onChange={(e) => setFilterText(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-xl text-sm outline-none focus:border-[#1C2059] focus:ring-1 focus:ring-[#1C2059] w-full sm:w-80 bg-white"
+          />
+        </div>
       </div>
 
       {activeTab === 'ACTIVE' ? (
         <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
-          <div className="flex gap-4 h-full overflow-x-auto pb-4">
+          <div className="flex gap-4 flex-1 overflow-x-auto pb-4">
             {COLUMNS.map((status) => {
               const columnOrders = filteredOrders.filter((o) => o.status === status);
               return (
@@ -236,23 +372,33 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
                     <tr>
                       <td colSpan={4} className="p-4 bg-slate-50/50">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                           {historicOrders.length === 0 ? (
-                             <p className="text-gray-400 text-sm">No se encontraron detalles para este cierre.</p>
-                           ) : historicOrders.map(ho => (
-                             <div key={ho.id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 opacity-80 cursor-pointer" onClick={() => setSelectedOrder(ho)}>
-                                <div className="flex justify-between items-start mb-2">
-                                  <span className="text-[10px] font-black text-gray-400">{ho.id.slice(0, 8)}</span>
-                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-gray-100 text-gray-700">Entregado</span>
-                                </div>
-                                <h4 className="font-bold text-slate-800 text-sm mb-1">{ho.customer_name}</h4>
-                                <div className="flex justify-between items-end mt-4">
-                                  <span className="text-[10px] text-gray-500 font-medium">
-                                    {new Date(ho.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                                  </span>
-                                  <span className="font-black text-[#4CAF50]">${Number(ho.total_amount).toLocaleString('es-CO')}</span>
-                                </div>
-                             </div>
-                           ))}
+                           {filteredHistoricOrders.length === 0 ? (
+                             <p className="text-gray-400 text-sm">No se encontraron detalles para este cierre con el filtro actual.</p>
+                           ) : filteredHistoricOrders.map(ho => {
+                             const tierInfo = getOrderTierPresentation(ho);
+                             return (
+                               <div key={ho.id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:border-[#1C2059] cursor-pointer transition-colors" onClick={() => setSelectedOrder(ho)}>
+                                  <div className="flex justify-between items-start mb-2 gap-1">
+                                    <span className="text-[10px] font-black text-gray-400">#{ho.id.slice(0, 8).toUpperCase()}</span>
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${tierInfo.badgeClass}`}>
+                                      {tierInfo.label}
+                                    </span>
+                                  </div>
+                                  <h4 className="font-bold text-slate-800 text-sm mb-0.5 truncate">
+                                    {ho.customer_business_name || ho.customer_name}
+                                  </h4>
+                                  {ho.customer_business_name && (
+                                    <p className="text-[11px] text-gray-500 truncate">{ho.customer_name}</p>
+                                  )}
+                                  <div className="flex justify-between items-end mt-4">
+                                    <span className="text-[10px] text-gray-500 font-medium">
+                                      {new Date(ho.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                    </span>
+                                    <span className="font-black text-[#4CAF50]">${Number(ho.total_amount).toLocaleString('es-CO')}</span>
+                                  </div>
+                               </div>
+                             );
+                           })}
                         </div>
                       </td>
                     </tr>

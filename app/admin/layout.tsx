@@ -29,18 +29,19 @@ import {
 } from 'lucide-react';
 import { useRBAC } from '@/src/hooks/useRBAC';
 import { useClerk } from '@clerk/nextjs';
+import { AdminOrderAlertSystem } from '@/src/components/admin/AdminOrderAlertSystem';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
 const navigation = [
-  { name: 'Dashboard Principal', href: '/admin', icon: Home, roles: ['SUPER_ADMIN', 'ADMIN'] },
+  { name: 'Dashboard Principal', href: '/admin', icon: Home, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },
   { 
     name: 'Gestión de Clientes', 
     icon: Users, 
     group: 'crm',
-    roles: ['SUPER_ADMIN', 'ADMIN'],
+    roles: ['SUPER_ADMIN', 'ADMIN', 'COMMERCIAL'],
     subItems: [
       { name: 'Personas Naturales', href: '/admin/clientes/personas' },
       { name: 'Micromercados', href: '/admin/clientes/micro' },
@@ -52,17 +53,17 @@ const navigation = [
     name: 'Catálogo & Precios',
     icon: Server,
     group: 'catalog',
-    roles: ['SUPER_ADMIN', 'ADMIN'],
+    roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'],
     subItems: [
       { name: 'Inventario General', href: '/admin/catalog/product-management' },
       { name: 'Gestión de Precios por Tier', href: '/admin/pricing' },
       { name: 'Kits y Promociones', href: '/admin/catalog/kits' },
     ]
   },
-  { name: 'Gestión de Pedidos', href: '/admin/orders', icon: TrendingUp, roles: ['SUPER_ADMIN', 'ADMIN'] },
-  { name: 'Solicitudes de Negocio', href: '/admin/solicitudes', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN'] },
-  { name: 'Proveedores & Granjas', href: '/admin/suppliers', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN'] },
-  { name: 'Reportes y Ventas', href: '/admin/reports', icon: BarChart3, roles: ['SUPER_ADMIN', 'ADMIN'] },
+  { name: 'Gestión de Pedidos', href: '/admin/orders', icon: TrendingUp, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },
+  { name: 'Solicitudes de Negocio', href: '/admin/solicitudes', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN', 'COMMERCIAL'] },
+  { name: 'Proveedores & Granjas', href: '/admin/suppliers', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO'] },
+  { name: 'Reportes y Ventas', href: '/admin/reports', icon: BarChart3, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },
   { name: 'Audit Log (Transacciones)', href: '/admin/audit', icon: ScrollText, roles: ['SUPER_ADMIN'] },
   { name: 'Configuración', href: '/admin/settings', icon: Settings, roles: ['SUPER_ADMIN'] },
 ];
@@ -290,8 +291,9 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
               <Menu className="h-6 w-6" />
             </button>
 
-            <div className="flex items-center gap-4 ml-auto">
-              <div className="text-sm text-gray-500 font-medium bg-gray-50 px-4 py-2 rounded-full border border-gray-100 min-w-[200px] text-center">
+            <div className="flex items-center gap-3 ml-auto">
+              <AdminOrderAlertSystem />
+              <div className="hidden xl:block text-sm text-gray-500 font-medium bg-gray-50 px-4 py-2 rounded-full border border-gray-100 min-w-[200px] text-center">
                 {currentDate || 'Cargando fecha...'}
               </div>
             </div>

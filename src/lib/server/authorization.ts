@@ -49,10 +49,35 @@ async function actorFromVerifiedSubject(userId: string | null): Promise<Actor> {
  const tier: Tier = role !== 'INVALID' && tiers.includes(meta.tier as Tier) ? meta.tier as Tier : 'Personas Naturales';
  const actor: Actor = Object.freeze({ userId, role, tier }); issued.add(actor); return actor;
 }
+const operarioCapabilities: Capability[] = [
+  'identity.read',
+  'catalog.manage',
+  'inventory.manage',
+  'orders.manage',
+  'payments.manage',
+  'reports.read',
+  'suppliers.manage',
+  'audit.write'
+];
+const commercialCapabilities: Capability[] = [
+  'identity.read',
+  'catalog.manage',
+  'pricing.manage',
+  'customers.manage',
+  'tiers.manage',
+  'orders.manage',
+  'payments.manage',
+  'reports.read',
+  'audit.write'
+];
 export function assertIssuedActor(actor: Actor): void { if (!issued.has(actor) || !actor.userId || actor.role === 'INVALID') throw new Error('INVALID_ACTOR'); }
 export function hasCapability(actor: Actor, capability: Capability): boolean {
  if (!issued.has(actor) || !knownCapabilities.includes(capability)) return false;
- return actor.role === 'SUPER_ADMIN' || actor.role === 'ADMIN' && staff.includes(capability);
+ if (actor.role === 'SUPER_ADMIN') return true;
+ if (actor.role === 'ADMIN') return staff.includes(capability);
+ if (actor.role === 'OPERARIO') return operarioCapabilities.includes(capability);
+ if (actor.role === 'COMMERCIAL') return commercialCapabilities.includes(capability);
+ return false;
 }
 export async function requireCapability(capability: Capability): Promise<Actor> { const actor = await getActor(); if (!hasCapability(actor, capability)) throw new Error('FORBIDDEN'); return actor; }
 export async function requireOwnedSubject(subject: unknown): Promise<Actor> { const actor = await getActor(); assertIssuedActor(actor); assertTargetId(subject); if (subject !== actor.userId && !hasCapability(actor,'customers.manage')) throw new Error('FORBIDDEN_OWNER'); return actor; }

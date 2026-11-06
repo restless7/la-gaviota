@@ -2,6 +2,7 @@
 
 import React, { useState, useTransition } from 'react';
 import { Order, flagOrderConflict, updateOrderStatus, cancelAndRefundOrder, confirmCashPayment } from '@/src/actions/orders';
+import { getOrderTierPresentation } from './OrderCard';
 import { X, MapPin, Calendar, Package, AlertTriangle, ArrowRight, Phone } from 'lucide-react';
 import { buildWhatsAppChatUrl, buildOrderConfirmationMessage } from '@/src/lib/whatsapp';
 import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
@@ -74,9 +75,9 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
       <div className="fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-50 shadow-2xl flex flex-col transform transition-transform duration-300">
          <div className={`p-6 border-b flex items-center justify-between ${order.is_conflicted ? 'bg-red-50 border-red-200' : 'border-gray-100'}`}>
             <div>
-               <div className="flex items-center gap-2 mb-2">
-                 <span className="bg-[#E30613]/10 text-[#E30613] text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-wider inline-block">
-                   {order.clerk_user_id ? 'Wholesale' : 'Retail'}
+               <div className="flex items-center gap-2 mb-2 flex-wrap">
+                 <span className={`text-[10px] font-black px-2.5 py-1 rounded-full border tracking-wider inline-block ${getOrderTierPresentation(order).badgeClass}`}>
+                   {getOrderTierPresentation(order).label}
                  </span>
                  {order.is_conflicted && (
                    <span className="bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
@@ -89,7 +90,7 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
                    </span>
                  )}
                </div>
-               <h2 className="text-2xl font-black text-slate-800 font-serif">{order.id.slice(0, 13)}</h2>
+               <h2 className="text-2xl font-black text-slate-800 font-serif">#{order.id.slice(0, 8).toUpperCase()}</h2>
             </div>
             <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full text-gray-400 transition-colors">
                <X className="w-5 h-5" />
@@ -173,8 +174,15 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
                   <div className="flex items-center gap-3">
                      <div className="bg-slate-100 p-2 rounded-full text-slate-500"><Package className="w-4 h-4" /></div>
                      <div>
-                        <p className="text-xs text-gray-500 font-medium">Nombre / Negocio</p>
-                        <p className="font-bold text-slate-800 text-sm">{order.customer_name}</p>
+                        <p className="text-xs text-gray-500 font-medium">Cliente / Razón Social ({order.customer_tier || 'Personas Naturales'})</p>
+                        {order.customer_business_name ? (
+                          <>
+                            <p className="font-black text-slate-800 text-sm">{order.customer_business_name}</p>
+                            <p className="text-xs text-slate-500 font-semibold">Contacto: {order.customer_name}</p>
+                          </>
+                        ) : (
+                          <p className="font-bold text-slate-800 text-sm">{order.customer_name}</p>
+                        )}
                      </div>
                   </div>
                   <div className="flex items-center gap-3">

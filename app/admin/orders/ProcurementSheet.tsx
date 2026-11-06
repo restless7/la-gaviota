@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { X, Package, AlertTriangle, RefreshCcw, ClipboardList } from 'lucide-react';
+import Link from 'next/link';
+import { X, Package, AlertTriangle, RefreshCcw, ClipboardList, Printer, Download } from 'lucide-react';
 import { fetchOrderConsolidation } from '@/src/actions/orders';
+import { exportConsolidationToCSV } from '@/app/admin/reports/consolidation/ConsolidationClient';
 
 interface ProcurementItem {
   id: string;
@@ -151,11 +153,25 @@ export function ProcurementSheet({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
-        <div className="p-6 bg-white border-t border-gray-100 mt-auto flex justify-between items-center">
-          <p className="text-[10px] text-gray-400 font-bold max-w-[200px] leading-tight">
-            Este reporte agrupa las cantidades exactas requeridas para despachar las órdenes seleccionadas.
-          </p>
-          <button onClick={loadData} className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-black py-3 px-6 rounded-xl transition-all text-xs uppercase tracking-wider flex items-center gap-2">
+        <div className="p-5 bg-white border-t border-gray-100 mt-auto flex flex-wrap justify-between items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => exportConsolidationToCSV(items, statuses)}
+              disabled={items.length === 0}
+              className="bg-[#4CAF50] hover:bg-[#3d8c40] text-white font-black py-2.5 px-4 rounded-xl transition-all text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+            >
+              <Download className="h-4 w-4" /> Exportar CSV
+            </button>
+            <Link
+              href="/admin/reports/consolidation?print=1"
+              target="_blank"
+              className="bg-[#1C2059] hover:bg-[#2A2F7A] text-white font-black py-2.5 px-4 rounded-xl transition-all text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-sm"
+            >
+              <Printer className="h-4 w-4" /> Imprimir / PDF
+            </Link>
+          </div>
+          <button onClick={loadData} className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-black py-2.5 px-4 rounded-xl transition-all text-xs uppercase tracking-wider flex items-center gap-1.5">
             <RefreshCcw className="h-4 w-4" /> Refrescar
           </button>
         </div>

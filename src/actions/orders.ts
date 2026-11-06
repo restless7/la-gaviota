@@ -17,6 +17,8 @@ export interface OrderItem {
   price_at_purchase: number;
 }
 
+export type CustomerTierType = 'Personas Naturales' | 'Micromercados' | 'Restaurantes';
+
 export interface Order {
   id: string;
   clerk_user_id: string | null;
@@ -35,7 +37,86 @@ export interface Order {
   scheduled_delivery_date?: string;
   is_conflicted?: boolean;
   conflict_reason?: string | null;
+  client_metadata?: Record<string, any> | null;
+  customer_tier?: CustomerTierType;
+  customer_business_name?: string | null;
   order_items?: OrderItem[];
+}
+
+function normalizeCustomerTier(rawTier: unknown): CustomerTierType {
+  if (rawTier === 'Micromercados' || rawTier === 'Restaurantes' || rawTier === 'Personas Naturales') {
+    return rawTier;
+  }
+  return 'Personas Naturales';
+}
+
+async function enrichOrdersWithCustomerTier(supabase: any, rawOrders: any[]): Promise<Order[]> {
+  if (!rawOrders || rawOrders.length === 0) return [];
+
+  const clerkIds = Array.from(
+    new Set(rawOrders.map((o) => o.clerk_user_id).filter((id): id is string => Boolean(id)))
+  );
+  const emails = Array.from(
+    new Set(rawOrders.map((o) => o.customer_email?.toLowerCase()?.trim()).filter((e): e is string => Boolean(e)))
+  );
+
+  const byClerkId = new Map<string, { tier: CustomerTierType; business_name: string | null }>();
+  const byEmail = new Map<string, { tier: CustomerTierType; business_name: string | null }>();
+
+  try {
+    if (clerkIds.length > 0) {
+      const { data: custByClerk } = await supabase
+        .from('customers')
+        .select('clerk_user_id, email, tier, business_name')
+        .in('clerk_user_id', clerkIds);
+
+      (custByClerk || []).forEach((c: any) => {
+        const entry = {
+          tier: normalizeCustomerTier(c.tier),
+          business_name: c.business_name || null,
+        };
+        if (c.clerk_user_id) byClerkId.set(c.clerk_user_id, entry);
+        if (c.email) byEmail.set(String(c.email).toLowerCase().trim(), entry);
+      });
+    }
+
+    if (emails.length > 0) {
+      const { data: custByEmail } = await supabase
+        .from('customers')
+        .select('clerk_user_id, email, tier, business_name')
+        .in('email', emails);
+
+      (custByEmail || []).forEach((c: any) => {
+        const key = String(c.email || '').toLowerCase().trim();
+        if (key && !byEmail.has(key)) {
+          byEmail.set(key, {
+            tier: normalizeCustomerTier(c.tier),
+            business_name: c.business_name || null,
+          });
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('Non-fatal warning enriching customer tier on orders:', err);
+  }
+
+  return rawOrders.map((o) => {
+    const clerkMatch = o.clerk_user_id ? byClerkId.get(o.clerk_user_id) : undefined;
+    const emailMatch = o.customer_email ? byEmail.get(String(o.customer_email).toLowerCase().trim()) : undefined;
+    const metaTier = o.client_metadata?.tier;
+    const resolvedTier = clerkMatch?.tier || emailMatch?.tier || normalizeCustomerTier(metaTier);
+    const resolvedBusiness =
+      clerkMatch?.business_name ||
+      emailMatch?.business_name ||
+      o.client_metadata?.business_name ||
+      null;
+
+    return {
+      ...o,
+      customer_tier: resolvedTier,
+      customer_business_name: resolvedBusiness,
+    };
+  });
 }
 
 export async function getLiveOperationalOrders(): Promise<Order[]> {
@@ -68,7 +149,7 @@ export async function getLiveOperationalOrders(): Promise<Order[]> {
     !(o.status === 'Entregado' && closedDates.includes(o.scheduled_delivery_date))
   ) || [];
 
-  return liveOrders;
+  return enrichOrdersWithCustomerTier(supabase, liveOrders);
 }
 
 export async function fetchOrderById(orderId: string): Promise<Order | null> {
@@ -81,11 +162,12 @@ export async function fetchOrderById(orderId: string): Promise<Order | null> {
   if (!hasCapability(actor, 'orders.manage')) query = query.eq('clerk_user_id', actor.userId);
   const { data, error } = await query.single();
 
-  if (error) {
+  if (error || !data) {
     console.error('Error fetching order by id:', error);
     return null;
   }
-  return data;
+  const [enriched] = await enrichOrdersWithCustomerTier(supabase, [data]);
+  return enriched || data;
 }
 
 export async function updateOrderStatus(orderId: string, newStatus: Order['status']) {
@@ -446,5 +528,24 @@ export async function fetchHistoricOrdersByDate(date: string): Promise<Order[]> 
     throw new Error('Failed to fetch historic orders');
   }
 
-  return data || [];
+  return enrichOrdersWithCustomerTier(supabase, data || []);
+}
+
+export async function fetchAdminOrderAlerts(limitCount: number = 15): Promise<Order[]> {
+  const actor = await requireCapability('orders.manage');
+  const supabase = getServerDatabase(actor);
+
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*, order_items(*)')
+    .neq('status', 'Cancelado')
+    .order('created_at', { ascending: false })
+    .limit(Math.min(Math.max(limitCount, 1), 30));
+
+  if (error) {
+    console.error('Error fetching admin order alerts:', error);
+    return [];
+  }
+
+  return enrichOrdersWithCustomerTier(supabase, data || []);
 }

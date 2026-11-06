@@ -28,11 +28,12 @@ export function useRBAC() {
   
   const isSuperAdmin = mappedRole === 'SUPER_ADMIN';
   const isCommercial = mappedRole === 'COMMERCIAL';
+  const isOperario = mappedRole === 'OPERARIO';
   const isClient = mappedRole === 'CLIENT';
-  const isAdminAreaUser = isSuperAdmin || mappedRole === 'ADMIN';
+  const isAdminAreaUser = isSuperAdmin || mappedRole === 'ADMIN' || mappedRole === 'OPERARIO' || mappedRole === 'COMMERCIAL';
 
   // Function to check if the current commercial user owns a resource
-  const canAccessResource = (_ownerId?: string, _assignedTo?: string) => { void _ownerId; void _assignedTo; return isSuperAdmin || mappedRole === 'ADMIN'; };
+  const canAccessResource = (_ownerId?: string, _assignedTo?: string) => { void _ownerId; void _assignedTo; return isAdminAreaUser; };
 
   // Create a compatible user object for the admin layout to consume
   const user = clerkUser ? {
@@ -48,6 +49,7 @@ export function useRBAC() {
     loading: !isLoaded,
     isSuperAdmin,
     isCommercial,
+    isOperario,
     isClient,
     isAdminAreaUser,
     canAccessResource
