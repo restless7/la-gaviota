@@ -71,16 +71,14 @@ export default clerkMiddleware(async (auth, request) => {
     }
   }
 
-  // /dashboard — redirect to the correct portal based on role
+  // /dashboard — redirect to the correct customer portal based on tier
   if (url.pathname === '/dashboard') {
     const actor = await getMiddlewareActor(auth);
     const tier = actor.tier;
-    const isAdmin = hasCapability(actor, 'catalog.manage');
 
     let targetPath = '/retail';
     if (tier === 'Micromercados') targetPath = '/micromercado';
     if (tier === 'Restaurantes') targetPath = '/restaurante';
-    if (isAdmin) targetPath = '/admin';
 
     return NextResponse.redirect(new URL(targetPath, request.url));
   }

@@ -2,10 +2,6 @@
 import { requireCapability } from '@/src/lib/server/authorization';
 import { getServerDatabase } from '@/src/lib/server/database';
 
-
-
-
-
 export interface DashboardMetrics {
   productCount: number;
   orderCount: number;
@@ -18,25 +14,37 @@ export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
   const actor = await requireCapability('reports.read');
   const supabase = getServerDatabase(actor);
 
+  const safeCount = async (table: string, filter?: { col: string; val: string }) => {
+    try {
+      let query = supabase.from(table).select('*', { count: 'exact', head: true });
+      if (filter) query = query.eq(filter.col, filter.val);
+      const res = await query;
+      return res.count || 0;
+    } catch (err) {
+      console.warn(`[fetchDashboardMetrics] Error getting count for ${table}:`, err);
+      return 0;
+    }
+  };
+
   const [
-    { count: productCount },
-    { count: orderCount },
-    { count: supplierCount },
-    { count: activeSuppliers },
-    { count: pendingApplications }
+    productCount,
+    orderCount,
+    supplierCount,
+    activeSuppliers,
+    pendingApplications
   ] = await Promise.all([
-    supabase.from('products').select('*', { count: 'exact', head: true }),
-    supabase.from('orders').select('*', { count: 'exact', head: true }),
-    supabase.from('suppliers').select('*', { count: 'exact', head: true }),
-    supabase.from('suppliers').select('*', { count: 'exact', head: true }).eq('status', 'Activo'),
-    supabase.from('business_applications').select('*', { count: 'exact', head: true }).eq('status', 'pending')
+    safeCount('products'),
+    safeCount('orders'),
+    safeCount('suppliers'),
+    safeCount('suppliers', { col: 'status', val: 'Activo' }),
+    safeCount('business_applications', { col: 'status', val: 'pending' })
   ]);
 
   return {
-    productCount: productCount || 0,
-    orderCount: orderCount || 0,
-    supplierCount: supplierCount || 0,
-    activeSuppliers: activeSuppliers || 0,
-    pendingApplications: pendingApplications || 0
+    productCount,
+    orderCount,
+    supplierCount,
+    activeSuppliers,
+    pendingApplications
   };
 }

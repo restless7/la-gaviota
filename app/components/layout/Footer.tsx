@@ -68,13 +68,13 @@ export default function Footer() {
           
           {/* Brand Info */}
           <div className="space-y-6">
-            <Link href="/" className="inline-block">
-               <div className="relative w-48 h-12 flex items-center brightness-0 invert opacity-90">
+            <Link href="/" className="inline-block group" aria-label="La Gaviota, ir al inicio">
+               <div className="relative w-44 h-14 bg-white/95 rounded-2xl px-3 py-1 flex items-center justify-center shadow-md group-hover:bg-white group-hover:shadow-lg transition-all">
                   <Image 
-                    src="/IMAGES/logo.jpeg" 
+                    src="/IMAGES/logo.png" 
                     alt="La Gaviota Logo" 
                     fill
-                    className="object-contain"
+                    className="object-contain p-1.5"
                   />
                </div>
             </Link>

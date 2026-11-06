@@ -448,7 +448,9 @@ export async function fetchProducts(): Promise<Product[]> {
  const { data: kits, error: kitsError } = await publicDb.from('kits')
    .select('id,name,fixed_price,banner_url,status')
    .eq('status', 'active');
- if (kitsError) throw new Error('KITS_UNAVAILABLE');
+ if (kitsError) {
+   console.warn('ENTITLED_KITS_FETCH_WARNING: Failed to retrieve active kits, falling back to empty kits array.', kitsError);
+ }
  const tierPrices = new Map<string, { price: number; previous: number | null }>();
  if (actor.userId && actor.tier !== 'Personas Naturales') {
   try {

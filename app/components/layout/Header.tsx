@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { SignedIn, UserButton } from '@clerk/nextjs';
-import { Menu, X, ShoppingBag, UserRound, Store, ChefHat, Home } from 'lucide-react';
+import { Menu, X, ShoppingBag, UserRound, Store, ChefHat, Home, Shield } from 'lucide-react';
 import { useCart } from '@/src/contexts/CartContext';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
+import { useRBAC } from '@/src/hooks/useRBAC';
 import { MiniCartDropdown } from '@/src/components/cart/MiniCartDropdown';
 import { CATEGORIES } from '@/src/constants/productConstants';
 import { categoryHref } from '@/src/lib/categories';
@@ -15,6 +16,7 @@ import { categoryHref } from '@/src/lib/categories';
 export default function Header() {
   const { itemCount, isCartOpen, setIsCartOpen } = useCart();
   const { role, businessName } = useUserRole();
+  const { isAdminAreaUser } = useRBAC();
   const pathname = usePathname();
   const menuRef = useRef<HTMLDialogElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,6 +66,16 @@ export default function Header() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
+            {isAdminAreaUser && (
+              <Link
+                href="/admin"
+                className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-extrabold text-purple-900 transition-colors hover:bg-purple-100"
+                title="Ir al Panel de Administración"
+              >
+                <Shield size={14} className="text-purple-700" aria-hidden="true" />
+                <span>Panel Admin</span>
+              </Link>
+            )}
             <Link
               href={role === 'Personas Naturales' ? '/aplicar-negocio' : '/dashboard'}
               data-testid="customer-tier-badge"
@@ -101,6 +113,11 @@ export default function Header() {
             <button type="button" aria-label="Cerrar menú" onClick={closeMenu} className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-50 text-slate-700"><X aria-hidden="true" size={22} /></button>
           </div>
           <nav aria-label="Menú de la tienda" className="flex flex-1 flex-col gap-1 overflow-y-auto p-4 text-sm font-semibold text-slate-700">
+            {isAdminAreaUser && (
+              <Link href="/admin" onClick={closeMenu} className="mb-2 rounded-xl bg-purple-50 px-4 py-3 font-bold text-purple-800 flex items-center gap-2">
+                <Shield size={16} className="text-purple-700" /> Panel Administrador
+              </Link>
+            )}
             <Link href="/dashboard" onClick={closeMenu} className="mb-3 rounded-xl bg-red-50 px-4 py-3 font-bold text-red-700">Mi Cuenta · Mis pedidos</Link>
             <Link href="/" onClick={closeMenu} className="rounded-lg px-3 py-3 hover:bg-slate-50">Tienda General</Link>
             <Link href="/nosotros" onClick={closeMenu} className="rounded-lg px-3 py-3 hover:bg-slate-50">Nuestra Granja</Link>

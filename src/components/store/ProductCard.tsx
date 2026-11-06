@@ -97,7 +97,7 @@ export function ProductCard({ product }: { product: Product }) {
               </span>
             </div>
           </div>
-          <div className="mt-1">
+          <div className="mt-1 flex flex-col gap-1.5">
             <QuantitySelector
               quantity={quantity}
               productName={product.name}
@@ -105,6 +105,15 @@ export function ProductCard({ product }: { product: Product }) {
               onIncrement={handleIncrement}
               onDecrement={handleDecrement}
             />
+            {quantity > 1 && (
+              <div 
+                className="flex items-center justify-between rounded-lg bg-emerald-50 px-2 py-1 text-[11px] font-bold text-emerald-800 border border-emerald-200/60"
+                aria-live="polite"
+              >
+                <span className="text-slate-500 font-medium">Total:</span>
+                <span>{quantity} × {formatPrice(product.price)} = <span className="font-extrabold text-emerald-950">{formatPrice(quantity * product.price)}</span></span>
+              </div>
+            )}
           </div>
         </div>
       </article>
@@ -149,7 +158,7 @@ export function ProductCard({ product }: { product: Product }) {
               <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-600">
                 {product.description || 'Consulta la presentación y disponibilidad al confirmar tu pedido.'}
               </p>
-              <div>
+              <div className="flex flex-col gap-2">
                 <QuantitySelector
                   quantity={quantity}
                   productName={product.name}
@@ -157,6 +166,12 @@ export function ProductCard({ product }: { product: Product }) {
                   onIncrement={handleIncrement}
                   onDecrement={handleDecrement}
                 />
+                {quantity > 1 && (
+                  <div className="flex items-center justify-between rounded-xl bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-800 border border-emerald-200">
+                    <span className="text-slate-600 font-medium">Subtotal ({quantity} {product.unit}s):</span>
+                    <span>{quantity} × {formatPrice(product.price)} = <span className="font-black text-emerald-950 text-sm">{formatPrice(quantity * product.price)}</span></span>
+                  </div>
+                )}
               </div>
               <p className="text-xs text-slate-500">Subtotal estimado. Precio y disponibilidad se confirman al finalizar.</p>
               <Link href={`/product/${encodeURIComponent(product.id)}`} className="py-2 text-sm font-bold text-red-700 underline">
