@@ -19,12 +19,16 @@ export function MiniCartDropdown({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     const outside = (event: MouseEvent) => {
+      if (window.matchMedia('(max-width: 767px)').matches) return;
       if (!dropdown.current?.getClientRects().length) return;
-      if (dropdown.current && !dropdown.current.contains(event.target as Node) && !(event.target as Element).closest('[data-testid="cart-toggle"]')) {
+      const targetEl = event.target as Element | null;
+      if (targetEl?.closest?.('dialog')) return;
+      if (dropdown.current && !dropdown.current.contains(event.target as Node) && !targetEl?.closest?.('[data-testid="cart-toggle"]')) {
         onClose();
       }
     };
     const escape = (event: KeyboardEvent) => {
+      if (window.matchMedia('(max-width: 767px)').matches) return;
       if (!dropdown.current?.getClientRects().length) return;
       if (event.key === 'Escape') {
         onClose();
@@ -43,7 +47,7 @@ export function MiniCartDropdown({ onClose }: { onClose: () => void }) {
     <section
       ref={dropdown}
       aria-label="Tu carrito"
-      className="fixed inset-x-3 top-20 z-50 rounded-2xl border border-gray-200 bg-white p-4 shadow-2xl sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-3 sm:w-[390px] sm:max-w-[calc(100vw-2rem)]"
+      className="hidden md:block fixed inset-x-3 top-20 z-50 rounded-2xl border border-gray-200 bg-white p-4 shadow-2xl sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-3 sm:w-[390px] sm:max-w-[calc(100vw-2rem)]"
     >
       <div className="mb-3 flex items-center justify-between border-b border-gray-100 pb-2.5">
         <div>

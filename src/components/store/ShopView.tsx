@@ -17,9 +17,9 @@ import {
   Sparkles, 
   ShoppingBag, 
   X,
-  PackageCheck
+  PackageCheck,
+  ArrowUpDown
 } from 'lucide-react';
-import { DeliveryScheduler } from '@/src/components/checkout/DeliveryScheduler';
 
 const CATEGORY_BANNERS: Record<string, string[]> = {
   'FRUTAS': ['/IMAGES/frutas-banner.jpeg', '/IMAGES/frutas-banner1.jpeg', '/IMAGES/frutas-banner2.jpeg', '/IMAGES/frutas-banner3.jpeg'],
@@ -313,11 +313,11 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
        </div>
 
        {/* Main Layout Area */}
-       <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 pt-8">
+       <div className="max-w-7xl mx-auto w-full px-3 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-6 lg:gap-8 pt-4 sm:pt-8">
          
-         {/* Filter Sidebar (Collapsible on Desktop) */}
+         {/* Filter Sidebar (Desktop Only — Mobile uses sticky categories & magnifying glass search) */}
          {desktopSidebarOpen && (
-           <aside className="w-full lg:w-72 flex-shrink-0 relative transition-all duration-300">
+           <aside className="hidden lg:block lg:w-72 flex-shrink-0 relative transition-all duration-300">
              <div className="sticky top-28 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 max-h-[calc(100vh-8rem)] overflow-y-auto">
                 <div className="flex items-center justify-between mb-6">
                    <div className="flex items-center gap-2">
@@ -429,99 +429,58 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
          {/* Dynamic Grid View */}
          <div className="min-w-0 flex-1 w-full flex flex-col">
 
-            {/* Phase 6 Delivery Integration Request */}
-            <div className="mb-6 w-full">
-              <DeliveryScheduler />
-            </div>
-
-            {/* Customer Tiers Identification & Partnership Banner */}
-            <div className="mb-6 w-full rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-               <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                  <div>
-                     <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">Nivel de Cliente Activo:</span>
-                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-xs font-extrabold ${
-                           role === 'Restaurantes'
-                              ? 'border-emerald-300 bg-emerald-50 text-emerald-800'
-                              : role === 'Micromercados'
-                                 ? 'border-amber-300 bg-amber-50 text-amber-800'
-                                 : 'border-slate-300 bg-slate-100 text-slate-800'
-                        }`}>
-                           {role === 'Restaurantes' ? '👨‍🍳 Mayorista · Restaurantes (Pedido mín. $300.000)' : role === 'Micromercados' ? '🏪 Mayorista · Micromercados (Pedido mín. $150.000)' : '🏠 Personas Naturales · Detal (Envío gratis desde $50.000)'}
-                        </span>
-                     </div>
-                     <p className="mt-1.5 text-xs text-slate-600">
-                        {role === 'Personas Naturales'
-                           ? 'Estás viendo precios al detal para hogar. ¿Tienes un restaurante o micromercado? Aplica a tarifas mayoristas verificadas.'
-                           : `Estás comprando con tarifa preferencial verificada para ${role}.`}
-                     </p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-2">
-                     {role === 'Personas Naturales' ? (
-                        <a href="/aplicar-negocio" className="whitespace-nowrap rounded-full bg-slate-900 px-5 py-2.5 text-xs font-black text-[#FFCC00] shadow-sm transition-colors hover:bg-slate-800">
-                           Solicitar Tarifa Mayorista
-                        </a>
-                     ) : (
-                        <a href="/dashboard" className="whitespace-nowrap rounded-full bg-emerald-700 px-5 py-2.5 text-xs font-black text-white shadow-sm transition-colors hover:bg-emerald-800">
-                           Ir a Mi Portal B2B
-                        </a>
-                     )}
-                  </div>
-               </div>
-            </div>
-
             {/* KITS NEGOCIOS & KIT CHÉVERE PROMINENT SHOWCASE SECTION */}
             <section 
               aria-label="Kits de Negocios y Combos Promocionales"
-              className="mb-8 w-full overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 p-6 sm:p-8 text-white shadow-xl relative border border-amber-500/30"
+              className="mb-6 w-full overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 p-4 sm:p-8 text-white shadow-xl relative border border-amber-500/30"
             >
               <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
               
               {/* Option Selector Pills (Up to 3 Active Options) */}
               {kitOptions.length > 1 && (
-                <div className="relative z-10 flex flex-wrap items-center gap-2 mb-5 pb-4 border-b border-white/10">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-300/80 mr-1 flex items-center gap-1">
+                <div className="relative z-10 flex overflow-x-auto no-scrollbar items-center gap-2 mb-3.5 sm:mb-5 pb-3 border-b border-white/10">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-300/80 mr-1 flex items-center gap-1 shrink-0">
                     <Sparkles size={13} className="text-amber-400" />
-                    <span>Opciones de Kit:</span>
+                    <span className="hidden sm:inline">Opciones de Kit:</span>
                   </span>
                   {kitOptions.map((opt, idx) => (
                     <button
                       key={opt.id}
                       type="button"
                       onClick={() => setSelectedKitIndex(idx)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-black transition-all flex items-center gap-1.5 ${
+                      className={`px-3 py-1 rounded-full text-[11px] sm:text-xs font-black transition-all flex items-center gap-1.5 shrink-0 ${
                         selectedKitIndex === idx 
-                          ? 'bg-amber-400 text-slate-950 shadow-md scale-105' 
+                          ? 'bg-amber-400 text-slate-950 shadow-md' 
                           : 'bg-white/10 text-slate-200 hover:bg-white/20 border border-white/10'
                       }`}
                     >
-                      <span>Opción {idx + 1}: {opt.name}</span>
+                      <span>{opt.name}</span>
                       <span className="opacity-80">({formatPrice(opt.price)})</span>
                     </button>
                   ))}
                 </div>
               )}
 
-              <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 sm:gap-8 justify-between">
-                <div className="flex-1 space-y-3 text-center md:text-left">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-amber-400/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-amber-300 border border-amber-400/40">
-                    <Sparkles size={14} className="text-amber-300" />
-                    <span>Vitrina Destacada · {kitOptions.length > 1 ? `Opción ${selectedKitIndex + 1} de ${kitOptions.length}` : 'Kits Negocios'}</span>
+              <div className="relative z-10 flex flex-row items-center gap-4 sm:gap-8 justify-between">
+                <div className="flex-1 min-w-0 space-y-2 sm:space-y-3 text-left">
+                  <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-400/20 px-2.5 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-300 border border-amber-400/40">
+                    <Sparkles size={12} className="text-amber-300" />
+                    <span>Kit Chévere de la Semana</span>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black font-serif tracking-tight text-white leading-tight">
+                  <h2 className="text-lg sm:text-3xl lg:text-4xl font-black font-serif tracking-tight text-white leading-tight">
                     {kitProduct.name} 🧺
                   </h2>
-                  <p className="max-w-xl text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    {kitProduct.description || 'La combinación perfecta de frutas, hortalizas y verduras frescas seleccionadas a mano. Precio especial cerrado para alta rentabilidad de tu negocio o abastecimiento de hogar.'}
+                  <p className="max-w-xl text-xs sm:text-sm text-slate-300 leading-snug line-clamp-2 sm:line-clamp-none">
+                    {kitProduct.description || 'La combinación perfecta de frutas, hortalizas y verduras frescas seleccionadas a mano en Santander.'}
                   </p>
                   
-                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4 pt-2">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl sm:text-3xl font-black text-amber-400">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 pt-1">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-xl sm:text-3xl font-black text-amber-400">
                         {formatPrice(kitProduct.price)}
                       </span>
                       {kitProduct.previousPrice && kitProduct.previousPrice > kitProduct.price && (
-                        <span className="text-xs text-slate-400 line-through">
+                        <span className="text-[11px] sm:text-xs text-slate-400 line-through">
                           {formatPrice(kitProduct.previousPrice)}
                         </span>
                       )}
@@ -532,15 +491,15 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                         addToCart(kitProduct, 1);
                         setIsCartOpen(true);
                       }}
-                      className="inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-2.5 text-xs sm:text-sm font-black text-white shadow-lg shadow-red-900/40 transition-all hover:bg-red-700 hover:scale-105 active:scale-95"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-black text-white shadow-lg shadow-red-900/40 transition-all hover:bg-red-700 active:scale-95"
                     >
-                      <ShoppingBag size={16} />
-                      <span>¡Pedir {kitProduct.name}!</span>
+                      <ShoppingBag size={14} />
+                      <span>¡Pedir Kit!</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => handleCategorySelect('KITS NEGOCIOS')}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white hover:bg-white/20 transition-colors"
+                      className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white hover:bg-white/20 transition-colors"
                     >
                       <PackageCheck size={14} />
                       <span>Ver Todos ({kitOptions.length})</span>
@@ -549,25 +508,25 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                   </div>
                 </div>
 
-                <div className="relative w-48 sm:w-60 md:w-64 aspect-square rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-400/30 shrink-0 group">
+                <div className="relative w-28 sm:w-52 md:w-60 aspect-square rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-400/30 shrink-0 group">
                   <CatalogImage
                     src={kitProduct.imageUrl || '/IMAGES/kit-chevere-semana.jpg'}
                     alt={kitProduct.name}
                     fill
-                    sizes="(max-width: 768px) 200px, 280px"
+                    sizes="(max-width: 768px) 120px, 260px"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <span className="absolute bottom-3 left-3 rounded-md bg-amber-400 px-2 py-0.5 text-[10px] font-black text-slate-900 uppercase">
+                  <span className="absolute bottom-2 left-2 rounded-md bg-amber-400 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black text-slate-900 uppercase">
                     ⭐ Opción {selectedKitIndex + 1}
                   </span>
                 </div>
               </div>
 
-              {/* Bottom Mini Cards for Quick Option Switch & 1-Click Add */}
+              {/* Bottom Mini Cards for Quick Option Switch & 1-Click Add (Desktop/Tablet only to keep Mobile compact) */}
               {kitOptions.length > 1 && (
-                <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 mt-6 border-t border-white/10">
+                <div className="hidden sm:grid relative z-10 grid-cols-3 gap-3 pt-5 mt-5 border-t border-white/10">
                   {kitOptions.map((opt, idx) => (
                     <div
                       key={opt.id}
@@ -604,14 +563,27 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
               )}
             </section>
 
-            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            {/* Catalog Header + Quick Sort right above Product Grid */}
+            <div className="mb-4 sm:mb-6 flex flex-wrap items-center justify-between gap-3">
                <div>
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 font-serif leading-tight break-words">
+                  <h1 className="text-xl sm:text-3xl lg:text-4xl font-black text-slate-800 font-serif leading-tight break-words">
                     {selectedSubcategory ? selectedSubcategory : selectedCategory ? selectedCategory : "Catálogo Fresco"}
                   </h1>
-                  <p className="text-sm text-gray-500 mt-2 font-medium">Precios estimados. Confirma disponibilidad y total al finalizar.</p>
+                  <p className="text-xs sm:text-sm text-gray-500 mt-0.5 font-medium">Directo del campo de Santander a tu mesa.</p>
                </div>
-               <div className="flex items-center gap-2 self-start sm:self-auto">
+               <div className="flex items-center gap-2">
+                 <button
+                   type="button"
+                   onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : prev === 'desc' ? null : 'asc')}
+                   className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border transition-colors ${
+                     sortOrder
+                       ? 'bg-red-50 border-red-200 text-red-700'
+                       : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                   }`}
+                 >
+                   <ArrowUpDown size={13} />
+                   <span>{sortOrder === 'asc' ? 'Precio: Menor a Mayor' : sortOrder === 'desc' ? 'Precio: Mayor a Menor' : 'Ordenar precio'}</span>
+                 </button>
                  {!desktopSidebarOpen && (
                    <button
                      type="button"
@@ -622,8 +594,8 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                      <span>Mostrar filtros</span>
                    </button>
                  )}
-                 <span className="text-sm font-bold bg-[#E30613]/10 text-[#E30613] px-4 py-2 rounded-full whitespace-nowrap">
-                   {filteredProducts.length} productos
+                 <span className="text-xs sm:text-sm font-bold bg-[#E30613]/10 text-[#E30613] px-3 sm:px-4 py-1.5 rounded-full whitespace-nowrap">
+                   {filteredProducts.length} prod.
                  </span>
                </div>
             </div>
@@ -648,6 +620,42 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                    ))}
                 </div>
             )}
+
+            {/* Customer Tiers Identification & Partnership Banner (Bottom of Catalog) */}
+            <div className="mt-10 w-full rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+               <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                  <div>
+                     <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">Nivel de Cliente Activo:</span>
+                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-xs font-extrabold ${
+                           role === 'Restaurantes'
+                              ? 'border-emerald-300 bg-emerald-50 text-emerald-800'
+                              : role === 'Micromercados'
+                                 ? 'border-amber-300 bg-amber-50 text-amber-800'
+                                 : 'border-slate-300 bg-slate-100 text-slate-800'
+                        }`}>
+                           {role === 'Restaurantes' ? '👨‍🍳 Mayorista · Restaurantes (Pedido mín. $300.000)' : role === 'Micromercados' ? '🏪 Mayorista · Micromercados (Pedido mín. $150.000)' : '🏠 Personas Naturales · Detal (Envío gratis desde $50.000)'}
+                        </span>
+                     </div>
+                     <p className="mt-1.5 text-xs text-slate-600">
+                        {role === 'Personas Naturales'
+                           ? 'Estás viendo precios al detal para hogar. ¿Tienes un restaurante o micromercado? Aplica a tarifas mayoristas verificadas.'
+                           : `Estás comprando con tarifa preferencial verificada para ${role}.`}
+                     </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                     {role === 'Personas Naturales' ? (
+                        <a href="/aplicar-negocio" className="whitespace-nowrap rounded-full bg-slate-900 px-5 py-2.5 text-xs font-black text-[#FFCC00] shadow-sm transition-colors hover:bg-slate-800">
+                           Solicitar Tarifa Mayorista
+                        </a>
+                     ) : (
+                        <a href="/dashboard" className="whitespace-nowrap rounded-full bg-emerald-700 px-5 py-2.5 text-xs font-black text-white shadow-sm transition-colors hover:bg-emerald-800">
+                           Ir a Mi Portal B2B
+                        </a>
+                     )}
+                  </div>
+               </div>
+            </div>
          </div>
        </div>
      </div>

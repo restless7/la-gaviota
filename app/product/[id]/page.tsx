@@ -17,15 +17,23 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
    }
 
    const desc = product.description?.trim() 
-     ? product.description.slice(0, 150) 
-     : `Compra ${product.name} de la mejor calidad. Descuentos para restaurantes en Bucaramanga y Floridablanca.`;
+     ? product.description.slice(0, 160) 
+     : `Compra ${product.name} fresco a domicilio en Bucaramanga, Floridablanca y Girón. Calidad del campo santandereano para hogares y restaurantes en Surtifruver La Gaviota.`;
 
    return {
       title: `${product.name} Fresco a Domicilio en Bucaramanga`,
       description: desc,
+      keywords: [
+         `${product.name} Bucaramanga`,
+         `comprar ${product.name.toLowerCase()} a domicilio`,
+         `${product.name.toLowerCase()} fresco Santander`,
+         `${product.category.toLowerCase()} Bucaramanga`,
+         'fruver a domicilio Bucaramanga',
+         'Surtifruver La Gaviota'
+      ],
       alternates: { canonical: `https://www.lagaviotafruver.com/product/${encodeURIComponent(product.id)}` },
       openGraph: {
-         title: `${product.name} | La Gaviota Fruver`,
+         title: `${product.name} Fresco a Domicilio | Surtifruver La Gaviota`,
          description: desc,
          images: product.imageUrl ? [product.imageUrl] : [],
       }

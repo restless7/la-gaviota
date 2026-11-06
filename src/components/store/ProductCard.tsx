@@ -81,6 +81,11 @@ export function ProductCard({ product }: { product: Product }) {
               {product.name}
             </button>
           </h3>
+          {product.description && (
+            <p className="line-clamp-2 text-[11px] leading-snug text-slate-500">
+              {product.description}
+            </p>
+          )}
           <div className="mt-auto">
             {hasSavings && (
               <p className="text-[11px] font-medium text-slate-400 line-through">

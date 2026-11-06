@@ -24,7 +24,20 @@ export function CartItems() {
         />
         <span className="text-sm font-black text-slate-900">{money(product.price * quantity)}</span>
       </div>
-      <button type="button" disabled={!cartReady} onClick={() => removeFromCart(product.id)} aria-label={`Eliminar ${product.name} del carrito`} className="min-h-11 text-xs font-semibold text-red-700 underline disabled:opacity-50">Eliminar</button>
+      <button
+        type="button"
+        disabled={!cartReady}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          removeFromCart(product.id);
+        }}
+        onPointerDown={(e) => e.stopPropagation()}
+        aria-label={`Eliminar ${product.name} del carrito`}
+        className="mt-1 inline-flex min-h-9 items-center px-2 -ml-2 text-xs font-bold text-red-700 underline hover:bg-red-50 rounded-lg touch-manipulation disabled:opacity-50"
+      >
+        Eliminar
+      </button>
     </div>
   </li>)}</ul>;
 }
