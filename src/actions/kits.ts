@@ -146,3 +146,59 @@ export async function fetchKits() {
 
   return data || [];
 }
+
+export async function updateKitStatus(kitId: string, status: 'active' | 'draft' | 'archived') {
+  const actor = await requireCapability('catalog.manage');
+  const supabase = getServerDatabase(actor);
+
+  const { error } = await supabase
+    .from('kits')
+    .update({ status, updated_at: new Date().toISOString() })
+    .eq('id', kitId);
+
+  if (error) {
+    console.error('Error updating kit status:', error);
+    throw new Error('Failed to update kit status');
+  }
+
+  await logAdminAction(
+    'KITS',
+    'Actualizó Estado de Kit',
+    `Kit ${kitId} cambiado a estado: ${status}`,
+    kitId
+  );
+
+  revalidatePath('/admin/catalog/kits');
+  revalidatePath('/shop');
+  revalidatePath('/');
+
+  return { success: true };
+}
+
+export async function deleteKit(kitId: string) {
+  const actor = await requireCapability('catalog.manage');
+  const supabase = getServerDatabase(actor);
+
+  const { error } = await supabase
+    .from('kits')
+    .delete()
+    .eq('id', kitId);
+
+  if (error) {
+    console.error('Error deleting kit:', error);
+    throw new Error('Failed to delete kit');
+  }
+
+  await logAdminAction(
+    'KITS',
+    'Eliminó Kit',
+    `Kit ${kitId} eliminado del catálogo`,
+    kitId
+  );
+
+  revalidatePath('/admin/catalog/kits');
+  revalidatePath('/shop');
+  revalidatePath('/');
+
+  return { success: true };
+}

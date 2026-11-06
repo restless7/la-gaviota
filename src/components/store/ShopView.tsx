@@ -87,32 +87,71 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
      return filtered;
    }, [initialProducts, search, selectedCategory, selectedSubcategory, sortOrder]);
 
-   // Find or construct the Featured Kit Chévere
-   const kitProduct = useMemo<Product>(() => {
-     const found = initialProducts.find(p => 
+   // Find up to 3 active Kit Chévere options from catalog (or fallback to 3 official presets)
+   const kitOptions = useMemo<Product[]>(() => {
+     const foundKits = initialProducts.filter(p => 
+       p.category === 'Kits Negocios' || 
        p.id === 'prd_0255' || 
        p.name.toLowerCase().includes('kit chévere') || 
-       p.name.toLowerCase().includes('kit chevere') ||
-       p.category === 'Kits Negocios'
+       p.name.toLowerCase().includes('kit chevere')
      );
-     if (found) return found;
 
-     const defaultPrice = role === 'Restaurantes' ? 45000 : role === 'Micromercados' ? 52000 : 59000;
-     return {
-       id: 'prd_0255',
-       name: 'Kit Chévere de la Semana',
-       category: 'Kits Negocios',
-       subcategory: null,
-       unit: 'Combo Semanal',
-       price: defaultPrice,
-       previousPrice: defaultPrice + 12000,
-       stockQuantity: 999,
-       isActive: true,
-       isInSeason: true,
-       imageUrl: '/IMAGES/kit-chevere-semana.jpg',
-       description: 'Surtido premium rotativo de frutas, verduras y hortalizas frescas de alta calidad seleccionado directamente en las granjas de Santander. Máximo rendimiento y ahorro.'
-     };
+     if (foundKits.length > 0) {
+       return foundKits.slice(0, 3);
+     }
+
+     const p1 = role === 'Restaurantes' ? 45000 : role === 'Micromercados' ? 52000 : 59000;
+     const p2 = role === 'Restaurantes' ? 62000 : role === 'Micromercados' ? 70000 : 79000;
+     const p3 = role === 'Restaurantes' ? 95000 : role === 'Micromercados' ? 105000 : 120000;
+
+     return [
+       {
+         id: 'prd_0255',
+         name: 'Kit Chévere de la Semana',
+         category: 'Kits Negocios',
+         subcategory: null,
+         unit: 'Combo Semanal',
+         price: p1,
+         previousPrice: p1 + 12000,
+         stockQuantity: 999,
+         isActive: true,
+         isInSeason: true,
+         imageUrl: '/IMAGES/kit-chevere-semana.jpg',
+         description: 'Surtido premium rotativo de frutas, verduras y hortalizas frescas de alta calidad seleccionado directamente en las granjas de Santander. Máximo rendimiento y ahorro.'
+       },
+       {
+         id: 'prd_kit_familiar',
+         name: 'Kit Chévere Familiar Extra',
+         category: 'Kits Negocios',
+         subcategory: null,
+         unit: 'Combo Familiar',
+         price: p2,
+         previousPrice: p2 + 15000,
+         stockQuantity: 999,
+         isActive: true,
+         isInSeason: true,
+         imageUrl: '/IMAGES/kit-chevere-semana2.jpeg',
+         description: 'Mayor variedad y porciones familiares completas para toda la semana. Incluye pulpas, tubérculos y frutas de estación seleccionadas.'
+       },
+       {
+         id: 'prd_kit_negocio',
+         name: 'Kit Chévere Negocios & Restaurantes',
+         category: 'Kits Negocios',
+         subcategory: null,
+         unit: 'Combo Mayorista',
+         price: p3,
+         previousPrice: p3 + 25000,
+         stockQuantity: 999,
+         isActive: true,
+         isInSeason: true,
+         imageUrl: '/IMAGES/kit-chevere-semana3.jpeg',
+         description: 'Volumen y estandarización para cocinas comerciales, restaurantes y micromercados. Precios preferenciales de bulto cerrado garantizados.'
+       }
+     ];
    }, [initialProducts, role]);
+
+   const [selectedKitIndex, setSelectedKitIndex] = useState(0);
+   const kitProduct = kitOptions[selectedKitIndex] || kitOptions[0];
 
    const handleCategorySelect = (cat: string | null) => {
       const query = new URLSearchParams(searchParams?.toString());
@@ -437,14 +476,40 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
               className="mb-8 w-full overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 p-6 sm:p-8 text-white shadow-xl relative border border-amber-500/30"
             >
               <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
+              
+              {/* Option Selector Pills (Up to 3 Active Options) */}
+              {kitOptions.length > 1 && (
+                <div className="relative z-10 flex flex-wrap items-center gap-2 mb-5 pb-4 border-b border-white/10">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-300/80 mr-1 flex items-center gap-1">
+                    <Sparkles size={13} className="text-amber-400" />
+                    <span>Opciones de Kit:</span>
+                  </span>
+                  {kitOptions.map((opt, idx) => (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => setSelectedKitIndex(idx)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-black transition-all flex items-center gap-1.5 ${
+                        selectedKitIndex === idx 
+                          ? 'bg-amber-400 text-slate-950 shadow-md scale-105' 
+                          : 'bg-white/10 text-slate-200 hover:bg-white/20 border border-white/10'
+                      }`}
+                    >
+                      <span>Opción {idx + 1}: {opt.name}</span>
+                      <span className="opacity-80">({formatPrice(opt.price)})</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 sm:gap-8 justify-between">
                 <div className="flex-1 space-y-3 text-center md:text-left">
                   <div className="inline-flex items-center gap-2 rounded-full bg-amber-400/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-amber-300 border border-amber-400/40">
                     <Sparkles size={14} className="text-amber-300" />
-                    <span>Sección Destacada · Kits Negocios</span>
+                    <span>Vitrina Destacada · {kitOptions.length > 1 ? `Opción ${selectedKitIndex + 1} de ${kitOptions.length}` : 'Kits Negocios'}</span>
                   </div>
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black font-serif tracking-tight text-white leading-tight">
-                    Kit Chévere de la Semana 🧺
+                    {kitProduct.name} 🧺
                   </h2>
                   <p className="max-w-xl text-xs sm:text-sm text-slate-300 leading-relaxed">
                     {kitProduct.description || 'La combinación perfecta de frutas, hortalizas y verduras frescas seleccionadas a mano. Precio especial cerrado para alta rentabilidad de tu negocio o abastecimiento de hogar.'}
@@ -470,7 +535,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                       className="inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-2.5 text-xs sm:text-sm font-black text-white shadow-lg shadow-red-900/40 transition-all hover:bg-red-700 hover:scale-105 active:scale-95"
                     >
                       <ShoppingBag size={16} />
-                      <span>¡Pedir Kit Chévere!</span>
+                      <span>¡Pedir {kitProduct.name}!</span>
                     </button>
                     <button
                       type="button"
@@ -478,7 +543,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                       className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white hover:bg-white/20 transition-colors"
                     >
                       <PackageCheck size={14} />
-                      <span>Ver Kits Negocios</span>
+                      <span>Ver Todos ({kitOptions.length})</span>
                       <ChevronRight size={14} />
                     </button>
                   </div>
@@ -495,10 +560,48 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <span className="absolute bottom-3 left-3 rounded-md bg-amber-400 px-2 py-0.5 text-[10px] font-black text-slate-900 uppercase">
-                    ⭐ Lo más vendido
+                    ⭐ Opción {selectedKitIndex + 1}
                   </span>
                 </div>
               </div>
+
+              {/* Bottom Mini Cards for Quick Option Switch & 1-Click Add */}
+              {kitOptions.length > 1 && (
+                <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 mt-6 border-t border-white/10">
+                  {kitOptions.map((opt, idx) => (
+                    <div
+                      key={opt.id}
+                      onClick={() => setSelectedKitIndex(idx)}
+                      className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                        selectedKitIndex === idx 
+                          ? 'bg-amber-400/20 border-amber-400 shadow-md ring-1 ring-amber-400' 
+                          : 'bg-white/5 border-white/10 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="relative h-12 w-12 rounded-xl overflow-hidden shrink-0 bg-slate-800">
+                        <CatalogImage src={opt.imageUrl || '/IMAGES/kit-chevere-semana.jpg'} alt={opt.name} fill className="object-cover" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[11px] font-bold text-white truncate">Opción {idx + 1}: {opt.name}</p>
+                        <p className="text-xs font-black text-amber-400">{formatPrice(opt.price)}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(opt, 1);
+                          setIsCartOpen(true);
+                        }}
+                        className="p-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold shrink-0 transition-all hover:scale-110 active:scale-95 shadow-sm"
+                        title={`Agregar ${opt.name} al carrito`}
+                        aria-label={`Pedir ${opt.name}`}
+                      >
+                        <ShoppingBag size={14} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
 
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
