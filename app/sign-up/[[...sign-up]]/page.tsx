@@ -10,6 +10,8 @@ export default function SignUpPage() {
           <p className="text-gray-500 font-medium">Crea tu cuenta y empieza a mercar chévere</p>
         </div>
         <SignUp
+          path="/sign-up"
+          routing="path"
           appearance={{
             elements: {
               rootBox: 'mx-auto',

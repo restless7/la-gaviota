@@ -10,6 +10,8 @@ export default function SignInPage() {
           <p className="text-gray-500 font-medium">Inicia sesión para acceder a tu portal</p>
         </div>
         <SignIn
+          path="/sign-in"
+          routing="path"
           appearance={{
             elements: {
               rootBox: 'mx-auto',
