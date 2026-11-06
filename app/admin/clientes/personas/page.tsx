@@ -1,6 +1,8 @@
 import React from 'react';
-import { Users, Search, Filter, Mail, ShoppingBag } from 'lucide-react';
+import { Users, Search, Filter, Mail, ShoppingBag, Phone } from 'lucide-react';
 import { fetchCustomers } from '@/src/actions/customers';
+import { buildWhatsAppChatUrl, buildCustomerGreetingMessage } from '@/src/lib/whatsapp';
+import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
 
 export default async function RetailCustomersPage() {
   const customers = await fetchCustomers('Personas Naturales');
@@ -57,6 +59,12 @@ export default async function RetailCustomersPage() {
                               <Mail className="h-4 w-4 text-gray-400" />
                               {client.email}
                            </div>
+                           {client.phone && (
+                              <div className="flex items-center gap-2 text-xs text-gray-500 mt-1 font-mono">
+                                 <Phone className="h-3.5 w-3.5 text-gray-400" />
+                                 {client.phone}
+                              </div>
+                           )}
                         </td>
                         <td className="p-4 text-center font-medium text-slate-700">{client.total_orders}</td>
                         <td className="p-4 text-right font-black text-[#4CAF50]">
@@ -66,9 +74,22 @@ export default async function RetailCustomersPage() {
                            {client.last_order_at ? new Date(client.last_order_at).toLocaleDateString() : 'Nunca'}
                         </td>
                         <td className="p-4 text-center">
-                           <button className="text-gray-400 hover:text-[#E30613] transition-colors p-2">
-                              <ShoppingBag className="h-5 w-5" />
-                           </button>
+                           <div className="flex items-center justify-center gap-2">
+                              {client.phone && (
+                                 <a
+                                   href={buildWhatsAppChatUrl(client.phone, buildCustomerGreetingMessage(client.full_name))}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   title="Chatear por WhatsApp con el cliente"
+                                   className="bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white p-2 rounded-lg transition-colors border border-[#25D366]/20 inline-flex items-center justify-center"
+                                 >
+                                    <WhatsAppIcon className="w-4 h-4 fill-current" />
+                                 </a>
+                              )}
+                              <button className="text-gray-400 hover:text-[#E30613] transition-colors p-2">
+                                 <ShoppingBag className="h-5 w-5" />
+                              </button>
+                           </div>
                         </td>
                      </tr>
                   ))}

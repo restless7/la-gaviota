@@ -1,6 +1,8 @@
 import React from 'react';
 import { ChefHat, Search, Settings, Truck } from 'lucide-react';
 import { fetchCustomers } from '@/src/actions/customers';
+import { buildWhatsAppChatUrl, buildCustomerGreetingMessage } from '@/src/lib/whatsapp';
+import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
 
 export default async function WholesaleCustomersPage() {
   const customers = await fetchCustomers('Restaurantes');
@@ -59,11 +61,27 @@ export default async function WholesaleCustomersPage() {
                         </td>
                         <td className="p-5 text-center font-medium text-gray-600">
                            {ent.payment_terms}
+                           {ent.phone && (
+                              <p className="text-xs text-gray-400 font-mono mt-0.5">{ent.phone}</p>
+                           )}
                         </td>
                         <td className="p-5 text-center">
-                           <button className="text-gray-400 hover:text-slate-800 transition-colors">
-                              <Settings className="h-6 w-6" />
-                           </button>
+                           <div className="flex items-center justify-center gap-2">
+                              {ent.phone && (
+                                 <a
+                                   href={buildWhatsAppChatUrl(ent.phone, buildCustomerGreetingMessage(ent.full_name, ent.business_name))}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   title="Chatear por WhatsApp con el restaurante"
+                                   className="bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white p-2 rounded-lg transition-colors border border-[#25D366]/20 inline-flex items-center justify-center"
+                                 >
+                                    <WhatsAppIcon className="w-4 h-4 fill-current" />
+                                 </a>
+                              )}
+                              <button className="text-gray-400 hover:text-slate-800 transition-colors p-2">
+                                 <Settings className="h-5 w-5" />
+                              </button>
+                           </div>
                         </td>
                      </tr>
                   ))}

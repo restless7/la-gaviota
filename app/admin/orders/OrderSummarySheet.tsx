@@ -3,6 +3,8 @@
 import React, { useState, useTransition } from 'react';
 import { Order, flagOrderConflict, updateOrderStatus, cancelAndRefundOrder, confirmCashPayment } from '@/src/actions/orders';
 import { X, MapPin, Calendar, Package, AlertTriangle, ArrowRight, Phone } from 'lucide-react';
+import { buildWhatsAppChatUrl, buildOrderConfirmationMessage } from '@/src/lib/whatsapp';
+import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
 
 const CONFLICT_REASONS = [
   'Pedido Duplicado / Fallo de Pago',
@@ -182,12 +184,26 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
                         <p className="font-bold text-slate-800 text-sm">{order.delivery_address}, {order.delivery_municipality}</p>
                      </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                     <div className="bg-slate-100 p-2 rounded-full text-slate-500"><Phone className="w-4 h-4" /></div>
-                     <div>
-                        <p className="text-xs text-gray-500 font-medium">Teléfono</p>
-                        <p className="font-bold text-slate-800 text-sm">{order.customer_phone}</p>
+                  <div className="flex items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                     <div className="flex items-center gap-3">
+                        <div className="bg-white p-2 rounded-full text-slate-500 shadow-sm"><Phone className="w-4 h-4" /></div>
+                        <div>
+                           <p className="text-xs text-gray-500 font-medium">Teléfono / WhatsApp</p>
+                           <p className="font-bold text-slate-800 text-sm">{order.customer_phone || 'Sin registrar'}</p>
+                        </div>
                      </div>
+                     {order.customer_phone && (
+                        <a
+                          href={buildWhatsAppChatUrl(order.customer_phone, buildOrderConfirmationMessage(order))}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Enviar confirmación de pedido por WhatsApp"
+                          className="bg-[#25D366] hover:bg-[#1EBE5D] text-white px-3 py-1.5 rounded-lg shadow-sm transition-transform active:scale-95 flex items-center gap-1.5 text-xs font-bold"
+                        >
+                          <WhatsAppIcon className="w-4 h-4 fill-white" />
+                          <span>Chat</span>
+                        </a>
+                     )}
                   </div>
                   <div className="flex items-center gap-3">
                      <div className="bg-slate-100 p-2 rounded-full text-slate-500"><Calendar className="w-4 h-4" /></div>
@@ -234,6 +250,17 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
                 </button>
               )}
               
+              {/* Direct WhatsApp Confirmation Button */}
+              <a
+                href={buildWhatsAppChatUrl(order.customer_phone, buildOrderConfirmationMessage(order))}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-black py-4 rounded-xl shadow-lg transition-all text-sm uppercase tracking-wide flex items-center justify-center gap-2.5 text-center"
+              >
+                <WhatsAppIcon className="w-5 h-5 fill-white" />
+                <span>Confirmar Pedido por WhatsApp</span>
+              </a>
+
               <a 
                  href={`/admin/orders/invoice/${order.id}`}
                  target="_blank"

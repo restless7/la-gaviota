@@ -6,6 +6,8 @@ import { CSS } from '@dnd-kit/utilities';
 import { Order } from '@/src/actions/orders';
 
 import { AlertTriangle } from 'lucide-react';
+import { buildWhatsAppChatUrl, buildOrderConfirmationMessage } from '@/src/lib/whatsapp';
+import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
 
 export function OrderCard({ order, onClick }: { order: Order; onClick: () => void }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -63,7 +65,21 @@ export function OrderCard({ order, onClick }: { order: Order; onClick: () => voi
         <span className="text-[10px] text-gray-500 font-medium">
           {order.scheduled_delivery_date || new Date(order.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
         </span>
-        <span className="font-black text-[#4CAF50]">${Number(order.total_amount).toLocaleString('es-CO')}</span>
+        <div className="flex items-center gap-2">
+          {order.customer_phone && (
+            <a
+              href={buildWhatsAppChatUrl(order.customer_phone, buildOrderConfirmationMessage(order))}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              title="Confirmar por WhatsApp"
+              className="bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white p-1 rounded-md transition-colors inline-flex items-center justify-center"
+            >
+              <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+            </a>
+          )}
+          <span className="font-black text-[#4CAF50]">${Number(order.total_amount).toLocaleString('es-CO')}</span>
+        </div>
       </div>
     </div>
   );

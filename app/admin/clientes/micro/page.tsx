@@ -1,6 +1,8 @@
 import React from 'react';
-import { Store, Search, Filter, FileText } from 'lucide-react';
+import { Store, Search, Filter, FileText, Phone } from 'lucide-react';
 import { fetchCustomers } from '@/src/actions/customers';
+import { buildWhatsAppChatUrl, buildCustomerGreetingMessage } from '@/src/lib/whatsapp';
+import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
 
 export default async function MicroCustomersPage() {
   const customers = await fetchCustomers('Micromercados');
@@ -71,11 +73,29 @@ export default async function MicroCustomersPage() {
                               {client.payment_terms}
                            </span>
                         </td>
-                        <td className="p-4 text-center text-sm font-medium text-gray-600">{client.assigned_rep || 'Sin asignar'}</td>
+                        <td className="p-4 text-center text-sm font-medium text-gray-600">
+                           {client.assigned_rep || 'Sin asignar'}
+                           {client.phone && (
+                              <p className="text-[11px] text-gray-400 font-mono mt-0.5">{client.phone}</p>
+                           )}
+                        </td>
                         <td className="p-4 text-center">
-                           <button className="text-gray-400 hover:text-slate-800 transition-colors p-2">
-                              <FileText className="h-5 w-5" />
-                           </button>
+                           <div className="flex items-center justify-center gap-2">
+                              {client.phone && (
+                                 <a
+                                   href={buildWhatsAppChatUrl(client.phone, buildCustomerGreetingMessage(client.full_name, client.business_name))}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   title="Chatear por WhatsApp con el micromercado"
+                                   className="bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white p-2 rounded-lg transition-colors border border-[#25D366]/20 inline-flex items-center justify-center"
+                                 >
+                                    <WhatsAppIcon className="w-4 h-4 fill-current" />
+                                 </a>
+                              )}
+                              <button className="text-gray-400 hover:text-slate-800 transition-colors p-2">
+                                 <FileText className="h-5 w-5" />
+                              </button>
+                           </div>
                         </td>
                      </tr>
                   )})}

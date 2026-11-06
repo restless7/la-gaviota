@@ -5,6 +5,8 @@ import { useParams } from 'next/navigation';
 import { fetchOrderById, Order } from '@/src/actions/orders';
 import { Printer, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { buildWhatsAppChatUrl } from '@/src/lib/whatsapp';
+import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
 
 export default function InvoicePage() {
   const params = useParams();
@@ -42,12 +44,27 @@ export default function InvoicePage() {
         <Link href="/admin/orders" className="flex items-center gap-2 text-gray-500 hover:text-gray-800 transition-colors font-bold">
           <ArrowLeft className="w-4 h-4" /> Volver a Pedidos
         </Link>
-        <button 
-          onClick={() => window.print()} 
-          className="bg-[#1C2059] hover:bg-[#2A2F7A] text-white px-6 py-2 rounded-lg font-bold flex items-center gap-2 shadow-sm transition-colors"
-        >
-          <Printer className="w-4 h-4" /> Imprimir Documento
-        </button>
+        <div className="flex items-center gap-3">
+          {order.customer_phone && (
+            <a
+              href={buildWhatsAppChatUrl(
+                order.customer_phone,
+                `¡Hola *${order.customer_name}*! 🥑 Te compartimos el soporte y remisión de tu pedido *#${order.id.slice(0, 8).toUpperCase()}* en *Surtifruver La Gaviota*:\n\n📄 Enlace digital: https://www.lagaviotafruver.com/admin/orders/invoice/${order.id}\n💵 Total: $${Number(order.total_amount).toLocaleString('es-CO')}\n\n¡Muchas gracias por elegirnos! 🥦✨`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#25D366] hover:bg-[#1EBE5D] text-white px-5 py-2 rounded-lg font-bold flex items-center gap-2 shadow-sm transition-colors text-sm"
+            >
+              <WhatsAppIcon className="w-4 h-4 fill-white" /> Enviar por WhatsApp
+            </a>
+          )}
+          <button 
+            onClick={() => window.print()} 
+            className="bg-[#1C2059] hover:bg-[#2A2F7A] text-white px-6 py-2 rounded-lg font-bold flex items-center gap-2 shadow-sm transition-colors text-sm"
+          >
+            <Printer className="w-4 h-4" /> Imprimir Documento
+          </button>
+        </div>
       </div>
 
       {/* Printable Invoice Container */}
