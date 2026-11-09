@@ -37,9 +37,9 @@ interface AdminLayoutProps {
 
 const navigation = [
   { name: 'Dashboard Principal', href: '/admin', icon: Home, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },
-  { 
-    name: 'Gestión de Clientes', 
-    icon: Users, 
+  {
+    name: 'Gestión de Clientes',
+    icon: Users,
     group: 'crm',
     roles: ['SUPER_ADMIN', 'ADMIN', 'COMMERCIAL'],
     subItems: [
@@ -112,11 +112,11 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Acceso Denegado</h2>
           <p className="text-gray-400 mb-8">
-            No tienes permisos suficientes para acceder al panel de administración. 
+            No tienes permisos suficientes para acceder al panel de administración.
             Si crees que esto es un error, contacta al soporte técnico.
           </p>
           <div className="space-y-4">
-            <Link 
+            <Link
               href="/"
               className="block w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors"
             >
@@ -179,15 +179,15 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
               const groupKey = (item as any).group || 'crm';
               const isGroupOpen = groupKey === 'crm' ? crmOpen : opsOpen;
               const toggleGroup = () => groupKey === 'crm' ? setCrmOpen(!crmOpen) : setOpsOpen(!opsOpen);
-              
+
               return (
                 <div key={item.name} className="mb-1">
                   <button
                     onClick={toggleGroup}
                     className={`
                       w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors font-medium
-                      ${isChildActive 
-                        ? 'bg-[#E30613]/10 text-[#E30613]' 
+                      ${isChildActive
+                        ? 'bg-[#E30613]/10 text-[#E30613]'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       }
                     `}
@@ -198,7 +198,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
                     </div>
                     <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isGroupOpen || isChildActive ? 'rotate-180' : ''}`} />
                   </button>
-                  
+
                   {(isGroupOpen || isChildActive) && (
                     <div className="mt-1 space-y-1">
                       {item.subItems.map(subItem => {
@@ -229,7 +229,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
             const isActive = item.href === '/admin'
               ? pathname === '/admin'
               : pathname.startsWith(item.href);
-              
+
             return (
               <Link
                 key={item.name}
@@ -282,7 +282,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
       </div>
 
       <div className="lg:pl-64 flex flex-col flex-1 min-h-screen print:pl-0">
-        <div className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm z-10 relative print:hidden">
+        <div className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm z-30 relative print:hidden">
           <div className="flex items-center justify-between">
             <button
               onClick={() => setSidebarOpen(true)}

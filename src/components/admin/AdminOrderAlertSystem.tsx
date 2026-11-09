@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import {
   Bell,
@@ -124,6 +125,7 @@ export function AdminOrderAlertSystem() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [acknowledgedIds, setAcknowledgedIds] = useState<Set<string>>(new Set());
   const [isTestMode, setIsTestMode] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const initializedRef = useRef(false);
   const ackSetRef = useRef<Set<string>>(new Set());
@@ -132,6 +134,7 @@ export function AdminOrderAlertSystem() {
 
   // Load saved preferences from localStorage
   useEffect(() => {
+    setMounted(true);
     try {
       const rawAck = localStorage.getItem(ACK_STORAGE_KEY);
       if (rawAck) {
@@ -546,10 +549,10 @@ export function AdminOrderAlertSystem() {
         </div>
       </div>
 
-      {/* Enterprise Real-Time Order Alert Popup Modal */}
-      {currentAlertOrder && currentTierStyle && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in print:hidden">
-          <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border-2 border-[#4CAF50] overflow-hidden transform transition-all">
+      {/* Enterprise Real-Time Order Alert Popup Modal (Rendered via Portal to top-level document body) */}
+      {mounted && currentAlertOrder && currentTierStyle && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in print:hidden">
+          <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border-2 border-[#4CAF50] overflow-hidden transform transition-all relative z-[10000]">
             {/* Top Alert Banner */}
             <div className="bg-gradient-to-r from-[#1C2059] via-[#1E293B] to-[#0F172A] text-white p-6 relative">
               <div className="flex items-start justify-between gap-4">
@@ -747,8 +750,10 @@ export function AdminOrderAlertSystem() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
 }
+

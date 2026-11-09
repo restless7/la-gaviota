@@ -232,11 +232,10 @@ export default function InvoicePage({ params }: { params: { id: string } }) {
                     Destino de Despacho & Pago
                   </h3>
                   <span
-                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                      order.status === 'Entregado'
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${order.status === 'Entregado'
                         ? 'bg-emerald-100 text-emerald-800'
                         : 'bg-amber-100 text-amber-800'
-                    }`}
+                      }`}
                   >
                     Estado: {order.status}
                   </span>

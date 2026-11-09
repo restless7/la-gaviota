@@ -51,13 +51,12 @@ export function OrderCard({ order, onClick }: { order: Order; onClick: () => voi
       {...attributes}
       {...listeners}
       onClick={onClick}
-      className={`bg-white p-4 rounded-xl shadow-sm border cursor-grab active:cursor-grabbing mb-3 group transition-colors ${
-        order.is_conflicted
+      className={`bg-white p-4 rounded-xl shadow-sm border cursor-grab active:cursor-grabbing mb-3 group transition-colors ${order.is_conflicted
           ? 'border-red-500 bg-red-50/10'
           : isPastDue
-          ? 'border-orange-400 bg-orange-50/20'
-          : 'border-gray-100 hover:border-[#E30613]'
-      } ${isDragging ? 'opacity-50 ring-2 ring-[#E30613] ring-offset-2' : ''}`}
+            ? 'border-orange-400 bg-orange-50/20'
+            : 'border-gray-100 hover:border-[#E30613]'
+        } ${isDragging ? 'opacity-50 ring-2 ring-[#E30613] ring-offset-2' : ''}`}
     >
       <div className="flex justify-between items-start gap-1.5 mb-2">
         <span className="text-[10px] font-black text-gray-400 font-mono">

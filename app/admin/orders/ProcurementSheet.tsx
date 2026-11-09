@@ -64,7 +64,7 @@ export function ProcurementSheet({ onClose }: { onClose: () => void }) {
             <button
               key={status}
               onClick={() => {
-                setStatuses(prev => 
+                setStatuses(prev =>
                   prev.includes(status) ? prev.filter(s => s !== status) : [...prev, status]
                 );
               }}
@@ -91,16 +91,16 @@ export function ProcurementSheet({ onClose }: { onClose: () => void }) {
             <div className="space-y-4">
               {/* Summary Cards */}
               <div className="grid grid-cols-2 gap-4 mb-6">
-                 <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
-                    <p className="text-[10px] uppercase font-black text-gray-400 tracking-wider mb-1">Total Referencias</p>
-                    <p className="text-2xl font-black text-slate-800">{items.length}</p>
-                 </div>
-                 <div className="bg-red-50 border border-red-100 rounded-2xl p-4 shadow-sm">
-                    <p className="text-[10px] uppercase font-black text-red-500 tracking-wider mb-1 flex items-center gap-1">
-                      <AlertTriangle className="h-3 w-3" /> Faltantes
-                    </p>
-                    <p className="text-2xl font-black text-red-600">{itemsInDeficit}</p>
-                 </div>
+                <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                  <p className="text-[10px] uppercase font-black text-gray-400 tracking-wider mb-1">Total Referencias</p>
+                  <p className="text-2xl font-black text-slate-800">{items.length}</p>
+                </div>
+                <div className="bg-red-50 border border-red-100 rounded-2xl p-4 shadow-sm">
+                  <p className="text-[10px] uppercase font-black text-red-500 tracking-wider mb-1 flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" /> Faltantes
+                  </p>
+                  <p className="text-2xl font-black text-red-600">{itemsInDeficit}</p>
+                </div>
               </div>
 
               {/* Items List */}

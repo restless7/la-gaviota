@@ -143,9 +143,9 @@ export async function getLiveOperationalOrders(): Promise<Order[]> {
   }
 
   const closedDates = ledgersData?.map(l => l.operational_date) || [];
-  
+
   // Filter out orders that are 'Entregado' AND their date is already closed
-  const liveOrders = ordersData?.filter(o => 
+  const liveOrders = ordersData?.filter(o =>
     !(o.status === 'Entregado' && closedDates.includes(o.scheduled_delivery_date))
   ) || [];
 
@@ -256,8 +256,8 @@ export async function flagOrderConflict(orderId: string, reason: string) {
 
   const { error } = await supabase
     .from('orders')
-    .update({ 
-      is_conflicted: true, 
+    .update({
+      is_conflicted: true,
       conflict_reason: reason,
       updated_at: new Date().toISOString()
     })
@@ -309,7 +309,7 @@ export async function cancelAndRefundOrder(orderId: string, reason: string) {
 
   const { error } = await supabase
     .from('orders')
-    .update({ 
+    .update({
       status: 'Cancelado',
       is_conflicted: true,
       conflict_reason: reason,
@@ -369,7 +369,7 @@ export async function confirmCashPayment(orderId: string) {
 
   const { error } = await supabase
     .from('orders')
-    .update({ 
+    .update({
       notes: currentNotes + '\n[PAGO CONFIRMADO]',
       updated_at: new Date().toISOString()
     })
@@ -405,7 +405,7 @@ export async function closeOperationalDay(date: string, userId: string) {
   if (fetchError) throw new Error('Failed to fetch active orders for closure');
 
   const closedDates = ledgersData?.map(l => l.operational_date) || [];
-  const activeOrders = activeOrdersRaw?.filter(o => 
+  const activeOrders = activeOrdersRaw?.filter(o =>
     !(o.status === 'Entregado' && closedDates.includes(o.scheduled_delivery_date))
   ) || [];
 
@@ -427,8 +427,8 @@ export async function closeOperationalDay(date: string, userId: string) {
 
     const { error: postponeError } = await supabase
       .from('orders')
-      .update({ 
-        scheduled_delivery_date: nextDayStr, 
+      .update({
+        scheduled_delivery_date: nextDayStr,
         is_conflicted: false, // Reset conflict for the new day
         conflict_reason: null,
         status: 'Pendiente' // Send back to pending
@@ -447,7 +447,7 @@ export async function closeOperationalDay(date: string, userId: string) {
   // 5. Insert or Update operational ledgers grouped by scheduled_delivery_date
   if (deliveredOrders.length > 0) {
     const ledgersByDate: Record<string, { orders: number, revenue: number }> = {};
-    
+
     deliveredOrders.forEach(o => {
       // Fallback to the current closing date if somehow missing
       const orderDate = o.scheduled_delivery_date || date;
@@ -475,7 +475,7 @@ export async function closeOperationalDay(date: string, userId: string) {
             total_revenue_collected: existingLedger.total_revenue_collected + metrics.revenue
           })
           .eq('id', existingLedger.id);
-          
+
         if (updateError) throw new Error(`Failed to update ledger for ${opDate}`);
       } else {
         // Create new closed day
@@ -487,7 +487,7 @@ export async function closeOperationalDay(date: string, userId: string) {
             total_revenue_collected: metrics.revenue,
             closed_by_user: actor.userId
           });
-          
+
         if (insertError) throw new Error(`Failed to insert ledger for ${opDate}`);
       }
     }

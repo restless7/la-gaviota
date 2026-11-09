@@ -6,12 +6,12 @@ export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'OPERARIO' | 'COMMERCIAL' | 'CL
 
 export function useRBAC() {
   const { user: clerkUser, isLoaded } = useUser();
-  
+
   // Extract role and tier from Clerk publicMetadata
   const metadata = clerkUser?.publicMetadata as Record<string, string> | undefined;
   const rawRole = typeof metadata?.role === 'string' ? metadata.role.toUpperCase() : metadata?.role;
   const tier = metadata?.tier;
-  
+
   // Reconcile logic: Check explicitly for the 'role' field first, then fallback to implicit admin from 'tier'
   let mappedRole: UserRole = 'USER';
   if (rawRole === 'SUPER_ADMIN') {
@@ -25,7 +25,7 @@ export function useRBAC() {
   } else if (rawRole === 'CLIENT' || tier === 'Restaurantes' || tier === 'Micromercados') {
     mappedRole = 'CLIENT';
   }
-  
+
   const isSuperAdmin = mappedRole === 'SUPER_ADMIN';
   const isCommercial = mappedRole === 'COMMERCIAL';
   const isOperario = mappedRole === 'OPERARIO';

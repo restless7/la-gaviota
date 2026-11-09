@@ -23,35 +23,35 @@ const TIER_FILTERS: {
   Icon: React.ComponentType<{ className?: string }>;
   activeClass: string;
 }[] = [
-  {
-    id: 'ALL',
-    label: 'Todos los Clientes',
-    shortLabel: 'Todos',
-    Icon: Users,
-    activeClass: 'bg-[#1C2059] text-white border-[#1C2059]',
-  },
-  {
-    id: 'Personas Naturales',
-    label: '🏠 Personas Naturales',
-    shortLabel: 'Personas Naturales',
-    Icon: User,
-    activeClass: 'bg-blue-600 text-white border-blue-600',
-  },
-  {
-    id: 'Micromercados',
-    label: '🏪 Micromercados',
-    shortLabel: 'Micromercados',
-    Icon: Store,
-    activeClass: 'bg-emerald-600 text-white border-emerald-600',
-  },
-  {
-    id: 'Restaurantes',
-    label: '👨‍🍳 Restaurantes',
-    shortLabel: 'Restaurantes',
-    Icon: UtensilsCrossed,
-    activeClass: 'bg-amber-600 text-white border-amber-600',
-  },
-];
+    {
+      id: 'ALL',
+      label: 'Todos los Clientes',
+      shortLabel: 'Todos',
+      Icon: Users,
+      activeClass: 'bg-[#1C2059] text-white border-[#1C2059]',
+    },
+    {
+      id: 'Personas Naturales',
+      label: '🏠 Personas Naturales',
+      shortLabel: 'Personas Naturales',
+      Icon: User,
+      activeClass: 'bg-blue-600 text-white border-blue-600',
+    },
+    {
+      id: 'Micromercados',
+      label: '🏪 Micromercados',
+      shortLabel: 'Micromercados',
+      Icon: Store,
+      activeClass: 'bg-emerald-600 text-white border-emerald-600',
+    },
+    {
+      id: 'Restaurantes',
+      label: '👨‍🍳 Restaurantes',
+      shortLabel: 'Restaurantes',
+      Icon: UtensilsCrossed,
+      activeClass: 'bg-amber-600 text-white border-amber-600',
+    },
+  ];
 
 export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOrders: Order[], historicLedgers: any[] }) {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
@@ -162,7 +162,7 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
     if (newStatus && newStatus !== activeOrder.status) {
       const oldStatus = activeOrder.status;
       setOrders(prev => prev.map(o => o.id === activeId ? { ...o, status: newStatus as Order['status'] } : o));
-      
+
       try {
         await updateOrderStatus(activeId, newStatus);
       } catch (error) {
@@ -171,9 +171,9 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
         alert('Error al actualizar el estado del pedido.');
       }
     } else if (activeOrder.status === (orders.find(o => o.id === overId)?.status)) {
-        const oldIndex = orders.findIndex((item) => item.id === activeId);
-        const newIndex = orders.findIndex((item) => item.id === overId);
-        setOrders(prev => arrayMove(prev, oldIndex, newIndex));
+      const oldIndex = orders.findIndex((item) => item.id === activeId);
+      const newIndex = orders.findIndex((item) => item.id === overId);
+      setOrders(prev => arrayMove(prev, oldIndex, newIndex));
     }
   };
 
@@ -185,7 +185,7 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
     if (!confirm('¿Estás seguro de cerrar el libro diario? Las órdenes entregadas se archivarán y las que tienen conflictos se moverán a mañana.')) return;
 
     const todayStr = new Date().toISOString().split('T')[0];
-    
+
     startClosingDay(async () => {
       try {
         await closeOperationalDay(todayStr, user?.id || 'admin');
@@ -212,34 +212,33 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
     <div className="flex flex-col min-h-[calc(100vh-160px)]">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-         <div>
-            <h1 className="text-3xl font-black text-slate-800 font-serif">Gestión de Pedidos</h1>
-            <p className="text-gray-500 text-sm">Centro de control logístico empresarial con segmentación por Tipo de Cliente.</p>
-         </div>
-         <div className="flex flex-wrap items-center gap-2.5">
-            <button 
-              onClick={() => setIsProcurementSheetOpen(true)}
-              className="flex bg-[#1C2059] hover:bg-[#2A2F7A] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-colors items-center gap-2 text-xs uppercase tracking-wider"
-            >
-              <Archive className="w-4 h-4" /> Consolidado Rápido
-            </button>
-            <Link
-              href="/admin/reports/consolidation"
-              className="flex bg-white hover:bg-slate-50 text-[#1C2059] border border-[#1C2059]/20 font-bold py-2.5 px-4 rounded-xl shadow-sm transition-colors items-center gap-2 text-xs uppercase tracking-wider"
-            >
-              <Printer className="w-4 h-4" /> Consolidado PDF / Excel
-            </Link>
-            <button 
-              onClick={handleDayClosure}
-              disabled={!canCloseDay || isClosingDay}
-              title={!canCloseDay ? 'No puedes cerrar el día con órdenes activas en ruta o preparación' : 'Cerrar libro diario'}
-              className={`flex font-bold py-2.5 px-4 rounded-xl shadow-md transition-colors items-center gap-2 text-xs uppercase tracking-wider ${
-                canCloseDay ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+        <div>
+          <h1 className="text-3xl font-black text-slate-800 font-serif">Gestión de Pedidos</h1>
+          <p className="text-gray-500 text-sm">Centro de control logístico empresarial con segmentación por Tipo de Cliente.</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <button
+            onClick={() => setIsProcurementSheetOpen(true)}
+            className="flex bg-[#1C2059] hover:bg-[#2A2F7A] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-colors items-center gap-2 text-xs uppercase tracking-wider"
+          >
+            <Archive className="w-4 h-4" /> Consolidado Rápido
+          </button>
+          <Link
+            href="/admin/reports/consolidation"
+            className="flex bg-white hover:bg-slate-50 text-[#1C2059] border border-[#1C2059]/20 font-bold py-2.5 px-4 rounded-xl shadow-sm transition-colors items-center gap-2 text-xs uppercase tracking-wider"
+          >
+            <Printer className="w-4 h-4" /> Consolidado PDF / Excel
+          </Link>
+          <button
+            onClick={handleDayClosure}
+            disabled={!canCloseDay || isClosingDay}
+            title={!canCloseDay ? 'No puedes cerrar el día con órdenes activas en ruta o preparación' : 'Cerrar libro diario'}
+            className={`flex font-bold py-2.5 px-4 rounded-xl shadow-md transition-colors items-center gap-2 text-xs uppercase tracking-wider ${canCloseDay ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
-            >
-              <CalendarDays className="w-4 h-4" /> {isClosingDay ? 'Cerrando...' : 'Cerrar Operación del Día'}
-            </button>
-         </div>
+          >
+            <CalendarDays className="w-4 h-4" /> {isClosingDay ? 'Cerrando...' : 'Cerrar Operación del Día'}
+          </button>
+        </div>
       </div>
 
       {/* Client Type (Tier) Filter Pills */}
@@ -253,11 +252,10 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
               key={tf.id}
               type="button"
               onClick={() => setSelectedTierFilter(tf.id)}
-              className={`p-3.5 rounded-2xl border text-left transition-all flex items-center justify-between ${
-                isSelected
+              className={`p-3.5 rounded-2xl border text-left transition-all flex items-center justify-between ${isSelected
                   ? `${tf.activeClass} shadow-md`
                   : 'bg-white border-gray-200 text-slate-700 hover:border-gray-300 hover:bg-slate-50'
-              }`}
+                }`}
             >
               <div className="min-w-0">
                 <p className={`text-xs font-black truncate ${isSelected ? 'text-white' : 'text-slate-800'}`}>
@@ -268,9 +266,8 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
                 </p>
               </div>
               <span
-                className={`px-2.5 py-1 rounded-full text-xs font-black shrink-0 ${
-                  isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700'
-                }`}
+                className={`px-2.5 py-1 rounded-full text-xs font-black shrink-0 ${isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700'
+                  }`}
               >
                 {count}
               </span>
@@ -305,9 +302,9 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
               Limpiar filtro ({selectedTierFilter})
             </button>
           )}
-          <input 
-            type="text" 
-            placeholder="Buscar cliente, negocio, ID o municipio..." 
+          <input
+            type="text"
+            placeholder="Buscar cliente, negocio, ID o municipio..."
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-xl text-sm outline-none focus:border-[#1C2059] focus:ring-1 focus:ring-[#1C2059] w-full sm:w-80 bg-white"
@@ -323,9 +320,9 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
               return (
                 <SortableContext key={status} id={status} items={columnOrders.map(o => o.id)}>
                   <KanbanColumn
-                     status={status}
-                     orders={columnOrders}
-                     onSelectOrder={(order: any) => setSelectedOrder(order)}
+                    status={status}
+                    orders={columnOrders}
+                    onSelectOrder={(order: any) => setSelectedOrder(order)}
                   />
                 </SortableContext>
               );
@@ -350,7 +347,7 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
                 </tr>
               ) : historicLedgers.map((ledger) => (
                 <React.Fragment key={ledger.id}>
-                  <tr 
+                  <tr
                     onClick={async () => {
                       if (selectedLedgerDate === ledger.operational_date) {
                         setSelectedLedgerDate(null);
@@ -372,33 +369,33 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
                     <tr>
                       <td colSpan={4} className="p-4 bg-slate-50/50">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                           {filteredHistoricOrders.length === 0 ? (
-                             <p className="text-gray-400 text-sm">No se encontraron detalles para este cierre con el filtro actual.</p>
-                           ) : filteredHistoricOrders.map(ho => {
-                             const tierInfo = getOrderTierPresentation(ho);
-                             return (
-                               <div key={ho.id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:border-[#1C2059] cursor-pointer transition-colors" onClick={() => setSelectedOrder(ho)}>
-                                  <div className="flex justify-between items-start mb-2 gap-1">
-                                    <span className="text-[10px] font-black text-gray-400">#{ho.id.slice(0, 8).toUpperCase()}</span>
-                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${tierInfo.badgeClass}`}>
-                                      {tierInfo.label}
-                                    </span>
-                                  </div>
-                                  <h4 className="font-bold text-slate-800 text-sm mb-0.5 truncate">
-                                    {ho.customer_business_name || ho.customer_name}
-                                  </h4>
-                                  {ho.customer_business_name && (
-                                    <p className="text-[11px] text-gray-500 truncate">{ho.customer_name}</p>
-                                  )}
-                                  <div className="flex justify-between items-end mt-4">
-                                    <span className="text-[10px] text-gray-500 font-medium">
-                                      {new Date(ho.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                                    </span>
-                                    <span className="font-black text-[#4CAF50]">${Number(ho.total_amount).toLocaleString('es-CO')}</span>
-                                  </div>
-                               </div>
-                             );
-                           })}
+                          {filteredHistoricOrders.length === 0 ? (
+                            <p className="text-gray-400 text-sm">No se encontraron detalles para este cierre con el filtro actual.</p>
+                          ) : filteredHistoricOrders.map(ho => {
+                            const tierInfo = getOrderTierPresentation(ho);
+                            return (
+                              <div key={ho.id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:border-[#1C2059] cursor-pointer transition-colors" onClick={() => setSelectedOrder(ho)}>
+                                <div className="flex justify-between items-start mb-2 gap-1">
+                                  <span className="text-[10px] font-black text-gray-400">#{ho.id.slice(0, 8).toUpperCase()}</span>
+                                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${tierInfo.badgeClass}`}>
+                                    {tierInfo.label}
+                                  </span>
+                                </div>
+                                <h4 className="font-bold text-slate-800 text-sm mb-0.5 truncate">
+                                  {ho.customer_business_name || ho.customer_name}
+                                </h4>
+                                {ho.customer_business_name && (
+                                  <p className="text-[11px] text-gray-500 truncate">{ho.customer_name}</p>
+                                )}
+                                <div className="flex justify-between items-end mt-4">
+                                  <span className="text-[10px] text-gray-500 font-medium">
+                                    {new Date(ho.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                  </span>
+                                  <span className="font-black text-[#4CAF50]">${Number(ho.total_amount).toLocaleString('es-CO')}</span>
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </td>
                     </tr>
@@ -411,10 +408,10 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
       )}
 
       {selectedOrder && (
-         <OrderSummarySheet
-            order={selectedOrder}
-            onClose={() => setSelectedOrder(null)}
-         />
+        <OrderSummarySheet
+          order={selectedOrder}
+          onClose={() => setSelectedOrder(null)}
+        />
       )}
 
       {isProcurementSheetOpen && (
