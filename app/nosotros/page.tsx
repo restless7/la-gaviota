@@ -65,13 +65,14 @@ export default function NosotrosPage() {
 
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
           <div className="w-full lg:w-1/2 relative">
-             <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white transform lg:-rotate-2 hover:rotate-0 transition-transform duration-500">
+             <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white transform lg:-rotate-2 hover:rotate-0 transition-transform duration-500 aspect-[4/3]">
                <Image 
                  src="/IMAGES/about-granja-mesa3.jpeg" 
                  alt="De la Granja a la Mesa" 
-                 width={800} 
-                 height={600} 
+                 fill
+                 sizes="(max-width: 1024px) 100vw, 50vw"
                  className="object-cover"
+                 priority
                />
              </div>
              {/* Decorative leaf shape */}
