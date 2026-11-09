@@ -5,6 +5,7 @@ import { requireOwnedSubject, getActor } from './authorization';
 import { getServerDatabase, getGuestCheckoutDatabase, readPublicInventoryFlag } from './database';
 import { assertOrderWrite } from '@/src/lib/checkoutValidation';
 import { computeCheckoutFingerprint } from '@/src/lib/idempotency';
+import { calculateDeliverySchedule } from '@/src/lib/deliveryCutoff';
 
 export interface PaymentIntentData {
   intent_id: string;
@@ -46,6 +47,16 @@ export async function createOrder(
   } else {
     const actor = await requireOwnedSubject(orderData.clerk_user_id);
     supabase = getServerDatabase(actor);
+  }
+
+  // Canonical delivery date calculation: enforce 10:00 PM cutoff rule
+  if (!orderData.scheduled_delivery_date) {
+    const schedule = calculateDeliverySchedule();
+    orderData.scheduled_delivery_date = schedule.scheduledDateIso;
+    if (schedule.isAfterCutoff) {
+      const cutoffPrefix = '[ORDEN POSTERIOR A 10:00 PM - ENTREGA PASADO MAÑANA]';
+      orderData.notes = orderData.notes ? `${cutoffPrefix} ${orderData.notes}`.slice(0, 2000) : cutoffPrefix;
+    }
   }
 
   // Compute canonical checkout fingerprint if idempotency key is present
@@ -153,6 +164,7 @@ export async function createOrder(
       total_amount: orderData.total_amount,
       status: orderData.status || 'Pendiente',
       payment_method: orderData.payment_method || 'cash',
+      scheduled_delivery_date: orderData.scheduled_delivery_date || null,
       notes: orderData.notes || null,
     };
     const retryResult = await supabase

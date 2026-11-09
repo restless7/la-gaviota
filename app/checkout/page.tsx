@@ -8,6 +8,7 @@ import { DeliveryScheduler, DELIVERY_TIME_RANGES } from '@/src/components/checko
 import { CheckoutUpsell } from '@/src/components/checkout/CheckoutUpsell';
 import { submitCashCheckoutAction } from '@/src/actions/checkoutAction';
 import { initializeWompiTransaction } from '@/src/actions/wompi';
+import { calculateDeliverySchedule } from '@/src/lib/deliveryCutoff';
 import Script from 'next/script';
 
 const wompiConfigured = Boolean(process.env.NEXT_PUBLIC_WOMPI_PUB_KEY);
@@ -42,6 +43,8 @@ export default function CheckoutPage() {
       city?: string;
       address?: string;
       timeRange?: string;
+      scheduledDateText?: string;
+      isAfterCutoff?: boolean;
    } | null>(null);
 
    useEffect(() => {
@@ -120,8 +123,14 @@ export default function CheckoutPage() {
             widget.open((result) => {
                const status = result.transaction?.status;
                if (status === 'APPROVED' || status === 'PENDING') {
-                  // The widget response is not authoritative payment confirmation.
-                  setConfirmation({ orderId: wompiData.orderId, total: wompiData.totalAmount, paymentPending: true });
+                  const schedule = calculateDeliverySchedule();
+                  setConfirmation({
+                     orderId: wompiData.orderId,
+                     total: wompiData.totalAmount,
+                     paymentPending: true,
+                     scheduledDateText: schedule.formattedDate,
+                     isAfterCutoff: schedule.isAfterCutoff,
+                  });
                   if (status === 'APPROVED') clearCart();
                } else {
                   setSubmitError('El pago no se completó. Tu carrito se conserva; revisa el estado del pedido en Mi Portal antes de reintentar.');
@@ -140,6 +149,7 @@ export default function CheckoutPage() {
             const customerCity = String(formData.get('city') || selectedCity || '');
             const customerAddress = String(formData.get('address') || '');
             const customerTimeRange = String(formData.get('deliveryTimeRange') || selectedTimeRange || '');
+            const schedule = calculateDeliverySchedule();
             setConfirmation({
                orderId: result.orderId,
                total: result.totalAmount,
@@ -148,6 +158,8 @@ export default function CheckoutPage() {
                city: customerCity,
                address: customerAddress,
                timeRange: customerTimeRange,
+               scheduledDateText: schedule.formattedDate,
+               isAfterCutoff: schedule.isAfterCutoff,
             });
             clearCart();
             setIsSubmitting(false);
@@ -162,8 +174,10 @@ export default function CheckoutPage() {
    };
 
    if (confirmation) {
+      const deliveryDatePart = confirmation.scheduledDateText ? ` · Entrega programada: ${confirmation.scheduledDateText}` : '';
+      const cutoffPart = confirmation.isAfterCutoff ? ' (Pedido realizado después de las 10:00 PM)' : '';
       const whatsappMessage = encodeURIComponent(
-         `¡Hola Surtifruver La Gaviota! 🧺 Acabo de registrar mi pedido #${confirmation.orderId} (${role}) por valor de ${formatPrice(confirmation.total)}${confirmation.city ? ` para entrega en ${confirmation.city}` : ''}${confirmation.address ? ` (${confirmation.address})` : ''}${confirmation.timeRange ? ` · Franja: ${confirmation.timeRange}` : ''}. ¡Gracias!`
+         `¡Hola Surtifruver La Gaviota! 🧺 Acabo de registrar mi pedido #${confirmation.orderId} (${role}) por valor de ${formatPrice(confirmation.total)}${confirmation.city ? ` para entrega en ${confirmation.city}` : ''}${confirmation.address ? ` (${confirmation.address})` : ''}${deliveryDatePart}${cutoffPart}${confirmation.timeRange ? ` · Franja: ${confirmation.timeRange}` : ''}. ¡Gracias!`
       );
       const whatsappUrl = `https://wa.me/573112694676?text=${whatsappMessage}`;
 
@@ -184,6 +198,16 @@ export default function CheckoutPage() {
                   <p className="mt-2 text-xs font-semibold text-slate-600">
                      Destino: {confirmation.address ? `${confirmation.address}, ` : ''}{confirmation.city}, Santander
                   </p>
+               )}
+               {confirmation.scheduledDateText && (
+                  <p className="mt-2 text-xs font-bold text-slate-800">
+                     🚚 Entrega estimada: <span className="capitalize font-black underline text-emerald-800">{confirmation.scheduledDateText}</span>
+                  </p>
+               )}
+               {confirmation.isAfterCutoff && (
+                  <div className="mt-2 rounded-xl bg-amber-100 p-2.5 text-xs text-amber-900 border border-amber-300 font-medium text-left">
+                     ⚠️ <strong>Aviso de corte nocturno:</strong> Al haberse realizado después de las 10:00 PM, este pedido no califica para entrega mañana y ha sido programado para pasado mañana.
+                  </div>
                )}
                {confirmation.timeRange && (
                   <p className="mt-1 text-xs font-bold text-emerald-700">

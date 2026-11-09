@@ -76,9 +76,9 @@ export default function TerminosPage() {
           <section className="space-y-4">
             <h2 className="text-2xl font-black text-slate-800 font-serif">4. Pedidos y Entregas</h2>
             <div className="bg-gaviota-green/5 border border-gaviota-green/20 rounded-2xl p-6 space-y-3">
-              <p className="text-gray-600"><strong>⏰ Horario de corte:</strong> Los pedidos realizados antes de las 8:00 PM serán programados para entrega al siguiente día hábil.</p>
-              <p className="text-gray-600"><strong>🚚 Ventana de entrega:</strong> De 10:00 AM a 5:00 PM en el día programado.</p>
-              <p className="text-gray-600"><strong>📍 Zona de cobertura:</strong> Área metropolitana de Bucaramanga, Santander.</p>
+              <p className="text-gray-600"><strong>⏰ Horario de corte:</strong> Los pedidos realizados antes de las 10:00 PM serán programados para entrega al siguiente día hábil. Los pedidos confirmados a partir de las 10:00 PM serán programados para entrega el día posterior al siguiente debido a los ciclos de recolección y alistamiento nocturno.</p>
+              <p className="text-gray-600"><strong>🚚 Ventana de entrega:</strong> Franjas horarias seleccionables (Mañana 8:00 AM - 12:00 PM, Tarde 12:00 PM - 5:00 PM o Jornada Completa).</p>
+              <p className="text-gray-600"><strong>📍 Zona de cobertura:</strong> Bucaramanga, Floridablanca y Girón (Santander).</p>
               <p className="text-gray-600"><strong>✅ Garantía:</strong> Si tu pedido no llega en la fecha prometida, te compensaremos conforme a nuestra política de garantía.</p>
             </div>
           </section>
