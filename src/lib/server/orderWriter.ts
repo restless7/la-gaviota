@@ -29,7 +29,9 @@ export async function createOrder(
   const rawMethod = (orderData.payment_method || 'cash').trim().toLowerCase();
   const isCashChannel = rawMethod === 'cash' || rawMethod === 'contra_entrega';
   if (!isCashChannel) {
-    if (process.env.APP_ENV === 'production' && process.env.ENABLE_ONLINE_PAYMENTS !== 'true') {
+    const isOnlinePaymentsEnabled = (process.env.ENABLE_ONLINE_PAYMENTS || '').includes('true');
+    const appEnv = (process.env.APP_ENV || '').replace(/^APP_ENV=\s*/i, '').trim().toLowerCase();
+    if (appEnv === 'production' && !isOnlinePaymentsEnabled) {
       throw new Error(
         'PAYMENT_METHOD_DISABLED: Los pagos electrónicos (Wompi) están desactivados en el backend. Seleccione Pago Contra Entrega.'
       );

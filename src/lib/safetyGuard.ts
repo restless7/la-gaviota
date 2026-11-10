@@ -109,7 +109,8 @@ function parseSupabaseJwtPayload(jwt: string): { ref?: string; role?: string; is
 
 export function assertEnvironmentSafety(overrides?: SafetyGuardConfig): void {
   // 1. Authoritative Environment Resolution (Server-only APP_ENV takes absolute authority)
-  const serverEnv = overrides?.appEnv ?? process.env.APP_ENV;
+  const rawServerEnv = overrides?.appEnv ?? process.env.APP_ENV;
+  const serverEnv = rawServerEnv ? rawServerEnv.replace(/^APP_ENV=\s*/i, '').trim() : '';
   
   if (!serverEnv || typeof serverEnv !== 'string' || !serverEnv.trim()) {
     throw new Error(
@@ -238,8 +239,9 @@ export function assertEnvironmentSafety(overrides?: SafetyGuardConfig): void {
 
     const wompiPubKey = overrides?.wompiPubKey ?? process.env.NEXT_PUBLIC_WOMPI_PUB_KEY ?? '';
     const wompiPrvKey = overrides?.wompiPrvKey ?? process.env.WOMPI_PRIVATE_KEY ?? '';
-    const wompiEnv = process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT || process.env.WOMPI_ENVIRONMENT || 'production';
-    const isWompiSandbox = wompiEnv.toLowerCase().trim() === 'sandbox';
+    const rawWompiEnv = process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT || process.env.WOMPI_ENVIRONMENT || 'production';
+    const wompiEnv = rawWompiEnv.replace(/^[A-Z0-9_]+=\s*/i, '').trim().toLowerCase();
+    const isWompiSandbox = wompiEnv === 'sandbox';
 
     if (!isWompiSandbox && (wompiPubKey.startsWith('pub_test_') || wompiPrvKey.startsWith('prv_test_'))) {
       throw new Error(

@@ -37,7 +37,9 @@ export async function initializeWompiTransaction(
   idempotencyKey?: string
 ): Promise<WompiInitResult> {
   try {
-    if (process.env.APP_ENV === 'production' && process.env.ENABLE_ONLINE_PAYMENTS !== 'true') {
+    const isOnlinePaymentsEnabled = (process.env.ENABLE_ONLINE_PAYMENTS || '').includes('true');
+    const appEnv = (process.env.APP_ENV || '').replace(/^APP_ENV=\s*/i, '').trim().toLowerCase();
+    if (appEnv === 'production' && !isOnlinePaymentsEnabled) {
       return {
         ok: false,
         error: 'Los pagos electrónicos (Wompi) están desactivados en el backend. Seleccione Pago Contra Entrega.',

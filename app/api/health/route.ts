@@ -25,9 +25,9 @@ export async function GET() {
       clerk_configured: hasClerk,
       wompi_configured: Boolean(process.env.NEXT_PUBLIC_WOMPI_PUB_KEY),
       wompi_integrity_configured: Boolean(process.env.WOMPI_INTEGRITY_SECRET),
-      online_payments_enabled: process.env.ENABLE_ONLINE_PAYMENTS === 'true',
-      app_env: process.env.APP_ENV || 'development',
-      wompi_env: process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT || process.env.WOMPI_ENVIRONMENT || 'production',
+      online_payments_enabled: (process.env.ENABLE_ONLINE_PAYMENTS || '').includes('true'),
+      app_env: (process.env.APP_ENV || 'development').replace(/^APP_ENV=\s*/i, '').trim(),
+      wompi_env: (process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT || process.env.WOMPI_ENVIRONMENT || 'production').replace(/^[A-Z0-9_]+=\s*/i, '').trim(),
     }
   }, {
     status: status === 'healthy' ? 200 : 503,
