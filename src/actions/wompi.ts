@@ -59,7 +59,7 @@ export async function initializeWompiTransaction(
       delivery_address: details.fullAddress,
       delivery_municipality: details.city,
       total_amount: checkout.totalAmount,
-      status: 'Pago Pendiente',
+      status: 'Pendiente',
       payment_method: 'wompi',
       idempotency_key: idempotencyKey || null,
       notes: details.notes,

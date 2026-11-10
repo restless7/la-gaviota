@@ -179,7 +179,7 @@ export async function createOrder(
 
   if (orderError || !order) {
     console.error('Error creating order header:', orderError);
-    throw new Error('Failed to create order');
+    throw new Error(orderError?.message ? `Failed to create order: ${orderError.message}` : 'Failed to create order');
   }
 
   // Insert order lines with compensation rollback
