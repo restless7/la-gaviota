@@ -8,39 +8,94 @@ import { getServerDatabase } from '@/src/lib/server/database';
 import { prepareCheckout } from '@/src/lib/server/checkout';
 import type { CheckoutItem } from './checkoutAction';
 
-export async function initializeWompiTransaction(formData: FormData, items: CheckoutItem[], expectedTotal?: number, idempotencyKey?: string) {
-  if (process.env.APP_ENV === 'production' && process.env.ENABLE_ONLINE_PAYMENTS !== 'true') {
-    throw new Error('ELECTRONIC_PAYMENTS_DISABLED: Los pagos electrónicos (Wompi) están desactivados en el backend. Seleccione Pago Contra Entrega.');
+export type WompiInitResult =
+  | {
+      ok: true;
+      publicKey: string;
+      totalAmount: number;
+      orderId: string;
+      currency: string;
+      amountInCents: number;
+      reference: string;
+      signature: string;
+      customerData: {
+        email: string;
+        fullName: string;
+        phoneNumber: string;
+        phoneNumberPrefix: string;
+      };
+    }
+  | {
+      ok: false;
+      error: string;
+    };
+
+export async function initializeWompiTransaction(
+  formData: FormData,
+  items: CheckoutItem[],
+  expectedTotal?: number,
+  idempotencyKey?: string
+): Promise<WompiInitResult> {
+  try {
+    if (process.env.APP_ENV === 'production' && process.env.ENABLE_ONLINE_PAYMENTS !== 'true') {
+      return {
+        ok: false,
+        error: 'Los pagos electrónicos (Wompi) están desactivados en el backend. Seleccione Pago Contra Entrega.',
+      };
+    }
+    const checkout = await prepareCheckout(formData, items, expectedTotal);
+    // Fail before inserting an order when the widget cannot be configured.
+    const publicKey = assertWompiCheckoutConfigured();
+    const amountInCents = formatToCents(checkout.totalAmount);
+    const { details } = checkout;
+    const intentId = `INTENT_${Date.now()}_${(checkout.userId || 'guest').substring(0, 12)}`;
+    const orderResult = await createOrder({
+      clerk_user_id: checkout.userId,
+      customer_name: `${details.firstName} ${details.lastName}`,
+      customer_email: details.email,
+      customer_phone: details.phone,
+      delivery_address: details.fullAddress,
+      delivery_municipality: details.city,
+      total_amount: checkout.totalAmount,
+      status: 'Pago Pendiente',
+      payment_method: 'wompi',
+      idempotency_key: idempotencyKey || null,
+      notes: details.notes,
+    }, checkout.orderItems, false, {
+      intent_id: intentId,
+      purpose: 'ORDER_CHECKOUT',
+      currency: 'COP',
+      provider: 'WOMPI',
+      environment: process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT || 'sandbox'
+    });
+    const reference = orderResult.orderId;
+    const signature = generateIntegritySignature(reference, amountInCents, 'COP');
+    return {
+      ok: true,
+      publicKey,
+      totalAmount: checkout.totalAmount,
+      orderId: reference,
+      currency: 'COP',
+      amountInCents,
+      reference,
+      signature,
+      customerData: {
+        email: details.email,
+        fullName: `${details.firstName} ${details.lastName}`,
+        phoneNumber: details.phone,
+        phoneNumberPrefix: '+57',
+      },
+    };
+  } catch (error: unknown) {
+    console.error('[initializeWompiTransaction] Initialization failed:', error);
+    const message = error instanceof Error
+      ? error.message
+      : 'No se pudo inicializar la pasarela de pagos Wompi. Por favor intenta de nuevo o elige contra entrega.';
+    return {
+      ok: false,
+      error: message,
+    };
   }
-  const checkout = await prepareCheckout(formData, items, expectedTotal);
-  // Fail before inserting an order when the widget cannot be configured.
-  const publicKey = assertWompiCheckoutConfigured();
-  const amountInCents = formatToCents(checkout.totalAmount);
-  const { details } = checkout;
-  const intentId = `INTENT_${Date.now()}_${(checkout.userId || 'guest').substring(0, 12)}`;
-  const orderResult = await createOrder({
-    clerk_user_id: checkout.userId,
-    customer_name: `${details.firstName} ${details.lastName}`,
-    customer_email: details.email,
-    customer_phone: details.phone,
-    delivery_address: details.fullAddress,
-    delivery_municipality: details.city,
-    total_amount: checkout.totalAmount,
-    status: 'Pago Pendiente',
-    payment_method: 'wompi',
-    idempotency_key: idempotencyKey || null,
-    notes: details.notes,
-  }, checkout.orderItems, false, {
-    intent_id: intentId,
-    purpose: 'ORDER_CHECKOUT',
-    currency: 'COP',
-    provider: 'WOMPI',
-    environment: process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT || 'sandbox'
-  });
-  const reference = orderResult.orderId;
-  const signature = generateIntegritySignature(reference, amountInCents, 'COP');
-  return { publicKey, totalAmount: checkout.totalAmount, orderId: reference, currency: 'COP', amountInCents, reference, signature,
-    customerData: { email: details.email, fullName: `${details.firstName} ${details.lastName}`, phoneNumber: details.phone, phoneNumberPrefix: '+57' } };
 }
 
 export async function initializeWompiBalancePayment(amount: number) {

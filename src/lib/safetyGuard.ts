@@ -238,10 +238,12 @@ export function assertEnvironmentSafety(overrides?: SafetyGuardConfig): void {
 
     const wompiPubKey = overrides?.wompiPubKey ?? process.env.NEXT_PUBLIC_WOMPI_PUB_KEY ?? '';
     const wompiPrvKey = overrides?.wompiPrvKey ?? process.env.WOMPI_PRIVATE_KEY ?? '';
+    const wompiEnv = process.env.NEXT_PUBLIC_WOMPI_ENVIRONMENT || process.env.WOMPI_ENVIRONMENT || 'production';
+    const isWompiSandbox = wompiEnv.toLowerCase().trim() === 'sandbox';
 
-    if (wompiPubKey.startsWith('pub_test_') || wompiPrvKey.startsWith('prv_test_')) {
+    if (!isWompiSandbox && (wompiPubKey.startsWith('pub_test_') || wompiPrvKey.startsWith('prv_test_'))) {
       throw new Error(
-        'PRODUCTION_SAFETY_VIOLATION: Refusing to run in production mode with test Wompi credentials (test key detected).'
+        'PRODUCTION_SAFETY_VIOLATION: Refusing to run in production mode with test Wompi credentials when NEXT_PUBLIC_WOMPI_ENVIRONMENT is not sandbox.'
       );
     }
 

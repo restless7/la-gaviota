@@ -110,8 +110,17 @@ export default function CheckoutPage() {
          const checkoutItems = items.map(i => ({ product: i.product, quantity: i.quantity }));
          if (paymentMethod === 'wompi') {
             const wompiData = await initializeWompiTransaction(formData, checkoutItems, finalTotal);
+            if (!wompiData.ok) {
+               setSubmitError(wompiData.error || 'No pudimos procesar tu pago con Wompi. Por favor intenta de nuevo.');
+               setIsSubmitting(false);
+               return;
+            }
             const Widget = window.WidgetCheckout;
-            if (!Widget) throw new Error('No se pudo abrir el medio de pago.');
+            if (!Widget) {
+               setSubmitError('No se pudo cargar el medio de pago en línea. Por favor recarga la página o elige Pago Contra Entrega.');
+               setIsSubmitting(false);
+               return;
+            }
             const widget = new Widget({
                currency: wompiData.currency,
                amountInCents: wompiData.amountInCents,

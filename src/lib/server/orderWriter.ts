@@ -24,13 +24,12 @@ export async function createOrder(
 ) {
   assertOrderWrite(orderData.total_amount, items);
 
-  // Backend Payment Method Enforcement (LG-PROD-R4.2 Fail-Closed Gate)
-  // In production, 'cash' (Contra Entrega) is the SOLE authorized commercial payment channel.
-  // Any electronic method (Wompi, Cards, PSE) is rejected at the server boundary.
+  // Backend Payment Method Enforcement
+  // Electronic methods (Wompi, Cards, PSE) are permitted when ENABLE_ONLINE_PAYMENTS is true.
   const rawMethod = (orderData.payment_method || 'cash').trim().toLowerCase();
   const isCashChannel = rawMethod === 'cash' || rawMethod === 'contra_entrega';
   if (!isCashChannel) {
-    if (process.env.APP_ENV === 'production' || process.env.ENABLE_ONLINE_PAYMENTS !== 'true') {
+    if (process.env.APP_ENV === 'production' && process.env.ENABLE_ONLINE_PAYMENTS !== 'true') {
       throw new Error(
         'PAYMENT_METHOD_DISABLED: Los pagos electrónicos (Wompi) están desactivados en el backend. Seleccione Pago Contra Entrega.'
       );
