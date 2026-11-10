@@ -14,6 +14,7 @@ function load(relative, stubs = {}, env = {}) {
   vm.runInNewContext(code, { module, exports: module.exports, require: id => {
     if (Object.hasOwn(stubs, id)) return stubs[id];
     if (id === './safetyGuard' || id.endsWith('safetyGuard')) return load('src/lib/safetyGuard.ts', stubs, env);
+    if (id.includes('deliveryCutoff')) return load('src/lib/deliveryCutoff.ts', stubs, env);
     throw Error(`Unapproved dependency ${id}`);
   }, Map, Set, Buffer, FormData, Date, console, process: { env } }, { filename });
   return module.exports;
@@ -48,10 +49,37 @@ function checkoutHarness(options = {}) {
   return { cash: cash.submitCheckoutOrder, wompi: wompi.initializeWompiTransaction, counts: () => ({ writes, reads, authReads }) };
 }
 for (const method of ['cash', 'wompi']) {
-  for (const [label, options, items, total] of [ ['negative', {}, [item(-1)], 15000], ['empty', {}, [], 15000], ['out of stock duplicates', {}, [item(2), item(2)], 45000], ['inactive', { products: [{ ...product, is_active: false }] }, [item()], 15000], ['price changed', {}, [item()], 1], ['unauthenticated', { unauthorized: true }, [item()], 15000], ['database failure', { dbError: {} }, [item()], 15000], ['inventory setting outage', { settingsError: true }, [item()], 15000] ]) test(`${method}: ${label} => zero writes`, async () => { const h=checkoutHarness(options); await assert.rejects(h[method](form(), items, total)); assert.equal(h.counts().writes, 0); if (label === 'empty' || label === 'negative') assert.equal(h.counts().reads, 0); });
-  test(`${method}: valid fresh server quote creates one order`, async () => { const h=checkoutHarness(); const result=await h[method](form(), [item(2)], 25000); assert.equal(h.counts().writes, 1); assert.equal(result.totalAmount, 25000); assert.equal(result.orderId, 'order-1'); });
+  for (const [label, options, items, total] of [ ['negative', {}, [item(-1)], 15000], ['empty', {}, [], 15000], ['out of stock duplicates', {}, [item(2), item(2)], 45000], ['inactive', { products: [{ ...product, is_active: false }] }, [item()], 15000], ['price changed', {}, [item()], 1], ['unauthenticated', { unauthorized: true }, [item()], 15000], ['database failure', { dbError: {} }, [item()], 15000], ['inventory setting outage', { settingsError: true }, [item()], 15000] ]) test(`${method}: ${label} => zero writes`, async () => {
+    const h=checkoutHarness(options);
+    if (method === 'wompi') {
+      const res = await h.wompi(form(), items, total).catch(err => ({ ok: false, error: err.message }));
+      assert.equal(res.ok, false);
+    } else {
+      await assert.rejects(h[method](form(), items, total));
+    }
+    assert.equal(h.counts().writes, 0);
+    if (label === 'empty' || label === 'negative') assert.equal(h.counts().reads, 0);
+  });
+  test(`${method}: valid fresh server quote creates one order`, async () => {
+    const h=checkoutHarness();
+    const result=await h[method](form(), [item(2)], 25000);
+    assert.equal(h.counts().writes, 1);
+    if (method === 'wompi') {
+      assert.equal(result.ok, true);
+      assert.equal(result.totalAmount, 25000);
+      assert.equal(result.orderId, 'order-1');
+    } else {
+      assert.equal(result.totalAmount, 25000);
+      assert.equal(result.orderId, 'order-1');
+    }
+  });
 }
-test('Wompi missing configuration cannot insert order', async () => { const h=checkoutHarness({ configError: true }); await assert.rejects(h.wompi(form(), [item()], 15000)); assert.equal(h.counts().writes, 0); });
+test('Wompi missing configuration cannot insert order', async () => {
+  const h=checkoutHarness({ configError: true });
+  const res = await h.wompi(form(), [item()], 15000).catch(err => ({ ok: false, error: err.message }));
+  assert.equal(res.ok, false);
+  assert.equal(h.counts().writes, 0);
+});
 const payment = load('src/lib/wompi.ts', { crypto, });
 // Environment is synthetic and empty unless supplied explicitly; never load real env.
 test('payment helper requires configured environment', () => assert.throws(() => payment.assertWompiCheckoutConfigured(), /no está configurado/));
