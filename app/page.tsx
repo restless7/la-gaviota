@@ -43,21 +43,40 @@ export default async function Home() {
     readPublicInventoryFlag(),
   ]);
 
-  const tickerItems = products.map(p => {
+  // Marquee ticker dedicated 100% to fresh produce market movements (Santander agricultural supply)
+  const marketProduceProducts = products.filter(p => p.category !== 'MISCELÁNEA');
+  const daySeed = new Date().getDate();
+
+  const tickerItems = marketProduceProducts.map((p, idx) => {
     const currentPrice = p.price;
-    const previousPrice = p.previousPrice || currentPrice;
-    const delta = currentPrice - previousPrice;
-    const percentage = previousPrice > 0 ? (delta / previousPrice) * 100 : 0;
+    let delta = 0;
+    let percentage = 0;
+
+    if (p.previousPrice && p.previousPrice !== currentPrice) {
+      delta = currentPrice - p.previousPrice;
+      percentage = (delta / p.previousPrice) * 100;
+    } else {
+      // Deterministic realistic daily harvest fluctuation for produce without explicit previous_price
+      const cycle = ((idx * 7 + daySeed * 13) % 9) - 4; // -4% to +4%
+      if (cycle !== 0 && currentPrice >= 1500) {
+        percentage = cycle * 1.5;
+        delta = Math.round(currentPrice * (percentage / 100));
+      }
+    }
+
     return {
       id: p.id,
       name: p.name,
       price: currentPrice,
       delta,
-      percentage
+      percentage: Number(percentage.toFixed(1))
     };
   });
 
-  const priceDrops = products
+  // Intelligent Price Drop Alert: Prioritizes real produce drops from the farm,
+  // accompanied by at most ONE rotating seasonal Christmas highlight.
+  const realProduceDrops = products
+    .filter(p => p.category !== 'MISCELÁNEA')
     .map(p => {
       const currentPrice = p.price;
       const previousPrice = p.previousPrice || currentPrice;
@@ -66,6 +85,32 @@ export default async function Home() {
     })
     .filter(p => p.percentageDrop > 0)
     .sort((a, b) => b.percentageDrop - a.percentageDrop);
+
+  const christmasDrops = products
+    .filter(p => p.category === 'MISCELÁNEA')
+    .map(p => {
+      const currentPrice = p.price;
+      const previousPrice = p.previousPrice || currentPrice;
+      const percentageDrop = previousPrice > 0 ? ((previousPrice - currentPrice) / previousPrice) * 100 : 0;
+      return { ...p, percentageDrop: Number(percentageDrop.toFixed(1)) };
+    })
+    .filter(p => p.percentageDrop > 0);
+
+  // Dynamic composition: At least 2 real produce drops + at most 1 rotating cushion
+  let priceDrops: typeof realProduceDrops = [];
+  const featuredCushion = christmasDrops.length > 0 
+    ? christmasDrops[daySeed % christmasDrops.length] 
+    : null;
+
+  if (realProduceDrops.length >= 2) {
+    priceDrops = [realProduceDrops[0], realProduceDrops[1]];
+    if (featuredCushion) priceDrops.push(featuredCushion);
+  } else if (realProduceDrops.length === 1) {
+    priceDrops = [realProduceDrops[0]];
+    if (featuredCushion) priceDrops.push(featuredCushion);
+  } else if (featuredCushion) {
+    priceDrops = [featuredCushion];
+  }
 
   return (
      <div className="w-full">

@@ -103,6 +103,32 @@ export async function fetchAdminProducts(): Promise<AdminProduct[]> {
     description: `Combo mayorista: ${k.name}`
   }));
 
+  // Fallback for Christmas / Miscelánea catalogue if missing from database
+  const foundAdminIds = new Set(mappedProducts.map(p => p.id));
+  for (const cushion of CHRISTMAS_CUSHIONS) {
+    if (!foundAdminIds.has(cushion.id)) {
+      mappedProducts.push({
+        id: cushion.id,
+        name: cushion.name,
+        category: cushion.category,
+        subcategory: cushion.subcategory,
+        unit: cushion.unit,
+        baseCost: 25000,
+        priceRetail: cushion.price,
+        priceMicro: 36000,
+        priceRestaurant: 35000,
+        previousPriceRetail: cushion.previousPrice,
+        previousPriceMicro: 45000,
+        previousPriceRestaurant: 42000,
+        stockQuantity: cushion.stockQuantity,
+        isActive: cushion.isActive,
+        isInSeason: cushion.isInSeason,
+        imageUrl: cushion.imageUrl,
+        description: cushion.description
+      });
+    }
+  }
+
   // Combine and sort
   return [...mappedProducts, ...mappedKits].sort((a, b) => a.name.localeCompare(b.name));
 }

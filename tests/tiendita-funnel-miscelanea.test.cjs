@@ -89,16 +89,34 @@ test('La Tiendita: Funnel pages /tiendita and /navidad exist and integrate with 
   // High converting funnel elements
   assert.match(funnelClient, /Viste tu sala de magia/);
   assert.match(funnelClient, /Set Familiar x4 Cojines/);
-  assert.match(funnelClient, /119900/);
+  assert.match(funnelClient, /139900/);
+  assert.match(funnelClient, /40000/);
   assert.match(funnelClient, /handleAddToCart/);
   assert.match(funnelClient, /handleBuyNow/);
   assert.match(funnelClient, /\/checkout/);
 
+  // White theme verification
+  assert.match(funnelClient, /bg-\[#fafaf7\]/);
+
   // Integrated in Header, Footer & Storefront
   assert.match(header, /href="\/tiendita"/);
+  assert.match(header, /bg-white/);
   assert.match(footer, /href="\/tiendita"/);
   assert.match(shopView, /La Tiendita \(Miscelánea\)/);
   assert.match(shopView, /href="\/tiendita"/);
+});
+
+test('La Tiendita: Admin InventoryClient imports MASTER_CATEGORIES and includes MISCELÁNEA', () => {
+  const inventorySource = fs.readFileSync(path.join(REPO_ROOT, 'app/admin/catalog/product-management/InventoryClient.tsx'), 'utf8');
+  assert.match(inventorySource, /MASTER_CATEGORIES/);
+  assert.match(inventorySource, /MISCELÁNEA \(La Tiendita\)/);
+});
+
+test('La Tiendita: Home page isolates produce market ticker and intelligently caps seasonal cushions in price drops', () => {
+  const homeSource = fs.readFileSync(path.join(REPO_ROOT, 'app/page.tsx'), 'utf8');
+  assert.match(homeSource, /category !== 'MISCELÁNEA'/);
+  assert.match(homeSource, /realProduceDrops/);
+  assert.match(homeSource, /featuredCushion/);
 });
 
 test('La Tiendita: SQL migration exists and seeds products table with conflict handling', () => {

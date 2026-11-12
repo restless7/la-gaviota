@@ -5,8 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { 
-  Sparkles, 
   ShoppingBag, 
+  Sparkles, 
   Check, 
   Truck, 
   ShieldCheck, 
@@ -21,12 +21,17 @@ import {
 import { CHRISTMAS_CUSHIONS, type ChristmasProduct } from '@/src/data/christmasProducts';
 import { useCart } from '@/src/contexts/CartContext';
 
-const formatCOP = (val: number) =>
-  new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(val);
+function formatCOP(amount: number): string {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
 
-export function TienditaFunnelClient() {
-  const [selectedTheme, setSelectedTheme] = useState<string>('todos');
+export default function TienditaFunnelClient() {
   const [selectedCushion, setSelectedCushion] = useState<ChristmasProduct>(CHRISTMAS_CUSHIONS[0]);
+  const [selectedTheme, setSelectedTheme] = useState<string>('todos');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [addedToast, setAddedToast] = useState<string | null>(null);
 
@@ -81,7 +86,7 @@ export function TienditaFunnelClient() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-amber-400 selection:text-slate-900">
+    <div className="min-h-screen bg-[#fafaf7] text-slate-900 selection:bg-emerald-600 selection:text-white">
       
       {/* Toast Notification */}
       {addedToast && (
@@ -92,31 +97,30 @@ export function TienditaFunnelClient() {
       )}
 
       {/* Top Holiday Ribbon */}
-      <div className="bg-gradient-to-r from-red-700 via-emerald-700 to-red-700 text-white py-2 px-4 text-center text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-md">
+      <div className="bg-gradient-to-r from-red-600 via-emerald-600 to-red-600 text-white py-2 px-4 text-center text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-sm">
         <span>🎄 EDICIÓN ESPECIAL NAVIDAD 2026</span>
         <span className="hidden sm:inline">•</span>
         <span className="hidden sm:inline">¡ENVÍO GRATIS EN BUCARAMANGA POR COMPRAS DESDE $50.000!</span>
       </div>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-12 pb-20 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-red-600/20 rounded-full blur-[140px] pointer-events-none"></div>
-        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-emerald-600/20 rounded-full blur-[140px] pointer-events-none"></div>
-        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+      <section className="relative overflow-hidden pt-10 pb-16 px-4 sm:px-6 lg:px-8 bg-white border-b border-slate-200">
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-red-100/60 rounded-full blur-[140px] pointer-events-none"></div>
+        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-emerald-100/60 rounded-full blur-[140px] pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto relative z-10">
           {/* Breadcrumb / Category Tag */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <Link href="/" className="hover:text-white transition-colors">Tienda</Link>
+            <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
+              <Link href="/" className="hover:text-red-700 transition-colors">Tienda</Link>
               <span>/</span>
-              <span className="text-amber-400 font-bold">Miscelánea</span>
+              <span className="text-emerald-800 font-bold">Miscelánea</span>
               <span>/</span>
-              <span className="text-white font-extrabold">La Tiendita Navideña</span>
+              <span className="text-slate-900 font-extrabold">La Tiendita Navideña</span>
             </div>
 
-            <div className="flex items-center gap-2 bg-slate-900/80 border border-slate-700 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-full text-xs font-bold text-emerald-900">
+              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
               <span>Edición Limitada · Temporada 2026</span>
             </div>
           </div>
@@ -124,76 +128,81 @@ export function TienditaFunnelClient() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Left Column: Copy & Funnel Value Props */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-amber-300">
-                <Sparkles size={14} className="text-amber-400" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-amber-900">
+                <Sparkles size={14} className="text-amber-600" />
                 <span>Colección Exclusiva de Temporada</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black font-serif text-white leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black font-serif text-slate-900 leading-tight">
                 Viste tu sala de magia <br className="hidden sm:inline" />
-                <span className="bg-gradient-to-r from-red-500 via-amber-300 to-emerald-400 bg-clip-text text-transparent">
+                <span className="text-red-600">
                   esta Navidad 🎄✨
                 </span>
               </h1>
 
-              <p className="text-slate-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+              <p className="text-slate-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
                 Cojines decorativos premium con ilustración en alta definición, tacto terciopelo y relleno siliconado ultrasuave. Llena tu hogar de calidez santandereana durante las novenas.
               </p>
 
               {/* Trust Badges */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2 text-xs font-bold text-slate-300">
-                <div className="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-xl">
-                  <Star size={14} className="text-amber-400 fill-amber-400" />
-                  <span>4.9 / 5 Valoración Familiar</span>
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1 text-xs font-bold text-slate-700">
+                <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl shadow-xs">
+                  <Star size={15} className="text-amber-500 fill-amber-500" />
+                  <span>4.9 / 5 Calidad Garantizada</span>
                 </div>
-                <div className="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-xl">
-                  <Truck size={14} className="text-emerald-400" />
+                <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl shadow-xs">
+                  <Truck size={15} className="text-emerald-600" />
                   <span>Entrega Rápida 24h</span>
                 </div>
-                <div className="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-xl">
-                  <ShieldCheck size={14} className="text-blue-400" />
+                <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl shadow-xs">
+                  <ShieldCheck size={15} className="text-blue-600" />
                   <span>Pago Contra Entrega</span>
                 </div>
               </div>
 
               {/* Pricing Cards Mini-Funnel */}
-              <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+              <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
                 {/* Single Unit Option */}
-                <div className="p-5 rounded-2xl border border-slate-800 bg-slate-900/80 hover:border-slate-700 transition-all flex flex-col justify-between">
+                <div className="p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all flex flex-col justify-between shadow-sm">
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">1 Cojín a tu gusto</span>
-                    <div className="flex items-baseline gap-2 mt-1">
-                      <span className="text-2xl font-black text-white">{formatCOP(34900)}</span>
-                      <span className="text-xs text-slate-500 line-through">{formatCOP(45000)}</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">1 Cojín Individual</span>
+                      <span className="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+                        20% OFF
+                      </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-1">45x45 cm · Relleno siliconado incluido</p>
+                    <div className="flex items-baseline gap-2 mt-2">
+                      <span className="text-2xl font-black text-slate-900">{formatCOP(40000)}</span>
+                      <span className="text-xs text-slate-400 line-through">{formatCOP(50000)}</span>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1">45x45 cm · Relleno siliconado incluido</p>
                   </div>
                   <button
                     onClick={() => handleAddToCart(selectedCushion, 1, true)}
-                    className="mt-4 w-full rounded-xl bg-slate-800 hover:bg-slate-700 text-white py-2.5 px-4 text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2"
+                    className="mt-4 w-full rounded-xl bg-slate-900 hover:bg-slate-800 text-white py-2.5 px-4 text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
                   >
-                    <ShoppingBag size={14} /> Añadir 1 Cojín
+                    <ShoppingBag size={14} /> Añadir 1 Cojín ($40.000)
                   </button>
                 </div>
 
                 {/* Best Value 4-Pack Combo */}
-                <div className="p-5 rounded-2xl border-2 border-amber-400/80 bg-gradient-to-br from-amber-950/40 via-slate-900 to-emerald-950/30 relative overflow-hidden flex flex-col justify-between shadow-xl shadow-amber-950/20">
-                  <div className="absolute top-2 right-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-[9px] uppercase px-2.5 py-0.5 rounded-full tracking-wider">
-                    Mejor Ahorro 🔥
+                <div className="p-5 rounded-2xl border-2 border-amber-400 bg-gradient-to-br from-amber-50/70 via-white to-emerald-50/60 relative overflow-hidden flex flex-col justify-between shadow-md">
+                  <div className="absolute top-2 right-2 bg-red-600 text-white font-black text-[9px] uppercase px-2.5 py-0.5 rounded-full tracking-wider shadow-xs">
+                    Mejor Ahorro 🔥 30% OFF
                   </div>
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-300">Set Familiar x4 Cojines</span>
-                    <div className="flex items-baseline gap-2 mt-1">
-                      <span className="text-2xl font-black text-amber-300">{formatCOP(119900)}</span>
-                      <span className="text-xs text-slate-500 line-through">{formatCOP(139600)}</span>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-900">Set Familiar x4 Cojines</span>
+                    <div className="flex items-baseline gap-2 mt-2">
+                      <span className="text-2xl font-black text-emerald-800">{formatCOP(139900)}</span>
+                      <span className="text-xs text-slate-400 line-through">{formatCOP(200000)}</span>
                     </div>
-                    <p className="text-xs text-emerald-300 font-bold mt-1">
-                      ✨ Ahorras $19.700 + Domicilio GRATIS
+                    <p className="text-xs text-emerald-700 font-extrabold mt-1">
+                      ✨ Ahorras $60.100 + Domicilio GRATIS
                     </p>
                   </div>
                   <button
                     onClick={() => handleBuyNow(comboProduct, 1)}
-                    className="mt-4 w-full rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 py-2.5 px-4 text-xs font-black uppercase tracking-wider transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2"
+                    className="mt-4 w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-4 text-xs font-black uppercase tracking-wider transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2"
                   >
                     <Gift size={14} /> Comprar Set x4 Ahora
                   </button>
@@ -203,19 +212,19 @@ export function TienditaFunnelClient() {
 
             {/* Right Column: Featured Interactive Showcase */}
             <div className="lg:col-span-5 relative">
-              <div className="relative mx-auto max-w-md bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-950 rounded-3xl p-6 border border-slate-800 shadow-2xl">
+              <div className="relative mx-auto max-w-md bg-white rounded-3xl p-6 border-2 border-slate-200 shadow-xl">
                 {/* Design Badge */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className="rounded-full bg-red-600/20 border border-red-500/40 text-red-300 px-3 py-1 text-xs font-black uppercase tracking-wider">
+                  <span className="rounded-full bg-red-100 border border-red-300 text-red-800 px-3 py-1 text-xs font-black uppercase tracking-wider">
                     {selectedCushion.badge || 'Diseño Más Querido'}
                   </span>
-                  <span className="text-xs font-mono font-bold text-slate-400">
+                  <span className="text-xs font-mono font-bold text-slate-500">
                     Ref: {selectedCushion.id}
                   </span>
                 </div>
 
                 {/* Main Product Showcase Image */}
-                <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-inner group">
+                <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-inner group">
                   <Image
                     src={selectedCushion.imageUrl || '/IMAGES/mascota.jpeg'}
                     alt={selectedCushion.name}
@@ -224,13 +233,13 @@ export function TienditaFunnelClient() {
                     priority
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
                   
                   <div className="absolute bottom-4 left-4 right-4">
                     <p className="text-xs uppercase tracking-wider text-amber-300 font-black">
                       {selectedCushion.unit}
                     </p>
-                    <h3 className="text-lg font-black text-white leading-snug">
+                    <h3 className="text-lg font-black text-white leading-snug drop-shadow-sm">
                       {selectedCushion.name}
                     </h3>
                   </div>
@@ -244,8 +253,8 @@ export function TienditaFunnelClient() {
                       onClick={() => setSelectedCushion(cushion)}
                       className={`relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border-2 transition-all ${
                         selectedCushion.id === cushion.id
-                          ? 'border-amber-400 scale-105 ring-2 ring-amber-400/40'
-                          : 'border-slate-800 opacity-60 hover:opacity-100'
+                          ? 'border-emerald-600 scale-105 ring-2 ring-emerald-500/40'
+                          : 'border-slate-200 opacity-70 hover:opacity-100'
                       }`}
                     >
                       <Image
@@ -259,14 +268,17 @@ export function TienditaFunnelClient() {
                 </div>
 
                 {/* Action Row */}
-                <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+                <div className="mt-5 pt-4 border-t border-slate-200 flex items-center justify-between gap-3">
                   <div>
-                    <span className="text-[11px] text-slate-400 block font-medium">Precio Detal:</span>
-                    <span className="text-xl font-black text-white">{formatCOP(selectedCushion.price)}</span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-xl font-black text-slate-900">{formatCOP(selectedCushion.price)}</span>
+                      <span className="text-xs text-slate-400 line-through">{formatCOP(50000)}</span>
+                    </div>
+                    <span className="text-[10px] text-emerald-700 font-bold block">Ahorras $10.000 COP</span>
                   </div>
                   <button
                     onClick={() => handleAddToCart(selectedCushion, 1, true)}
-                    className="rounded-xl bg-[#4CAF50] hover:bg-[#3d8c40] text-white px-5 py-3 text-xs font-black uppercase tracking-wider transition-colors shadow-md flex items-center gap-1.5"
+                    className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 text-xs font-black uppercase tracking-wider transition-colors shadow-md flex items-center gap-1.5"
                   >
                     <ShoppingBag size={14} /> Añadir al Carrito
                   </button>
@@ -278,20 +290,20 @@ export function TienditaFunnelClient() {
       </section>
 
       {/* Visual Product Catalog / Design Selector */}
-      <section id="catalogo-navidad" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
-          <span className="text-xs font-black uppercase tracking-widest text-amber-400 bg-amber-400/10 px-3.5 py-1 rounded-full border border-amber-400/20">
+      <section id="catalogo-navidad" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+          <span className="text-xs font-black uppercase tracking-widest text-emerald-800 bg-emerald-100 px-3.5 py-1 rounded-full border border-emerald-300">
             Escoge tus Diseños Favoritos
           </span>
-          <h2 className="text-3xl sm:text-4xl font-black font-serif text-white">
+          <h2 className="text-3xl sm:text-4xl font-black font-serif text-slate-900">
             10 Estilos Únicos para Cada Rincón de tu Casa
           </h2>
-          <p className="text-slate-400 text-sm">
+          <p className="text-slate-600 text-sm">
             Desde los pesebres más clásicos y solemnes hasta los personajes navideños más tiernos para alegrar a los niños.
           </p>
 
           {/* Theme Filters */}
-          <div className="flex flex-wrap justify-center gap-2 pt-4">
+          <div className="flex flex-wrap justify-center gap-2 pt-3">
             {[
               { id: 'todos', label: 'Todos los Diseños 🎁' },
               { id: 'pesebre', label: 'Sagrada Familia & Pesebre ✨' },
@@ -304,8 +316,8 @@ export function TienditaFunnelClient() {
                 onClick={() => setSelectedTheme(filter.id)}
                 className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${
                   selectedTheme === filter.id
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md scale-105'
-                    : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                    ? 'bg-emerald-600 text-white border-emerald-600 shadow-md scale-105'
+                    : 'bg-white border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300 shadow-xs'
                 }`}
               >
                 {filter.label}
@@ -322,13 +334,13 @@ export function TienditaFunnelClient() {
             return (
               <div
                 key={product.id}
-                className={`rounded-3xl bg-slate-900/90 border transition-all duration-300 flex flex-col justify-between overflow-hidden group ${
-                  isCurrentlySelected ? 'border-amber-400 shadow-lg shadow-amber-950/20' : 'border-slate-800 hover:border-slate-700'
+                className={`rounded-3xl bg-white border-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group shadow-sm ${
+                  isCurrentlySelected ? 'border-emerald-500 ring-2 ring-emerald-500/20 shadow-md' : 'border-slate-200 hover:border-emerald-300 hover:shadow-lg'
                 }`}
               >
                 <div>
                   {/* Image Container */}
-                  <div className="relative aspect-square w-full overflow-hidden bg-slate-950">
+                  <div className="relative aspect-square w-full overflow-hidden bg-slate-50">
                     <Image
                       src={product.imageUrl || '/IMAGES/mascota.jpeg'}
                       alt={product.name}
@@ -341,17 +353,17 @@ export function TienditaFunnelClient() {
                         {product.badge}
                       </span>
                     )}
-                    <span className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-amber-300 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-700">
+                    <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-200 shadow-xs">
                       45x45 cm
                     </span>
                   </div>
 
                   {/* Body Content */}
                   <div className="p-5 space-y-2">
-                    <h3 className="font-black text-white text-base leading-snug line-clamp-2">
+                    <h3 className="font-black text-slate-900 text-base leading-snug line-clamp-2">
                       {product.name}
                     </h3>
-                    <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
                       {product.description}
                     </p>
                   </div>
@@ -359,28 +371,30 @@ export function TienditaFunnelClient() {
 
                 {/* Footer Action */}
                 <div className="p-5 pt-0">
-                  <div className="flex items-baseline justify-between mb-4 border-t border-slate-800/80 pt-3">
+                  <div className="flex items-baseline justify-between mb-4 border-t border-slate-100 pt-3">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-xl font-black text-white">{formatCOP(product.price)}</span>
+                      <span className="text-xl font-black text-slate-900">{formatCOP(product.price)}</span>
                       {product.previousPrice && (
-                        <span className="text-xs text-slate-500 line-through">
+                        <span className="text-xs text-slate-400 line-through">
                           {formatCOP(product.previousPrice)}
                         </span>
                       )}
                     </div>
-                    <span className="text-[11px] font-bold text-emerald-400">En Stock</span>
+                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                      20% OFF
+                    </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => handleAddToCart(product, 1, false)}
-                      className="w-full rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold py-2.5 px-3 transition-colors flex items-center justify-center gap-1.5"
+                      className="w-full rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2.5 px-3 transition-colors flex items-center justify-center gap-1.5"
                     >
                       <ShoppingBag size={13} /> Añadir
                     </button>
                     <button
                       onClick={() => handleBuyNow(product, 1)}
-                      className="w-full rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black uppercase tracking-wider py-2.5 px-3 transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                      className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black uppercase tracking-wider py-2.5 px-3 transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                     >
                       Comprar →
                     </button>
@@ -393,35 +407,33 @@ export function TienditaFunnelClient() {
       </section>
 
       {/* High-Converting Bundle Spotlight Banner */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="rounded-3xl border-2 border-amber-400 bg-gradient-to-br from-amber-950/60 via-slate-900 to-emerald-950/50 p-8 sm:p-12 relative overflow-hidden shadow-2xl">
-          <div className="absolute -right-16 -top-16 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
+      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="rounded-3xl border-2 border-emerald-500 bg-gradient-to-br from-amber-50/80 via-white to-emerald-50/80 p-8 sm:p-12 relative overflow-hidden shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-4 text-center lg:text-left">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-400 text-slate-950 font-black text-xs uppercase px-3 py-1">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600 text-white font-black text-xs uppercase px-3.5 py-1 shadow-xs">
                 <Gift size={14} /> Oferta Especial de la Semana
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black font-serif text-white">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black font-serif text-slate-900">
                 Set Familiar Navideño x4 Cojines
               </h2>
-              <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
-                Elige 4 diseños para ambientar toda tu sala o para regalar a tus seres queridos. Obtienes un <strong>ahorro directo de $19.700 COP</strong> y nosotros asumimos el 100% del costo del domicilio en Bucaramanga, Floridablanca, Girón o Piedecuesta.
+              <p className="text-slate-600 text-sm sm:text-base max-w-xl leading-relaxed">
+                Elige 4 diseños para ambientar toda tu sala o para regalar a tus seres queridos. Obtienes un <strong>ahorro de más de $60.000 COP</strong> y nosotros asumimos el 100% del costo del domicilio en Bucaramanga, Floridablanca, Girón o Piedecuesta.
               </p>
               
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-                <div className="text-left bg-slate-900/90 border border-slate-700 px-4 py-2.5 rounded-2xl">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Precio Especial Combo:</span>
+                <div className="text-left bg-white border-2 border-emerald-300 px-4 py-2.5 rounded-2xl shadow-sm">
+                  <span className="text-[10px] text-slate-500 font-bold uppercase block">Precio Especial Combo x4:</span>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-black text-amber-300">{formatCOP(119900)}</span>
-                    <span className="text-sm text-slate-500 line-through">{formatCOP(139600)}</span>
+                    <span className="text-3xl font-black text-emerald-800">{formatCOP(139900)}</span>
+                    <span className="text-sm text-slate-400 line-through">{formatCOP(200000)}</span>
                   </div>
                 </div>
 
-                <div className="flex flex-col text-xs text-emerald-300 font-bold space-y-1">
-                  <span className="flex items-center gap-1.5"><Check size={14} /> 4 Rellenos siliconados incluidos</span>
-                  <span className="flex items-center gap-1.5"><Check size={14} /> Envío GRATIS garantizado</span>
-                  <span className="flex items-center gap-1.5"><Check size={14} /> Paga al recibir en tu puerta</span>
+                <div className="flex flex-col text-xs text-emerald-800 font-bold space-y-1">
+                  <span className="flex items-center gap-1.5"><Check size={14} className="text-emerald-600" /> 4 Rellenos siliconados incluidos</span>
+                  <span className="flex items-center gap-1.5"><Check size={14} className="text-emerald-600" /> Envío GRATIS en Santander AMB</span>
+                  <span className="flex items-center gap-1.5"><Check size={14} className="text-emerald-600" /> Paga al recibir en tu puerta</span>
                 </div>
               </div>
             </div>
@@ -429,12 +441,12 @@ export function TienditaFunnelClient() {
             <div className="lg:col-span-4 flex flex-col items-center justify-center">
               <button
                 onClick={() => handleBuyNow(comboProduct, 1)}
-                className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-sm uppercase tracking-wider shadow-2xl transition-transform active:scale-[0.98] flex items-center justify-center gap-3 text-center"
+                className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm uppercase tracking-wider shadow-xl transition-transform active:scale-[0.98] flex items-center justify-center gap-3 text-center"
               >
                 <span>¡Quiero el Set x4 con Envío Gratis!</span>
                 <ArrowRight size={18} />
               </button>
-              <p className="text-xs text-slate-400 mt-3 text-center">
+              <p className="text-xs text-slate-500 mt-3 text-center">
                 Puedes especificar los 4 diseños elegidos en las notas del checkout o por WhatsApp.
               </p>
             </div>
@@ -443,53 +455,53 @@ export function TienditaFunnelClient() {
       </section>
 
       {/* Premium Craftsmanship Specifications */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-900">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-200">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-black uppercase tracking-widest text-emerald-400">
+          <span className="text-xs font-black uppercase tracking-widest text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
             Calidad Santandereana
           </span>
-          <h2 className="text-3xl font-black font-serif text-white mt-1">
+          <h2 className="text-3xl font-black font-serif text-slate-900 mt-3">
             ¿Por qué nuestros cojines son diferentes?
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center md:text-left">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-            <div className="w-12 h-12 rounded-xl bg-amber-400/10 text-amber-400 flex items-center justify-center mx-auto md:mx-0">
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center mx-auto md:mx-0">
               <Sparkles size={24} />
             </div>
-            <h3 className="font-black text-white text-base">Tacto Terciopelo</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <h3 className="font-black text-slate-900 text-base">Tacto Terciopelo</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
               Microfibra peach-skin sublimada de gramaje grueso. Suavidad extrema al tacto con brillo cálido no reflectivo.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-            <div className="w-12 h-12 rounded-xl bg-emerald-400/10 text-emerald-400 flex items-center justify-center mx-auto md:mx-0">
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto md:mx-0">
               <ShieldCheck size={24} />
             </div>
-            <h3 className="font-black text-white text-base">Relleno Siliconado</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <h3 className="font-black text-slate-900 text-base">Relleno Siliconado</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
               Fibra siliconada 100% virgen antialérgica. No se deforma, no acumula ácaros y recupera su forma esponjosa de inmediato.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-            <div className="w-12 h-12 rounded-xl bg-red-400/10 text-red-400 flex items-center justify-center mx-auto md:mx-0">
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-red-100 text-red-800 flex items-center justify-center mx-auto md:mx-0">
               <Layers size={24} />
             </div>
-            <h3 className="font-black text-white text-base">Fácil Lavado</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <h3 className="font-black text-slate-900 text-base">Fácil Lavado</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
               Cremallera invisible reforzada en la base. Desenfunda en 5 segundos y lava en lavadora sin temor a que se descolore.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-            <div className="w-12 h-12 rounded-xl bg-blue-400/10 text-blue-400 flex items-center justify-center mx-auto md:mx-0">
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center mx-auto md:mx-0">
               <Truck size={24} />
             </div>
-            <h3 className="font-black text-white text-base">Despacho en 24h</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <h3 className="font-black text-slate-900 text-base">Despacho en 24h</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
               Logística propia de Surtifruver La Gaviota. Recibe tus cojines en tu puerta junto con tu mercado de la semana.
             </p>
           </div>
@@ -497,10 +509,10 @@ export function TienditaFunnelClient() {
       </section>
 
       {/* FAQ Accordion Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-slate-900">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-slate-200">
         <div className="text-center mb-10">
-          <span className="text-xs font-black uppercase tracking-widest text-slate-400">Resolvemos tus dudas</span>
-          <h2 className="text-2xl sm:text-3xl font-black font-serif text-white mt-1">Preguntas Frecuentes</h2>
+          <span className="text-xs font-black uppercase tracking-widest text-slate-500">Resolvemos tus dudas</span>
+          <h2 className="text-2xl sm:text-3xl font-black font-serif text-slate-900 mt-1">Preguntas Frecuentes</h2>
         </div>
 
         <div className="space-y-4">
@@ -509,18 +521,18 @@ export function TienditaFunnelClient() {
             return (
               <div
                 key={index}
-                className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden transition-all"
+                className="rounded-2xl border border-slate-200 bg-white overflow-hidden transition-all shadow-xs"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(isOpen ? null : index)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-200 hover:text-white"
+                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-800 hover:text-slate-900"
                 >
                   <span>{faq.q}</span>
-                  {isOpen ? <ChevronUp size={18} className="shrink-0 text-amber-400" /> : <ChevronDown size={18} className="shrink-0 text-slate-500" />}
+                  {isOpen ? <ChevronUp size={18} className="shrink-0 text-emerald-600" /> : <ChevronDown size={18} className="shrink-0 text-slate-400" />}
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-5 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3">
+                  <div className="px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
                     {faq.a}
                   </div>
                 )}
@@ -531,24 +543,24 @@ export function TienditaFunnelClient() {
       </section>
 
       {/* Final Call to Action with Mascot */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center border-t border-slate-900 relative">
-        <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-400 shadow-xl relative bg-white">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center border-t border-slate-200 relative">
+        <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-4 border-emerald-500 shadow-xl relative bg-white">
           <Image src="/IMAGES/mascota.jpeg" alt="Gaviota Mascot" fill className="object-cover" />
         </div>
 
-        <h2 className="text-3xl sm:text-4xl font-black font-serif text-white mb-4">
+        <h2 className="text-3xl sm:text-4xl font-black font-serif text-slate-900 mb-3">
           ¿Listo para llenar tu hogar de alegría navideña?
         </h2>
-        <p className="text-slate-400 text-sm max-w-lg mx-auto mb-8">
+        <p className="text-slate-600 text-sm max-w-lg mx-auto mb-8">
           Haz tu pedido hoy mismo antes de que se agoten las unidades de la temporada. ¡Mercar y decorar nunca fue tan chévere!
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={() => handleBuyNow(comboProduct, 1)}
-            className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#4CAF50] hover:bg-[#3d8c40] text-white font-black text-xs uppercase tracking-wider shadow-xl transition-all"
+            className="w-full sm:w-auto px-8 py-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase tracking-wider shadow-lg transition-all"
           >
-            Llevar Combo x4 Cojines Navideños ($119.900)
+            Llevar Combo x4 Cojines Navideños ($139.900)
           </button>
           <a
             href="https://wa.me/573112694676?text=¡Hola%20Surtifruver%20La%20Gaviota!%20🧺%20Quisiera%20asesoría%20sobre%20la%20colección%20de%20cojines%20navideños."
@@ -560,18 +572,18 @@ export function TienditaFunnelClient() {
           </a>
           <Link
             href="/"
-            className="w-full sm:w-auto px-8 py-4 rounded-full border border-slate-700 text-slate-300 hover:bg-slate-900 font-bold text-xs"
+            className="w-full sm:w-auto px-8 py-4 rounded-full border border-slate-300 text-slate-700 hover:bg-slate-50 font-bold text-xs"
           >
             Volver a la Tienda de Frutas y Verduras
           </Link>
         </div>
       </section>
 
-      {/* Floating Bottom Conversion Bar on Mobile if items exist or to quick order */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 p-3 flex items-center justify-between gap-3 sm:hidden">
+      {/* Floating Bottom Conversion Bar on Mobile */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 flex items-center justify-between gap-3 sm:hidden shadow-2xl">
         <div className="text-xs">
-          <span className="text-slate-400 block font-medium">Cojines en canasta:</span>
-          <span className="font-black text-amber-300 font-mono">{totalCushionsInCart} unidades</span>
+          <span className="text-slate-500 block font-medium">Cojines en canasta:</span>
+          <span className="font-black text-emerald-800 font-mono">{totalCushionsInCart} unidades</span>
         </div>
         <button
           onClick={() => {
@@ -580,13 +592,15 @@ export function TienditaFunnelClient() {
             }
             router.push('/checkout');
           }}
-          className="flex-1 py-3 px-4 rounded-xl bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg"
+          className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg"
         >
           <ShoppingBag size={14} />
-          <span>{totalCushionsInCart > 0 ? 'Pagar Mi Pedido' : 'Pedir Cojín ($34.900)'}</span>
+          <span>{totalCushionsInCart > 0 ? 'Pagar Mi Pedido' : 'Pedir Cojín ($40.000)'}</span>
         </button>
       </div>
 
     </div>
   );
 }
+
+export { TienditaFunnelClient };

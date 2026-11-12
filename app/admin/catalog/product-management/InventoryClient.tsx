@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Package, Search, Filter, AlertTriangle, ChevronDown, Save } from 'lucide-react';
 import { AdminProduct as Product, updateProductStock, updateProductSeasonStatus } from '@/src/actions/products';
 import { toggleInventoryTracking } from '@/src/actions/settings';
+import { CATEGORIES as MASTER_CATEGORIES, SUBCATEGORIES as MASTER_SUBCATEGORIES } from '@/src/constants/productConstants';
 
 const CATEGORY_EMOJI: Record<string, string> = {
   'FRUTAS': '🍎',
@@ -16,6 +17,7 @@ const CATEGORY_EMOJI: Record<string, string> = {
   'FRUTOS SECOS Y ESPECIAS': '🥜',
   'AROMÁTICAS Y HIERBAS X 125 GR': '🌿',
   'KITS NEGOCIOS': '📦',
+  'MISCELÁNEA': '🎁',
 };
 
 export default function InventoryClient({ initialProducts, trackInventory }: { initialProducts: Product[], trackInventory: boolean }) {
@@ -27,10 +29,17 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
   const [isTracking, setIsTracking] = useState(trackInventory);
   const [isToggling, setIsToggling] = useState(false);
 
-  const CATEGORIES = useMemo(() => Array.from(new Set(initialProducts.map(p => p.category))), [initialProducts]);
+  const CATEGORIES = useMemo(() => {
+    const cats = new Set<string>(MASTER_CATEGORIES);
+    initialProducts.forEach(p => {
+      if (p.category) cats.add(p.category);
+    });
+    return Array.from(cats);
+  }, [initialProducts]);
+
   const availableSubcategories = useMemo(() => {
     if (!selectedCategory) return [];
-    const subcats = new Set<string>();
+    const subcats = new Set<string>(MASTER_SUBCATEGORIES[selectedCategory] || []);
     localProducts.forEach(p => {
       if (p.category === selectedCategory && p.subcategory) {
         subcats.add(p.subcategory);
@@ -165,7 +174,9 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
            >
              <option value="">Todas las Categorías</option>
              {CATEGORIES.map(cat => (
-               <option key={cat} value={cat}>{cat}</option>
+               <option key={cat} value={cat}>
+                 {CATEGORY_EMOJI[cat] ? `${CATEGORY_EMOJI[cat]} ` : ''}{cat === 'MISCELÁNEA' ? 'MISCELÁNEA (La Tiendita)' : cat}
+               </option>
              ))}
            </select>
            <ChevronDown className="h-4 w-4 absolute right-3 top-3 text-gray-400 pointer-events-none" />

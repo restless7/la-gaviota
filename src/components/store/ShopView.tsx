@@ -646,27 +646,32 @@ export default function ShopView({ initialProducts, trackInventory = false }: { 
             {(!selectedCategory || selectedCategory === 'MISCELÁNEA') && (
               <Link
                 href="/tiendita"
-                className="mb-8 block rounded-3xl bg-gradient-to-r from-red-950 via-slate-900 to-emerald-950 border-2 border-amber-400/80 p-5 sm:p-6 shadow-xl hover:border-amber-300 transition-all group overflow-hidden relative"
+                className="mb-8 block rounded-3xl bg-gradient-to-r from-amber-50/90 via-white to-emerald-50/90 border-2 border-emerald-500 p-5 sm:p-6 shadow-md hover:shadow-xl hover:border-emerald-600 transition-all group overflow-hidden relative"
               >
-                <div className="absolute -right-12 -top-12 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div className="absolute -right-12 -top-12 w-48 h-48 bg-amber-400/20 rounded-full blur-2xl pointer-events-none"></div>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
                   <div className="flex items-center gap-4">
-                    <div className="text-3xl sm:text-4xl p-2.5 bg-amber-400/10 rounded-2xl border border-amber-400/30">
+                    <div className="text-3xl sm:text-4xl p-2.5 bg-white rounded-2xl border-2 border-emerald-400 shadow-sm">
                       🎄
                     </div>
                     <div>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-400/30">
-                        Nueva Colección Navideña 2026
-                      </span>
-                      <h3 className="text-lg sm:text-xl font-black text-white font-serif mt-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                          Nueva Colección Navideña 2026
+                        </span>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-red-700 bg-red-100 px-2 py-0.5 rounded-full border border-red-200">
+                          Edición Limitada
+                        </span>
+                      </div>
+                      <h3 className="text-lg sm:text-xl font-black text-slate-900 font-serif mt-1">
                         La Tiendita de La Gaviota: Cojines Navideños Premium
                       </h3>
-                      <p className="text-xs text-slate-300 mt-0.5">
-                        Cojines de lujo 45x45 cm en terciopelo suave con relleno siliconado. Diseños de Pesebre, Papá Noel y Duendecillos.
+                      <p className="text-xs text-slate-600 mt-0.5">
+                        Cojines de lujo 45x45 cm en terciopelo suave con relleno siliconado. Diseños de Pesebre, Papá Noel y Duendecillos desde <span className="font-extrabold text-emerald-700">$40.000 COP</span>.
                       </p>
                     </div>
                   </div>
-                  <div className="shrink-0 flex items-center gap-2 text-xs font-black uppercase tracking-wider text-amber-400 group-hover:text-amber-300">
+                  <div className="shrink-0 flex items-center gap-2 text-xs font-black uppercase tracking-wider text-emerald-700 group-hover:text-emerald-800 bg-white border border-emerald-300 px-4 py-2 rounded-full shadow-sm group-hover:bg-emerald-50">
                     <span>Ver Colección Completa</span>
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </div>

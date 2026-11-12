@@ -49,21 +49,20 @@ export default function Header() {
     <>
       <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
-          <div className="flex min-w-0 items-center gap-1 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-3">
             <button type="button" aria-label="Abrir menú" aria-haspopup="dialog" aria-controls="gaviota-menu" aria-expanded={menuOpen} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-red-600 xl:hidden" onClick={() => { menuRef.current?.showModal(); setMenuOpen(true); }}>
               <Menu aria-hidden="true" size={24} />
             </button>
-            <Link href="/" aria-label="La Gaviota, ir a la tienda" className="relative block h-16 w-[104px] shrink-0 sm:w-40 xl:w-44">
-              <Image src="/IMAGES/logo.jpeg" alt="La Gaviota" fill sizes="(max-width: 639px) 104px, 176px" priority className="object-contain" />
+            <Link href="/" aria-label="La Gaviota, ir a la tienda" className="relative block h-14 w-32 shrink-0 sm:h-16 sm:w-40 xl:w-44">
+              <Image src="/IMAGES/logo.jpeg" alt="La Gaviota" fill sizes="(max-width: 639px) 128px, 176px" priority className="object-contain" />
             </Link>
           </div>
 
-          <nav aria-label="Navegación principal" className="hidden items-center gap-5 whitespace-nowrap text-sm font-semibold text-slate-700 xl:flex">
-            <Link href="/" className="py-3 hover:text-red-700">Tienda</Link>
-            <Link href="/tiendita" className="inline-flex items-center gap-1.5 py-2 px-3 rounded-full bg-emerald-50 text-emerald-800 font-extrabold border border-emerald-200 hover:bg-emerald-100 hover:text-emerald-900 transition-colors">
-              <span>🎄</span>
+          <nav aria-label="Navegación principal" className="hidden items-center gap-4 xl:gap-5 whitespace-nowrap text-sm font-semibold text-slate-700 xl:flex">
+            <Link href="/tiendita" className="inline-flex items-center gap-1.5 py-1.5 px-3.5 rounded-full bg-white text-emerald-800 font-extrabold border-2 border-emerald-500 hover:bg-emerald-50 hover:text-emerald-900 transition-colors shadow-sm">
+              <span className="text-base">🎄</span>
               <span>La Tiendita</span>
-              <span className="text-[10px] bg-red-600 text-white font-black px-1.5 py-0.2 rounded-full uppercase">Nuevo</span>
+              <span className="text-[10px] bg-red-600 text-white font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Nuevo</span>
             </Link>
             <Link href="/nosotros" className="py-3 hover:text-red-700">Nuestra Granja</Link>
             <Link href="/sobre-nosotros" className="py-3 hover:text-red-700">Nosotros</Link>
@@ -124,7 +123,7 @@ export default function Header() {
               </Link>
             )}
             <Link href="/dashboard" onClick={closeMenu} className="mb-3 rounded-xl bg-red-50 px-4 py-3 font-bold text-red-700">Mi Cuenta · Mis pedidos</Link>
-            <Link href="/tiendita" onClick={closeMenu} className="mb-2 rounded-xl bg-gradient-to-r from-emerald-50 to-amber-50 border border-emerald-200 px-4 py-3 font-black text-emerald-900 flex items-center justify-between">
+            <Link href="/tiendita" onClick={closeMenu} className="mb-2 rounded-xl bg-white border-2 border-emerald-400 px-4 py-3 font-black text-emerald-900 flex items-center justify-between shadow-sm">
               <span className="flex items-center gap-2">🎄 La Tiendita Navideña</span>
               <span className="text-[10px] bg-red-600 text-white font-black px-2 py-0.5 rounded-full uppercase">Nuevo</span>
             </Link>
