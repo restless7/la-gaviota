@@ -4,9 +4,11 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 
+import { Suspense } from "react";
 import { UserRoleProvider } from "@/src/contexts/UserRoleContext";
 import { CartProvider } from "@/src/contexts/CartContext";
 import ConditionalWrapper from "@/app/components/layout/ConditionalWrapper";
+import { AnalyticsTracker } from "@/src/components/analytics/AnalyticsTracker";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -147,6 +149,9 @@ export default function RootLayout({
         <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 text-slate-800`}>
           <UserRoleProvider>
             <CartProvider>
+              <Suspense fallback={null}>
+                <AnalyticsTracker />
+              </Suspense>
               <ConditionalWrapper>
                 {children}
               </ConditionalWrapper>

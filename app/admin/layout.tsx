@@ -26,6 +26,7 @@ import {
   Server,
   Calculator,
   ScrollText,
+  Activity,
 } from 'lucide-react';
 import { useRBAC } from '@/src/hooks/useRBAC';
 import { useClerk } from '@clerk/nextjs';
@@ -83,6 +84,7 @@ const navigation: NavItem[] = [
   { name: 'Solicitudes de Negocio', href: '/admin/solicitudes', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN', 'COMMERCIAL'] },
   { name: 'Proveedores & Granjas', href: '/admin/suppliers', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO'] },
   { name: 'Reportes y Ventas', href: '/admin/reports', icon: BarChart3, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },
+  { name: 'Analítica Web & Visitas', href: '/admin/analytics', icon: Activity, roles: ['SUPER_ADMIN', 'ADMIN', 'COMMERCIAL'] },
   { name: 'Audit Log (Transacciones)', href: '/admin/audit', icon: ScrollText, roles: ['SUPER_ADMIN'] },
   { name: 'Configuración', href: '/admin/settings', icon: Settings, roles: ['SUPER_ADMIN'] },
 ];

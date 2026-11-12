@@ -48,50 +48,53 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur-md">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-2 px-3 sm:gap-3 sm:px-4 lg:px-6 2xl:px-8">
           <div className="flex shrink-0 items-center gap-1 sm:gap-3">
             <button type="button" aria-label="Abrir menú" aria-haspopup="dialog" aria-controls="gaviota-menu" aria-expanded={menuOpen} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-red-600 xl:hidden" onClick={() => { menuRef.current?.showModal(); setMenuOpen(true); }}>
               <Menu aria-hidden="true" size={24} />
             </button>
-            <Link href="/" aria-label="La Gaviota, ir a la tienda" className="relative block h-14 w-32 shrink-0 sm:h-16 sm:w-40 xl:w-44">
-              <Image src="/IMAGES/logo.jpeg" alt="La Gaviota" fill sizes="(max-width: 639px) 128px, 176px" priority className="object-contain" />
+            <Link href="/" aria-label="La Gaviota, ir a la tienda" className="relative block h-12 w-28 shrink-0 sm:h-14 sm:w-36 xl:h-14 xl:w-36 2xl:w-40">
+              <Image src="/IMAGES/logo.jpeg" alt="La Gaviota" fill sizes="(max-width: 639px) 112px, 160px" priority className="object-contain" />
             </Link>
           </div>
 
-          <nav aria-label="Navegación principal" className="hidden items-center gap-4 xl:gap-5 whitespace-nowrap text-sm font-semibold text-slate-700 xl:flex">
-            <Link href="/tiendita" className="inline-flex items-center gap-1.5 py-1.5 px-3.5 rounded-full bg-white text-emerald-800 font-extrabold border-2 border-emerald-500 hover:bg-emerald-50 hover:text-emerald-900 transition-colors shadow-sm">
-              <span className="text-base">🎄</span>
+          <nav aria-label="Navegación principal" className="hidden shrink-0 items-center gap-2 lg:gap-3 2xl:gap-5 whitespace-nowrap text-xs 2xl:text-sm font-semibold text-slate-700 xl:flex">
+            <Link href="/tiendita" className="inline-flex items-center gap-1.5 py-1 px-3 2xl:py-1.5 2xl:px-3.5 rounded-full bg-white text-emerald-800 font-extrabold border-2 border-emerald-500 hover:bg-emerald-50 hover:text-emerald-900 transition-colors shadow-sm">
+              <span className="text-sm 2xl:text-base">🎄</span>
               <span>La Tiendita</span>
-              <span className="text-[10px] bg-red-600 text-white font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Nuevo</span>
+              <span className="text-[9px] 2xl:text-[10px] bg-red-600 text-white font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Nuevo</span>
             </Link>
-            <Link href="/nosotros" className="py-3 hover:text-red-700">Nuestra Granja</Link>
-            <Link href="/sobre-nosotros" className="py-3 hover:text-red-700">Nosotros</Link>
-            <Link href="/aplicar-negocio" className="rounded-full bg-slate-800 px-4 py-2.5 text-yellow-300 hover:bg-slate-900">Precios Negocio</Link>
+            <Link href="/nosotros" className="py-2.5 px-1 hover:text-red-700 transition-colors">Nuestra Granja</Link>
+            <Link href="/sobre-nosotros" className="py-2.5 px-1 hover:text-red-700 transition-colors">Nosotros</Link>
+            <Link href="/aplicar-negocio" className="rounded-full bg-slate-800 px-3 py-1.5 2xl:px-4 2xl:py-2 text-yellow-300 hover:bg-slate-900 transition-colors text-xs font-bold">Precios Negocio</Link>
           </nav>
 
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2 2xl:gap-3">
             {isAdminAreaUser && (
               <Link
                 href="/admin"
-                className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-extrabold text-purple-900 transition-colors hover:bg-purple-100"
+                className="hidden md:inline-flex items-center gap-1 rounded-full border border-purple-200 bg-purple-50 px-2.5 py-1 2xl:px-3 2xl:py-1.5 text-xs font-extrabold text-purple-900 transition-colors hover:bg-purple-100"
                 title="Ir al Panel de Administración"
               >
-                <Shield size={14} className="text-purple-700" aria-hidden="true" />
-                <span>Panel Admin</span>
+                <Shield size={13} className="text-purple-700" aria-hidden="true" />
+                <span className="hidden 2xl:inline">Panel Admin</span>
+                <span className="2xl:hidden">Admin</span>
               </Link>
             )}
             <Link
               href={role === 'Personas Naturales' ? '/aplicar-negocio' : '/dashboard'}
               data-testid="customer-tier-badge"
               title={businessName ? `${tierBadge.label} (${businessName})` : tierBadge.label}
-              className={`hidden md:inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-extrabold tracking-tight transition-colors hover:opacity-90 ${tierBadge.classes}`}
+              className={`hidden md:inline-flex items-center gap-1 rounded-full border px-2.5 py-1 2xl:px-3 2xl:py-1.5 text-xs font-extrabold tracking-tight transition-colors hover:opacity-90 ${tierBadge.classes}`}
             >
-              <TierIcon size={14} aria-hidden="true" />
-              <span className="hidden lg:inline">{tierBadge.label}</span>
-              <span className="lg:hidden">{tierBadge.shortLabel}</span>
+              <TierIcon size={13} aria-hidden="true" />
+              <span className="hidden 2xl:inline">{tierBadge.label}</span>
+              <span className="2xl:hidden">{tierBadge.shortLabel}</span>
             </Link>
-            <Link href="/dashboard" className="flex min-h-11 items-center gap-1.5 whitespace-nowrap rounded-xl px-2 text-xs font-bold text-red-700 hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-red-600 sm:px-3 sm:text-sm" data-testid="account-link">
-              <UserRound size={19} aria-hidden="true" className="hidden sm:block" /> Mi Cuenta / Portal
+            <Link href="/dashboard" className="flex min-h-9 items-center gap-1 whitespace-nowrap rounded-xl px-2 text-xs font-bold text-red-700 hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-red-600 sm:px-2.5 sm:text-xs 2xl:text-sm" data-testid="account-link">
+              <UserRound size={17} aria-hidden="true" className="hidden sm:block" />
+              <span className="hidden 2xl:inline">Mi Cuenta / Portal</span>
+              <span className="2xl:hidden">Mi Cuenta</span>
             </Link>
             <div className="relative">
               <button type="button" data-testid="cart-toggle" aria-label={`Abrir carrito, ${itemCount} unidades`} aria-expanded={isCartOpen} onClick={() => setIsCartOpen(!isCartOpen)} className="relative flex h-11 w-11 items-center justify-center rounded-xl text-slate-700 hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-red-600">
