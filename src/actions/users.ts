@@ -23,14 +23,14 @@ export async function fetchSystemUsers(): Promise<SystemUser[]> {
     });
 
     return response.data.map(user => {
-      const metadata = user.publicMetadata as Record<string, any>;
+      const metadata = (user.publicMetadata || {}) as Record<string, unknown>;
       return {
         id: user.id,
         email: user.primaryEmailAddress?.emailAddress || 'Sin email',
         firstName: user.firstName || '',
         lastName: user.lastName || '',
-        role: metadata?.role || 'USER',
-        tier: metadata?.tier || 'Personas Naturales',
+        role: typeof metadata.role === 'string' ? metadata.role : 'USER',
+        tier: typeof metadata.tier === 'string' ? metadata.tier : 'Personas Naturales',
         createdAt: user.createdAt,
       };
     });
@@ -85,8 +85,8 @@ export async function updateUserRoleAndTier(userId: string, role: string, tier: 
     revalidatePath('/admin/clientes/restaurantes');
     revalidatePath('/');
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error updating user:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: error instanceof Error ? error.message : 'Error updating user' };
   }
 }

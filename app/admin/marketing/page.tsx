@@ -2,7 +2,11 @@ import { requireCapability } from '@/src/lib/server/authorization';
 import { getServerDatabase } from '@/src/lib/server/database';
 import React from 'react';
 
-import MarketingClient from './MarketingClient';
+import MarketingClient, {
+  type AbandonedCartRecord,
+  type ReorderCustomerRecord,
+  type MarketingLeadRecord,
+} from './MarketingClient';
 
 
 
@@ -13,9 +17,9 @@ export default async function MarketingHubPage() {
   let totalAbandoned = 0;
   let totalRecoveredAmount = 0;
   let recoveryRate = 0;
-  let carts: any[] = [];
-  let reorderEligible: any[] = [];
-  let rawLeads: any[] = [];
+  let carts: AbandonedCartRecord[] = [];
+  let reorderEligible: ReorderCustomerRecord[] = [];
+  let rawLeads: MarketingLeadRecord[] = [];
 
   try {
     const { data: abandonedData, error } = await supabase

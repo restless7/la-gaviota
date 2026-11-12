@@ -7,8 +7,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { logAgriculturalShrinkage } from '@/src/actions/analytics';
 
 interface ReportsClientProps {
-  salesData: any[];
-  shrinkageData: any[];
+  salesData: { name: string; Retail: number; Micro: number; Restaurante: number }[];
+  shrinkageData: { category: string; Merma: number; Recuperado: number }[];
   products: { id: string; name: string; category: string }[];
   summary: {
     totalRevenue: number;
@@ -82,14 +82,14 @@ export default function ReportsClient({ salesData, shrinkageData, summary, produ
         await logAgriculturalShrinkage({
           productId: shrinkageForm.productId,
           quantityKg: parseFloat(shrinkageForm.quantityKg),
-          logType: shrinkageForm.logType as any,
+          logType: shrinkageForm.logType as 'MERMA_TOTAL' | 'RECUPERADO_ORGANICO',
           reason: shrinkageForm.reason
         });
         setIsModalOpen(false);
         setShrinkageForm({ productId: '', quantityKg: '', logType: 'MERMA_TOTAL', reason: '' });
         alert('Novedad de merma registrada con éxito.');
-      } catch (error: any) {
-        alert(error.message || 'Error al registrar merma.');
+      } catch (error: unknown) {
+        alert(error instanceof Error ? error.message : 'Error al registrar merma.');
       }
     });
   };

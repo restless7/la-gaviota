@@ -55,7 +55,7 @@ export default function KitsClient({
   initialKits = [] 
 }: { 
   initialProducts: Product[]; 
-  initialKits?: any[];
+  initialKits?: KitRecord[];
 }) {
   const [kits, setKits] = useState<KitRecord[]>(initialKits as KitRecord[]);
   const [editingKitId, setEditingKitId] = useState<string | null>(null);
@@ -323,7 +323,7 @@ export default function KitsClient({
                  </span>
                </div>
                <p className="text-gray-500 text-xs sm:text-sm mt-1">
-                 Administra las opciones de "Kit Chévere" que se exhiben en la tienda pública (máximo 3 activos simultáneos).
+                 Administra las opciones de &quot;Kit Chévere&quot; que se exhiben en la tienda pública (máximo 3 activos simultáneos).
                </p>
             </div>
          </div>
@@ -355,7 +355,7 @@ export default function KitsClient({
             <span className="font-bold text-amber-300">Estado de Vitrina: </span>
             <span>{activeKits.length} de 3 opciones de Kit Chévere activas.</span>
             <span className="text-slate-300 ml-1 hidden md:inline">
-              Los kits con estado "Activo" rotan en el banner principal de la tienda.
+              Los kits con estado &quot;Activo&quot; rotan en el banner principal de la tienda.
             </span>
           </div>
         </div>
@@ -380,7 +380,7 @@ export default function KitsClient({
               <Layers className="h-5 w-5 text-red-600" />
               <span>Kits Registrados en el Sistema ({kits.length})</span>
             </h2>
-            <span className="text-xs text-slate-400 font-medium">Click en "Editar" para cargarlo al canvas</span>
+            <span className="text-xs text-slate-400 font-medium">Click en &quot;Editar&quot; para cargarlo al canvas</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

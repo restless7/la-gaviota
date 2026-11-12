@@ -62,9 +62,10 @@ export async function createOrder(
 
   // Compute canonical checkout fingerprint if idempotency key is present
   if (orderData.idempotency_key && !orderData.idempotency_fingerprint) {
+    const orderWithTier = orderData as typeof orderData & { tier?: string };
     orderData.idempotency_fingerprint = computeCheckoutFingerprint({
       clerk_user_id: orderData.clerk_user_id || '',
-      purchase_tier: (orderData as any).tier || 'retail',
+      purchase_tier: orderWithTier.tier || 'retail',
       items: items.map(item => ({
         product_id: item.product_id,
         quantity: item.quantity,
@@ -78,9 +79,15 @@ export async function createOrder(
   }
 
   // Strategy 1: Prioritize true atomic database transaction via create_order_atomic RPC
-  if (typeof (supabase as any).rpc === 'function') {
+  const rpcClient = supabase as unknown as {
+    rpc?: (
+      fn: string,
+      args: Record<string, unknown>
+    ) => Promise<{ data: { success?: boolean; order_id?: string; duplicate?: boolean } | null; error: { message?: string } | null }>;
+  };
+  if (typeof rpcClient.rpc === 'function') {
     try {
-      const { data: rpcResult, error: rpcError } = await (supabase as any).rpc('create_order_atomic', {
+      const { data: rpcResult, error: rpcError } = await rpcClient.rpc('create_order_atomic', {
         p_order: orderData,
         p_items: items,
         p_payment_intent: paymentIntent || null

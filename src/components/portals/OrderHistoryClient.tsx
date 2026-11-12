@@ -3,8 +3,25 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Package, Truck, CheckCircle2, Clock, XCircle, ChevronDown, ChevronUp, ShoppingBag } from 'lucide-react';
+import type { Product } from '@/src/actions/products';
 import { useCart } from '@/src/contexts/CartContext';
 import { useRouter } from 'next/navigation';
+
+interface OrderHistoryLineItem {
+  product_id: string;
+  product_name: string;
+  quantity: number;
+  price_at_purchase: number;
+}
+
+interface OrderHistoryRecord {
+  id: string;
+  status: string;
+  created_at: string;
+  total_amount: number;
+  notes?: string | null;
+  order_items?: OrderHistoryLineItem[];
+}
 
 const getStatusIcon = (status: string) => {
   switch (status) {
@@ -28,12 +45,12 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export function OrderHistoryClient({ orders, catalogProducts }: { orders: any[], catalogProducts?: any[] }) {
+export function OrderHistoryClient({ orders, catalogProducts }: { orders: OrderHistoryRecord[], catalogProducts?: Product[] }) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const { addToCart } = useCart();
   const router = useRouter();
 
-  const handleReorder = (e: React.MouseEvent, order: any) => {
+  const handleReorder = (e: React.MouseEvent, order: OrderHistoryRecord) => {
     e.stopPropagation();
     if (!order.order_items || order.order_items.length === 0) {
       alert("No hay productos disponibles para reordenar en esta compra.");
@@ -41,17 +58,24 @@ export function OrderHistoryClient({ orders, catalogProducts }: { orders: any[],
     }
     
     // We try to add each item. If we have the full catalog passed, we can add the full object.
-    // If not, the addToCart function might only need {id, name, price, imageUrl}.
+    // If not, construct a minimal fallback Product.
     let addedCount = 0;
-    order.order_items.forEach((item: any) => {
+    order.order_items.forEach((item) => {
       // Find full product details if catalog is provided, else construct a minimal mock product
       const fullProduct = catalogProducts?.find(p => p.id === item.product_id);
       
-      const productToAdd = fullProduct || {
+      const productToAdd: Product = fullProduct || {
         id: item.product_id,
         name: item.product_name,
+        category: 'VARIOS',
+        subcategory: null,
         price: item.price_at_purchase,
-        imageUrl: '',
+        previousPrice: null,
+        stockQuantity: 99,
+        isActive: true,
+        isInSeason: true,
+        imageUrl: null,
+        description: null,
         unit: 'Und'
       };
 
@@ -156,7 +180,7 @@ export function OrderHistoryClient({ orders, catalogProducts }: { orders: any[],
                   </div>
                   
                   <div className="space-y-3">
-                    {order.order_items?.map((item: any, idx: number) => (
+                    {order.order_items?.map((item, idx) => (
                       <div key={idx} className="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">

@@ -15,7 +15,7 @@ interface EditableProduct {
   priceRestaurant: number;
 }
 
-const ProductRow = React.memo(({
+const ProductRow = React.memo(function ProductRow({
   product,
   margins,
   onCostBlur,
@@ -25,19 +25,21 @@ const ProductRow = React.memo(({
   margins: { retail: number; micro: number; restaurant: number };
   onCostBlur: (id: string, val: number) => void;
   onPriceBlur: (id: string, field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', val: number) => void;
-}) => {
+}) {
+  const [prevProduct, setPrevProduct] = useState(product);
   const [localCost, setLocalCost] = useState(product.cost.toString());
   const [localRetail, setLocalRetail] = useState(product.priceRetail.toString());
   const [localMicro, setLocalMicro] = useState(product.priceMicro.toString());
   const [localRestaurant, setLocalRestaurant] = useState(product.priceRestaurant.toString());
 
   // Sync with parent state if it changes externally (e.g. macro update or dynamic margin applied)
-  React.useEffect(() => {
+  if (prevProduct !== product) {
+    setPrevProduct(product);
     setLocalCost(product.cost.toString());
     setLocalRetail(product.priceRetail.toString());
     setLocalMicro(product.priceMicro.toString());
     setLocalRestaurant(product.priceRestaurant.toString());
-  }, [product]);
+  }
 
   return (
     <tr className="hover:bg-indigo-50/30 transition-colors text-sm">
@@ -193,7 +195,9 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
   }, [retailMargin, microMargin, restaurantMargin]);
 
   // Sync state if initialProducts changes due to server revalidation
-  React.useEffect(() => {
+  const [prevInitialProducts, setPrevInitialProducts] = useState(initialProducts);
+  if (prevInitialProducts !== initialProducts) {
+    setPrevInitialProducts(initialProducts);
     setEditableProducts(
       initialProducts.map(p => ({
         id: p.id,
@@ -206,7 +210,7 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
         priceRestaurant: p.priceRestaurant,
       }))
     );
-  }, [initialProducts]);
+  }
 
   const handleApplyMacro = async () => {
     setIsApplying(true);

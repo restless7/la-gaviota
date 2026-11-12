@@ -3,15 +3,43 @@
 import React from 'react';
 import { ShoppingCart, TrendingUp, Users, MessageCircle, AlertTriangle, ArrowUpRight, CheckCircle, UserPlus } from 'lucide-react';
 
+export interface AbandonedCartRecord {
+  id: string;
+  customer_phone?: string | null;
+  customer_email?: string | null;
+  last_active_at: string;
+  total_amount: number;
+  status: string;
+}
+
+export interface ReorderCustomerRecord {
+  clerk_user_id: string;
+  business_name?: string | null;
+  full_name: string;
+  last_order_at: string;
+  total_spent: number;
+  tier: string;
+}
+
+export interface MarketingLeadRecord {
+  id: string;
+  business_name?: string | null;
+  full_name: string;
+  business_type: string;
+  created_at: string;
+  phone: string;
+  status: string;
+}
+
 interface MarketingClientProps {
   kpis: {
     totalAbandoned: number;
     totalRecoveredAmount: number;
     recoveryRate: number;
   };
-  recentCarts: any[];
-  reorderEligible: any[];
-  rawLeads: any[];
+  recentCarts: AbandonedCartRecord[];
+  reorderEligible: ReorderCustomerRecord[];
+  rawLeads: MarketingLeadRecord[];
 }
 
 export default function MarketingClient({ kpis, recentCarts, reorderEligible, rawLeads }: MarketingClientProps) {

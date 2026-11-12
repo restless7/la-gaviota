@@ -33,7 +33,20 @@ export function ProcurementSheet({ onClose }: { onClose: () => void }) {
   };
 
   useEffect(() => {
-    loadData();
+    let active = true;
+    fetchOrderConsolidation(statuses)
+      .then((data) => {
+        if (active) setItems(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        if (active) setIsLoading(false);
+      });
+    return () => {
+      active = false;
+    };
   }, [statuses]);
 
   const totalRequired = items.reduce((acc, i) => acc + i.quantity, 0);
@@ -64,6 +77,7 @@ export function ProcurementSheet({ onClose }: { onClose: () => void }) {
             <button
               key={status}
               onClick={() => {
+                setIsLoading(true);
                 setStatuses(prev =>
                   prev.includes(status) ? prev.filter(s => s !== status) : [...prev, status]
                 );

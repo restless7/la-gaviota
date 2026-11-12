@@ -37,7 +37,7 @@ export interface Order {
   scheduled_delivery_date?: string;
   is_conflicted?: boolean;
   conflict_reason?: string | null;
-  client_metadata?: Record<string, any> | null;
+  client_metadata?: Record<string, unknown> | null;
   customer_tier?: CustomerTierType;
   customer_business_name?: string | null;
   order_items?: OrderItem[];
@@ -50,7 +50,39 @@ function normalizeCustomerTier(rawTier: unknown): CustomerTierType {
   return 'Personas Naturales';
 }
 
-async function enrichOrdersWithCustomerTier(supabase: any, rawOrders: any[]): Promise<Order[]> {
+interface RawOrderRow {
+  id: string;
+  clerk_user_id: string | null;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  delivery_address: string;
+  delivery_municipality: string;
+  total_amount: number;
+  status: Order['status'];
+  payment_method: string;
+  payment_status?: string | null;
+  idempotency_key?: string | null;
+  notes: string | null;
+  created_at: string;
+  scheduled_delivery_date?: string;
+  is_conflicted?: boolean;
+  conflict_reason?: string | null;
+  client_metadata?: Record<string, unknown> | null;
+  order_items?: OrderItem[];
+}
+
+interface CustomerLookupRow {
+  clerk_user_id: string | null;
+  email: string | null;
+  tier: string | null;
+  business_name: string | null;
+}
+
+async function enrichOrdersWithCustomerTier(
+  supabase: ReturnType<typeof getServerDatabase>,
+  rawOrders: RawOrderRow[]
+): Promise<Order[]> {
   if (!rawOrders || rawOrders.length === 0) return [];
 
   const clerkIds = Array.from(
@@ -70,7 +102,7 @@ async function enrichOrdersWithCustomerTier(supabase: any, rawOrders: any[]): Pr
         .select('clerk_user_id, email, tier, business_name')
         .in('clerk_user_id', clerkIds);
 
-      (custByClerk || []).forEach((c: any) => {
+      ((custByClerk || []) as CustomerLookupRow[]).forEach((c) => {
         const entry = {
           tier: normalizeCustomerTier(c.tier),
           business_name: c.business_name || null,
@@ -86,7 +118,7 @@ async function enrichOrdersWithCustomerTier(supabase: any, rawOrders: any[]): Pr
         .select('clerk_user_id, email, tier, business_name')
         .in('email', emails);
 
-      (custByEmail || []).forEach((c: any) => {
+      ((custByEmail || []) as CustomerLookupRow[]).forEach((c) => {
         const key = String(c.email || '').toLowerCase().trim();
         if (key && !byEmail.has(key)) {
           byEmail.set(key, {
@@ -104,11 +136,12 @@ async function enrichOrdersWithCustomerTier(supabase: any, rawOrders: any[]): Pr
     const clerkMatch = o.clerk_user_id ? byClerkId.get(o.clerk_user_id) : undefined;
     const emailMatch = o.customer_email ? byEmail.get(String(o.customer_email).toLowerCase().trim()) : undefined;
     const metaTier = o.client_metadata?.tier;
+    const metaBusiness = typeof o.client_metadata?.business_name === 'string' ? o.client_metadata.business_name : null;
     const resolvedTier = clerkMatch?.tier || emailMatch?.tier || normalizeCustomerTier(metaTier);
     const resolvedBusiness =
       clerkMatch?.business_name ||
       emailMatch?.business_name ||
-      o.client_metadata?.business_name ||
+      metaBusiness ||
       null;
 
     return {
@@ -215,7 +248,7 @@ export async function fetchOrderConsolidation(statuses: string[] = ['Pendiente',
   // Group by product_id
   const consolidation: Record<string, { id: string, name: string, quantity: number }> = {};
 
-  data.forEach((item: any) => {
+  data.forEach((item: { product_id: string; product_name: string; quantity: number }) => {
     const pid = item.product_id;
     if (!consolidation[pid]) {
       consolidation[pid] = { id: pid, name: item.product_name, quantity: 0 };

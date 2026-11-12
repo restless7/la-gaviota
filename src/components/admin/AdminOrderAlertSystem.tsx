@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
+import { createClient, type RealtimeChannel, type SupabaseClient } from '@supabase/supabase-js';
 import Link from 'next/link';
 import {
   Bell,
@@ -29,6 +30,7 @@ import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
 
 const ACK_STORAGE_KEY = 'gaviota_ack_orders_v1';
 const SOUND_STORAGE_KEY = 'gaviota_admin_sound_enabled_v1';
+const emptySubscribe = () => () => {};
 
 /**
  * Plays a rich, multi-tone enterprise order alert chime using Web Audio API.
@@ -125,7 +127,7 @@ export function AdminOrderAlertSystem() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [acknowledgedIds, setAcknowledgedIds] = useState<Set<string>>(new Set());
   const [isTestMode, setIsTestMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   const initializedRef = useRef(false);
   const ackSetRef = useRef<Set<string>>(new Set());
@@ -134,26 +136,32 @@ export function AdminOrderAlertSystem() {
 
   // Load saved preferences from localStorage
   useEffect(() => {
-    setMounted(true);
-    try {
-      const rawAck = localStorage.getItem(ACK_STORAGE_KEY);
-      if (rawAck) {
-        const parsed = JSON.parse(rawAck);
-        if (Array.isArray(parsed)) {
-          const initialSet = new Set<string>(parsed);
-          setAcknowledgedIds(initialSet);
-          ackSetRef.current = initialSet;
+    let active = true;
+    Promise.resolve().then(() => {
+      if (!active) return;
+      try {
+        const rawAck = localStorage.getItem(ACK_STORAGE_KEY);
+        if (rawAck) {
+          const parsed = JSON.parse(rawAck);
+          if (Array.isArray(parsed)) {
+            const initialSet = new Set<string>(parsed);
+            setAcknowledgedIds(initialSet);
+            ackSetRef.current = initialSet;
+          }
         }
+        const rawSound = localStorage.getItem(SOUND_STORAGE_KEY);
+        if (rawSound !== null) {
+          const enabled = rawSound === 'true';
+          setSoundEnabled(enabled);
+          soundEnabledRef.current = enabled;
+        }
+      } catch {
+        // ignore storage errors
       }
-      const rawSound = localStorage.getItem(SOUND_STORAGE_KEY);
-      if (rawSound !== null) {
-        const enabled = rawSound === 'true';
-        setSoundEnabled(enabled);
-        soundEnabledRef.current = enabled;
-      }
-    } catch {
-      // ignore storage errors
-    }
+    });
+    return () => {
+      active = false;
+    };
   }, []);
 
   const persistAckIds = useCallback((nextSet: Set<string>) => {
@@ -253,13 +261,14 @@ export function AdminOrderAlertSystem() {
 
   // Poll every 15 seconds + subscribe to Supabase Realtime INSERT on public.orders
   useEffect(() => {
-    checkOrders();
+    const initialTimer = setTimeout(() => {
+      void checkOrders();
+    }, 0);
     const intervalId = setInterval(checkOrders, 15000);
 
-    let supabaseChannel: any = null;
-    let supabaseClient: any = null;
+    let supabaseChannel: RealtimeChannel | null = null;
+    let supabaseClient: SupabaseClient | null = null;
     try {
-      const { createClient } = require('@supabase/supabase-js');
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
       if (supabaseUrl && supabaseKey) {
@@ -281,6 +290,7 @@ export function AdminOrderAlertSystem() {
     }
 
     return () => {
+      clearTimeout(initialTimer);
       clearInterval(intervalId);
       if (supabaseClient && supabaseChannel) {
         supabaseClient.removeChannel(supabaseChannel);

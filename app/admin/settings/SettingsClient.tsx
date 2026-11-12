@@ -25,7 +25,7 @@ export default function SettingsClient({ initialSettings }: { initialSettings: S
     });
   };
 
-  const updateField = (field: keyof SystemSettings, value: any) => {
+  const updateField = <K extends keyof SystemSettings>(field: K, value: SystemSettings[K]) => {
     setForm(prev => ({ ...prev, [field]: value }));
   };
 
@@ -137,13 +137,13 @@ export default function SettingsClient({ initialSettings }: { initialSettings: S
             <h2 className="text-xl font-black text-slate-800">Alertas y Comunicaciones</h2>
           </div>
           <div className="space-y-4">
-            {[
+            {([
               { key: 'emailNewOrder', label: 'Email — Nuevo pedido recibido', icon: '📧' },
               { key: 'emailLowStock', label: 'Email — Alerta de stock bajo', icon: '📧' },
               { key: 'whatsappNewOrder', label: 'WhatsApp — Nuevo pedido B2B', icon: '💬' },
               { key: 'whatsappDelivery', label: 'WhatsApp — Confirmación de entrega', icon: '💬' },
               { key: 'dailyReport', label: 'Reporte diario de ventas (6:00 PM)', icon: '📊' },
-            ].map(item => (
+            ] as const).map(item => (
               <div key={item.key} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
                   <span className="text-lg">{item.icon}</span>
@@ -153,8 +153,8 @@ export default function SettingsClient({ initialSettings }: { initialSettings: S
                   <input
                     type="checkbox"
                     className="sr-only peer"
-                    checked={(form.notifications as any)[item.key]}
-                    onChange={() => updateField('notifications', { ...form.notifications, [item.key]: !(form.notifications as any)[item.key] })}
+                    checked={form.notifications[item.key]}
+                    onChange={() => updateField('notifications', { ...form.notifications, [item.key]: !form.notifications[item.key] })}
                   />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4CAF50]"></div>
                 </label>

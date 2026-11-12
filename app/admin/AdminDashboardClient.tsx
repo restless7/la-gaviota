@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 import {
   Users,
   ShoppingBag,
@@ -125,6 +125,8 @@ const QuickAction = ({
   </Link>
 );
 
+const emptySubscribe = () => () => {};
+
 export default function AdminDashboardClient({ 
   initialProductCount, 
   initialLowStockItems,
@@ -137,11 +139,7 @@ export default function AdminDashboardClient({
   initialPendingApplications,
   initialActiveKit
 }: AdminDashboardClientProps) {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  const loading = useSyncExternalStore(emptySubscribe, () => false, () => true);
 
   if (loading) {
     return (

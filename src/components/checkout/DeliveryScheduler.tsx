@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
-import { calculateDeliverySchedule, type DeliveryScheduleCalculation } from '@/src/lib/deliveryCutoff';
+import { calculateDeliverySchedule } from '@/src/lib/deliveryCutoff';
+
+const emptySubscribe = () => () => {};
 
 export const DELIVERY_TIME_RANGES = [
   { id: 'all-day', label: 'Jornada Completa', range: '8:00 AM a 5:00 PM', value: 'Jornada Completa (8:00 AM - 5:00 PM)' },
@@ -19,7 +21,8 @@ export function DeliveryScheduler({
   onTimeRangeChange,
   defaultOpenPopup = true,
 }: DeliverySchedulerProps = {}) {
-  const [schedule, setSchedule] = React.useState<DeliveryScheduleCalculation | null>(null);
+  const isClient = React.useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const schedule = React.useMemo(() => (isClient ? calculateDeliverySchedule() : null), [isClient]);
   const [internalRange, setInternalRange] = React.useState<string>(DELIVERY_TIME_RANGES[0].value);
   const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(defaultOpenPopup);
 
@@ -29,10 +32,6 @@ export function DeliveryScheduler({
     setInternalRange(val);
     onTimeRangeChange?.(val);
   };
-
-  React.useEffect(() => {
-    setSchedule(calculateDeliverySchedule());
-  }, []);
 
   if (!schedule) {
     return (

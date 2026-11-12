@@ -1,4 +1,5 @@
 // src/lib/metaCapi.ts
+import crypto from 'node:crypto';
 
 interface CapiPurchasePayload {
   orderId: string;
@@ -29,7 +30,6 @@ export async function sendPurchaseEventToMeta(payload: CapiPurchasePayload) {
   // we'll use the Web Crypto API if available or send them directly (Meta rejects unhashed PII strictly, 
   // so we'll implement a fast SHA-256 hash using native Node crypto).
 
-  const crypto = require('crypto');
   const hash = (val: string | undefined) => {
     if (!val) return undefined;
     return crypto.createHash('sha256').update(val.toLowerCase().trim()).digest('hex');

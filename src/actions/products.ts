@@ -163,7 +163,12 @@ export async function updateProductPricing(
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const updates: any = {};
+  const updates: {
+    base_cost?: number;
+    price_retail?: number;
+    price_micro?: number;
+    price_restaurant?: number;
+  } = {};
   if (base_cost !== undefined && base_cost !== 0) updates.base_cost = base_cost;
   if (price_retail !== undefined && price_retail !== 0) updates.price_retail = price_retail;
   if (price_micro !== undefined && price_micro !== 0) updates.price_micro = price_micro;

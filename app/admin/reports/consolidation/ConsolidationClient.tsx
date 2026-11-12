@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useSyncExternalStore } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -74,6 +74,8 @@ export function exportConsolidationToCSV(items: ConsolidatedItem[], statuses: st
   URL.revokeObjectURL(url);
 }
 
+const emptySubscribe = () => () => {};
+
 export default function ConsolidationClient({
   initialItems,
 }: {
@@ -85,16 +87,19 @@ export default function ConsolidationClient({
   const [searchTerm, setSearchTerm] = useState('');
   const [onlyDeficit, setOnlyDeficit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [generatedAt, setGeneratedAt] = useState<string>('');
-
-  useEffect(() => {
-    setGeneratedAt(
-      new Date().toLocaleString('es-CO', {
-        dateStyle: 'full',
-        timeStyle: 'short',
-      })
-    );
-  }, []);
+  const [refreshedAt, setRefreshedAt] = useState<string>('');
+  const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const initialDate = useMemo(
+    () =>
+      isClient
+        ? new Date().toLocaleString('es-CO', {
+            dateStyle: 'full',
+            timeStyle: 'short',
+          })
+        : '',
+    [isClient]
+  );
+  const generatedAt = refreshedAt || initialDate;
 
   const loadConsolidation = useCallback(async (targetStatuses: string[]) => {
     if (targetStatuses.length === 0) {
@@ -105,7 +110,7 @@ export default function ConsolidationClient({
     try {
       const data = await fetchOrderConsolidation(targetStatuses);
       setItems(data);
-      setGeneratedAt(
+      setRefreshedAt(
         new Date().toLocaleString('es-CO', {
           dateStyle: 'full',
           timeStyle: 'short',

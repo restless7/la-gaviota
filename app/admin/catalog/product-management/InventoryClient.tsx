@@ -41,10 +41,6 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
 
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
 
-  React.useEffect(() => {
-    setSelectedSubcategory(null);
-  }, [selectedCategory]);
-
   const filtered = useMemo(() => {
     return localProducts.filter(p => {
       const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -161,7 +157,10 @@ export default function InventoryClient({ initialProducts, trackInventory }: { i
           <div className="relative">
            <select
              value={selectedCategory || ''}
-             onChange={(e) => setSelectedCategory(e.target.value || null)}
+             onChange={(e) => {
+               setSelectedCategory(e.target.value || null);
+               setSelectedSubcategory(null);
+             }}
              className="appearance-none bg-white border border-gray-200 rounded-lg pl-4 pr-10 py-2 font-medium text-slate-700 outline-none focus:border-[#4CAF50] cursor-pointer"
            >
              <option value="">Todas las Categorías</option>

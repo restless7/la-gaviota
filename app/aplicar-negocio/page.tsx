@@ -79,17 +79,24 @@ export default function AplicarNegocioPage() {
 
   // Restore draft from localStorage (so signing in at Step 3 never loses form data)
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(B2B_DRAFT_STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed.selectedTier) setSelectedTier(parsed.selectedTier);
-        if (parsed.form) setForm(prev => ({ ...prev, ...parsed.form }));
-        if (parsed.step && parsed.selectedTier) setStep(parsed.step);
+    let active = true;
+    Promise.resolve().then(() => {
+      if (!active) return;
+      try {
+        const raw = localStorage.getItem(B2B_DRAFT_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed.selectedTier) setSelectedTier(parsed.selectedTier);
+          if (parsed.form) setForm(prev => ({ ...prev, ...parsed.form }));
+          if (parsed.step && parsed.selectedTier) setStep(parsed.step);
+        }
+      } catch {
+        // Ignore storage errors
       }
-    } catch {
-      // Ignore storage errors
-    }
+    });
+    return () => {
+      active = false;
+    };
   }, []);
 
   // Save draft to localStorage as user progresses

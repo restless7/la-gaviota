@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Package, ArrowLeft, Save, Loader2, Image as ImageIcon, Trash2 } from 'lucide-react';
 import Link from 'next/link';
@@ -36,15 +36,6 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   });
 
   const availableSubcategories = SUBCATEGORIES[formData.category] || [];
-
-  // Reset subcategory if category changes and the new category doesn't have the current subcategory
-  useEffect(() => {
-    if (availableSubcategories.length > 0 && !availableSubcategories.includes(formData.subcategory)) {
-      setFormData(prev => ({ ...prev, subcategory: availableSubcategories[0] }));
-    } else if (availableSubcategories.length === 0) {
-      setFormData(prev => ({ ...prev, subcategory: '' }));
-    }
-  }, [formData.category, availableSubcategories]);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageUrl || null);
@@ -104,7 +95,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     const { name, value, type } = e.target;
     
     setFormData(prev => {
-      let newValue: any = value;
+      let newValue: string | number | boolean = value;
       if (type === 'number') {
         newValue = parseFloat(value) || 0;
       } else if (type === 'checkbox') {
@@ -113,13 +104,23 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       
       const updatedData = { ...prev, [name]: newValue };
 
+      if (name === 'category') {
+        const nextSubcategories = SUBCATEGORIES[String(newValue)] || [];
+        if (nextSubcategories.length > 0 && !nextSubcategories.includes(prev.subcategory)) {
+          updatedData.subcategory = nextSubcategories[0];
+        } else if (nextSubcategories.length === 0) {
+          updatedData.subcategory = '';
+        }
+      }
+
       // Auto-calculate prices based on margins (Retail: 25%, Micro: 15%, Restaurant: 5%)
+      const numericValue = typeof newValue === 'number' ? newValue : parseFloat(String(newValue)) || 0;
       if (name === 'baseCost') {
-        updatedData.priceRetail = Math.round(newValue * 1.25);
-        updatedData.priceMicro = Math.round(newValue * 1.15);
-        updatedData.priceRestaurant = Math.round(newValue * 1.05);
+        updatedData.priceRetail = Math.round(numericValue * 1.25);
+        updatedData.priceMicro = Math.round(numericValue * 1.15);
+        updatedData.priceRestaurant = Math.round(numericValue * 1.05);
       } else if (name === 'priceRetail') {
-        const calculatedBase = Math.round(newValue / 1.25);
+        const calculatedBase = Math.round(numericValue / 1.25);
         updatedData.baseCost = calculatedBase;
         updatedData.priceMicro = Math.round(calculatedBase * 1.15);
         updatedData.priceRestaurant = Math.round(calculatedBase * 1.05);
@@ -141,12 +142,12 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     <div className="p-8 max-w-[1000px] mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <a 
+          <Link 
             href="/admin/catalog/product-management"
             className="p-2 hover:bg-slate-200 rounded-full transition-colors text-gray-600 bg-white shadow-sm border border-gray-200 block"
           >
             <ArrowLeft className="h-6 w-6" />
-          </a>
+          </Link>
           <div>
             <h1 className="text-3xl font-black text-slate-800 font-serif">
               {isEditing ? 'Editar Producto' : 'Registrar Nuevo Producto'}

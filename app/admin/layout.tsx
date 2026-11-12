@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -35,7 +35,26 @@ interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
-const navigation = [
+type NavItem =
+  | {
+      name: string;
+      href: string;
+      icon: React.ComponentType<{ className?: string }>;
+      roles: string[];
+      subItems?: undefined;
+    }
+  | {
+      name: string;
+      href?: undefined;
+      icon: React.ComponentType<{ className?: string }>;
+      group?: 'crm' | 'catalog';
+      roles: string[];
+      subItems: { name: string; href: string }[];
+    };
+
+const emptySubscribe = () => () => {};
+
+const navigation: NavItem[] = [
   { name: 'Dashboard Principal', href: '/admin', icon: Home, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },
   {
     name: 'Gestión de Clientes',
@@ -72,7 +91,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [crmOpen, setCrmOpen] = useState(false);
   const [opsOpen, setOpsOpen] = useState(false);
-  const [currentDate, setCurrentDate] = useState<string>('');
+  const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const pathname = usePathname();
   const { user, loading, isSuperAdmin, isAdminAreaUser } = useRBAC();
   const { signOut } = useClerk();
@@ -81,14 +100,14 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
     signOut({ redirectUrl: '/' });
   };
 
-  useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString('es-ES', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }));
-  }, []);
+  const currentDate = isClient
+    ? new Date().toLocaleDateString('es-ES', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    : '';
 
   if (loading) {
     return (
@@ -176,7 +195,7 @@ function AdminLayoutContent({ children }: AdminLayoutProps) {
 
             if (item.subItems) {
               const isChildActive = item.subItems.some(sub => pathname.startsWith(sub.href));
-              const groupKey = (item as any).group || 'crm';
+              const groupKey = item.group || 'crm';
               const isGroupOpen = groupKey === 'crm' ? crmOpen : opsOpen;
               const toggleGroup = () => groupKey === 'crm' ? setCrmOpen(!crmOpen) : setOpsOpen(!opsOpen);
 

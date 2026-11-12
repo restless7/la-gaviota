@@ -2,10 +2,27 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import type { Product } from '@/src/actions/products';
 import { ProductCard } from '@/src/components/store/ProductCard';
 import { useCart } from '@/src/contexts/CartContext';
 import { initializeWompiBalancePayment } from '@/src/actions/wompi';
 import Script from 'next/script';
+
+interface CreditProfile {
+  credit_balance?: number | null;
+}
+
+interface BuyingTemplateItem {
+  product?: Product;
+  quantity?: number;
+}
+
+interface BuyingTemplate {
+  id: string;
+  template_name: string;
+  product_list?: BuyingTemplateItem[] | unknown;
+}
 
 export default function RestauranteClient({ 
   wholesalePicks, 
@@ -13,10 +30,10 @@ export default function RestauranteClient({
   creditProfile, 
   templates 
 }: { 
-  wholesalePicks: any[]; 
+  wholesalePicks: Product[]; 
   monthlySpend: number; 
-  creditProfile: any; 
-  templates: any[] 
+  creditProfile: CreditProfile | null; 
+  templates: BuyingTemplate[];
 }) {
   const { addToCart } = useCart();
 
@@ -59,11 +76,11 @@ export default function RestauranteClient({
     }
   };
 
-  const handleAddTemplateToCart = (template: any) => {
+  const handleAddTemplateToCart = (template: BuyingTemplate) => {
     // template.product_list should be an array of { product: Product, quantity: number }
     if (!template.product_list || !Array.isArray(template.product_list)) return;
     
-    template.product_list.forEach((item: any) => {
+    template.product_list.forEach((item: BuyingTemplateItem) => {
        if (item.product && item.quantity) {
          // Assuming item.product contains enough data for the cart
          addToCart(item.product, item.quantity);
@@ -124,7 +141,7 @@ export default function RestauranteClient({
              <div key={tpl.id} className="border border-gray-200 rounded-xl p-5 bg-white flex justify-between items-center hover:border-blue-400 cursor-pointer transition-colors shadow-sm">
                 <div>
                    <h3 className="font-bold text-slate-800 text-lg">{tpl.template_name}</h3>
-                   <p className="text-sm text-gray-500">{tpl.product_list?.length || 0} items en esta plantilla</p>
+                   <p className="text-sm text-gray-500">{Array.isArray(tpl.product_list) ? tpl.product_list.length : 0} items en esta plantilla</p>
                 </div>
                 <button onClick={() => handleAddTemplateToCart(tpl)} className="bg-slate-100 text-slate-700 hover:bg-slate-200 font-bold px-4 py-2 rounded-lg text-sm transition-colors">
                    Añadir todo al carrito
@@ -140,7 +157,7 @@ export default function RestauranteClient({
            <h2 className="text-2xl font-black text-slate-800 font-serif">Catálogo Mayorista Relevante</h2>
            <p className="text-gray-500 text-sm mt-1">Recomendaciones dinámicas basadas en disponibilidad e historial</p>
          </div>
-         <a href="/" className="text-sm font-bold text-blue-600 hover:text-blue-800 underline">Ir a compras</a>
+         <Link href="/" className="text-sm font-bold text-blue-600 hover:text-blue-800 underline">Ir a compras</Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
          {wholesalePicks.map(p => (

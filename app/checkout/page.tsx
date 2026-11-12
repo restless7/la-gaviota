@@ -48,18 +48,25 @@ export default function CheckoutPage() {
    } | null>(null);
 
    useEffect(() => {
-      try {
-         const raw = localStorage.getItem('gaviota_saved_checkout_profile');
-         if (raw) {
-            const parsed = JSON.parse(raw) as SavedCheckoutProfile;
-            setSavedProfile(parsed);
-            if (parsed.city && ['Bucaramanga', 'Floridablanca', 'Girón'].includes(parsed.city)) {
-               setSelectedCity(parsed.city);
+      let active = true;
+      Promise.resolve().then(() => {
+         if (!active) return;
+         try {
+            const raw = localStorage.getItem('gaviota_saved_checkout_profile');
+            if (raw) {
+               const parsed = JSON.parse(raw) as SavedCheckoutProfile;
+               setSavedProfile(parsed);
+               if (parsed.city && ['Bucaramanga', 'Floridablanca', 'Girón'].includes(parsed.city)) {
+                  setSelectedCity(parsed.city);
+               }
             }
+         } catch {
+            // ignore localStorage read errors
          }
-      } catch {
-         // ignore localStorage read errors
-      }
+      });
+      return () => {
+         active = false;
+      };
    }, []);
 
    const formatPrice = (price: number) => {

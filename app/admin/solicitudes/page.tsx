@@ -53,7 +53,17 @@ export default function SolicitudesNegocioPage() {
   };
 
   useEffect(() => {
-    loadApplications();
+    let active = true;
+    fetchBusinessApplications().then((result) => {
+      if (!active) return;
+      if (result.success) {
+        setApplications(result.data as BusinessApplication[]);
+      }
+      setLoading(false);
+    });
+    return () => {
+      active = false;
+    };
   }, []);
 
   const handleApprove = async (app: BusinessApplication, overrideTier?: BusinessTier) => {

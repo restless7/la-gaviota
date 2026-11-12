@@ -50,8 +50,8 @@ export function OrderSummarySheet({ order, onClose }: { order: Order; onClose: (
         await confirmCashPayment(order.id);
         alert('Pago confirmado exitosamente.');
         onClose();
-      } catch (error: any) {
-        alert(error.message || 'Error al confirmar el pago.');
+      } catch (error: unknown) {
+        alert(error instanceof Error ? error.message : 'Error al confirmar el pago.');
       }
     });
   };

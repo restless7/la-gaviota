@@ -2,9 +2,36 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import type { Product } from '@/src/actions/products';
 import { ProductCard } from '@/src/components/store/ProductCard';
 import { useCart } from '@/src/contexts/CartContext';
 import { useRouter } from 'next/navigation';
+
+interface B2BOrderItem {
+  product_id: string;
+  product_name?: string;
+  quantity: number;
+  products?: Product;
+}
+
+interface B2BOrderSummary {
+  id: string;
+  status: string;
+  order_items?: B2BOrderItem[];
+}
+
+interface BuyingTemplateItem {
+  product_id?: string;
+  quantity: number;
+  product?: Product;
+}
+
+interface BuyingTemplate {
+  id: string;
+  template_name: string;
+  product_list?: BuyingTemplateItem[] | unknown;
+}
 
 export default function MicromercadoClient({ 
   bulkPicks, 
@@ -12,10 +39,10 @@ export default function MicromercadoClient({
   lastOrder,
   templates
 }: { 
-  bulkPicks: any[]; 
-  allProducts?: any[];
-  lastOrder: any;
-  templates: any[];
+  bulkPicks: Product[]; 
+  allProducts?: Product[];
+  lastOrder: B2BOrderSummary | null;
+  templates: BuyingTemplate[];
 }) {
   const { addToCart } = useCart();
   const router = useRouter();
@@ -28,8 +55,8 @@ export default function MicromercadoClient({
     
     let addedCount = 0;
     const catalogPool = allProducts.length > 0 ? allProducts : bulkPicks;
-    lastOrder.order_items.forEach((item: any) => {
-       const matchedProduct = item.products || catalogPool.find((p: any) => p.id === item.product_id);
+    lastOrder.order_items.forEach((item) => {
+       const matchedProduct = item.products || catalogPool.find((p) => p.id === item.product_id);
        if (matchedProduct && item.quantity) {
          addToCart(matchedProduct, item.quantity);
          addedCount++;
@@ -42,17 +69,30 @@ export default function MicromercadoClient({
     }
   };
 
-  const handleAddTemplateToCart = (tpl: any) => {
+  const handleAddTemplateToCart = (tpl: BuyingTemplate) => {
     if (tpl.product_list && Array.isArray(tpl.product_list)) {
-      tpl.product_list.forEach((item: any) => {
-        // Find product by id from bulkPicks or we just pass a simple product object
-        // Actually addToCart just needs the product object with an ID
-        // The template should store { product_id, quantity, product: { ... } }
+      tpl.product_list.forEach((item: BuyingTemplateItem) => {
         if (item.product) {
           addToCart(item.product, item.quantity);
         } else if (item.product_id) {
-          // If we only have product_id, we create a stub product. The CartContext needs the full product ideally, but for now we do this
-          addToCart({ id: item.product_id, name: `Producto ${item.product_id}`, priceRetail: 0, priceMicro: 0, priceRestaurant: 0, baseCost: 0, stockQuantity: 99 } as any, item.quantity);
+          const matched = allProducts.find((p) => p.id === item.product_id) || bulkPicks.find((p) => p.id === item.product_id);
+          addToCart(
+            matched || {
+              id: item.product_id,
+              name: `Producto ${item.product_id}`,
+              category: 'VARIOS',
+              subcategory: null,
+              unit: 'Und',
+              price: 0,
+              previousPrice: null,
+              stockQuantity: 99,
+              isActive: true,
+              isInSeason: true,
+              imageUrl: null,
+              description: null,
+            },
+            item.quantity
+          );
         }
       });
       alert(`Plantilla ${tpl.template_name} añadida al carrito.`);
@@ -137,7 +177,7 @@ export default function MicromercadoClient({
              <div key={tpl.id} className="border border-gray-200 rounded-xl p-5 bg-white flex justify-between items-center hover:border-yellow-400 cursor-pointer transition-colors shadow-sm">
                 <div>
                    <h3 className="font-bold text-slate-800 text-lg">{tpl.template_name}</h3>
-                   <p className="text-sm text-gray-500">{tpl.product_list?.length || 0} items en esta plantilla</p>
+                   <p className="text-sm text-gray-500">{Array.isArray(tpl.product_list) ? tpl.product_list.length : 0} items en esta plantilla</p>
                 </div>
                 <button onClick={() => handleAddTemplateToCart(tpl)} className="bg-yellow-50 text-yellow-700 hover:bg-yellow-100 font-bold px-4 py-2 rounded-lg text-sm transition-colors border border-yellow-200">
                    Añadir todo al carrito
@@ -153,7 +193,7 @@ export default function MicromercadoClient({
            <h2 className="text-2xl font-black text-slate-800 font-serif">Catálogo Mayorista Relevante</h2>
            <p className="text-gray-500 text-sm mt-1">Recomendaciones dinámicas basadas en disponibilidad e historial</p>
          </div>
-         <a href="/" className="text-sm font-bold text-yellow-600 hover:text-yellow-700 underline">Ver todo el catálogo</a>
+         <Link href="/" className="text-sm font-bold text-yellow-600 hover:text-yellow-700 underline">Ver todo el catálogo</Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
          {bulkPicks.map(p => (

@@ -40,7 +40,7 @@ export async function getAdvancedFinancialSummary(filters: AnalyticsFilters) {
   }
 
   // Use a Map to deduplicate orders if we joined with order_items
-  const uniqueOrders = new Map<string, any>();
+  const uniqueOrders = new Map<string, unknown>();
   orders?.forEach(o => {
     uniqueOrders.set(o.id, o); // wait, id is not selected. Let's fix that.
   });
@@ -168,8 +168,9 @@ export async function getRealShrinkageMetrics(filters: AnalyticsFilters) {
 
   const resultsMap: Record<string, { category: string, Merma: number, Recuperado: number }> = {};
 
-  logs?.forEach((log: any) => {
-    const cat = log.products.category || 'Otros';
+  logs?.forEach((log) => {
+    const joined = Array.isArray(log.products) ? log.products[0] : log.products;
+    const cat = joined?.category || 'Otros';
     if (!resultsMap[cat]) {
       resultsMap[cat] = { category: cat, Merma: 0, Recuperado: 0 };
     }

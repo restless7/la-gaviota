@@ -1,6 +1,6 @@
 import React from 'react';
 import { fetchProducts } from '@/src/actions/products';
-import { getLastOrder, getB2BOrders, getBuyingTemplates } from '@/src/actions/b2b';
+import { getLastOrder, getBuyingTemplates } from '@/src/actions/b2b';
 import MicromercadoClient from './MicromercadoClient';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
@@ -18,12 +18,11 @@ export default async function MicromercadoDashboard() {
 
   const products = await fetchProducts();
   const lastOrder = await getLastOrder();
-  const allOrders = await getB2BOrders();
   const templates = await getBuyingTemplates();
 
-  // Enterprise Recommendation Engine (Simulated): Mixes frequently ordered products with new seasonal items
   const activeProducts = products.filter(p => p.isActive && p.stockQuantity > 0);
-  const bulkPicks = [...activeProducts].sort(() => 0.5 - Math.random()).slice(0, 4);
+  const seasonalProducts = activeProducts.filter(p => p.isInSeason);
+  const bulkPicks = (seasonalProducts.length >= 4 ? seasonalProducts : activeProducts).slice(0, 4);
 
   return (
     <div className="space-y-12">

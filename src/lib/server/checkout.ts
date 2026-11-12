@@ -31,7 +31,7 @@ export async function prepareCheckout(formData: FormData, items: unknown, expect
   // Also check kits table if any requested line item ID was not found in products
   const foundIds = new Set(catalogProducts.map(p => p.id));
   const missingIds = lineIds.filter(id => !foundIds.has(id));
-  if (missingIds.length > 0 && typeof (db.from('kits') as any)?.select === 'function') {
+  if (missingIds.length > 0 && typeof (db as unknown as { from: (t: string) => { select?: unknown } }).from('kits')?.select === 'function') {
     const { data: kitsData } = await db.from('kits')
       .select('id,name,fixed_price,status')
       .in('id', missingIds);

@@ -18,7 +18,7 @@ interface StorageManifestItem {
   updated_at?: string | null;
   created_at?: string | null;
   last_accessed_at?: string | null;
-  metadata?: Record<string, any> | null;
+  metadata?: Record<string, unknown> | null;
   sha256: string;
   size_bytes: number;
 }

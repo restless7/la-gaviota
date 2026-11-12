@@ -11,6 +11,15 @@ import { ProcurementSheet } from './ProcurementSheet';
 import { getOrderTierPresentation } from './OrderCard';
 import { Archive, CalendarDays, Printer, Users, User, Store, UtensilsCrossed } from 'lucide-react';
 import { useUser } from '@clerk/nextjs';
+import { createClient } from '@supabase/supabase-js';
+
+interface HistoricLedger {
+  id: string;
+  operational_date: string;
+  total_orders_processed: number;
+  total_revenue_collected: number;
+  closed_at: string;
+}
 
 const COLUMNS: Order['status'][] = ['Pendiente', 'En Preparación', 'En Ruta', 'Entregado'];
 
@@ -53,8 +62,13 @@ const TIER_FILTERS: {
     },
   ];
 
-export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOrders: Order[], historicLedgers: any[] }) {
+export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOrders: Order[], historicLedgers: HistoricLedger[] }) {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [prevInitialOrders, setPrevInitialOrders] = useState<Order[]>(initialOrders);
+  if (prevInitialOrders !== initialOrders) {
+    setPrevInitialOrders(initialOrders);
+    setOrders(initialOrders);
+  }
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isProcurementSheetOpen, setIsProcurementSheetOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'ACTIVE' | 'HISTORIC'>('ACTIVE');
@@ -90,11 +104,6 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
   const filteredHistoricOrders = historicOrders.filter(matchesSearchAndTier);
 
   React.useEffect(() => {
-    setOrders(initialOrders);
-  }, [initialOrders]);
-
-  React.useEffect(() => {
-    const { createClient } = require('@supabase/supabase-js');
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -104,8 +113,9 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
       .on(
         'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'orders' },
-        (payload: any) => {
+        (payload: { new: Partial<Order> & { id?: string } }) => {
           const updatedOrder = payload.new;
+          if (!updatedOrder?.id) return;
           setOrders((prev) =>
             prev.map((o) => (o.id === updatedOrder.id ? { ...o, ...updatedOrder } : o))
           );
@@ -190,8 +200,8 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
       try {
         await closeOperationalDay(todayStr, user?.id || 'admin');
         alert('Operación del día cerrada con éxito.');
-      } catch (error: any) {
-        alert(error.message || 'Error al cerrar el día operativo.');
+      } catch (error: unknown) {
+        alert(error instanceof Error ? error.message : 'Error al cerrar el día operativo.');
       }
     });
   };
@@ -322,7 +332,7 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
                   <KanbanColumn
                     status={status}
                     orders={columnOrders}
-                    onSelectOrder={(order: any) => setSelectedOrder(order)}
+                    onSelectOrder={(order: Order) => setSelectedOrder(order)}
                   />
                 </SortableContext>
               );
