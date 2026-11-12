@@ -18,6 +18,19 @@ function loadTsModule(relativePath, mocks = {}) {
     if (id.startsWith('@/')) {
       const target = id.slice(2);
       if (mocks[target]) return mocks[target];
+      const candidates = [
+        target,
+        `${target}.ts`,
+        `${target}.tsx`,
+        `${target}.js`,
+        `${target}/index.ts`,
+        `${target}/index.js`,
+      ];
+      for (const candidate of candidates) {
+        if (fs.existsSync(path.join(REPO_ROOT, candidate))) {
+          return loadTsModule(candidate, mocks);
+        }
+      }
     }
     return require(id);
   };

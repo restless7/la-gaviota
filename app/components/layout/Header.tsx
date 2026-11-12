@@ -60,6 +60,11 @@ export default function Header() {
 
           <nav aria-label="Navegación principal" className="hidden items-center gap-5 whitespace-nowrap text-sm font-semibold text-slate-700 xl:flex">
             <Link href="/" className="py-3 hover:text-red-700">Tienda</Link>
+            <Link href="/tiendita" className="inline-flex items-center gap-1.5 py-2 px-3 rounded-full bg-emerald-50 text-emerald-800 font-extrabold border border-emerald-200 hover:bg-emerald-100 hover:text-emerald-900 transition-colors">
+              <span>🎄</span>
+              <span>La Tiendita</span>
+              <span className="text-[10px] bg-red-600 text-white font-black px-1.5 py-0.2 rounded-full uppercase">Nuevo</span>
+            </Link>
             <Link href="/nosotros" className="py-3 hover:text-red-700">Nuestra Granja</Link>
             <Link href="/sobre-nosotros" className="py-3 hover:text-red-700">Nosotros</Link>
             <Link href="/aplicar-negocio" className="rounded-full bg-slate-800 px-4 py-2.5 text-yellow-300 hover:bg-slate-900">Precios Negocio</Link>
@@ -119,6 +124,10 @@ export default function Header() {
               </Link>
             )}
             <Link href="/dashboard" onClick={closeMenu} className="mb-3 rounded-xl bg-red-50 px-4 py-3 font-bold text-red-700">Mi Cuenta · Mis pedidos</Link>
+            <Link href="/tiendita" onClick={closeMenu} className="mb-2 rounded-xl bg-gradient-to-r from-emerald-50 to-amber-50 border border-emerald-200 px-4 py-3 font-black text-emerald-900 flex items-center justify-between">
+              <span className="flex items-center gap-2">🎄 La Tiendita Navideña</span>
+              <span className="text-[10px] bg-red-600 text-white font-black px-2 py-0.5 rounded-full uppercase">Nuevo</span>
+            </Link>
             <Link href="/" onClick={closeMenu} className="rounded-lg px-3 py-3 hover:bg-slate-50">Tienda General</Link>
             <Link href="/nosotros" onClick={closeMenu} className="rounded-lg px-3 py-3 hover:bg-slate-50">Nuestra Granja</Link>
             <Link href="/sobre-nosotros" onClick={closeMenu} className="rounded-lg px-3 py-3 hover:bg-slate-50">Nosotros</Link>

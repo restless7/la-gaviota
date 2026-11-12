@@ -12,6 +12,18 @@ export const MANUAL_REPLACEMENT_SKUS = new Set([
 ]);
 
 export const CATALOG_LOCAL_IMAGES: Record<string, string> = {
+  "prd_nav_01": "/IMAGES/navidad/cojin-sagrada-familia-pesebre.jpg",
+  "prd_nav_02": "/IMAGES/navidad/cojin-pesebre-angeles-gloria.jpg",
+  "prd_nav_03": "/IMAGES/navidad/cojin-santa-saco-regalos.jpg",
+  "prd_nav_04": "/IMAGES/navidad/cojin-santa-baston-caramelo.jpg",
+  "prd_nav_05": "/IMAGES/navidad/cojin-santa-reno-bosque.jpg",
+  "prd_nav_06": "/IMAGES/navidad/cojin-santa-farol-dorado.jpg",
+  "prd_nav_07": "/IMAGES/navidad/cojin-muneco-nieve-reno.jpg",
+  "prd_nav_08": "/IMAGES/navidad/cojin-oso-farol-pijama.jpg",
+  "prd_nav_09": "/IMAGES/navidad/cojin-oso-esfera-nieve.jpg",
+  "prd_nav_10": "/IMAGES/navidad/cojin-duendecillos-taller.jpg",
+  "prd_nav_11": "/IMAGES/navidad/cojin-duendes-nieve-trineo.jpg",
+  "prd_nav_combo4": "/IMAGES/navidad/cojin-santa-reno-amor.jpg",
   "prd_0018": "/PRODUCTS/prd_0018-limon-criollo.jpg",
   "prd_0019": "/PRODUCTS/prd_0019-limon-taiti.jpg",
   "prd_0021": "/PRODUCTS/prd_0021-mango-tommy.jpg",

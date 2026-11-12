@@ -10,6 +10,7 @@ import { logAdminAction } from '@/src/lib/audit';
 
 import { CATEGORIES } from '@/src/constants/productConstants';
 import { resolveProductImageUrl } from '@/src/lib/catalogImages';
+import { CHRISTMAS_CUSHIONS } from '@/src/data/christmasProducts';
 
 // We initialize the Supabase client here for server actions
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -553,5 +554,7 @@ export async function fetchProducts(): Promise<Product[]> {
     kitItems,
   };
  });
- return [...products, ...combos].sort((a,b) => a.name.localeCompare(b.name));
+ const existingIds = new Set(products.map(p => p.id));
+ const seasonalAdditions = CHRISTMAS_CUSHIONS.filter(c => !existingIds.has(c.id));
+ return [...products, ...combos, ...seasonalAdditions].sort((a,b) => a.name.localeCompare(b.name));
 }

@@ -189,6 +189,7 @@ export default function Footer() {
               &copy; {currentYear} Surtifruver La Gaviota SAS. Todos los derechos reservados. NIT: 1007193202-05
             </div>
             <div className="flex flex-wrap gap-6 sm:gap-8 text-xs font-bold text-gray-500 uppercase tracking-widest">
+              <Link href="/tiendita" className="hover:text-amber-400 text-amber-300 transition-colors">La Tiendita 🎄</Link>
               <Link href="/pedidos" className="hover:text-white transition-colors">Rastrear Pedido</Link>
               <Link href="/privacidad" className="hover:text-white transition-colors">Privacidad</Link>
               <Link href="/terminos" className="hover:text-white transition-colors">Términos</Link>

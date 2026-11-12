@@ -15,6 +15,7 @@ function load(relative, stubs = {}, env = {}) {
     if (Object.hasOwn(stubs, id)) return stubs[id];
     if (id === './safetyGuard' || id.endsWith('safetyGuard')) return load('src/lib/safetyGuard.ts', stubs, env);
     if (id.includes('deliveryCutoff')) return load('src/lib/deliveryCutoff.ts', stubs, env);
+    if (id.includes('christmasProducts')) return { CHRISTMAS_CUSHIONS: [] };
     throw Error(`Unapproved dependency ${id}`);
   }, Map, Set, Buffer, FormData, Date, console, process: { env } }, { filename });
   return module.exports;
@@ -40,6 +41,7 @@ function checkoutHarness(options = {}) {
   const actor = { userId: 'user_owner', tier: options.tier || 'Personas Naturales' };
   const prep = load('src/lib/server/checkout.ts', {
     'server-only': {}, '@/src/lib/checkoutValidation': validation,
+    '@/src/data/christmasProducts': { CHRISTMAS_CUSHIONS: [] },
     './authorization': { getActor: async () => { authReads++; return actor; }, assertIssuedActor: () => { if (options.unauthorized) throw Error('UNAUTHORIZED'); } },
     './database': { getServerDatabase: () => ({ from: () => { reads++; return { select: () => ({ in: async () => ({ data: options.products || [product], error: options.dbError || null }) }) }; } }), readPublicInventoryFlag: async () => { if (options.settingsError) throw Error('SETTINGS_UNAVAILABLE'); return { track_inventory: true }; } }
   });

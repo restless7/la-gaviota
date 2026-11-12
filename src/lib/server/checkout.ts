@@ -2,6 +2,7 @@ import 'server-only';
 import { normalizeCheckoutItems, quoteCheckout, readCheckoutDetails, assertExpectedCheckoutTotal, type CheckoutProduct } from '@/src/lib/checkoutValidation';
 import { getActor, assertIssuedActor } from './authorization';
 import { getServerDatabase, getGuestCheckoutDatabase, readPublicInventoryFlag } from './database';
+import { CHRISTMAS_CUSHIONS } from '@/src/data/christmasProducts';
 
 /** Validates before writes; client prices, totals, tier and ownership are never authoritative. */
 export async function prepareCheckout(formData: FormData, items: unknown, expectedTotal?: number) {
@@ -46,6 +47,26 @@ export async function prepareCheckout(formData: FormData, items: unknown, expect
           price_retail: fixedPrice,
           price_micro: fixedPrice,
           price_restaurant: fixedPrice,
+        });
+      }
+    }
+  }
+
+  // Also check Christmas / Miscelánea catalogue if any requested line item ID is still missing
+  const stillFoundIds = new Set(catalogProducts.map(p => p.id));
+  const stillMissing = lineIds.filter(id => !stillFoundIds.has(id));
+  if (stillMissing.length > 0) {
+    for (const id of stillMissing) {
+      const navItem = CHRISTMAS_CUSHIONS.find(c => c.id === id);
+      if (navItem) {
+        catalogProducts.push({
+          id: navItem.id,
+          name: navItem.name,
+          is_active: navItem.isActive,
+          stock_quantity: navItem.stockQuantity,
+          price_retail: navItem.price,
+          price_micro: navItem.price,
+          price_restaurant: navItem.price,
         });
       }
     }

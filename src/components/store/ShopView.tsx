@@ -10,6 +10,7 @@ import { CatalogImage } from './CatalogImage';
 import { KitIngredientsList } from './KitIngredientsList';
 import { normalizeCategory } from '@/src/lib/categories';
 import { matchesCatalogSearch } from '@/src/lib/searchUtils';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   Search, 
@@ -23,7 +24,8 @@ import {
   X,
   PackageCheck,
   ArrowUpDown,
-  ListChecks
+  ListChecks,
+  ArrowRight
 } from 'lucide-react';
 
 const CATEGORY_BANNERS: Record<string, string[]> = {
@@ -248,6 +250,7 @@ export default function ShopView({ initialProducts, trackInventory = false }: { 
                  </button>
                  {CATEGORIES.map(cat => {
                    const isKits = cat === 'KITS NEGOCIOS';
+                   const isMiscelanea = cat === 'MISCELÁNEA';
                    const isSelected = selectedCategory === cat;
                    return (
                      <button 
@@ -257,14 +260,19 @@ export default function ShopView({ initialProducts, trackInventory = false }: { 
                           isSelected 
                             ? isKits 
                               ? 'bg-amber-500 border-amber-500 text-white shadow-md ring-2 ring-amber-300' 
-                              : 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md'
+                              : isMiscelanea
+                                ? 'bg-emerald-700 border-emerald-600 text-white shadow-md ring-2 ring-amber-300'
+                                : 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-md'
                             : isKits
                               ? 'bg-amber-50 border-amber-300 text-amber-900 font-extrabold hover:bg-amber-100 shadow-sm'
-                              : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 shadow-sm'
+                              : isMiscelanea
+                                ? 'bg-emerald-50 border-emerald-300 text-emerald-900 font-extrabold hover:bg-emerald-100 shadow-sm'
+                                : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 shadow-sm'
                         }`}
                      >
                         {isKits && <span>🧺</span>}
-                        <span>{cat}</span>
+                        {isMiscelanea && <span>🎄</span>}
+                        <span>{isMiscelanea ? 'La Tiendita (Miscelánea)' : cat}</span>
                      </button>
                    );
                  })}
@@ -633,6 +641,38 @@ export default function ShopView({ initialProducts, trackInventory = false }: { 
                 </div>
               )}
             </section>
+
+            {/* Christmas Spotlight Callout to La Tiendita Navideña */}
+            {(!selectedCategory || selectedCategory === 'MISCELÁNEA') && (
+              <Link
+                href="/tiendita"
+                className="mb-8 block rounded-3xl bg-gradient-to-r from-red-950 via-slate-900 to-emerald-950 border-2 border-amber-400/80 p-5 sm:p-6 shadow-xl hover:border-amber-300 transition-all group overflow-hidden relative"
+              >
+                <div className="absolute -right-12 -top-12 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+                  <div className="flex items-center gap-4">
+                    <div className="text-3xl sm:text-4xl p-2.5 bg-amber-400/10 rounded-2xl border border-amber-400/30">
+                      🎄
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-400/30">
+                        Nueva Colección Navideña 2026
+                      </span>
+                      <h3 className="text-lg sm:text-xl font-black text-white font-serif mt-1">
+                        La Tiendita de La Gaviota: Cojines Navideños Premium
+                      </h3>
+                      <p className="text-xs text-slate-300 mt-0.5">
+                        Cojines de lujo 45x45 cm en terciopelo suave con relleno siliconado. Diseños de Pesebre, Papá Noel y Duendecillos.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="shrink-0 flex items-center gap-2 text-xs font-black uppercase tracking-wider text-amber-400 group-hover:text-amber-300">
+                    <span>Ver Colección Completa</span>
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            )}
 
             {/* Catalog Header + Quick Sort right above Product Grid */}
             <div className="mb-4 sm:mb-6 flex flex-wrap items-center justify-between gap-3">

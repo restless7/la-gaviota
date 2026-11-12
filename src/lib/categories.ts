@@ -6,6 +6,11 @@ const aliases: Record<string, string> = {
   carnes: 'CARNES X 500 GRAMOS',
   kits: 'KITS NEGOCIOS',
   'varios-preparados': 'VARIOS',
+  miscelanea: 'MISCELÁNEA',
+  tiendita: 'MISCELÁNEA',
+  'la-tiendita': 'MISCELÁNEA',
+  navidad: 'MISCELÁNEA',
+  'cojines-navidenos': 'MISCELÁNEA',
 };
 
 export function normalizeCategory(value: string | null | undefined): string | null {
