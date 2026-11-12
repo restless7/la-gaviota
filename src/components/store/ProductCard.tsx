@@ -6,6 +6,7 @@ import type { Product } from '@/src/actions/products';
 import { useCart } from '@/src/contexts/CartContext';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { CatalogImage } from './CatalogImage';
+import { KitIngredientsList } from './KitIngredientsList';
 import { QuantitySelector } from './QuantitySelector';
 
 const formatPrice = (price: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(price);
@@ -81,6 +82,15 @@ export function ProductCard({ product }: { product: Product }) {
               {product.name}
             </button>
           </h3>
+          {product.isKit && product.kitItems && product.kitItems.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setExpanded(true)}
+              className="self-start rounded-full border border-amber-300 bg-amber-50 px-2.5 py-0.5 text-[11px] font-bold text-amber-900 hover:bg-amber-100 transition-colors"
+            >
+              🧺 {product.kitItems.length} ingredientes · Ver lista
+            </button>
+          )}
           {product.description && (
             <p className="line-clamp-2 text-[11px] leading-snug text-slate-500">
               {product.description}
@@ -145,13 +155,13 @@ export function ProductCard({ product }: { product: Product }) {
             </button>
           </div>
           <div className="flex flex-col gap-6 sm:flex-row">
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-slate-50 sm:w-1/2">
+            <div className={`relative w-full overflow-hidden rounded-2xl bg-slate-50 sm:w-1/2 self-start ${product.isKit ? 'aspect-[16/9]' : 'aspect-square'}`}>
               <CatalogImage
                 src={product.imageUrl || '/IMAGES/logo.jpeg'}
                 alt={product.name}
                 fill
                 sizes="(max-width: 639px) 90vw, 350px"
-                className="object-contain p-3"
+                className="object-contain p-2"
               />
             </div>
             <div className="flex flex-1 flex-col gap-4">
@@ -163,6 +173,14 @@ export function ProductCard({ product }: { product: Product }) {
               <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-600">
                 {product.description || 'Consulta la presentación y disponibilidad al confirmar tu pedido.'}
               </p>
+              {product.kitItems && product.kitItems.length > 0 && (
+                <div className="flex flex-col gap-2 rounded-2xl border border-amber-200 bg-amber-50/40 p-3">
+                  <p className="text-xs font-black uppercase tracking-wide text-amber-900">
+                    Productos incluidos ({product.kitItems.length})
+                  </p>
+                  <KitIngredientsList items={product.kitItems} theme="light" maxHeightClass="max-h-56" />
+                </div>
+              )}
               <div className="flex flex-col gap-2">
                 <QuantitySelector
                   quantity={quantity}

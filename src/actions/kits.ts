@@ -111,6 +111,7 @@ export async function createOrUpdateKit(kitData: KitPayload) {
   // 4. Revalidate Public Shops
   revalidatePath('/admin/catalog/kits');
   revalidatePath('/shop');
+  revalidatePath('/');
 
   return { success: true, kitId };
 }

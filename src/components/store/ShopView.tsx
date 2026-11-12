@@ -7,18 +7,22 @@ import { ProductCard } from './ProductCard';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { useCart } from '@/src/contexts/CartContext';
 import { CatalogImage } from './CatalogImage';
+import { KitIngredientsList } from './KitIngredientsList';
 import { normalizeCategory } from '@/src/lib/categories';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   Search, 
   ChevronLeft, 
   ChevronRight, 
+  ChevronDown,
+  ChevronUp,
   SlidersHorizontal, 
   Sparkles, 
   ShoppingBag, 
   X,
   PackageCheck,
-  ArrowUpDown
+  ArrowUpDown,
+  ListChecks
 } from 'lucide-react';
 
 const CATEGORY_BANNERS: Record<string, string[]> = {
@@ -33,7 +37,7 @@ const formatPrice = (price: number) =>
 export default function ShopView({ initialProducts }: { initialProducts: Product[] }) {
    const [search, setSearch] = useState('');
    const [isSearchOpen, setIsSearchOpen] = useState(false);
-   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
+   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(false);
    const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
    const [sortOrder, setSortOrder] = useState<'asc'|'desc'|null>(null);
    const { role } = useUserRole();
@@ -67,10 +71,13 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
      }
    }, [isSearchOpen]);
 
+   const hasDynamicKits = useMemo(() => initialProducts.some(p => p.isKit), [initialProducts]);
+
    const filteredProducts = useMemo(() => {
      const filtered = initialProducts.filter(p => {
+         if (hasDynamicKits && p.id === 'prd_0255') return false;
          const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-         const matchCategory = selectedCategory ? p.category === selectedCategory : true;
+         const matchCategory = selectedCategory ? normalizeCategory(p.category) === selectedCategory : true;
          const validSubcategory = selectedCategory && SUBCATEGORIES[selectedCategory]?.includes(selectedSubcategory ?? '') ? selectedSubcategory : null;
          const matchSubcategory = validSubcategory ? p.subcategory === validSubcategory : true;
          return matchSearch && matchCategory && matchSubcategory;
@@ -85,10 +92,15 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
      }
 
      return filtered;
-   }, [initialProducts, search, selectedCategory, selectedSubcategory, sortOrder]);
+   }, [initialProducts, hasDynamicKits, search, selectedCategory, selectedSubcategory, sortOrder]);
 
-   // Find up to 3 active Kit Chévere options from catalog (or fallback to 3 official presets)
+   // Find active Kit Chévere options configured by admins (fallback to legacy presets only when none exist)
    const kitOptions = useMemo<Product[]>(() => {
+     const dynamicKits = initialProducts.filter(p => p.isKit);
+     if (dynamicKits.length > 0) {
+       return dynamicKits.slice(0, 3);
+     }
+
      const foundKits = initialProducts.filter(p => 
        p.category === 'Kits Negocios' || 
        p.id === 'prd_0255' || 
@@ -151,7 +163,10 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
    }, [initialProducts, role]);
 
    const [selectedKitIndex, setSelectedKitIndex] = useState(0);
-   const kitProduct = kitOptions[selectedKitIndex] || kitOptions[0];
+   const [showKitIngredients, setShowKitIngredients] = useState(false);
+   const safeKitIndex = selectedKitIndex < kitOptions.length ? selectedKitIndex : 0;
+   const kitProduct = kitOptions[safeKitIndex] || kitOptions[0];
+   const kitIngredients = kitProduct?.kitItems ?? [];
 
    const handleCategorySelect = (cat: string | null) => {
       const query = new URLSearchParams(searchParams?.toString());
@@ -449,7 +464,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                       type="button"
                       onClick={() => setSelectedKitIndex(idx)}
                       className={`px-3 py-1 rounded-full text-[11px] sm:text-xs font-black transition-all flex items-center gap-1.5 shrink-0 ${
-                        selectedKitIndex === idx 
+                        safeKitIndex === idx 
                           ? 'bg-amber-400 text-slate-950 shadow-md' 
                           : 'bg-white/10 text-slate-200 hover:bg-white/20 border border-white/10'
                       }`}
@@ -461,22 +476,25 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                 </div>
               )}
 
-              <div className="relative z-10 flex flex-row items-center gap-4 sm:gap-8 justify-between">
-                <div className="flex-1 min-w-0 space-y-2 sm:space-y-3 text-left">
+              <div className="relative z-10 flex flex-col lg:flex-row lg:items-center gap-5 lg:gap-8 justify-between">
+                <div className="flex-1 min-w-0 space-y-2.5 sm:space-y-3 text-left">
                   <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-400/20 px-2.5 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-300 border border-amber-400/40">
                     <Sparkles size={12} className="text-amber-300" />
                     <span>Kit Chévere de la Semana</span>
+                    {kitOptions.length > 1 && (
+                      <span className="text-amber-200/80">· Opción {safeKitIndex + 1} de {kitOptions.length}</span>
+                    )}
                   </div>
-                  <h2 className="text-lg sm:text-3xl lg:text-4xl font-black font-serif tracking-tight text-white leading-tight">
+                  <h2 className="text-xl sm:text-3xl lg:text-4xl font-black font-serif tracking-tight text-white leading-tight">
                     {kitProduct.name} 🧺
                   </h2>
-                  <p className="max-w-xl text-xs sm:text-sm text-slate-300 leading-snug line-clamp-2 sm:line-clamp-none">
+                  <p className="max-w-xl text-xs sm:text-sm text-slate-300 leading-snug">
                     {kitProduct.description || 'La combinación perfecta de frutas, hortalizas y verduras frescas seleccionadas a mano en Santander.'}
                   </p>
                   
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 pt-1">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1">
                     <div className="flex items-baseline gap-1.5">
-                      <span className="text-xl sm:text-3xl font-black text-amber-400">
+                      <span className="text-2xl sm:text-3xl font-black text-amber-400">
                         {formatPrice(kitProduct.price)}
                       </span>
                       {kitProduct.previousPrice && kitProduct.previousPrice > kitProduct.price && (
@@ -496,6 +514,18 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                       <ShoppingBag size={14} />
                       <span>¡Pedir Kit!</span>
                     </button>
+                    {kitIngredients.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowKitIngredients(prev => !prev)}
+                        aria-expanded={showKitIngredients}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/50 bg-amber-400/15 px-3.5 py-2 text-xs font-bold text-amber-200 hover:bg-amber-400/25 transition-colors"
+                      >
+                        <ListChecks size={14} />
+                        <span>{showKitIngredients ? 'Ocultar ingredientes' : `Ver ingredientes (${kitIngredients.length})`}</span>
+                        {showKitIngredients ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      </button>
+                    )}
                     <button
                       type="button"
                       onClick={() => handleCategorySelect('KITS NEGOCIOS')}
@@ -506,23 +536,61 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                       <ChevronRight size={14} />
                     </button>
                   </div>
+
+                  {kitIngredients.length > 0 && !showKitIngredients && (
+                    <div className="pt-1 flex flex-wrap items-center gap-1.5">
+                      {kitIngredients.slice(0, 5).map(item => (
+                        <span
+                          key={`${item.productId}-${item.name}`}
+                          className="inline-flex items-center gap-1 rounded-full bg-white/10 border border-white/10 px-2.5 py-0.5 text-[11px] font-medium text-slate-200"
+                        >
+                          <span className="truncate max-w-[140px]">{item.name}</span>
+                          <span className="text-amber-300 font-bold">×{Number.isInteger(item.quantity) ? item.quantity : item.quantity}</span>
+                        </span>
+                      ))}
+                      {kitIngredients.length > 5 && (
+                        <button
+                          type="button"
+                          onClick={() => setShowKitIngredients(true)}
+                          className="text-[11px] font-bold text-amber-300 hover:text-amber-200 underline underline-offset-2 px-1"
+                        >
+                          +{kitIngredients.length - 5} más · ver lista completa
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
 
-                <div className="relative w-28 sm:w-52 md:w-60 aspect-square rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-400/30 shrink-0 group">
+                <div className="relative w-full lg:w-[48%] xl:w-[50%] aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-400/30 bg-slate-950/60 shrink-0 group">
                   <CatalogImage
                     src={kitProduct.imageUrl || '/IMAGES/kit-chevere-semana.jpg'}
                     alt={kitProduct.name}
                     fill
-                    sizes="(max-width: 768px) 120px, 260px"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 1023px) 100vw, 560px"
+                    className="object-contain group-hover:scale-[1.02] transition-transform duration-500"
                     priority
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <span className="absolute bottom-2 left-2 rounded-md bg-amber-400 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black text-slate-900 uppercase">
-                    ⭐ Opción {selectedKitIndex + 1}
-                  </span>
                 </div>
               </div>
+
+              {showKitIngredients && kitIngredients.length > 0 && (
+                <div className="relative z-10 mt-5 pt-5 border-t border-white/15">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-300 flex items-center gap-2">
+                      <ListChecks size={15} />
+                      <span>Productos incluidos en {kitProduct.name} ({kitIngredients.length})</span>
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setShowKitIngredients(false)}
+                      className="text-xs font-bold text-slate-300 hover:text-white px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                    >
+                      Cerrar lista
+                    </button>
+                  </div>
+                  <KitIngredientsList items={kitIngredients} theme="dark" maxHeightClass="max-h-80" />
+                </div>
+              )}
 
               {/* Bottom Mini Cards for Quick Option Switch & 1-Click Add (Desktop/Tablet only to keep Mobile compact) */}
               {kitOptions.length > 1 && (
@@ -532,13 +600,13 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                       key={opt.id}
                       onClick={() => setSelectedKitIndex(idx)}
                       className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                        selectedKitIndex === idx 
+                        safeKitIndex === idx 
                           ? 'bg-amber-400/20 border-amber-400 shadow-md ring-1 ring-amber-400' 
                           : 'bg-white/5 border-white/10 hover:bg-white/10'
                       }`}
                     >
-                      <div className="relative h-12 w-12 rounded-xl overflow-hidden shrink-0 bg-slate-800">
-                        <CatalogImage src={opt.imageUrl || '/IMAGES/kit-chevere-semana.jpg'} alt={opt.name} fill className="object-cover" />
+                      <div className="relative h-12 w-20 rounded-xl overflow-hidden shrink-0 bg-slate-900">
+                        <CatalogImage src={opt.imageUrl || '/IMAGES/kit-chevere-semana.jpg'} alt={opt.name} fill className="object-contain" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-bold text-white truncate">Opción {idx + 1}: {opt.name}</p>

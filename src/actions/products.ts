@@ -432,9 +432,19 @@ export async function deleteProduct(id: string) {
   return { success: true };
 }
 
+export interface KitItemSummary {
+  productId: string;
+  name: string;
+  unit: string;
+  quantity: number;
+  imageUrl: string | null;
+}
+
 export interface Product {
  id: string; name: string; category: string; subcategory: string | null; unit: string;
  price: number; previousPrice: number | null; stockQuantity: number; isActive: boolean; isInSeason: boolean; imageUrl: string | null; description: string | null;
+ isKit?: boolean;
+ kitItems?: KitItemSummary[];
 }
 
 // Public DTO never contains costs or non-entitled tier prices.
@@ -446,8 +456,25 @@ export async function fetchProducts(): Promise<Product[]> {
    .eq('is_active', true);
  if (error) throw new Error('CATALOG_UNAVAILABLE');
  const { data: kits, error: kitsError } = await publicDb.from('kits')
-   .select('id,name,fixed_price,banner_url,status')
-   .eq('status', 'active');
+   .select(`
+     id,
+     name,
+     fixed_price,
+     banner_url,
+     status,
+     kit_items (
+       product_id,
+       quantity,
+       products (
+         id,
+         name,
+         unit,
+         image_url
+       )
+     )
+   `)
+   .eq('status', 'active')
+   .order('created_at', { ascending: false });
  if (kitsError) {
    console.warn('ENTITLED_KITS_FETCH_WARNING: Failed to retrieve active kits, falling back to empty kits array.', kitsError);
  }
@@ -470,7 +497,56 @@ export async function fetchProducts(): Promise<Product[]> {
    console.warn('ENTITLED_PRICE_FETCH_WARNING: Failed to retrieve wholesale prices, falling back to retail prices gracefully.', err);
   }
  }
+ const productLookup = new Map((data || []).map(p => [p.id, p]));
  const products: Product[] = (data || []).map(p => ({ id:p.id, name:p.name, category:p.category, subcategory:p.subcategory, unit:p.unit, price:tierPrices.get(p.id)?.price ?? p.price_retail, previousPrice:tierPrices.has(p.id) ? tierPrices.get(p.id)!.previous : p.previous_price_retail, stockQuantity:p.stock_quantity, isActive:p.is_active, isInSeason:p.is_in_season, imageUrl:resolveProductImageUrl(p.id, p.image_url), description:p.description }));
- const combos: Product[] = (kits || []).map(k => ({ id:k.id, name:k.name, category:'Kits Negocios', subcategory:null, unit:'Combo', price:Number(k.fixed_price), previousPrice:null, stockQuantity:999, isActive:true, isInSeason:true, imageUrl:k.banner_url || null, description:'Combo mayorista: ' + k.name }));
+ const combos: Product[] = (kits || []).map(k => {
+  const rawItems = Array.isArray((k as { kit_items?: unknown }).kit_items) ? ((k as { kit_items: unknown[] }).kit_items) : [];
+  const kitItems: KitItemSummary[] = rawItems
+    .map((raw): KitItemSummary | null => {
+      if (!raw || typeof raw !== 'object') return null;
+      const item = raw as {
+        product_id?: string | null;
+        quantity?: number | string | null;
+        products?: { id?: string; name?: string; unit?: string; image_url?: string | null } | Array<{ id?: string; name?: string; unit?: string; image_url?: string | null }> | null;
+      };
+      const joined = Array.isArray(item.products) ? item.products[0] : item.products;
+      const pid = String(item.product_id || joined?.id || '');
+      const fallback = pid ? productLookup.get(pid) : undefined;
+      const name = joined?.name || fallback?.name;
+      if (!name) return null;
+      const rawImg = joined?.image_url ?? fallback?.image_url ?? null;
+      return {
+        productId: pid,
+        name,
+        unit: joined?.unit || fallback?.unit || 'Unidad',
+        quantity: Number(item.quantity) || 1,
+        imageUrl: pid ? resolveProductImageUrl(pid, rawImg) : rawImg,
+      };
+    })
+    .filter((entry): entry is KitItemSummary => entry !== null)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const previewNames = kitItems.slice(0, 4).map(i => i.name).join(', ');
+  const description = kitItems.length > 0
+    ? `Incluye ${kitItems.length} productos frescos: ${previewNames}${kitItems.length > 4 ? ` y ${kitItems.length - 4} más` : ''}.`
+    : `Combo fresco seleccionado: ${k.name}`;
+
+  return {
+    id: k.id,
+    name: k.name,
+    category: 'KITS NEGOCIOS',
+    subcategory: null,
+    unit: 'Combo',
+    price: Number(k.fixed_price),
+    previousPrice: null,
+    stockQuantity: 999,
+    isActive: true,
+    isInSeason: true,
+    imageUrl: k.banner_url || null,
+    description,
+    isKit: true,
+    kitItems,
+  };
+ });
  return [...products, ...combos].sort((a,b) => a.name.localeCompare(b.name));
 }

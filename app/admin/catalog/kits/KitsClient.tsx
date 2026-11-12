@@ -460,11 +460,11 @@ export default function KitsClient({
                     </span>
                   </div>
 
-                  <div className="relative h-24 w-full rounded-xl overflow-hidden bg-slate-100 mb-3 border border-gray-100">
+                  <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-slate-100 mb-3 border border-gray-100">
                     <img 
                       src={kit.banner_url || '/IMAGES/kit-chevere-semana.jpg'} 
                       alt={kit.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                     <span className="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm">
                       {kit.kit_items?.length || 0} productos
