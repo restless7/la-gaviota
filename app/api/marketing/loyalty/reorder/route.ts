@@ -1,27 +1,16 @@
 import { getSchedulerDatabase } from '@/src/lib/server/database';
 import { requireScheduler } from '@/src/lib/server/scheduler';
+import { sendWhatsAppTemplate } from '@/src/lib/notifications';
 import { NextResponse } from 'next/server';
-
-
-
 
 export async function POST(req: Request) {
   try { requireScheduler(req); } catch { return NextResponse.json({error:'Unauthorized'},{status:401}); }
   const supabase = getSchedulerDatabase(req);
   try {
-    // 1. Validate Cron Secret (Skipped for demo but necessary for production)
-    // const authHeader = req.headers.get('Authorization');
-    // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    // 2. Define the Loyalty Reorder Threshold (e.g. 7 days without buying)
+    // 1. Define the Loyalty Reorder Threshold (7 days without buying)
     const SEVEN_DAYS_AGO = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const EIGHT_DAYS_AGO = new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString();
 
-    // We query customers who:
-    // a. Are B2B (Micromercados or Restaurantes)
-    // b. Have purchased before (total_orders > 0)
-    // c. Their last order was between 7 and 8 days ago (to avoid spamming them every day after day 7)
-    
     const { data: eligibleCustomers, error } = await supabase
       .from('customers')
       .select('clerk_user_id, full_name, business_name, phone, tier, last_order_at')
@@ -33,24 +22,29 @@ export async function POST(req: Request) {
     if (error) throw error;
 
     if (!eligibleCustomers || eligibleCustomers.length === 0) {
-      return NextResponse.json({ success: true, message: "No B2B customers eligible for reorder today." });
+      return NextResponse.json({ success: true, processed_reorders: 0, notificationsSent: 0, message: "No B2B customers eligible for reorder today." });
     }
 
-    // 3. Trigger WhatsApp Reorder Funnel
+    // 2. Trigger WhatsApp Reorder Funnel
+    let notificationsSent = 0;
     for (const customer of eligibleCustomers) {
       if (customer.phone) {
-        console.log(`[LOYALTY TRIGGER] Sending Reorder WhatsApp to ${customer.business_name || customer.full_name} (${customer.phone}) - Tier: ${customer.tier}`);
-        
-        // In Production: 
-        // await sendWhatsAppTemplate(customer.phone, 'b2b_reorder_reminder', [
-        //   { type: 'text', text: customer.business_name || customer.full_name }
-        // ]);
+        const displayName = (customer.business_name || customer.full_name || 'Cliente').trim();
+        const result = await sendWhatsAppTemplate(
+          customer.phone,
+          'b2b_reorder_reminder',
+          [{ type: 'text', text: displayName }],
+          'es',
+          `loyalty-reorder:${customer.clerk_user_id}`
+        );
+        if (result.sent) notificationsSent++;
       }
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      processed_reorders: eligibleCustomers.length 
+    return NextResponse.json({
+      success: true,
+      processed_reorders: eligibleCustomers.length,
+      notificationsSent,
     });
 
   } catch (error) {

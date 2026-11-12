@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const payload = await req.json();
     const { items, cartTotal, phone, email, isCompleted } = payload;
 
-    if (!items || items.length === 0) {
+    if (!isCompleted && (!items || items.length === 0)) {
       return NextResponse.json({ success: true, ignored: true });
     }
 
@@ -51,17 +51,23 @@ export async function POST(req: Request) {
           .maybeSingle();
 
         if (existingCart) {
+          const updatePayload: Record<string, unknown> = {
+            customer_phone: customerPhone,
+            customer_email: customerEmail,
+            status: isCompleted ? 'recovered' : 'active',
+            last_active_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          if (Array.isArray(items) && items.length > 0) {
+            updatePayload.cart_data = items;
+          }
+          if (typeof cartTotal === 'number' && Number.isFinite(cartTotal) && cartTotal >= 0) {
+            updatePayload.total_amount = Math.round(cartTotal);
+          }
+
           await supabase
             .from('abandoned_carts')
-            .update({
-              cart_data: items,
-              total_amount: cartTotal,
-              customer_phone: customerPhone,
-              customer_email: customerEmail,
-              status: isCompleted ? 'recovered' : 'active',
-              last_active_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
-            })
+            .update(updatePayload)
             .eq('id', existingCart.id);
         } else {
           if (!isCompleted) {

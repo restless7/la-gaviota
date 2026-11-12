@@ -8,6 +8,21 @@ export interface CheckoutProduct {
   price_retail: number; price_micro: number; price_restaurant: number;
 }
 export type CheckoutTier = 'Personas Naturales' | 'Micromercados' | 'Restaurantes';
+export const CHECKOUT_CITIES = [
+  'Bucaramanga',
+  'Floridablanca',
+  'Girón',
+  'Piedecuesta',
+  'Bogotá Norte',
+  'Bogotá Sur',
+] as const;
+
+export function calculateCheckoutDeliveryCost(city: string, subtotal: number): number {
+  if (subtotal >= 50000) return 0;
+  if (city === 'Bucaramanga') return 5000;
+  if (city === 'Floridablanca' || city === 'Girón') return 8000;
+  return 10000;
+}
 export function normalizeCheckoutItems(input: unknown): CheckoutLine[] {
   if (!Array.isArray(input) || input.length === 0 || input.length > MAX_CHECKOUT_LINES) throw new Error('Carrito vacío o demasiado grande');
   const quantities = new Map<string, number>();
@@ -45,9 +60,8 @@ export function quoteCheckout(lines: CheckoutLine[], products: CheckoutProduct[]
   const subtotal = money(orderItems.reduce((sum, item) => money(sum + item.quantity * item.price_at_purchase), 0));
   // Same minimums currently shown in checkout, enforced at the server boundary as well.
   if (tier === 'Micromercados' && subtotal < 150000 || tier === 'Restaurantes' && subtotal < 300000) throw new Error('No se ha alcanzado el pedido mínimo para tu perfil');
-  const cities = ['Bucaramanga', 'Floridablanca', 'Girón', 'Piedecuesta', 'Bogotá Norte', 'Bogotá Sur'];
-  if (!cities.includes(city)) throw new Error('Selecciona una ciudad disponible');
-  const deliveryCost = subtotal >= 50000 ? 0 : city === 'Bucaramanga' ? 5000 : city === 'Floridablanca' || city === 'Girón' ? 8000 : 10000;
+  if (!(CHECKOUT_CITIES as readonly string[]).includes(city)) throw new Error('Selecciona una ciudad disponible');
+  const deliveryCost = calculateCheckoutDeliveryCost(city, subtotal);
   return { orderItems, subtotal, deliveryCost, totalAmount: money(subtotal + deliveryCost) };
 }
 export function readCheckoutDetails(formData: FormData) {

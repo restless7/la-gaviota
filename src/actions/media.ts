@@ -60,3 +60,69 @@ export async function deleteCatalogMedia(kind:Kind,id:string) {
  if(removed.error) throw new Error('MEDIA_BLOB_RETAINED_FOR_RECOVERY');
  return {success:true};
 }
+
+export interface KitBannerGalleryItem {
+ url: string;
+ name: string;
+ createdAt?: string;
+ source: 'bucket' | 'kit';
+}
+
+const PRESET_KIT_BANNER_PATHS = new Set([
+ '/IMAGES/kit-chevere-semana.jpg',
+ '/IMAGES/kit-chevere-semana2.jpeg',
+ '/IMAGES/kit-chevere-semana3.jpeg',
+]);
+
+/** Lists uploaded and previously attached kit banners so admins can reuse past kit images. */
+export async function listKitBannerGallery(): Promise<KitBannerGalleryItem[]> {
+ const actor = await requireCapability('catalog.manage');
+ const db = getServerDatabase(actor);
+ const seen = new Set<string>();
+ const items: KitBannerGalleryItem[] = [];
+
+ const appendItem = (item: KitBannerGalleryItem) => {
+  if (!item.url || PRESET_KIT_BANNER_PATHS.has(item.url) || seen.has(item.url)) return;
+  seen.add(item.url);
+  items.push(item);
+ };
+
+ for (const prefix of ['managed/kit', '']) {
+  const { data: files, error } = await db.storage
+   .from('kit-banners')
+   .list(prefix, { limit: 100, sortBy: { column: 'created_at', order: 'desc' } });
+
+  if (error || !files) continue;
+  for (const file of files) {
+   if (!file.id || !file.name || file.name.startsWith('.')) continue;
+   if (!/\.(png|jpe?g|webp)$/i.test(file.name)) continue;
+   const fullKey = prefix ? `${prefix}/${file.name}` : file.name;
+   const { data: pub } = db.storage.from('kit-banners').getPublicUrl(fullKey);
+   appendItem({
+    url: pub.publicUrl,
+    name: file.name,
+    createdAt: file.created_at ?? undefined,
+    source: 'bucket',
+   });
+  }
+ }
+
+ const { data: kits } = await db
+  .from('kits')
+  .select('banner_url, name, updated_at, created_at')
+  .not('banner_url', 'is', null)
+  .order('updated_at', { ascending: false });
+
+ for (const kit of kits || []) {
+  const url = typeof kit.banner_url === 'string' ? kit.banner_url.trim() : '';
+  if (!url) continue;
+  appendItem({
+   url,
+   name: typeof kit.name === 'string' && kit.name.trim() ? kit.name : 'Banner de kit',
+   createdAt: (kit.updated_at || kit.created_at || undefined) as string | undefined,
+   source: 'kit',
+  });
+ }
+
+ return items;
+}

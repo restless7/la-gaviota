@@ -99,8 +99,38 @@ export async function POST(req: Request) {
     // 5. Asynchronous Side-Effects (Durable Outbox pattern: decoupled from database transaction)
     if (rpcResult.action === 'order_approved' && rpcResult.order_id) {
       const orderId = rpcResult.order_id;
+      let notifyPhone = '';
+      let notifyName = 'Cliente La Gaviota';
+      const notifyAmount = transaction.amount_in_cents / 100;
+
+      if (typeof supabase.from === 'function') {
+        try {
+          const { data: orderRow } = await supabase
+            .from('orders')
+            .select('customer_phone, customer_name, status')
+            .eq('id', orderId)
+            .maybeSingle();
+
+          if (orderRow) {
+            notifyPhone = orderRow.customer_phone || '';
+            notifyName = orderRow.customer_name || notifyName;
+
+            // Backwards-compatible guard when SQL migration promoting 'Pago Pendiente' is not yet applied
+            if (orderRow.status === 'Pago Pendiente') {
+              await supabase
+                .from('orders')
+                .update({ status: 'En Preparación', updated_at: new Date().toISOString() })
+                .eq('id', orderId)
+                .eq('status', 'Pago Pendiente');
+            }
+          }
+        } catch (lookupErr) {
+          console.error('[Wompi Webhook Outbox] Failed to look up order details:', lookupErr);
+        }
+      }
+
       // Trigger out-of-band notification without holding webhook response
-      triggerOrderNotification(orderId, '', '', transaction.amount_in_cents / 100).catch(err => {
+      triggerOrderNotification(orderId, notifyPhone, notifyName, notifyAmount).catch(err => {
         console.error('[Wompi Webhook Outbox] Failed to deliver order notification:', err);
       });
     }

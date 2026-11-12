@@ -163,6 +163,7 @@ export async function getLiveOperationalOrders(): Promise<Order[]> {
       .from('orders')
       .select('*, order_items(*)')
       .neq('status', 'Cancelado')
+      .neq('status', 'Pago Pendiente')
       .or(`scheduled_delivery_date.lte.${today},scheduled_delivery_date.is.null`)
       .order('created_at', { ascending: false }),
     supabase
@@ -177,8 +178,9 @@ export async function getLiveOperationalOrders(): Promise<Order[]> {
 
   const closedDates = ledgersData?.map(l => l.operational_date) || [];
 
-  // Filter out orders that are 'Entregado' AND their date is already closed
+  // Filter out orders that are 'Entregado' AND their date is already closed, plus unpaid 'Pago Pendiente' orders
   const liveOrders = ordersData?.filter(o =>
+    o.status !== 'Pago Pendiente' &&
     !(o.status === 'Entregado' && closedDates.includes(o.scheduled_delivery_date))
   ) || [];
 

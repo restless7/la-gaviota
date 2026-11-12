@@ -43,10 +43,16 @@ function checkoutHarness(options = {}) {
     './authorization': { getActor: async () => { authReads++; return actor; }, assertIssuedActor: () => { if (options.unauthorized) throw Error('UNAUTHORIZED'); } },
     './database': { getServerDatabase: () => ({ from: () => { reads++; return { select: () => ({ in: async () => ({ data: options.products || [product], error: options.dbError || null }) }) }; } }), readPublicInventoryFlag: async () => { if (options.settingsError) throw Error('SETTINGS_UNAVAILABLE'); return { track_inventory: true }; } }
   });
-  const common = { '@/src/lib/server/checkout': prep, '@/src/lib/server/orderWriter': { createOrder: async (data, items) => { writes++; return { orderId: 'order-1', data, items }; } } };
+  let lastOrderData = null;
+  const notificationsSent = [];
+  const common = {
+    '@/src/lib/server/checkout': prep,
+    '@/src/lib/server/orderWriter': { createOrder: async (data, items) => { writes++; lastOrderData = data; return { orderId: 'order-1', data, items }; } },
+    '@/src/lib/notifications': { triggerOrderNotification: async (...args) => { notificationsSent.push(args); } },
+  };
   const cash = load('src/actions/checkoutAction.ts', common);
   const wompi = load('src/actions/wompi.ts', { ...common, '@clerk/nextjs/server': {}, '@/src/lib/server/authorization': {}, '@/src/lib/server/database': { getServerDatabase: () => ({ from: () => ({ insert: async () => ({ error: null }) }) }) }, '@/src/lib/wompi': { assertWompiCheckoutConfigured: () => { if (options.configError) throw Error('NOT_CONFIGURED'); return 'synthetic-key'; }, formatToCents: n => n*100, generateIntegritySignature: () => 'synthetic-signature' } });
-  return { cash: cash.submitCheckoutOrder, wompi: wompi.initializeWompiTransaction, counts: () => ({ writes, reads, authReads }) };
+  return { cash: cash.submitCheckoutOrder, wompi: wompi.initializeWompiTransaction, counts: () => ({ writes, reads, authReads }), getLastOrder: () => lastOrderData, getNotifications: () => notificationsSent };
 }
 for (const method of ['cash', 'wompi']) {
   for (const [label, options, items, total] of [ ['negative', {}, [item(-1)], 15000], ['empty', {}, [], 15000], ['out of stock duplicates', {}, [item(2), item(2)], 45000], ['inactive', { products: [{ ...product, is_active: false }] }, [item()], 15000], ['price changed', {}, [item()], 1], ['unauthenticated', { unauthorized: true }, [item()], 15000], ['database failure', { dbError: {} }, [item()], 15000], ['inventory setting outage', { settingsError: true }, [item()], 15000] ]) test(`${method}: ${label} => zero writes`, async () => {
@@ -172,4 +178,75 @@ test('actual private writer denies cross-owner before constructing database clie
 });
 test('actual private writer preserves valid owned order header and lines', async () => {
   const h = privateWriterHarness(); assert.equal((await h.create(validOrder, validOrderLines)).orderId, 'order-1'); assert.equal(h.counts().mutations, 2);
+});
+
+test('Sprint 1 P0: Wompi init uses Pago Pendiente and forwards idempotencyKey', async () => {
+  const h = checkoutHarness();
+  const res = await h.wompi(form(), [item(2)], 25000, 'WOMPI-KEY-123');
+  assert.equal(res.ok, true);
+  assert.equal(h.getLastOrder().status, 'Pago Pendiente');
+  assert.equal(h.getLastOrder().idempotency_key, 'WOMPI-KEY-123');
+});
+
+test('Sprint 1 P0: cash checkout triggers WhatsApp order notification with phone and name', async () => {
+  const h = checkoutHarness();
+  await h.cash(form(), [item(2)], 25000, 'CHK-KEY-123');
+  const notifications = h.getNotifications();
+  assert.equal(notifications.length, 1);
+  assert.deepEqual(notifications[0], ['order-1', '3000000000', 'Ana Prueba', 25000]);
+});
+
+test('Sprint 1 P0: CHECKOUT_CITIES & calculateCheckoutDeliveryCost stay aligned across AMB and Bogota', () => {
+  assert.equal(validation.CHECKOUT_CITIES.includes('Piedecuesta'), true);
+  assert.equal(validation.calculateCheckoutDeliveryCost('Bucaramanga', 20000), 5000);
+  assert.equal(validation.calculateCheckoutDeliveryCost('Floridablanca', 20000), 8000);
+  assert.equal(validation.calculateCheckoutDeliveryCost('Piedecuesta', 20000), 10000);
+  assert.equal(validation.calculateCheckoutDeliveryCost('Piedecuesta', 50000), 0);
+});
+
+test('Sprint 1 P0: normalizeColombianWhatsAppPhone rejects empty/short and avoids double 57', () => {
+  const notificationsMod = load('src/lib/notifications.ts');
+  assert.equal(notificationsMod.normalizeColombianWhatsAppPhone(''), null);
+  assert.equal(notificationsMod.normalizeColombianWhatsAppPhone('57'), null);
+  assert.equal(notificationsMod.normalizeColombianWhatsAppPhone('311 269 4676'), '573112694676');
+  assert.equal(notificationsMod.normalizeColombianWhatsAppPhone('+57 311 269 4676'), '573112694676');
+});
+
+test('Sprint 1 P0: Wompi webhook looks up customer phone, promotes Pago Pendiente and triggers notification', async () => {
+  const sentNotifications = [];
+  const updatedStatuses = [];
+  const db = {
+    rpc: async () => ({ data: { success: true, action: 'order_approved', order_id: 'order-wompi-1' }, error: null }),
+    from: () => ({
+      select: () => ({
+        eq: () => ({
+          maybeSingle: async () => ({
+            data: { customer_phone: '3112694676', customer_name: 'Carlos Gómez', status: 'Pago Pendiente' },
+          }),
+        }),
+      }),
+      update: (patch) => {
+        updatedStatuses.push(patch);
+        return { eq: () => ({ eq: async () => ({ error: null }) }) };
+      },
+    }),
+  };
+  const route = load('app/api/webhooks/wompi/route.ts', {
+    'next/server': { NextResponse: { json: (body, options) => ({ body, status: options.status }) } },
+    '@/src/lib/wompi': signedPayment,
+    '@supabase/supabase-js': { createClient: () => db },
+    '@/src/lib/notifications': {
+      triggerOrderNotification: async (...args) => { sentNotifications.push(args); },
+    },
+  }, { NEXT_PUBLIC_SUPABASE_URL: 'https://fixture.invalid', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'synthetic' });
+
+  const transaction = { id: 'tx-wompi-1', status: 'APPROVED', amount_in_cents: 5500000, currency: 'COP', reference: 'order-wompi-1' };
+  const properties = ['transaction.id', 'transaction.status', 'transaction.amount_in_cents'];
+  const res = await route.POST({
+    json: async () => ({ event: 'transaction.updated', data: { transaction }, signature: eventSignature(transaction, properties), timestamp: 1234567890 }),
+  });
+  assert.equal(res.status, 200);
+  assert.equal(updatedStatuses.length, 1);
+  assert.equal(updatedStatuses[0].status, 'En Preparación');
+  assert.deepEqual(sentNotifications[0], ['order-wompi-1', '3112694676', 'Carlos Gómez', 55000]);
 });

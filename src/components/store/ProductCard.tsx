@@ -11,12 +11,16 @@ import { QuantitySelector } from './QuantitySelector';
 
 const formatPrice = (price: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(price);
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, trackInventory = false }: { product: Product; trackInventory?: boolean }) {
   const { items, addToCart, updateQuantity, cartReady } = useCart();
   const { role } = useUserRole();
   const quantity = items.find(item => item.product.id === product.id)?.quantity ?? 0;
   const [expanded, setExpanded] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const isOutOfStock = trackInventory && !product.isKit && product.stockQuantity <= 0;
+  const isLowStock = trackInventory && !product.isKit && product.stockQuantity > 0 && product.stockQuantity <= 5;
+  const stockCapped = trackInventory && !product.isKit && product.stockQuantity > 0 && quantity >= product.stockQuantity;
 
   const tierTag = role === 'Restaurantes'
     ? { label: 'Tarifa Restaurante', classes: 'bg-emerald-50 text-emerald-800 border-emerald-200' }
@@ -62,7 +66,7 @@ export function ProductCard({ product }: { product: Product }) {
               alt={product.name}
               fill
               sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 200px"
-              className="object-contain p-2"
+              className={`object-contain p-2 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
             />
           ) : (
             <span className="flex h-full flex-col items-center justify-center gap-2 p-3 text-center text-slate-500">
@@ -70,6 +74,15 @@ export function ProductCard({ product }: { product: Product }) {
               <span className="text-xs">Foto no disponible</span>
             </span>
           )}
+          {isOutOfStock ? (
+            <span className="absolute top-2 left-2 rounded-full bg-red-600 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-sm">
+              Agotado
+            </span>
+          ) : isLowStock ? (
+            <span className="absolute top-2 left-2 rounded-full bg-amber-500 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-sm">
+              Quedan {product.stockQuantity}
+            </span>
+          ) : null}
         </button>
         <div className="flex flex-1 flex-col gap-2 p-3">
           <p className="truncate text-[9px] font-bold uppercase tracking-wide text-green-800">{product.category}</p>
@@ -113,13 +126,20 @@ export function ProductCard({ product }: { product: Product }) {
             </div>
           </div>
           <div className="mt-1 flex flex-col gap-1.5">
-            <QuantitySelector
-              quantity={quantity}
-              productName={product.name}
-              disabled={!cartReady || !product.isActive}
-              onIncrement={handleIncrement}
-              onDecrement={handleDecrement}
-            />
+            {isOutOfStock ? (
+              <div className="flex min-h-11 items-center justify-center rounded-xl border border-red-200 bg-red-50 px-3 text-xs font-extrabold uppercase tracking-wider text-red-700">
+                Agotado temporalmente
+              </div>
+            ) : (
+              <QuantitySelector
+                quantity={quantity}
+                productName={product.name}
+                disabled={!cartReady || !product.isActive}
+                maxReached={stockCapped}
+                onIncrement={handleIncrement}
+                onDecrement={handleDecrement}
+              />
+            )}
             {quantity > 1 && (
               <div 
                 className="flex items-center justify-between rounded-lg bg-emerald-50 px-2 py-1 text-[11px] font-bold text-emerald-800 border border-emerald-200/60"
@@ -182,13 +202,20 @@ export function ProductCard({ product }: { product: Product }) {
                 </div>
               )}
               <div className="flex flex-col gap-2">
-                <QuantitySelector
-                  quantity={quantity}
-                  productName={product.name}
-                  disabled={!cartReady || !product.isActive}
-                  onIncrement={handleIncrement}
-                  onDecrement={handleDecrement}
-                />
+                {isOutOfStock ? (
+                  <div className="flex min-h-11 items-center justify-center rounded-xl border border-red-200 bg-red-50 px-4 text-sm font-extrabold uppercase tracking-wider text-red-700">
+                    Producto Agotado
+                  </div>
+                ) : (
+                  <QuantitySelector
+                    quantity={quantity}
+                    productName={product.name}
+                    disabled={!cartReady || !product.isActive}
+                    maxReached={stockCapped}
+                    onIncrement={handleIncrement}
+                    onDecrement={handleDecrement}
+                  />
+                )}
                 {quantity > 1 && (
                   <div className="flex items-center justify-between rounded-xl bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-800 border border-emerald-200">
                     <span className="text-slate-600 font-medium">Subtotal ({quantity} {product.unit}s):</span>

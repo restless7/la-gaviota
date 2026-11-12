@@ -2,20 +2,48 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { MessageSquare, ArrowLeft, Send, CheckCircle } from 'lucide-react';
+import { MessageSquare, ArrowLeft, Send, CheckCircle2, PhoneCall, Copy, Check } from 'lucide-react';
+import { submitCustomerInquiryAction } from '@/src/actions/inquiries';
 
 export default function PQRSPage() {
-  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [radicadoResult, setRadicadoResult] = useState<{
+    code: string;
+    type: string;
+    customerName: string;
+  } | null>(null);
   const [type, setType] = useState('peticion');
+  const [copied, setCopied] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const recipient = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
-    if (!recipient) return;
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
     const form = new FormData(e.currentTarget);
-    const fields = Array.from(form.entries()).map(([key, value]) => `${key}: ${value}`).join('\n');
-    window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(`PQRS: ${type}`)}&body=${encodeURIComponent(fields)}`;
-    setSubmitted(true);
+    form.set('type', type);
+    const fullName = String(form.get('name') || '');
+    const email = String(form.get('email') || '');
+    const phone = String(form.get('phone') || '');
+    form.set('contact', phone ? `${phone} / ${email}` : email);
+
+    try {
+      const result = await submitCustomerInquiryAction(form);
+      if (result.ok && result.radicadoCode) {
+        setRadicadoResult({
+          code: result.radicadoCode,
+          type,
+          customerName: fullName,
+        });
+      } else {
+        setErrorMessage(result.error || 'No pudimos registrar tu solicitud. Por favor intenta nuevamente.');
+      }
+    } catch {
+      setErrorMessage('Ocurrió un error inesperado al conectar con el servidor.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const typeLabels: Record<string, { emoji: string; title: string; color: string }> = {
@@ -23,6 +51,13 @@ export default function PQRSPage() {
     queja: { emoji: '😤', title: 'Queja', color: 'bg-gaviota-red' },
     reclamo: { emoji: '⚠️', title: 'Reclamo', color: 'bg-orange-500' },
     sugerencia: { emoji: '💡', title: 'Sugerencia', color: 'bg-gaviota-green' },
+  };
+
+  const copyRadicado = () => {
+    if (!radicadoResult) return;
+    navigator.clipboard?.writeText(radicadoResult.code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -46,18 +81,68 @@ export default function PQRSPage() {
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 py-16">
-        {submitted ? (
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-12 text-center">
-            <div className="bg-gaviota-green/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle size={40} className="text-gaviota-green" />
+        {radicadoResult ? (
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 sm:p-12 text-center animate-fade-in max-w-2xl mx-auto">
+            <div className="bg-emerald-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-600">
+              <CheckCircle2 size={44} />
             </div>
-            <h2 className="text-3xl font-black text-slate-800 font-serif mb-4">Termina el envío por correo</h2>
-            <p className="text-gray-500 text-lg max-w-md mx-auto mb-8">
-              Revisa y envía tu {typeLabels[type].title.toLowerCase()} desde tu aplicación de correo. Abrir el correo no confirma recepción ni genera un radicado.
+            <span className="inline-block rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-black uppercase tracking-wider text-emerald-800 mb-2">
+              Solicitud Radicada Exitosamente
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-800 font-serif mb-2">
+              ¡Gracias, {radicadoResult.customerName || 'Apreciado Cliente'}!
+            </h2>
+            <p className="text-gray-600 text-sm max-w-md mx-auto mb-6">
+              Hemos registrado tu {typeLabels[radicadoResult.type]?.title.toLowerCase() || 'solicitud'} en nuestro sistema de atención al cliente.
             </p>
-            <Link href="/" className="inline-flex items-center gap-2 bg-gaviota-green text-white font-bold py-3 px-8 rounded-full hover:bg-green-600 transition-all shadow-lg">
-              Volver al inicio
-            </Link>
+
+            <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl p-5 mb-6 text-left">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                Número de Radicado Oficial
+              </p>
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-mono text-xl sm:text-2xl font-black text-slate-900 tracking-wider">
+                  {radicadoResult.code}
+                </span>
+                <button
+                  type="button"
+                  onClick={copyRadicado}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors shadow-sm"
+                >
+                  {copied ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
+                  <span>{copied ? 'Copiado' : 'Copiar'}</span>
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 mt-2">
+                ⏱️ Tiempo de respuesta estimado: <strong>máximo 24 a 48 horas hábiles</strong>.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+              <a
+                href={`https://wa.me/573112694676?text=${encodeURIComponent(
+                  `¡Hola Surtifruver La Gaviota! Acabo de registrar mi ${typeLabels[radicadoResult.type]?.title} con radicado *${radicadoResult.code}*. Agradezco su confirmación y seguimiento.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition-all text-sm"
+              >
+                <PhoneCall size={16} /> Notificar por WhatsApp a Soporte
+              </a>
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center gap-2 border border-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-xl hover:bg-slate-50 transition-all text-sm"
+              >
+                Volver a la Tienda
+              </Link>
+            </div>
+
+            <button
+              onClick={() => setRadicadoResult(null)}
+              className="text-xs text-slate-400 hover:text-slate-600 underline"
+            >
+              Radicar otra solicitud
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -84,25 +169,41 @@ export default function PQRSPage() {
               </div>
 
               <div className="bg-gaviota-green/5 border border-gaviota-green/20 rounded-3xl p-8">
-                <h4 className="font-bold text-slate-800 mb-3">Otros canales</h4>
-                <Link href="/contacto" className="text-sm font-bold text-green-800 underline">Consultar los canales de contacto</Link>
+                <h4 className="font-bold text-slate-800 mb-3">Atención Directa</h4>
+                <p className="text-xs text-slate-600 mb-3 leading-relaxed">
+                  Para urgencias en tu domicilio de hoy, contáctanos inmediatamente a nuestra línea de despacho.
+                </p>
+                <a
+                  href="https://wa.me/573112694676"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-bold text-green-800 underline block"
+                >
+                  WhatsApp: +57 311 269 4676 →
+                </a>
               </div>
 
               <div className="bg-slate-100 rounded-3xl p-8">
-                <h4 className="font-bold text-slate-800 mb-3">⚖️ Marco Legal</h4>
+                <h4 className="font-bold text-slate-800 mb-3">⚖️ Compromiso La Gaviota</h4>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  Conserva una copia de tu correo. El equipo de atención confirmará la recepción y el trámite de tu solicitud.
+                  Toda solicitud genera un radicado digital único. Te contactaremos dentro de los plazos legales establecidos.
                 </p>
               </div>
             </div>
 
             {/* Form Panel */}
             <div className="lg:col-span-2">
-              <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 md:p-10 space-y-8">
+              <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 md:p-10 space-y-6">
                 <div>
                   <h2 className="text-2xl font-black text-slate-800 font-serif mb-2">Enviar Solicitud</h2>
-                  <p className="text-gray-500 text-sm">Completa el formulario y te responderemos lo antes posible.</p>
+                  <p className="text-gray-500 text-sm">Completa el formulario y te generaremos tu número de radicado inmediato.</p>
                 </div>
+
+                {errorMessage && (
+                  <div role="alert" className="p-3 bg-red-50 text-red-700 text-xs font-bold rounded-xl border border-red-200">
+                    {errorMessage}
+                  </div>
+                )}
 
                 {/* Type Selector */}
                 <div>
@@ -123,49 +224,52 @@ export default function PQRSPage() {
                   </div>
                 </div>
 
-                {/* Name */}
+                {/* Name & Email */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Nombre completo *</label>
-                    <input type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="name" aria-label="Nombre completo" placeholder="Tu nombre" />
+                    <input type="text" required maxLength={200} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="name" aria-label="Nombre completo" placeholder="Tu nombre y apellido" />
                   </div>
                   <div>
                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Correo electrónico *</label>
-                    <input type="email" required className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="email" aria-label="Correo electrónico" placeholder="tu@correo.com" />
+                    <input type="email" required maxLength={254} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="email" aria-label="Correo electrónico" placeholder="tu@correo.com" />
                   </div>
                 </div>
 
                 {/* Phone & Order */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Teléfono</label>
-                    <input type="tel" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="phone" aria-label="Teléfono" placeholder="+57 300 000 0000" />
+                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Teléfono / WhatsApp *</label>
+                    <input type="tel" required maxLength={30} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="phone" aria-label="Teléfono" placeholder="Ej. 311 269 4676" />
                   </div>
                   <div>
                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">No. de pedido (si aplica)</label>
-                    <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="order" aria-label="Número de pedido" placeholder="ORD-XXXX" />
+                    <input type="text" maxLength={100} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="orderId" aria-label="Número de pedido" placeholder="Ej. ord_... o código de compra" />
                   </div>
                 </div>
 
                 {/* Subject */}
                 <div>
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Asunto *</label>
-                  <input type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="subject" aria-label="Asunto" placeholder="Resumen breve de tu solicitud" />
+                  <input type="text" required maxLength={200} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium" name="subject" aria-label="Asunto" placeholder="Resumen breve de tu solicitud" />
                 </div>
 
                 {/* Message */}
                 <div>
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Descripción detallada *</label>
-                  <textarea required rows={5} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium resize-none" name="message" aria-label="Descripción detallada" placeholder="Describe tu solicitud con el mayor detalle posible..."></textarea>
+                  <textarea required rows={5} maxLength={4000} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gaviota-green focus:ring-1 focus:ring-gaviota-green transition-all bg-slate-50 font-medium resize-none" name="message" aria-label="Descripción detallada" placeholder="Describe tu solicitud con el mayor detalle posible..."></textarea>
                 </div>
 
                 {/* Submit */}
-                <button type="submit" disabled={!process.env.NEXT_PUBLIC_SUPPORT_EMAIL} className="disabled:opacity-50 disabled:cursor-not-allowed w-full bg-gaviota-green hover:bg-green-600 text-white font-black py-4 rounded-xl shadow-lg transition-all hover:-translate-y-0.5 flex items-center justify-center gap-3 text-lg">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="disabled:opacity-50 disabled:cursor-not-allowed w-full bg-gaviota-green hover:bg-green-600 text-white font-black py-4 rounded-xl shadow-lg transition-all hover:-translate-y-0.5 flex items-center justify-center gap-3 text-base sm:text-lg"
+                >
                   <Send size={20} />
-                  Preparar correo: {typeLabels[type].title}
+                  {isSubmitting ? 'Radicando...' : `Radicar ${typeLabels[type].title} Oficial`}
                 </button>
 
-                {!process.env.NEXT_PUBLIC_SUPPORT_EMAIL && <p role="status" className="text-sm text-slate-600">El correo de atención se habilitará al completar la configuración del portal. Este formulario no registra solicitudes todavía.</p>}
                 <p className="text-xs text-gray-400 text-center">
                   Al enviar este formulario, aceptas nuestra <Link href="/privacidad" className="text-gaviota-green font-bold hover:underline">Política de Privacidad</Link> y el tratamiento de tus datos personales.
                 </p>

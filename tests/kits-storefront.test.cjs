@@ -150,3 +150,90 @@ test('ProductCard and ProductDetailClient display kit ingredients to customers',
   assert.match(detail, /KitIngredientsList/, 'ProductDetailClient must render KitIngredientsList');
 });
 
+test('listKitBannerGallery aggregates kit-banners storage and used kit URLs without presets', async () => {
+  const mockDb = {
+    storage: {
+      from: (bucket) => {
+        assert.equal(bucket, 'kit-banners');
+        return {
+          list: async (prefix) => {
+            if (prefix === 'managed/kit') {
+              return {
+                data: [
+                  { id: '1', name: 'banner-custom.png', created_at: '2026-11-11T00:00:00Z' },
+                  { id: null, name: 'nested-folder' },
+                ],
+                error: null,
+              };
+            }
+            return { data: [], error: null };
+          },
+          getPublicUrl: (key) => ({
+            data: { publicUrl: `https://example.supabase.co/storage/v1/object/public/kit-banners/${key}` },
+          }),
+        };
+      },
+    },
+    from: (table) => {
+      assert.equal(table, 'kits');
+      return {
+        select: () => ({
+          not: () => ({
+            order: async () => ({
+              data: [
+                {
+                  banner_url: '/IMAGES/kit-chevere-semana.jpg',
+                  name: 'Kit Preset',
+                  created_at: '2026-11-10T00:00:00Z',
+                },
+                {
+                  banner_url: 'https://example.supabase.co/storage/v1/object/public/kit-banners/managed/kit/banner-custom.png',
+                  name: 'Kit Semanal',
+                  created_at: '2026-11-11T00:00:00Z',
+                },
+                {
+                  banner_url: 'https://cdn.example.com/old-kit-banner.jpg',
+                  name: 'Kit Navideño',
+                  created_at: '2026-11-09T00:00:00Z',
+                },
+              ],
+              error: null,
+            }),
+          }),
+        }),
+      };
+    },
+  };
+
+  const { listKitBannerGallery } = loadTsModule('src/actions/media.ts', {
+    '@/src/lib/server/authorization': {
+      requireCapability: async (cap) => {
+        assert.equal(cap, 'catalog.manage');
+        return { userId: 'user_admin', role: 'ADMIN', tier: 'Personas Naturales' };
+      },
+      assertTargetId: () => {},
+    },
+    '@/src/lib/server/database': { getServerDatabase: () => mockDb },
+  });
+
+  const gallery = await listKitBannerGallery();
+  assert.equal(gallery.length, 2);
+  assert.equal(
+    gallery[0].url,
+    'https://example.supabase.co/storage/v1/object/public/kit-banners/managed/kit/banner-custom.png'
+  );
+  assert.equal(gallery[1].url, 'https://cdn.example.com/old-kit-banner.jpg');
+  assert.equal(gallery[1].name, 'Kit Navideño');
+});
+
+test('KitsClient renders live banner preview and reusable banner gallery', () => {
+  const kitsClient = fs.readFileSync(
+    path.join(REPO_ROOT, 'app/admin/catalog/kits/KitsClient.tsx'),
+    'utf8'
+  );
+
+  assert.match(kitsClient, /src=\{bannerPreview\}/, 'KitsClient must render bannerPreview image');
+  assert.match(kitsClient, /bannerGallery\.map/, 'KitsClient must render reusable bannerGallery');
+  assert.match(kitsClient, /MAX_BANNER_BYTES/, 'KitsClient must validate upload size up front');
+});
+

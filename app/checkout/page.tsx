@@ -9,6 +9,7 @@ import { CheckoutUpsell } from '@/src/components/checkout/CheckoutUpsell';
 import { submitCashCheckoutAction } from '@/src/actions/checkoutAction';
 import { initializeWompiTransaction } from '@/src/actions/wompi';
 import { calculateDeliverySchedule } from '@/src/lib/deliveryCutoff';
+import { CHECKOUT_CITIES, calculateCheckoutDeliveryCost } from '@/src/lib/checkoutValidation';
 import Script from 'next/script';
 
 const wompiConfigured = Boolean(process.env.NEXT_PUBLIC_WOMPI_PUB_KEY);
@@ -39,6 +40,7 @@ export default function CheckoutPage() {
       orderId: string;
       total: number;
       paymentPending: boolean;
+      paymentMethod: 'wompi' | 'cash';
       customerName?: string;
       city?: string;
       address?: string;
@@ -56,7 +58,7 @@ export default function CheckoutPage() {
             if (raw) {
                const parsed = JSON.parse(raw) as SavedCheckoutProfile;
                setSavedProfile(parsed);
-               if (parsed.city && ['Bucaramanga', 'Floridablanca', 'Girón'].includes(parsed.city)) {
+               if (parsed.city && (CHECKOUT_CITIES as readonly string[]).includes(parsed.city)) {
                   setSelectedCity(parsed.city);
                }
             }
@@ -73,14 +75,11 @@ export default function CheckoutPage() {
      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(price);
    };
 
-   let deliveryCost = 8000;
-   if (items.length === 0 || remainingForFreeShipping === 0) {
-      deliveryCost = 0;
-   } else {
-      if (selectedCity === 'Bucaramanga') deliveryCost = 5000;
-      else if (selectedCity === 'Floridablanca' || selectedCity === 'Girón') deliveryCost = 8000;
-   }
-   
+   const deliveryCost =
+      items.length === 0 || remainingForFreeShipping === 0
+         ? 0
+         : calculateCheckoutDeliveryCost(selectedCity, cartTotal);
+
    const finalTotal = cartTotal + deliveryCost;
 
 
@@ -115,8 +114,29 @@ export default function CheckoutPage() {
          }
 
          const checkoutItems = items.map(i => ({ product: i.product, quantity: i.quantity }));
+         const customerFullName = `${formData.get('firstName') || ''} ${formData.get('lastName') || ''}`.trim();
+         const customerCity = String(formData.get('city') || selectedCity || '');
+         const customerAddress = String(formData.get('address') || '');
+         const customerTimeRange = String(formData.get('deliveryTimeRange') || selectedTimeRange || '');
+         const markCartRecovered = () => {
+            if (!isSignedIn) return;
+            fetch('/api/marketing/abandoned-cart/sync', {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/json' },
+               keepalive: true,
+               body: JSON.stringify({
+                  items: checkoutItems,
+                  cartTotal,
+                  phone: String(formData.get('phone') || ''),
+                  email: String(formData.get('email') || ''),
+                  isCompleted: true,
+               }),
+            }).catch(() => {});
+         };
+
          if (paymentMethod === 'wompi') {
-            const wompiData = await initializeWompiTransaction(formData, checkoutItems, finalTotal);
+            const wompiIdempotencyKey = `WOMPI-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+            const wompiData = await initializeWompiTransaction(formData, checkoutItems, finalTotal, wompiIdempotencyKey);
             if (!wompiData.ok) {
                setSubmitError(wompiData.error || 'No pudimos procesar tu pago con Wompi. Por favor intenta de nuevo.');
                setIsSubmitting(false);
@@ -143,11 +163,17 @@ export default function CheckoutPage() {
                   setConfirmation({
                      orderId: wompiData.orderId,
                      total: wompiData.totalAmount,
-                     paymentPending: true,
+                     paymentPending: status !== 'APPROVED',
+                     paymentMethod: 'wompi',
+                     customerName: customerFullName,
+                     city: customerCity,
+                     address: customerAddress,
+                     timeRange: customerTimeRange,
                      scheduledDateText: schedule.formattedDate,
                      isAfterCutoff: schedule.isAfterCutoff,
                   });
-                  if (status === 'APPROVED') clearCart();
+                  markCartRecovered();
+                  clearCart();
                } else {
                   setSubmitError('El pago no se completó. Tu carrito se conserva; revisa el estado del pedido en Mi Portal antes de reintentar.');
                }
@@ -161,15 +187,12 @@ export default function CheckoutPage() {
                setIsSubmitting(false);
                return;
             }
-            const customerFullName = `${formData.get('firstName') || ''} ${formData.get('lastName') || ''}`.trim();
-            const customerCity = String(formData.get('city') || selectedCity || '');
-            const customerAddress = String(formData.get('address') || '');
-            const customerTimeRange = String(formData.get('deliveryTimeRange') || selectedTimeRange || '');
             const schedule = calculateDeliverySchedule();
             setConfirmation({
                orderId: result.orderId,
                total: result.totalAmount,
                paymentPending: false,
+               paymentMethod: 'cash',
                customerName: customerFullName,
                city: customerCity,
                address: customerAddress,
@@ -177,6 +200,7 @@ export default function CheckoutPage() {
                scheduledDateText: schedule.formattedDate,
                isAfterCutoff: schedule.isAfterCutoff,
             });
+            markCartRecovered();
             clearCart();
             setIsSubmitting(false);
          }
@@ -212,7 +236,7 @@ export default function CheckoutPage() {
                <p className="mt-1 text-3xl font-black text-slate-900">{formatPrice(confirmation.total)}</p>
                {confirmation.city && (
                   <p className="mt-2 text-xs font-semibold text-slate-600">
-                     Destino: {confirmation.address ? `${confirmation.address}, ` : ''}{confirmation.city}, Santander
+                     Destino: {confirmation.address ? `${confirmation.address}, ` : ''}{confirmation.city.startsWith('Bogotá') ? confirmation.city : `${confirmation.city}, Santander`}
                   </p>
                )}
                {confirmation.scheduledDateText && (
@@ -232,8 +256,10 @@ export default function CheckoutPage() {
                )}
             </div>
             <p className="mb-6 text-sm text-slate-600">{confirmation.paymentPending
-               ? 'El estado definitivo del pago se confirma en Mi Portal. Una respuesta del medio de pago puede tardar en actualizarse.'
-               : 'Elegiste Pago Contra Entrega. Alistaremos tus productos frescos del campo y puedes consultar el estado en Mi Portal o confirmar por WhatsApp.'}</p>
+               ? 'Tu transacción está pendiente de confirmación (PSE/Nequi). El estado definitivo del pago se actualiza automáticamente y puedes consultarlo en Mi Portal.'
+               : confirmation.paymentMethod === 'wompi'
+                  ? '¡Pago aprobado con Wompi! Ya enviamos tu pedido a alistamiento en plaza. Puedes seguirlo en vivo desde el rastreador.'
+                  : 'Elegiste Pago Contra Entrega. Alistaremos tus productos frescos del campo y puedes consultar el estado en Mi Portal o confirmar por WhatsApp.'}</p>
 
             {!isSignedIn && (
                <div className="mb-8 rounded-2xl border-2 border-[#83b745]/40 bg-emerald-50/60 p-5 text-left shadow-sm">
@@ -417,7 +443,7 @@ export default function CheckoutPage() {
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
                         <label className="text-[13px] font-bold text-slate-800">Región de Cobertura</label>
                         <p className="font-bold text-slate-900 bg-slate-50 border border-gray-200 rounded-sm px-3 py-2 text-sm flex items-center gap-2">
-                           <span>🇨🇴</span> Colombia — Área Metropolitana de Santander
+                           <span>🇨🇴</span> Colombia — Santander (AMB) y Bogotá
                         </p>
                         <input type="hidden" name="country" value="Colombia" />
                         <input type="hidden" name="state" value="Santander" />
@@ -426,9 +452,9 @@ export default function CheckoutPage() {
                      <div className="flex flex-col gap-1.5 md:col-span-2 min-w-0">
                         <label htmlFor="checkout-city" className="text-[13px] font-bold text-slate-800">Localidad / Ciudad *</label>
                         <select required id="checkout-city" name="city" value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} className="w-full border border-gray-300 bg-white rounded-sm px-3 py-2 outline-none focus:border-[#83b745] font-semibold text-slate-800">
-                           <option value="Bucaramanga">Bucaramanga</option>
-                           <option value="Floridablanca">Floridablanca</option>
-                           <option value="Girón">Girón</option>
+                           {CHECKOUT_CITIES.map((city) => (
+                              <option key={city} value={city}>{city}</option>
+                           ))}
                         </select>
                      </div>
 

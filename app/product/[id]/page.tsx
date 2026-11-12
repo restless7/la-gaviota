@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { fetchProducts } from '@/src/actions/products';
+import { readPublicInventoryFlag } from '@/src/lib/server/database';
 import ProductDetailClient from '@/src/components/store/ProductDetailClient';
 import { cache } from 'react';
 
@@ -42,7 +43,10 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
 
 export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
    const { id } = await props.params;
-   const products = await readCatalog();
+   const [products, { track_inventory }] = await Promise.all([
+      readCatalog(),
+      readPublicInventoryFlag(),
+   ]);
    const product = products.find(p => p.id === id);
    
    if (!product) {
@@ -69,7 +73,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
          url: `https://www.lagaviotafruver.com/product/${product.id}`,
          priceCurrency: 'COP',
          price: product.price,
-         availability: product.stockQuantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+         availability: (track_inventory && !product.isKit && product.stockQuantity <= 0) ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
          seller: {
             '@type': 'Organization',
             name: 'La Gaviota Fruver'
@@ -83,7 +87,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
          />
-         <ProductDetailClient product={product} relatedProducts={relatedProducts} />
+         <ProductDetailClient product={product} relatedProducts={relatedProducts} trackInventory={track_inventory} />
       </>
    );
 }

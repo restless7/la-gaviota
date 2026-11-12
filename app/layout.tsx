@@ -87,7 +87,11 @@ const jsonLd = {
     longitude: -73.1257
   },
   areaServed: [
-    { '@type': 'City', name: 'Bucaramanga' }
+    { '@type': 'City', name: 'Bucaramanga' },
+    { '@type': 'City', name: 'Floridablanca' },
+    { '@type': 'City', name: 'Girón' },
+    { '@type': 'City', name: 'Piedecuesta' },
+    { '@type': 'City', name: 'Bogotá' }
   ],
   priceRange: 'COP',
   openingHoursSpecification: [

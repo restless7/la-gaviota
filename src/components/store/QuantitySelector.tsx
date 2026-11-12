@@ -12,10 +12,11 @@ interface QuantitySelectorProps {
   onIncrement: () => void;
   onDecrement: () => void;
   disabled?: boolean;
+  maxReached?: boolean;
 }
 
 /** Controlled by the shared cart. Deltas are applied against the latest cart state. */
-export function QuantitySelector({ quantity, productName, onIncrement, onDecrement, disabled = false }: QuantitySelectorProps) {
+export function QuantitySelector({ quantity, productName, onIncrement, onDecrement, disabled = false, maxReached = false }: QuantitySelectorProps) {
   const addRef = useRef<HTMLButtonElement>(null);
   // Match SSR disabled markup first, then apply client readiness
   const hydrated = useSyncExternalStore(subscribeHydration, clientSnapshot, serverSnapshot);
@@ -59,7 +60,7 @@ export function QuantitySelector({ quantity, productName, onIncrement, onDecreme
           <button
             key="btn-inc"
             type="button"
-            disabled={controlsDisabled}
+            disabled={controlsDisabled || maxReached}
             aria-label={`Aumentar cantidad de ${productName}`}
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-r-xl text-xl font-bold text-red-700 transition-colors duration-150 hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 disabled:opacity-40 motion-reduce:transition-none active:scale-95"
             onClick={e => {

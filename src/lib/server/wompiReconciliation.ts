@@ -216,6 +216,15 @@ export async function reconcilePendingPaymentIntents(
             throw new Error(`RPC_PROCESS_FAILED: ${rpcErr.message}`);
           }
 
+          // Guard for orders created in 'Pago Pendiente' if older DB RPC only promoted 'Pendiente'
+          if (intent.order_id) {
+            await supabase
+              .from('orders')
+              .update({ status: 'En Preparación', updated_at: new Date().toISOString() })
+              .eq('id', intent.order_id)
+              .eq('status', 'Pago Pendiente');
+          }
+
           await supabase
             .from('payment_intents')
             .update({

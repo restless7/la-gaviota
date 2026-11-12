@@ -170,7 +170,9 @@ export default function Footer() {
               <div className="flex gap-4">
                 <div className="mt-1 text-gaviota-red"><Mail size={18} /></div>
                 <div className="text-sm text-gray-400">
-                  <p className="text-white font-medium">pedidos@lagaviota.co</p>
+                  <a href="mailto:contacto@lagaviotafruver.com" className="text-white font-medium hover:text-gaviota-green transition-colors block">
+                    contacto@lagaviotafruver.com
+                  </a>
                   <p>Soporte 24/7 online</p>
                 </div>
               </div>
@@ -184,9 +186,10 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-xs text-gray-500 font-medium">
-              &copy; {currentYear} Surtifruver La Gaviota SAS. Todos los derechos reservados. NIT: 900.123.456-7
+              &copy; {currentYear} Surtifruver La Gaviota SAS. Todos los derechos reservados. NIT: 1007193202-05
             </div>
-            <div className="flex gap-8 text-xs font-bold text-gray-500 uppercase tracking-widest">
+            <div className="flex flex-wrap gap-6 sm:gap-8 text-xs font-bold text-gray-500 uppercase tracking-widest">
+              <Link href="/pedidos" className="hover:text-white transition-colors">Rastrear Pedido</Link>
               <Link href="/privacidad" className="hover:text-white transition-colors">Privacidad</Link>
               <Link href="/terminos" className="hover:text-white transition-colors">Términos</Link>
               <Link href="/pqrs" className="hover:text-white transition-colors">PQRS</Link>

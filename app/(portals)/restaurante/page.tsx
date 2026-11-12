@@ -32,6 +32,7 @@ export default async function RestauranteDashboard() {
       <ActiveCustomerOrderBanner />
       <RestauranteClient 
         wholesalePicks={wholesalePicks}
+        allProducts={activeProducts}
         monthlySpend={monthlySpend}
         creditProfile={creditProfile}
         templates={templates}

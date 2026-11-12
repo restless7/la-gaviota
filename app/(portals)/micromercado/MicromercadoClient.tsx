@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/src/actions/products';
 import { ProductCard } from '@/src/components/store/ProductCard';
+import { B2BTemplatesSection, type BuyingTemplate } from '@/src/components/portals/B2BTemplatesSection';
 import { useCart } from '@/src/contexts/CartContext';
 import { useRouter } from 'next/navigation';
 
@@ -21,18 +22,6 @@ interface B2BOrderSummary {
   order_items?: B2BOrderItem[];
 }
 
-interface BuyingTemplateItem {
-  product_id?: string;
-  quantity: number;
-  product?: Product;
-}
-
-interface BuyingTemplate {
-  id: string;
-  template_name: string;
-  product_list?: BuyingTemplateItem[] | unknown;
-}
-
 export default function MicromercadoClient({ 
   bulkPicks, 
   allProducts = [],
@@ -46,10 +35,12 @@ export default function MicromercadoClient({
 }) {
   const { addToCart } = useCart();
   const router = useRouter();
+  const [notice, setNotice] = useState<{ type: 'info' | 'warning'; text: string } | null>(null);
 
   const handleQuickReorder = () => {
+    setNotice(null);
     if (!lastOrder || !lastOrder.order_items || lastOrder.order_items.length === 0) {
-      alert('No se encontró una orden previa para repetir.');
+      setNotice({ type: 'warning', text: 'No se encontró una orden previa para repetir.' });
       return;
     }
     
@@ -65,52 +56,35 @@ export default function MicromercadoClient({
     if (addedCount > 0) {
       router.push('/cart');
     } else {
-      alert('No pudimos encontrar los productos de su orden anterior en el catálogo activo.');
-    }
-  };
-
-  const handleAddTemplateToCart = (tpl: BuyingTemplate) => {
-    if (tpl.product_list && Array.isArray(tpl.product_list)) {
-      tpl.product_list.forEach((item: BuyingTemplateItem) => {
-        if (item.product) {
-          addToCart(item.product, item.quantity);
-        } else if (item.product_id) {
-          const matched = allProducts.find((p) => p.id === item.product_id) || bulkPicks.find((p) => p.id === item.product_id);
-          addToCart(
-            matched || {
-              id: item.product_id,
-              name: `Producto ${item.product_id}`,
-              category: 'VARIOS',
-              subcategory: null,
-              unit: 'Und',
-              price: 0,
-              previousPrice: null,
-              stockQuantity: 99,
-              isActive: true,
-              isInSeason: true,
-              imageUrl: null,
-              description: null,
-            },
-            item.quantity
-          );
-        }
-      });
-      alert(`Plantilla ${tpl.template_name} añadida al carrito.`);
-      router.push('/cart');
+      setNotice({ type: 'warning', text: 'No pudimos encontrar los productos de su orden anterior en el catálogo activo.' });
     }
   };
 
   const handleRouteStatus = () => {
     if (!lastOrder) {
-      alert('No tiene órdenes activas en ruta.');
+      setNotice({ type: 'info', text: 'No tiene órdenes activas en ruta en este momento.' });
       return;
     }
-    if (lastOrder.status === 'SHIPPED') {
-      alert('¡El camión de La Gaviota está en camino hacia su negocio! Llegada estimada: Hoy antes de las 5:00 PM.');
-    } else if (lastOrder.status === 'PENDING' || lastOrder.status === 'PAID') {
-      alert('Su orden está siendo preparada en bodega y pronto saldrá a ruta.');
+    if (lastOrder.status === 'En Ruta') {
+      setNotice({
+        type: 'info',
+        text: '¡El camión de La Gaviota está en camino hacia su negocio! Llegada estimada: hoy antes de las 5:00 PM.',
+      });
+    } else if (lastOrder.status === 'En Preparación' || lastOrder.status === 'Pendiente') {
+      setNotice({
+        type: 'info',
+        text: `Su orden #${lastOrder.id.slice(0, 8).toUpperCase()} (${lastOrder.status}) está siendo preparada en bodega y pronto saldrá a ruta.`,
+      });
+    } else if (lastOrder.status === 'Pago Pendiente') {
+      setNotice({
+        type: 'warning',
+        text: `Su última orden #${lastOrder.id.slice(0, 8).toUpperCase()} está pendiente de confirmación de pago en Wompi.`,
+      });
     } else {
-      alert(`Estado de su última orden: ${lastOrder.status}`);
+      setNotice({
+        type: 'info',
+        text: `Estado de su última orden #${lastOrder.id.slice(0, 8).toUpperCase()}: ${lastOrder.status}.`,
+      });
     }
   };
 
@@ -147,45 +121,45 @@ export default function MicromercadoClient({
       </div>
 
       {/* Action Links */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-         <div onClick={handleQuickReorder} className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col items-center text-center hover:border-yellow-400 hover:shadow-lg transition-all cursor-pointer group">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+         <button type="button" onClick={handleQuickReorder} className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col items-center text-center hover:border-yellow-400 hover:shadow-lg transition-all cursor-pointer group">
             <span className="text-4xl mb-4 group-hover:scale-110 transition-transform">📦</span>
             <h3 className="font-bold text-slate-800 text-lg mb-1">Pedidos Rápidos</h3>
             <p className="text-xs text-gray-500">Repita su última compra al instante.</p>
-         </div>
-         <div onClick={scrollToHistory} className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col items-center text-center hover:border-yellow-400 hover:shadow-lg transition-all cursor-pointer group">
+         </button>
+         <button type="button" onClick={scrollToHistory} className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col items-center text-center hover:border-yellow-400 hover:shadow-lg transition-all cursor-pointer group">
             <span className="text-4xl mb-4 group-hover:scale-110 transition-transform">📊</span>
             <h3 className="font-bold text-slate-800 text-lg mb-1">Mis Facturas</h3>
             <p className="text-xs text-gray-500">Historial y comprobantes de compra.</p>
-         </div>
-         <div onClick={handleRouteStatus} className="bg-[#4CAF50] rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-lg hover:bg-green-600 transition-all cursor-pointer group relative overflow-hidden">
-            {lastOrder?.status === 'SHIPPED' && (
+         </button>
+         <button type="button" onClick={handleRouteStatus} className="bg-[#4CAF50] rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-lg hover:bg-green-600 transition-all cursor-pointer group relative overflow-hidden">
+            {lastOrder?.status === 'En Ruta' && (
               <div className="absolute inset-0 bg-green-500 animate-pulse opacity-50 z-0"></div>
             )}
             <span className="text-4xl mb-2 z-10">🚚</span>
             <h3 className="font-bold text-white text-lg z-10">Ver estado de Ruta</h3>
-         </div>
+         </button>
       </div>
 
-      {/* Plantillas de Compra Rapid */}
-      <h2 className="text-xl font-black text-slate-800 mb-6 font-serif">Mis Recetas / Plantillas de Compra</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-         {(!templates || templates.length === 0) ? (
-           <p className="text-gray-500 col-span-2">No tienes plantillas configuradas todavía. Contacta a soporte para crearlas.</p>
-         ) : (
-           templates.map(tpl => (
-             <div key={tpl.id} className="border border-gray-200 rounded-xl p-5 bg-white flex justify-between items-center hover:border-yellow-400 cursor-pointer transition-colors shadow-sm">
-                <div>
-                   <h3 className="font-bold text-slate-800 text-lg">{tpl.template_name}</h3>
-                   <p className="text-sm text-gray-500">{Array.isArray(tpl.product_list) ? tpl.product_list.length : 0} items en esta plantilla</p>
-                </div>
-                <button onClick={() => handleAddTemplateToCart(tpl)} className="bg-yellow-50 text-yellow-700 hover:bg-yellow-100 font-bold px-4 py-2 rounded-lg text-sm transition-colors border border-yellow-200">
-                   Añadir todo al carrito
-                </button>
-             </div>
-           ))
-         )}
-      </div>
+      {notice && (
+        <div
+          role="status"
+          className={`mb-8 rounded-2xl border px-4 py-3 text-sm font-semibold ${
+            notice.type === 'warning'
+              ? 'border-amber-200 bg-amber-50 text-amber-900'
+              : 'border-emerald-200 bg-emerald-50 text-emerald-900'
+          }`}
+        >
+          {notice.text}
+        </div>
+      )}
+
+      {/* Plantillas de Compra Rápida (Self-serve) */}
+      <B2BTemplatesSection
+        initialTemplates={templates}
+        allProducts={allProducts.length > 0 ? allProducts : bulkPicks}
+        accent="yellow"
+      />
 
       {/* Suggested Products */}
       <div className="mb-6 flex justify-between items-end">

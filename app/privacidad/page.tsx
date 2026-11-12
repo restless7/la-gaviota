@@ -35,7 +35,7 @@ export default function PrivacidadPage() {
           <section className="space-y-4">
             <h2 className="text-2xl font-black text-slate-800 font-serif">1. Responsable del Tratamiento</h2>
             <p className="text-gray-600 leading-relaxed">
-              <strong>Surtifruver La Gaviota SAS</strong>, identificada con NIT 900.123.456-7, con domicilio en Bucaramanga, Santander, Colombia, es la responsable del tratamiento de los datos personales recopilados a través de esta plataforma.
+              <strong>Surtifruver La Gaviota SAS</strong>, identificada con NIT 1007193202-05, con domicilio en Bucaramanga, Santander, Colombia, es la responsable del tratamiento de los datos personales recopilados a través de esta plataforma.
             </p>
           </section>
 

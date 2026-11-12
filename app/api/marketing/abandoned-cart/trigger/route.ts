@@ -1,23 +1,13 @@
 import { getSchedulerDatabase } from '@/src/lib/server/database';
 import { requireScheduler } from '@/src/lib/server/scheduler';
+import { sendWhatsAppTemplate } from '@/src/lib/notifications';
 import { NextResponse } from 'next/server';
-
-
-// Note: Requires service role key to bypass RLS in a cron, but we'll use anon for now if RLS allows it
-
 
 export async function POST(req: Request) {
   try { requireScheduler(req); } catch { return NextResponse.json({error:'Unauthorized'},{status:401}); }
   const supabase = getSchedulerDatabase(req);
   try {
-    // 1. Authenticate the cron job (e.g. check a secret Bearer token from Vercel)
-    const authHeader = req.headers.get('Authorization');
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      // return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-      // Bypassing auth check strictly for development/demo purposes
-    }
-
-    // 2. Find carts older than 30 minutes that are still 'active'
+    // Find active carts older than 30 minutes
     const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000).toISOString();
 
     const { data: abandonedCarts, error: fetchError } = await supabase
@@ -31,10 +21,9 @@ export async function POST(req: Request) {
     }
 
     if (!abandonedCarts || abandonedCarts.length === 0) {
-      return NextResponse.json({ success: true, processed: 0, message: "No active carts to abandon" });
+      return NextResponse.json({ success: true, processed: 0, notificationsSent: 0, message: "No active carts to abandon" });
     }
 
-    // 3. Mark them as abandoned and trigger Meta API
     const ids = abandonedCarts.map(cart => cart.id);
 
     const { error: updateError } = await supabase
@@ -49,18 +38,36 @@ export async function POST(req: Request) {
       throw updateError;
     }
 
-    // 4. Trigger WhatsApp Notifications
+    let notificationsSent = 0;
     for (const cart of abandonedCarts) {
       if (cart.customer_phone) {
-        // Here we would call a WhatsApp Template "abandoned_cart_reminder"
-        console.log(`[MARKETING TRIGGER] Sending abandoned cart WhatsApp to ${cart.customer_phone} for amount $${cart.total_amount}`);
-        // await sendWhatsAppTemplate(cart.customer_phone, 'abandoned_cart_reminder', [...]);
+        const safeTotal = Number.isFinite(Number(cart.total_amount)) && Number(cart.total_amount) > 0
+          ? Math.round(Number(cart.total_amount))
+          : 0;
+        const result = await sendWhatsAppTemplate(
+          cart.customer_phone,
+          'abandoned_cart_reminder',
+          [
+            {
+              type: 'currency',
+              currency: {
+                fallback_value: `$${safeTotal} COP`,
+                code: 'COP',
+                amount_1000: safeTotal * 1000,
+              },
+            },
+          ],
+          'es',
+          `abandoned-cart:${cart.id}`
+        );
+        if (result.sent) notificationsSent++;
       }
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      processed: abandonedCarts.length 
+    return NextResponse.json({
+      success: true,
+      processed: abandonedCarts.length,
+      notificationsSent,
     });
 
   } catch (error) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { fetchProducts } from '@/src/actions/products';
+import { readPublicInventoryFlag } from '@/src/lib/server/database';
 import ShopView from '@/src/components/store/ShopView';
 import { Suspense } from 'react';
 import { LiveMarketTicker } from '@/app/components/market/LiveMarketTicker';
@@ -37,7 +38,10 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const products = await fetchProducts();
+  const [products, { track_inventory }] = await Promise.all([
+    fetchProducts(),
+    readPublicInventoryFlag(),
+  ]);
 
   const tickerItems = products.map(p => {
     const currentPrice = p.price;
@@ -71,7 +75,7 @@ export default async function Home() {
         <LiveMarketTicker items={tickerItems} />
         
         <Suspense fallback={<div className="py-24 text-center text-slate-500 font-bold">Cargando catálogo...</div>}>
-          <ShopView initialProducts={products} />
+          <ShopView initialProducts={products} trackInventory={track_inventory} />
         </Suspense>
 
         <PriceDropPopup products={priceDrops} />

@@ -47,21 +47,19 @@ const getStatusColor = (status: string) => {
 
 export function OrderHistoryClient({ orders, catalogProducts }: { orders: OrderHistoryRecord[], catalogProducts?: Product[] }) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [reorderNotice, setReorderNotice] = useState<string | null>(null);
   const { addToCart } = useCart();
   const router = useRouter();
 
   const handleReorder = (e: React.MouseEvent, order: OrderHistoryRecord) => {
     e.stopPropagation();
+    setReorderNotice(null);
     if (!order.order_items || order.order_items.length === 0) {
-      alert("No hay productos disponibles para reordenar en esta compra.");
+      setReorderNotice('No hay productos disponibles para reordenar en esta compra.');
       return;
     }
     
-    // We try to add each item. If we have the full catalog passed, we can add the full object.
-    // If not, construct a minimal fallback Product.
-    let addedCount = 0;
     order.order_items.forEach((item) => {
-      // Find full product details if catalog is provided, else construct a minimal mock product
       const fullProduct = catalogProducts?.find(p => p.id === item.product_id);
       
       const productToAdd: Product = fullProduct || {
@@ -80,10 +78,8 @@ export function OrderHistoryClient({ orders, catalogProducts }: { orders: OrderH
       };
 
       addToCart(productToAdd, item.quantity);
-      addedCount++;
     });
 
-    alert(`¡Se han agregado ${addedCount} productos a tu carrito!`);
     router.push('/cart');
   };
 
@@ -99,6 +95,8 @@ export function OrderHistoryClient({ orders, catalogProducts }: { orders: OrderH
     );
   }
 
+  const latestOrder = orders.length > 0 ? orders[0] : null;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-2">
@@ -107,6 +105,42 @@ export function OrderHistoryClient({ orders, catalogProducts }: { orders: OrderH
           Historial de Compras
         </h2>
       </div>
+
+      {reorderNotice && (
+        <div role="status" className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
+          {reorderNotice}
+        </div>
+      )}
+
+      {/* Senior Fruver UX: 1-Click Household Quick Reorder Hero */}
+      {latestOrder && latestOrder.order_items && latestOrder.order_items.length > 0 && (
+        <div className="rounded-2xl border-2 border-emerald-300 bg-gradient-to-br from-emerald-50 via-white to-emerald-50/40 p-5 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-emerald-800 mb-1.5">
+                ⚡ Mercado Rápido
+              </span>
+              <h3 className="text-base sm:text-lg font-black text-slate-900">
+                Repite tu último mercado en 1 clic
+              </h3>
+              <p className="text-xs text-slate-600 mt-0.5">
+                {latestOrder.order_items.length} productos del pedido del{' '}
+                <span className="font-semibold text-slate-800">
+                  {new Date(latestOrder.created_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}
+                </span>{' '}
+                · Total ${(latestOrder.total_amount).toLocaleString('es-CO')} COP
+              </p>
+            </div>
+            <button
+              onClick={(e) => handleReorder(e, latestOrder)}
+              className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-[#4CAF50] hover:bg-[#3d8c40] px-5 py-3 text-xs font-black uppercase tracking-wider text-white shadow-md transition-transform active:scale-[0.99]"
+            >
+              <ShoppingBag size={15} />
+              <span>Repetir Último Mercado</span>
+            </button>
+          </div>
+        </div>
+      )}
       
       <div className="grid grid-cols-1 gap-4">
         {orders.map((order) => {
@@ -144,7 +178,7 @@ export function OrderHistoryClient({ orders, catalogProducts }: { orders: OrderH
                     {order.status}
                   </span>
                   
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                     <Link
                       href={`/pedidos/${order.id}`}
                       onClick={(e) => e.stopPropagation()}
@@ -155,7 +189,7 @@ export function OrderHistoryClient({ orders, catalogProducts }: { orders: OrderH
                     </Link>
                     <button 
                       onClick={(e) => handleReorder(e, order)}
-                      className="bg-[#4CAF50] hover:bg-[#3d8c40] text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-colors uppercase tracking-wider hidden md:block"
+                      className="inline-flex items-center gap-1 bg-[#4CAF50] hover:bg-[#3d8c40] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-colors uppercase tracking-wider"
                     >
                       Volver a Pedir
                     </button>

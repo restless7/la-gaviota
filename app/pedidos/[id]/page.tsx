@@ -1,9 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import { fetchOrderTrackingById } from '@/src/actions/tracking';
 import { ActiveOrderStatusTracker } from '@/src/components/orders/ActiveOrderStatusTracker';
-import { ArrowLeft, Home, ShoppingBag, Package } from 'lucide-react';
+import { ArrowLeft, Home, Search, Package, PhoneCall } from 'lucide-react';
 
 export default async function OrderTrackingPage({
   params,
@@ -14,6 +13,10 @@ export default async function OrderTrackingPage({
   const tracking = await fetchOrderTrackingById(id);
 
   if (!tracking) {
+    const whatsappHelpUrl =
+      'https://wa.me/573112694676?text=' +
+      encodeURIComponent(`¡Hola Surtifruver La Gaviota! 🧺 Tengo dudas con el rastreo de mi pedido #${id}. ¿Me ayudan a verificarlo?`);
+
     return (
       <div className="min-h-[60vh] flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-gray-100 shadow-lg text-center">
@@ -22,21 +25,31 @@ export default async function OrderTrackingPage({
           </div>
           <h1 className="text-2xl font-black text-slate-800 mb-2">Pedido No Encontrado</h1>
           <p className="text-slate-600 text-sm mb-6">
-            No encontramos ningún pedido registrado con el identificador #{id}. Verifica el código o comunícate con nosotros.
+            No encontramos ningún pedido registrado con el identificador #{id}. Verifica el código o comunícate con nosotros por WhatsApp.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Link
-              href="/"
-              className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-red-700 text-white font-bold text-sm hover:bg-red-800 transition-colors shadow-sm"
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/pedidos"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-colors shadow-sm"
+              >
+                <Search size={15} /> Rastrear Otro Pedido
+              </Link>
+              <Link
+                href="/"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 transition-colors"
+              >
+                <Home size={15} /> Ir a la Tienda
+              </Link>
+            </div>
+            <a
+              href={whatsappHelpUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 font-bold text-xs transition-colors"
             >
-              <Home size={15} /> Ir a la Tienda
-            </Link>
-            <Link
-              href="/dashboard"
-              className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 transition-colors"
-            >
-              <ShoppingBag size={15} /> Mis Pedidos
-            </Link>
+              <PhoneCall size={14} /> Consultar con un Asesor por WhatsApp
+            </a>
           </div>
         </div>
       </div>

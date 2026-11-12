@@ -9,6 +9,7 @@ import { useCart } from '@/src/contexts/CartContext';
 import { CatalogImage } from './CatalogImage';
 import { KitIngredientsList } from './KitIngredientsList';
 import { normalizeCategory } from '@/src/lib/categories';
+import { matchesCatalogSearch } from '@/src/lib/searchUtils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   Search, 
@@ -34,12 +35,13 @@ const CATEGORY_BANNERS: Record<string, string[]> = {
 const formatPrice = (price: number) => 
   new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(price);
 
-export default function ShopView({ initialProducts }: { initialProducts: Product[] }) {
+export default function ShopView({ initialProducts, trackInventory = false }: { initialProducts: Product[]; trackInventory?: boolean }) {
    const [search, setSearch] = useState('');
    const [isSearchOpen, setIsSearchOpen] = useState(false);
    const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(false);
    const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
    const [sortOrder, setSortOrder] = useState<'asc'|'desc'|null>(null);
+   const [visibleCount, setVisibleCount] = useState(24);
    const { role } = useUserRole();
    const { addToCart, setIsCartOpen } = useCart();
    const searchParams = useSearchParams();
@@ -76,7 +78,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
    const filteredProducts = useMemo(() => {
      const filtered = initialProducts.filter(p => {
          if (hasDynamicKits && p.id === 'prd_0255') return false;
-         const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+         const matchSearch = matchesCatalogSearch(p, search);
          const matchCategory = selectedCategory ? normalizeCategory(p.category) === selectedCategory : true;
          const validSubcategory = selectedCategory && SUBCATEGORIES[selectedCategory]?.includes(selectedSubcategory ?? '') ? selectedSubcategory : null;
          const matchSubcategory = validSubcategory ? p.subcategory === validSubcategory : true;
@@ -173,6 +175,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
       if (cat) query.set('category', cat); else query.delete('category');
       router.replace(query.size ? `/?${query}` : '/', { scroll: false });
       setSelectedSubcategory(null);
+      setVisibleCount(24);
    };
 
    return (
@@ -276,7 +279,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                      ref={stickySearchInputRef}
                      type="search"
                      value={search}
-                     onChange={e => setSearch(e.target.value)}
+                     onChange={e => { setSearch(e.target.value); setVisibleCount(24); }}
                      placeholder="Buscar fruta, verdura..."
                      className="w-32 sm:w-48 text-xs bg-transparent outline-none text-slate-800 font-medium"
                    />
@@ -366,7 +369,7 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                          placeholder="Ej. Tomate chonto..." 
                          className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm outline-none focus:border-[#E30613] focus:ring-1 focus:ring-[#E30613] transition-all bg-slate-50 font-medium"
                          value={search}
-                         onChange={(e) => setSearch(e.target.value)}
+                         onChange={(e) => { setSearch(e.target.value); setVisibleCount(24); }}
                       />
                       <Search size={18} className="absolute left-3 top-3.5 text-gray-400" />
                    </div>
@@ -678,15 +681,36 @@ export default function ShopView({ initialProducts }: { initialProducts: Product
                   </button>
                </div>
             ) : (
-                <div className={`grid gap-3 sm:gap-4 lg:gap-5 ${
-                  desktopSidebarOpen 
-                    ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5' 
-                    : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'
-                }`}>
-                   {filteredProducts.map(product => (
-                      <ProductCard key={product.id} product={product} />
-                   ))}
-                </div>
+                <>
+                  <div className={`grid gap-3 sm:gap-4 lg:gap-5 ${
+                    desktopSidebarOpen 
+                      ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5' 
+                      : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'
+                  }`}>
+                     {filteredProducts.slice(0, visibleCount).map(product => (
+                        <ProductCard key={product.id} product={product} trackInventory={trackInventory} />
+                     ))}
+                  </div>
+
+                  {visibleCount < filteredProducts.length && (
+                     <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <button
+                           type="button"
+                           onClick={() => setVisibleCount(c => c + 24)}
+                           className="w-full sm:w-auto px-8 py-3 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-[0.99]"
+                        >
+                           Cargar más productos ({Math.min(visibleCount, filteredProducts.length)} de {filteredProducts.length})
+                        </button>
+                        <button
+                           type="button"
+                           onClick={() => setVisibleCount(filteredProducts.length)}
+                           className="text-xs text-slate-500 hover:text-slate-800 font-bold underline py-2 px-3"
+                        >
+                           Ver todos ({filteredProducts.length})
+                        </button>
+                     </div>
+                  )}
+                </>
             )}
 
             {/* Customer Tiers Identification & Partnership Banner (Bottom of Catalog) */}

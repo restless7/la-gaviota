@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Gift, 
   Plus, 
@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { AdminProduct as Product } from '@/src/actions/products';
 import { createOrUpdateKit, updateKitStatus, updateKitName, deleteKit, KitPayload } from '@/src/actions/kits';
-import { uploadCatalogMedia } from '@/src/actions/media';
+import { uploadCatalogMedia, type KitBannerGalleryItem } from '@/src/actions/media';
 
 interface KitRecord {
   id: string;
@@ -50,14 +50,49 @@ const PRESET_BANNERS = [
   { name: 'Banner Opción 3', url: '/IMAGES/kit-chevere-semana3.jpeg' }
 ];
 
+const MAX_BANNER_BYTES = 2 * 1024 * 1024;
+const ALLOWED_BANNER_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp']);
+
+function mergeBannerGallery(
+  gallery: KitBannerGalleryItem[],
+  kits: KitRecord[]
+): KitBannerGalleryItem[] {
+  const presetUrls = new Set(PRESET_BANNERS.map((p) => p.url));
+  const seen = new Set<string>();
+  const merged: KitBannerGalleryItem[] = [];
+
+  for (const item of gallery) {
+    if (!item.url || presetUrls.has(item.url) || seen.has(item.url)) continue;
+    seen.add(item.url);
+    merged.push(item);
+  }
+  for (const kit of kits) {
+    const url = kit.banner_url?.trim();
+    if (!url || presetUrls.has(url) || seen.has(url)) continue;
+    seen.add(url);
+    merged.push({
+      url,
+      name: kit.name || 'Banner de kit',
+      createdAt: kit.created_at,
+      source: 'kit',
+    });
+  }
+  return merged;
+}
+
 export default function KitsClient({ 
   initialProducts, 
-  initialKits = [] 
+  initialKits = [],
+  initialBannerGallery = [],
 }: { 
   initialProducts: Product[]; 
   initialKits?: KitRecord[];
+  initialBannerGallery?: KitBannerGalleryItem[];
 }) {
   const [kits, setKits] = useState<KitRecord[]>(initialKits as KitRecord[]);
+  const [bannerGallery, setBannerGallery] = useState<KitBannerGalleryItem[]>(() =>
+    mergeBannerGallery(initialBannerGallery, initialKits)
+  );
   const [editingKitId, setEditingKitId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [kitName, setKitName] = useState('Kit Chévere de la Semana');
@@ -67,10 +102,25 @@ export default function KitsClient({
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>('/IMAGES/kit-chevere-semana.jpg');
   const [customBannerUrl, setCustomBannerUrl] = useState<string | null>('/IMAGES/kit-chevere-semana.jpg');
+  const [bannerError, setBannerError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [toast, setToast] = useState('');
   const [editingNameId, setEditingNameId] = useState<string | null>(null);
   const [inlineNameValue, setInlineNameValue] = useState<string>('');
+  const blobUrlRef = useRef<string | null>(null);
+
+  const revokeActiveBlobUrl = () => {
+    if (blobUrlRef.current) {
+      URL.revokeObjectURL(blobUrlRef.current);
+      blobUrlRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      revokeActiveBlobUrl();
+    };
+  }, []);
 
   const activeKits = kits.filter(k => k.status === 'active');
   const filteredProducts = initialProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -114,21 +164,50 @@ export default function KitsClient({
   };
 
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setBannerFile(file);
-      setBannerPreview(URL.createObjectURL(file));
-      setCustomBannerUrl(null);
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    setBannerError(null);
+    if (!ALLOWED_BANNER_TYPES.has(file.type)) {
+      setBannerError('Formato no soportado. Usa JPG, PNG o WEBP.');
+      return;
     }
+    if (file.size > MAX_BANNER_BYTES) {
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
+      setBannerError(`La imagen pesa ${sizeMb} MB y el máximo permitido es 2.00 MB.`);
+      return;
+    }
+
+    revokeActiveBlobUrl();
+    const objectUrl = URL.createObjectURL(file);
+    blobUrlRef.current = objectUrl;
+    setBannerFile(file);
+    setBannerPreview(objectUrl);
+    setCustomBannerUrl(null);
+  };
+
+  const handleClearSelectedFile = () => {
+    revokeActiveBlobUrl();
+    setBannerFile(null);
+    setBannerError(null);
+    const fallbackUrl =
+      (editingKitId ? kits.find((k) => k.id === editingKitId)?.banner_url : null) ||
+      '/IMAGES/kit-chevere-semana.jpg';
+    setBannerPreview(fallbackUrl);
+    setCustomBannerUrl(fallbackUrl);
   };
 
   const handleSelectPresetBanner = (url: string) => {
+    revokeActiveBlobUrl();
     setBannerFile(null);
+    setBannerError(null);
     setBannerPreview(url);
     setCustomBannerUrl(url);
   };
 
   const handleEditKit = (kit: KitRecord) => {
+    revokeActiveBlobUrl();
     setEditingKitId(kit.id);
     setKitName(kit.name);
     setKitSlug(kit.slug);
@@ -136,6 +215,7 @@ export default function KitsClient({
     setBannerPreview(kit.banner_url || '/IMAGES/kit-chevere-semana.jpg');
     setCustomBannerUrl(kit.banner_url || null);
     setBannerFile(null);
+    setBannerError(null);
 
     if (kit.kit_items && kit.kit_items.length > 0) {
       const mapped = kit.kit_items.map(item => {
@@ -167,12 +247,14 @@ export default function KitsClient({
   };
 
   const handleCancelEdit = () => {
+    revokeActiveBlobUrl();
     setEditingKitId(null);
     setKitName('Kit Chévere Nuevo');
     setKitSlug(`kit-chevere-${Date.now().toString().slice(-4)}`);
     setKitPrice('45000');
     setKitItems([]);
     setBannerFile(null);
+    setBannerError(null);
     setBannerPreview('/IMAGES/kit-chevere-semana.jpg');
     setCustomBannerUrl('/IMAGES/kit-chevere-semana.jpg');
   };
@@ -244,6 +326,35 @@ export default function KitsClient({
         const upload = new FormData();
         upload.set('file', bannerFile);
         finalBannerUrl = (await uploadCatalogMedia('kit', upload)).url;
+        setBannerGallery((prev) =>
+          mergeBannerGallery(
+            [
+              {
+                url: finalBannerUrl,
+                name: bannerFile.name,
+                createdAt: new Date().toISOString(),
+                source: 'bucket',
+              },
+              ...prev,
+            ],
+            kits
+          )
+        );
+      } else if (finalBannerUrl) {
+        setBannerGallery((prev) =>
+          mergeBannerGallery(
+            [
+              ...prev,
+              {
+                url: finalBannerUrl,
+                name: kitName || 'Banner de kit',
+                createdAt: new Date().toISOString(),
+                source: 'kit',
+              },
+            ],
+            kits
+          )
+        );
       }
 
       const parsedPrice = parseFloat(kitPrice.replace(/[^\d]/g, '')) || 0;
@@ -295,7 +406,8 @@ export default function KitsClient({
       handleCancelEdit();
     } catch (err) {
       console.error(err);
-      alert('Hubo un error guardando el kit.');
+      const message = err instanceof Error ? err.message : 'Error desconocido';
+      alert(`Hubo un error guardando el kit: ${message}`);
     } finally {
       setIsSaving(false);
     }
@@ -628,32 +740,135 @@ export default function KitsClient({
             <div className="flex-1 p-6 bg-slate-50/50 overflow-y-auto space-y-5">
                
                {/* Banner selection / upload */}
-               <div className="bg-white p-4 rounded-2xl border border-gray-200">
-                 <p className="text-xs font-bold uppercase text-slate-600 mb-2 flex items-center gap-1.5">
-                   <ImageIcon className="h-4 w-4 text-amber-600" />
-                   <span>Imagen del Banner (Selecciona un preset o sube personalizada)</span>
-                 </p>
-                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
-                   {PRESET_BANNERS.map((preset, idx) => (
+               <div className="bg-white p-4 rounded-2xl border border-gray-200 space-y-4">
+                 <div className="flex flex-wrap items-center justify-between gap-2">
+                   <p className="text-xs font-bold uppercase text-slate-600 flex items-center gap-1.5">
+                     <ImageIcon className="h-4 w-4 text-amber-600" />
+                     <span>Imagen del Banner (Vista previa, presets, galería o archivo nuevo)</span>
+                   </p>
+                   {bannerFile && (
                      <button
-                       key={preset.url}
                        type="button"
-                       onClick={() => handleSelectPresetBanner(preset.url)}
-                       className={`relative aspect-[16/9] rounded-xl overflow-hidden border-2 text-left transition-all ${
-                         bannerPreview === preset.url ? 'border-red-600 ring-2 ring-red-400/40' : 'border-gray-200 hover:border-gray-400'
-                       }`}
+                       onClick={handleClearSelectedFile}
+                       className="inline-flex items-center gap-1 text-[11px] font-bold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1 rounded-lg transition-colors"
                      >
-                       <img src={preset.url} alt={preset.name} className="w-full h-full object-cover" />
-                       <span className="absolute bottom-1 left-1 bg-black/70 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-                         Opción {idx + 1}
-                       </span>
+                       <X className="w-3.5 h-3.5" /> Descartar archivo nuevo
                      </button>
-                   ))}
+                   )}
                  </div>
+
+                 {/* Live Banner Preview */}
+                 {bannerPreview && (
+                   <div className="rounded-2xl border border-slate-200 overflow-hidden bg-slate-950">
+                     <div className="relative aspect-[16/9] w-full max-h-64 mx-auto flex items-center justify-center bg-slate-950">
+                       <img
+                         src={bannerPreview}
+                         alt="Vista previa del banner del kit"
+                         className="w-full h-full object-contain"
+                       />
+                       <span
+                         className={`absolute top-2.5 left-2.5 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md ${
+                           bannerFile
+                             ? 'bg-amber-400 text-slate-950'
+                             : 'bg-emerald-500 text-white'
+                         }`}
+                       >
+                         {bannerFile
+                           ? `Vista previa local: ${bannerFile.name} (${(bannerFile.size / 1024).toFixed(0)} KB)`
+                           : 'Vista previa actual del banner'}
+                       </span>
+                     </div>
+                     {bannerFile && (
+                       <div className="bg-amber-50 border-t border-amber-200 px-3 py-2 text-[11px] font-bold text-amber-900 flex items-center justify-between gap-2">
+                         <span>Archivo listo para subir. Haz clic en &quot;{editingKitId ? 'Actualizar Kit' : 'Guardar Kit'}&quot; arriba para aplicarlo.</span>
+                       </div>
+                     )}
+                   </div>
+                 )}
+
+                 {bannerError && (
+                   <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700">
+                     {bannerError}
+                   </div>
+                 )}
+
+                 <div>
+                   <p className="text-[11px] font-bold uppercase text-slate-400 mb-2">
+                     Banners Base
+                   </p>
+                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                     {PRESET_BANNERS.map((preset, idx) => (
+                       <button
+                         key={preset.url}
+                         type="button"
+                         onClick={() => handleSelectPresetBanner(preset.url)}
+                         className={`relative aspect-[16/9] rounded-xl overflow-hidden border-2 text-left transition-all bg-slate-950 ${
+                           bannerPreview === preset.url ? 'border-red-600 ring-2 ring-red-400/40' : 'border-gray-200 hover:border-gray-400'
+                         }`}
+                       >
+                         <img src={preset.url} alt={preset.name} className="w-full h-full object-contain" />
+                         <span className="absolute bottom-1 left-1 bg-black/75 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+                           Opción {idx + 1}
+                         </span>
+                         {bannerPreview === preset.url && (
+                           <span className="absolute top-1.5 right-1.5 bg-red-600 text-white rounded-full p-0.5 shadow">
+                             <Check className="w-3 h-3" />
+                           </span>
+                         )}
+                       </button>
+                     ))}
+                   </div>
+                 </div>
+
+                 {bannerGallery.length > 0 && (
+                   <div>
+                     <div className="flex items-center justify-between mb-2">
+                       <p className="text-[11px] font-bold uppercase text-slate-500">
+                         Galería de Imágenes Usadas en Kits ({bannerGallery.length}) — clic para reutilizar
+                       </p>
+                     </div>
+                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-h-56 overflow-y-auto pr-1">
+                       {bannerGallery.map((item) => {
+                         const isSelected = bannerPreview === item.url;
+                         return (
+                           <button
+                             key={item.url}
+                             type="button"
+                             onClick={() => handleSelectPresetBanner(item.url)}
+                             title={item.name}
+                             className={`group relative aspect-[16/9] rounded-xl overflow-hidden border-2 text-left transition-all bg-slate-950 ${
+                               isSelected
+                                 ? 'border-red-600 ring-2 ring-red-400/40'
+                                 : 'border-gray-200 hover:border-amber-500'
+                             }`}
+                           >
+                             <img
+                               src={item.url}
+                               alt={item.name}
+                               className="w-full h-full object-contain"
+                             />
+                             <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent text-white text-[10px] font-bold px-1.5 py-1 truncate">
+                               {item.name}
+                             </span>
+                             {isSelected && (
+                               <span className="absolute top-1.5 right-1.5 bg-red-600 text-white rounded-full p-0.5 shadow">
+                                 <Check className="w-3 h-3" />
+                               </span>
+                             )}
+                           </button>
+                         );
+                       })}
+                     </div>
+                   </div>
+                 )}
 
                  <label className="border border-dashed border-gray-300 rounded-xl p-3 flex items-center justify-center gap-2 text-xs font-bold text-gray-600 hover:border-red-600 hover:text-red-700 transition-colors cursor-pointer bg-slate-50">
                     <ImageIcon className="h-4 w-4" />
-                    <span>O subir archivo personalizado desde el equipo (JPG/PNG)</span>
+                    <span>
+                      {bannerFile
+                        ? `Cambiar archivo seleccionado (${bannerFile.name})`
+                        : 'O subir archivo personalizado desde el equipo (JPG/PNG/WEBP, máx. 2 MB)'}
+                    </span>
                     <input type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleBannerChange} />
                  </label>
                </div>

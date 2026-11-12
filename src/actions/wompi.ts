@@ -59,7 +59,7 @@ export async function initializeWompiTransaction(
       delivery_address: details.fullAddress,
       delivery_municipality: details.city,
       total_amount: checkout.totalAmount,
-      status: 'Pendiente',
+      status: 'Pago Pendiente',
       payment_method: 'wompi',
       idempotency_key: idempotencyKey || null,
       notes: details.notes,
@@ -101,7 +101,9 @@ export async function initializeWompiTransaction(
 }
 
 export async function initializeWompiBalancePayment(amount: number) {
-  if (process.env.APP_ENV === 'production' && process.env.ENABLE_ONLINE_PAYMENTS !== 'true') {
+  const isOnlinePaymentsEnabled = (process.env.ENABLE_ONLINE_PAYMENTS || '').includes('true');
+  const appEnv = (process.env.APP_ENV || '').replace(/^APP_ENV=\s*/i, '').trim().toLowerCase();
+  if (appEnv === 'production' && !isOnlinePaymentsEnabled) {
     throw new Error('ELECTRONIC_PAYMENTS_DISABLED: Los pagos electrónicos (Wompi) están desactivados en el backend. Seleccione Pago Contra Entrega.');
   }
   const actor = await getActor();

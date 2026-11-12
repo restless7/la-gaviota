@@ -15,9 +15,28 @@ export function PriceDropPopup({ products }: { products: MarketAlertProduct[] })
   const { addToCart } = useCart();
 
   useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && sessionStorage.getItem('lg_price_drop_dismissed') === 'true') {
+        return;
+      }
+    } catch {
+      // safe fallback if storage is restricted
+    }
+
     const timer = setTimeout(() => setIsOpen(true), 2500);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleDismiss = () => {
+    try {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('lg_price_drop_dismissed', 'true');
+      }
+    } catch {
+      // safe fallback
+    }
+    setIsOpen(false);
+  };
 
   if (!isOpen || products.length === 0) return null;
 
@@ -36,7 +55,7 @@ export function PriceDropPopup({ products }: { products: MarketAlertProduct[] })
             </p>
           </div>
           <button 
-            onClick={() => setIsOpen(false)}
+            onClick={handleDismiss}
             className="p-2 bg-white rounded-full text-gray-500 hover:text-gray-800 shadow-sm border border-green-100 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -67,7 +86,7 @@ export function PriceDropPopup({ products }: { products: MarketAlertProduct[] })
                   <button
                     onClick={() => {
                       addToCart(product, 1);
-                      setIsOpen(false);
+                      handleDismiss();
                     }}
                     className="mt-auto w-full bg-[#10b981] hover:bg-[#059669] text-white text-sm font-bold py-2 rounded-xl flex items-center justify-center gap-2 transition-colors"
                   >
