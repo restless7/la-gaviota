@@ -8,7 +8,7 @@ import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { CartItems } from '@/src/components/cart/CartItems';
 
 export default function CartPage() {
-   const { items, cartTotal, cartReady, remainingForFreeShipping } = useCart();
+   const { items, cartTotal, cartReady, remainingForFreeShipping, discountInfo } = useCart();
    const { role } = useUserRole();
 
    const formatPrice = (p: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(p);
@@ -103,10 +103,57 @@ export default function CartPage() {
                      </div>
                   )}
 
+                  {/* Launch Discount Gamified Callout */}
+                  {role === 'Personas Naturales' && (
+                     discountInfo?.hasDiscount ? (
+                        <div className="mb-5 rounded-2xl border-2 border-red-400 bg-gradient-to-br from-red-50 to-amber-50 p-4 text-xs shadow-xs">
+                           <div className="flex items-center justify-between">
+                              <span className="font-black text-red-700 uppercase tracking-wide flex items-center gap-1">
+                                 <span>⚡</span> {discountInfo.discountLabel}
+                              </span>
+                              <span className="font-black text-red-800 bg-red-100 border border-red-300 px-2.5 py-0.5 rounded-full text-xs">
+                                 -{formatPrice(discountInfo.discountAmount)}
+                              </span>
+                           </div>
+                           {discountInfo.nextTier ? (
+                              <p className="mt-2 text-slate-700 font-medium">
+                                 ¡Agrega <strong className="text-red-700">{formatPrice(discountInfo.nextTier.needed)}</strong> más para subir al <strong className="text-red-700">{discountInfo.nextTier.nextPercent}% DE DESCUENTO</strong>!
+                              </p>
+                           ) : (
+                              <p className="mt-2 text-emerald-800 font-bold">
+                                 🏆 ¡Felicitaciones! Tienes el descuento máximo de lanzamiento aplicado.
+                              </p>
+                           )}
+                        </div>
+                     ) : (
+                        <div className="mb-5 rounded-2xl border border-red-200 bg-red-50/60 p-4 text-xs text-red-900">
+                           <p className="font-black flex items-center gap-1">⚡ ¡OFERTA ESPECIAL DE LANZAMIENTO!</p>
+                           <p className="mt-1 text-slate-700 font-medium">
+                              Agrega <strong className="text-red-700">{formatPrice(discountInfo?.nextTier?.needed || 100000)}</strong> más para activar <strong className="text-red-700">15% de DESCUENTO</strong> en todo tu mercado.
+                           </p>
+                        </div>
+                     )
+                  )}
+
                   <p className="text-sm leading-relaxed text-slate-600">El envío, los precios y la disponibilidad se confirman al finalizar.</p>
-                  <div className="my-8 flex flex-wrap items-end justify-between gap-3">
-                     <span className="text-lg font-black text-slate-800">Subtotal estimado</span>
-                     <span className="text-3xl font-black text-slate-900">{formatPrice(cartTotal)}</span>
+
+                  <div className="my-6 space-y-2 border-t border-gray-200 pt-4">
+                     <div className="flex justify-between text-sm text-slate-600 font-semibold">
+                        <span>Subtotal Catálogo</span>
+                        <span>{formatPrice(cartTotal)}</span>
+                     </div>
+                     {discountInfo?.hasDiscount && (
+                        <div className="flex justify-between text-sm text-red-700 font-black">
+                           <span>Descuento Lanzamiento ({discountInfo.discountPercent}%)</span>
+                           <span>-{formatPrice(discountInfo.discountAmount)}</span>
+                        </div>
+                     )}
+                     <div className="flex justify-between items-baseline pt-2 border-t border-gray-100">
+                        <span className="text-base font-black text-slate-800">Total estimado</span>
+                        <span className="text-3xl font-black text-slate-900">
+                           {formatPrice(discountInfo?.hasDiscount ? discountInfo.finalCartTotal : cartTotal)}
+                        </span>
+                     </div>
                   </div>
 
                   {remainingForMinOrder > 0 ? (

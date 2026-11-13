@@ -10,7 +10,7 @@ const formatCOP = (val: number) =>
   new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(val);
 
 export function MiniCartDropdown({ onClose }: { onClose: () => void }) {
-  const { items, cartTotal, remainingForFreeShipping } = useCart();
+  const { items, cartTotal, remainingForFreeShipping, discountInfo } = useCart();
   const { role } = useUserRole();
   const dropdown = useRef<HTMLDivElement>(null);
 
@@ -78,6 +78,17 @@ export function MiniCartDropdown({ onClose }: { onClose: () => void }) {
           ) : (
             <p className="font-bold text-emerald-700">🎉 ¡Tienes domicilio gratis activado!</p>
           )}
+
+          {discountInfo?.hasDiscount ? (
+            <div className="mt-2 rounded-lg bg-red-100 border border-red-200 p-2 text-[11px] text-red-950 font-bold flex items-center justify-between">
+              <span>⚡ {discountInfo.discountLabel}</span>
+              <span className="text-red-700 font-black">-{formatCOP(discountInfo.discountAmount)}</span>
+            </div>
+          ) : discountInfo?.nextTier && role === 'Personas Naturales' ? (
+            <div className="mt-2 rounded-lg bg-amber-50 border border-amber-200 p-2 text-[11px] text-amber-900 font-bold">
+              ⚡ ¡Agrega {formatCOP(discountInfo.nextTier.needed)} más para ganar 15% OFF!
+            </div>
+          ) : null}
         </div>
       )}
 
@@ -85,10 +96,24 @@ export function MiniCartDropdown({ onClose }: { onClose: () => void }) {
         {items.length ? <CartItems /> : <p className="py-8 text-center text-sm text-slate-600">Tu carrito está vacío.</p>}
       </div>
 
-      <p className="my-3 flex justify-between gap-2 border-t border-gray-100 pt-3 text-sm font-bold">
-        <span>Subtotal estimado</span>
-        <span className="text-base font-black text-slate-900">{formatCOP(cartTotal)}</span>
-      </p>
+      <div className="my-3 space-y-1 border-t border-gray-100 pt-3 text-sm">
+        <div className="flex justify-between text-xs text-slate-500 font-semibold">
+          <span>Subtotal</span>
+          <span>{formatCOP(cartTotal)}</span>
+        </div>
+        {discountInfo?.hasDiscount && (
+          <div className="flex justify-between text-xs text-red-700 font-black">
+            <span>⚡ Descuento ({discountInfo.discountPercent}%)</span>
+            <span>-{formatCOP(discountInfo.discountAmount)}</span>
+          </div>
+        )}
+        <div className="flex justify-between font-black text-slate-900 pt-1 border-t border-dashed border-gray-200">
+          <span>Total estimado</span>
+          <span className="text-base text-red-700 font-black">
+            {formatCOP(discountInfo?.hasDiscount ? discountInfo.finalCartTotal : cartTotal)}
+          </span>
+        </div>
+      </div>
       <p className="mb-3 text-[11px] text-slate-500">Precio, disponibilidad y envío se confirman al finalizar.</p>
 
       <div className="flex flex-col gap-2">

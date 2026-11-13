@@ -22,7 +22,8 @@ export async function createOrder(
   incrementLTV: boolean = false,
   paymentIntent?: PaymentIntentData | null
 ) {
-  assertOrderWrite(orderData.total_amount, items);
+  const discount = Number((orderData as { discount_amount?: number }).discount_amount) || 0;
+  assertOrderWrite(orderData.total_amount, items, discount);
 
   // Backend Payment Method Enforcement
   // Electronic methods (Wompi, Cards, PSE) are permitted when ENABLE_ONLINE_PAYMENTS is true.

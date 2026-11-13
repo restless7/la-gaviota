@@ -78,6 +78,7 @@ const navigation: NavItem[] = [
       { name: 'Inventario General', href: '/admin/catalog/product-management' },
       { name: 'Gestión de Precios por Tier', href: '/admin/pricing' },
       { name: 'Kits y Promociones', href: '/admin/catalog/kits' },
+      { name: 'Descuentos de Lanzamiento', href: '/admin/promotions' },
     ]
   },
   { name: 'Gestión de Pedidos', href: '/admin/orders', icon: TrendingUp, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },

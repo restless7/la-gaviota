@@ -5,6 +5,7 @@ import Header from './Header';
 import Footer from './Footer';
 import FloatingWhatsApp from '../ui/FloatingWhatsApp';
 import { CartDrawer } from '@/src/components/cart/CartDrawer';
+import { LaunchPromoBanner } from '@/src/components/promotions/LaunchPromoBanner';
 
 export default function ConditionalWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -20,6 +21,7 @@ export default function ConditionalWrapper({ children }: { children: React.React
 
   return (
     <>
+      <LaunchPromoBanner />
       <Header />
       <main className="flex-1 w-full flex flex-col leading-relaxed">
         {children}

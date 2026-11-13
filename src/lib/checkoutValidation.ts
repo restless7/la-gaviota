@@ -41,7 +41,15 @@ function money(value: number): number {
   if (!Number.isSafeInteger(value) || value < 0 || value > MAX_DB_INTEGER) throw new Error('Precio o total inválido');
   return value;
 }
-export function quoteCheckout(lines: CheckoutLine[], products: CheckoutProduct[], tier: CheckoutTier, city: string, trackInventory: boolean) {
+export function quoteCheckout(
+  lines: CheckoutLine[],
+  products: CheckoutProduct[],
+  tier: CheckoutTier,
+  city: string,
+  trackInventory: boolean,
+  discountAmount: number = 0,
+  discountLabel: string = ''
+) {
   if (!lines.length || typeof trackInventory !== 'boolean') throw new Error('Carrito o inventario inválido');
   const seen = new Set<string>();
   const orderItems = lines.map(line => {
@@ -61,8 +69,17 @@ export function quoteCheckout(lines: CheckoutLine[], products: CheckoutProduct[]
   // Same minimums currently shown in checkout, enforced at the server boundary as well.
   if (tier === 'Micromercados' && subtotal < 150000 || tier === 'Restaurantes' && subtotal < 300000) throw new Error('No se ha alcanzado el pedido mínimo para tu perfil');
   if (!(CHECKOUT_CITIES as readonly string[]).includes(city)) throw new Error('Selecciona una ciudad disponible');
-  const deliveryCost = calculateCheckoutDeliveryCost(city, subtotal);
-  return { orderItems, subtotal, deliveryCost, totalAmount: money(subtotal + deliveryCost) };
+  const safeDiscount = money(Math.min(subtotal, Math.max(0, Math.round(discountAmount || 0))));
+  const discountedSubtotal = money(Math.max(0, subtotal - safeDiscount));
+  const deliveryCost = calculateCheckoutDeliveryCost(city, discountedSubtotal);
+  return {
+    orderItems,
+    subtotal,
+    discountAmount: safeDiscount,
+    discountLabel: safeDiscount > 0 ? discountLabel : '',
+    deliveryCost,
+    totalAmount: money(discountedSubtotal + deliveryCost)
+  };
 }
 export function readCheckoutDetails(formData: FormData) {
   function field(name: string, required = false, max = 256) {
@@ -89,10 +106,15 @@ export function assertExpectedCheckoutTotal(expected: unknown, actual: number): 
 }
 
 /** Defense at the private writer boundary, before the first durable insert. */
-export function assertOrderWrite(total: number, items: { product_id: string; quantity: number; price_at_purchase: number }[]) {
+export function assertOrderWrite(
+  total: number,
+  items: { product_id: string; quantity: number; price_at_purchase: number }[],
+  discount: number = 0
+) {
   money(total);
   const normalized = normalizeCheckoutItems(items.map(item => ({ product: { id: item.product_id }, quantity: item.quantity })));
   if (normalized.length !== items.length) throw new Error('Productos duplicados sin normalizar');
   const subtotal = items.reduce((sum, item) => money(sum + money(item.price_at_purchase) * item.quantity), 0);
-  if (subtotal > total) throw new Error('Total inconsistente');
+  const safeDiscount = Math.max(0, Math.round(discount || 0));
+  if (subtotal - safeDiscount > total) throw new Error('Total inconsistente');
 }

@@ -27,7 +27,7 @@ interface SavedCheckoutProfile {
 }
 
 export default function CheckoutPage() {
-   const { items, cartTotal, remainingForFreeShipping, clearCart, cartRestoreError } = useCart();
+   const { items, cartTotal, remainingForFreeShipping, clearCart, cartRestoreError, discountInfo } = useCart();
    const { role, isSignedIn, firstName, lastName, userEmail, businessName } = useUserRole();
    const [paymentMethod, setPaymentMethod] = useState<'wompi' | 'cash'>('cash');
    const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,12 +75,13 @@ export default function CheckoutPage() {
      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(price);
    };
 
+   const effectiveSubtotal = discountInfo?.hasDiscount ? discountInfo.finalCartTotal : cartTotal;
    const deliveryCost =
       items.length === 0 || remainingForFreeShipping === 0
          ? 0
-         : calculateCheckoutDeliveryCost(selectedCity, cartTotal);
+         : calculateCheckoutDeliveryCost(selectedCity, effectiveSubtotal);
 
-   const finalTotal = cartTotal + deliveryCost;
+   const finalTotal = effectiveSubtotal + deliveryCost;
 
 
 
@@ -519,10 +520,38 @@ export default function CheckoutPage() {
                         })}
                      </div>
 
-                     <div className="flex justify-between items-center mb-6 pb-6 border-b border-gray-200">
-                        <span className="text-[13px] font-bold text-slate-800">Subtotal</span>
+                     <div className="flex justify-between items-center mb-3">
+                        <span className="text-[13px] font-bold text-slate-800">Subtotal Catálogo</span>
                         <span className="text-[13px] font-bold text-slate-800">{formatPrice(cartTotal)}</span>
                      </div>
+
+                     {discountInfo?.hasDiscount && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl flex items-center justify-between">
+                           <div className="flex items-center gap-2">
+                              <span className="text-base">⚡</span>
+                              <div>
+                                 <p className="text-xs font-black text-red-800 uppercase tracking-wide">
+                                    {discountInfo.discountLabel}
+                                 </p>
+                                 <p className="text-[10px] text-red-600 font-semibold">
+                                    ¡Ahorras {formatPrice(discountInfo.discountAmount)} de Lanzamiento!
+                                 </p>
+                              </div>
+                           </div>
+                           <span className="text-sm font-black text-red-700 whitespace-nowrap">
+                              -{formatPrice(discountInfo.discountAmount)}
+                           </span>
+                        </div>
+                     )}
+
+                     {discountInfo?.nextTier && (
+                        <div className="mb-4 p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-[11px] text-amber-900 font-bold flex items-center justify-between">
+                           <span>¡Agrega {formatPrice(discountInfo.nextTier.needed)} más para ganar {discountInfo.nextTier.nextPercent}% OFF!</span>
+                           <Link href="/" className="underline text-amber-950 font-black ml-2 whitespace-nowrap">Ver más</Link>
+                        </div>
+                     )}
+
+                     <div className="border-b border-gray-200 mb-6 pb-2" />
 
                      <div className="mb-6 pb-6 border-b border-gray-200">
                         <span className="text-[13px] font-bold text-slate-800 block mb-3">Envío</span>

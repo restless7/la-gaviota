@@ -3,6 +3,7 @@ import { normalizeCheckoutItems, quoteCheckout, readCheckoutDetails, assertExpec
 import { getActor, assertIssuedActor } from './authorization';
 import { getServerDatabase, getGuestCheckoutDatabase, readPublicInventoryFlag } from './database';
 import { CHRISTMAS_CUSHIONS } from '@/src/data/christmasProducts';
+import { getActivePromotion, calculateDiscount } from './promotions';
 
 /** Validates before writes; client prices, totals, tier and ownership are never authoritative. */
 export async function prepareCheckout(formData: FormData, items: unknown, expectedTotal?: number) {
@@ -74,7 +75,28 @@ export async function prepareCheckout(formData: FormData, items: unknown, expect
 
   const { track_inventory } = await readPublicInventoryFlag();
   const effectiveTier = isGuest ? 'Personas Naturales' : actor.tier;
-  const quote = quoteCheckout(lines, catalogProducts, effectiveTier, details.city, track_inventory);
+
+  // Authoritative server-side subtotal evaluation for promotional discounts
+  const rawSubtotal = lines.reduce((acc, line) => {
+    const prod = catalogProducts.find(p => p.id === line.productId);
+    if (!prod) return acc;
+    const price = effectiveTier === 'Micromercados' ? prod.price_micro : effectiveTier === 'Restaurantes' ? prod.price_restaurant : prod.price_retail;
+    return acc + (Number(price) || 0) * line.quantity;
+  }, 0);
+
+  const activePromo = await getActivePromotion();
+  const discountCalc = calculateDiscount(rawSubtotal, effectiveTier, activePromo);
+
+  const quote = quoteCheckout(
+    lines,
+    catalogProducts,
+    effectiveTier,
+    details.city,
+    track_inventory,
+    discountCalc.discountAmount,
+    discountCalc.discountLabel
+  );
+
   assertExpectedCheckoutTotal(expectedTotal, quote.totalAmount);
   return { userId: actor.userId || null, tier: effectiveTier, details, ...quote };
 }

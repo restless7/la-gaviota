@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { Product, fetchProducts } from '@/src/actions/products';
 import { parseCartDraft, reconcileCartDraft } from '@/src/lib/cartPersistence';
 import { useUserRole } from './UserRoleContext';
@@ -9,6 +9,21 @@ export interface CartItem {
   product: Product;
   quantity: number;
   addedAt: number;
+}
+
+export interface LaunchDiscountInfo {
+  hasDiscount: boolean;
+  discountAmount: number;
+  discountPercent: number;
+  discountLabel: string;
+  badge: string;
+  finalCartTotal: number;
+  nextTier: {
+    needed: number;
+    nextPercent: number;
+    nextMinSubtotal: number;
+  } | null;
+  campaignName: string;
 }
 
 interface CartContextType {
@@ -26,6 +41,7 @@ interface CartContextType {
   freeShippingThreshold: number;
   remainingForFreeShipping: number;
   progressPercent: number;
+  discountInfo: LaunchDiscountInfo;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -148,11 +164,89 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - cartTotal);
   const progressPercent = Math.min(100, (cartTotal / freeShippingThreshold) * 100);
 
+  // Time-frame sensitive tiered Launch Discount Calculation (15%, 25%, 35%)
+  const discountInfo = useMemo<LaunchDiscountInfo>(() => {
+    if (role === 'Restaurantes' || role === 'Micromercados') {
+      return {
+        hasDiscount: false,
+        discountAmount: 0,
+        discountPercent: 0,
+        discountLabel: '',
+        badge: '',
+        finalCartTotal: cartTotal,
+        nextTier: null,
+        campaignName: '',
+      };
+    }
+
+    if (cartTotal >= 300000) {
+      const discountAmount = Math.round(cartTotal * 0.35);
+      return {
+        hasDiscount: true,
+        discountAmount,
+        discountPercent: 35,
+        discountLabel: '35% Descuento Gran Lanzamiento',
+        badge: '35% OFF',
+        finalCartTotal: Math.max(0, cartTotal - discountAmount),
+        nextTier: null,
+        campaignName: '¡Gran Lanzamiento Web!',
+      };
+    } else if (cartTotal >= 200000) {
+      const discountAmount = Math.round(cartTotal * 0.25);
+      return {
+        hasDiscount: true,
+        discountAmount,
+        discountPercent: 25,
+        discountLabel: '25% Descuento Gran Lanzamiento',
+        badge: '25% OFF',
+        finalCartTotal: Math.max(0, cartTotal - discountAmount),
+        nextTier: {
+          needed: 300000 - cartTotal,
+          nextPercent: 35,
+          nextMinSubtotal: 300000,
+        },
+        campaignName: '¡Gran Lanzamiento Web!',
+      };
+    } else if (cartTotal >= 100000) {
+      const discountAmount = Math.round(cartTotal * 0.15);
+      return {
+        hasDiscount: true,
+        discountAmount,
+        discountPercent: 15,
+        discountLabel: '15% Descuento Gran Lanzamiento',
+        badge: '15% OFF',
+        finalCartTotal: Math.max(0, cartTotal - discountAmount),
+        nextTier: {
+          needed: 200000 - cartTotal,
+          nextPercent: 25,
+          nextMinSubtotal: 200000,
+        },
+        campaignName: '¡Gran Lanzamiento Web!',
+      };
+    } else {
+      return {
+        hasDiscount: false,
+        discountAmount: 0,
+        discountPercent: 0,
+        discountLabel: '',
+        badge: '',
+        finalCartTotal: cartTotal,
+        nextTier: {
+          needed: 100000 - cartTotal,
+          nextPercent: 15,
+          nextMinSubtotal: 100000,
+        },
+        campaignName: '¡Gran Lanzamiento Web!',
+      };
+    }
+  }, [cartTotal, role]);
+
   return (
     <CartContext.Provider value={{
       items, addToCart, removeFromCart, updateQuantity, clearCart,
       isCartOpen, setIsCartOpen, cartRestoreError, cartReady: isInitialized && !cartRestoreError, cartTotal, itemCount,
-      freeShippingThreshold, remainingForFreeShipping, progressPercent
+      freeShippingThreshold, remainingForFreeShipping, progressPercent,
+      discountInfo
     }}>
       {cartRestoreError && <div role="alert" className="p-4 bg-amber-50 text-amber-900"><p>{cartRestoreError}</p><button type="button" onClick={clearCart} className="mt-2 min-h-11 rounded-lg border border-amber-700 px-3 text-sm font-bold">Vaciar carrito y empezar de nuevo</button></div>}
       {children}

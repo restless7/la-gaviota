@@ -28,6 +28,8 @@ export interface Order {
   delivery_address: string;
   delivery_municipality: string;
   total_amount: number;
+  discount_amount?: number | null;
+  discount_label?: string | null;
   status: 'Pago Pendiente' | 'Pendiente' | 'En Preparación' | 'En Ruta' | 'Entregado' | 'Cancelado' | 'ARCHIVED_DELIVERED';
   payment_method: string;
   payment_status?: string | null;
@@ -59,6 +61,8 @@ interface RawOrderRow {
   delivery_address: string;
   delivery_municipality: string;
   total_amount: number;
+  discount_amount?: number | null;
+  discount_label?: string | null;
   status: Order['status'];
   payment_method: string;
   payment_status?: string | null;

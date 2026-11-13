@@ -11,6 +11,13 @@ export async function submitCheckoutOrder(formData: FormData, items: CheckoutIte
   const checkout = await prepareCheckout(formData, items, totalAmount);
   const { details } = checkout;
   const customerName = `${details.firstName} ${details.lastName}`;
+  const discountNote = checkout.discountAmount > 0
+    ? `[DESCUENTO: -$${checkout.discountAmount.toLocaleString('es-CO')} (${checkout.discountLabel})]`
+    : '';
+  const finalNotes = discountNote
+    ? (details.notes ? `${discountNote} ${details.notes}` : discountNote)
+    : details.notes;
+
   const result = await createOrder({
     clerk_user_id: checkout.userId,
     customer_name: customerName,
@@ -19,10 +26,11 @@ export async function submitCheckoutOrder(formData: FormData, items: CheckoutIte
     delivery_address: details.fullAddress,
     delivery_municipality: details.city,
     total_amount: checkout.totalAmount,
+    discount_amount: checkout.discountAmount || 0,
     status: 'Pendiente',
     payment_method: 'cash',
     idempotency_key: idempotencyKey || null,
-    notes: details.notes,
+    notes: finalNotes,
   }, checkout.orderItems, false);
   if (result.orderId) {
     triggerOrderNotification(result.orderId, details.phone, customerName, checkout.totalAmount).catch(err => {
@@ -44,6 +52,13 @@ export async function submitCashCheckoutAction(
     const checkout = await prepareCheckout(formData, items);
     const { details } = checkout;
     const customerName = `${details.firstName} ${details.lastName}`;
+    const discountNote = checkout.discountAmount > 0
+      ? `[DESCUENTO: -$${checkout.discountAmount.toLocaleString('es-CO')} (${checkout.discountLabel})]`
+      : '';
+    const finalNotes = discountNote
+      ? (details.notes ? `${discountNote} ${details.notes}` : discountNote)
+      : details.notes;
+
     const result = await createOrder({
       clerk_user_id: checkout.userId,
       customer_name: customerName,
@@ -52,10 +67,11 @@ export async function submitCashCheckoutAction(
       delivery_address: details.fullAddress,
       delivery_municipality: details.city,
       total_amount: checkout.totalAmount,
+      discount_amount: checkout.discountAmount || 0,
       status: 'Pendiente',
       payment_method: 'cash',
       idempotency_key: idempotencyKey || null,
-      notes: details.notes,
+      notes: finalNotes,
     }, checkout.orderItems, false);
     if (result.orderId) {
       triggerOrderNotification(result.orderId, details.phone, customerName, checkout.totalAmount).catch(err => {
