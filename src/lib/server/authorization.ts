@@ -44,8 +44,10 @@ async function actorFromVerifiedSubject(userId: string | null): Promise<Actor> {
   if (!user || user.id !== userId || user.banned || user.locked) throw new Error('INVALID_ACTOR');
   const meta = user.publicMetadata || {};
   const raw = typeof meta.role === 'string' ? meta.role.toUpperCase() : meta.role;
-  const role: Role = raw == null || raw === 'USER' || raw === 'CLIENT' ? 'USER' : ['ADMIN', 'SUPER_ADMIN', 'OPERARIO', 'COMMERCIAL'].includes(raw as string) ? raw as Role : 'INVALID';
-  // Tier is never a source of privileged role elevation. Unknown pricing tier is retail.
+  const role: Role = raw == null || raw === 'USER' || raw === 'CLIENT'
+    ? (meta.tier === 'admin' ? 'ADMIN' : 'USER')
+    : ['ADMIN', 'SUPER_ADMIN', 'OPERARIO', 'COMMERCIAL'].includes(raw as string) ? raw as Role : 'INVALID';
+  // Tier is never a source of privileged role elevation for customer pricing tiers. Unknown pricing tier is retail.
   const tier: Tier = role !== 'INVALID' && tiers.includes(meta.tier as Tier) ? meta.tier as Tier : 'Personas Naturales';
   const actor: Actor = Object.freeze({ userId, role, tier }); issued.add(actor); return actor;
 }
@@ -57,6 +59,7 @@ const operarioCapabilities: Capability[] = [
   'payments.manage',
   'reports.read',
   'suppliers.manage',
+  'storage.manage',
   'audit.write'
 ];
 const commercialCapabilities: Capability[] = [
@@ -68,6 +71,7 @@ const commercialCapabilities: Capability[] = [
   'orders.manage',
   'payments.manage',
   'reports.read',
+  'storage.manage',
   'audit.write'
 ];
 export function assertIssuedActor(actor: Actor): void { if (!issued.has(actor) || !actor.userId || actor.role === 'INVALID') throw new Error('INVALID_ACTOR'); }

@@ -267,7 +267,11 @@ export default function KitsClient({
   const handleSaveRename = async (kitId: string) => {
     if (!inlineNameValue.trim()) return;
     try {
-      await updateKitName(kitId, inlineNameValue.trim());
+      const res = await updateKitName(kitId, inlineNameValue.trim());
+      if (!res.success) {
+        alert(res.error || 'Error al renombrar el kit');
+        return;
+      }
       setKits(prev => prev.map(k => k.id === kitId ? { ...k, name: inlineNameValue.trim() } : k));
       if (editingKitId === kitId) {
         setKitName(inlineNameValue.trim());
@@ -281,6 +285,15 @@ export default function KitsClient({
     }
   };
 
+  const generateCleanSlug = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
   const handleToggleStatus = async (kit: KitRecord) => {
     const newStatus = kit.status === 'active' ? 'draft' : 'active';
     const activeCount = kits.filter(k => k.id !== kit.id && k.status === 'active').length;
@@ -289,7 +302,11 @@ export default function KitsClient({
       return;
     }
     try {
-      await updateKitStatus(kit.id, newStatus);
+      const res = await updateKitStatus(kit.id, newStatus);
+      if (!res.success) {
+        alert(res.error || 'Error al actualizar el estado del kit');
+        return;
+      }
       setKits(prev => prev.map(k => k.id === kit.id ? { ...k, status: newStatus } : k));
       setToast(`Kit "${kit.name}" cambiado a ${newStatus === 'active' ? 'Activo (visible en tienda)' : 'Borrador'}`);
       setTimeout(() => setToast(''), 3000);
@@ -302,7 +319,11 @@ export default function KitsClient({
   const handleDeleteKit = async (kitId: string) => {
     if (!confirm('¿Estás seguro de eliminar este kit?')) return;
     try {
-      await deleteKit(kitId);
+      const res = await deleteKit(kitId);
+      if (!res.success) {
+        alert(res.error || 'Error al eliminar el kit');
+        return;
+      }
       setKits(prev => prev.filter(k => k.id !== kitId));
       if (editingKitId === kitId) handleCancelEdit();
       setToast('Kit eliminado correctamente');
@@ -323,23 +344,28 @@ export default function KitsClient({
       let finalBannerUrl = customBannerUrl || '';
 
       if (bannerFile) {
-        const upload = new FormData();
-        upload.set('file', bannerFile);
-        finalBannerUrl = (await uploadCatalogMedia('kit', upload)).url;
-        setBannerGallery((prev) =>
-          mergeBannerGallery(
-            [
-              {
-                url: finalBannerUrl,
-                name: bannerFile.name,
-                createdAt: new Date().toISOString(),
-                source: 'bucket',
-              },
-              ...prev,
-            ],
-            kits
-          )
-        );
+        try {
+          const upload = new FormData();
+          upload.set('file', bannerFile);
+          finalBannerUrl = (await uploadCatalogMedia('kit', upload)).url;
+          setBannerGallery((prev) =>
+            mergeBannerGallery(
+              [
+                {
+                  url: finalBannerUrl,
+                  name: bannerFile.name,
+                  createdAt: new Date().toISOString(),
+                  source: 'bucket',
+                },
+                ...prev,
+              ],
+              kits
+            )
+          );
+        } catch (uploadErr) {
+          console.warn('Image upload error:', uploadErr);
+          alert('Hubo un problema al subir la imagen del banner. Se guardará el kit con el banner por defecto.');
+        }
       } else if (finalBannerUrl) {
         setBannerGallery((prev) =>
           mergeBannerGallery(
@@ -362,7 +388,7 @@ export default function KitsClient({
       const payload: KitPayload = {
         id: editingKitId || undefined,
         name: kitName,
-        slug: kitSlug,
+        slug: kitSlug || generateCleanSlug(kitName),
         fixed_price: parsedPrice,
         banner_url: finalBannerUrl || undefined,
         items: kitItems.map(i => ({
@@ -372,12 +398,18 @@ export default function KitsClient({
       };
 
       const res = await createOrUpdateKit(payload);
+      if (!res.success) {
+        alert(`Hubo un error guardando el kit: ${res.error || 'Verifica los datos e intenta nuevamente.'}`);
+        return;
+      }
+
+      const actualSlug = res.slug || kitSlug;
 
       // Refresh local kits list
       const savedKit: KitRecord = {
         id: res.kitId || editingKitId || `kit-${Date.now()}`,
         name: kitName,
-        slug: kitSlug,
+        slug: actualSlug,
         fixed_price: parsedPrice,
         banner_url: finalBannerUrl || null,
         status: 'active',
@@ -693,7 +725,7 @@ export default function KitsClient({
                     onChange={(e) => {
                       setKitName(e.target.value);
                       if (!editingKitId) {
-                        setKitSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+                        setKitSlug(generateCleanSlug(e.target.value));
                       }
                     }}
                     placeholder="Nombre del Kit Chévere (ej. Kit Semanal, Kit Familiar)"
@@ -709,7 +741,7 @@ export default function KitsClient({
                         type="button"
                         onClick={() => {
                           setKitName(preset);
-                          if (!editingKitId) setKitSlug(preset.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+                          if (!editingKitId) setKitSlug(generateCleanSlug(preset));
                         }}
                         className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-600 border border-slate-200 transition-colors"
                       >

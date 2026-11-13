@@ -250,3 +250,89 @@ test('KitsClient renders live banner preview and reusable banner gallery', () =>
   assert.match(kitsClient, /MAX_BANNER_BYTES/, 'KitsClient must validate upload size up front');
 });
 
+test('createOrUpdateKit handles errors gracefully without throwing Minified React error #441', async () => {
+  const { createOrUpdateKit } = loadTsModule('src/actions/kits.ts', {
+    '@/src/lib/server/authorization': {
+      requireCapability: async () => {
+        throw new Error('FORBIDDEN');
+      },
+    },
+    '@/src/lib/server/database': { getServerDatabase: () => ({}) },
+    '@clerk/nextjs/server': { auth: async () => ({ userId: 'user_123' }) },
+    '@/src/lib/audit': { logAdminAction: async () => {} },
+    'next/cache': { revalidatePath: () => {} },
+  });
+
+  const res = await createOrUpdateKit({
+    name: 'Kit Prueba',
+    slug: 'kit-prueba',
+    fixed_price: 25000,
+    items: [{ product_id: 'prd_1', quantity: 1 }],
+  });
+
+  assert.equal(res.success, false);
+  assert.match(res.error, /permisos de Administrador/i);
+});
+
+test('createOrUpdateKit validates empty items and sanitizes accents in slug', async () => {
+  let insertedSlug = null;
+  const mockDb = {
+    from: (table) => {
+      if (table === 'kits') {
+        return {
+          select: () => ({
+            eq: () => ({
+              maybeSingle: async () => ({ data: null }),
+            }),
+          }),
+          insert: (payload) => {
+            insertedSlug = payload.slug;
+            return {
+              select: () => ({
+                single: async () => ({ data: { id: 'new-kit-uuid' }, error: null }),
+              }),
+            };
+          },
+        };
+      }
+      if (table === 'kit_items') {
+        return {
+          insert: async () => ({ error: null }),
+        };
+      }
+      return {};
+    },
+  };
+
+  const { createOrUpdateKit } = loadTsModule('src/actions/kits.ts', {
+    '@/src/lib/server/authorization': {
+      requireCapability: async () => ({ userId: 'admin_1', role: 'ADMIN', tier: 'Personas Naturales' }),
+    },
+    '@/src/lib/server/database': { getServerDatabase: () => mockDb },
+    '@clerk/nextjs/server': { auth: async () => ({ userId: 'admin_1' }) },
+    '@/src/lib/audit': { logAdminAction: async () => {} },
+    'next/cache': { revalidatePath: () => {} },
+  });
+
+  // Empty items validation
+  const emptyRes = await createOrUpdateKit({
+    name: 'Kit Vacío',
+    slug: 'kit-vacio',
+    fixed_price: 10000,
+    items: [],
+  });
+  assert.equal(emptyRes.success, false);
+  assert.match(emptyRes.error, /al menos un producto/i);
+
+  // Accents in slug
+  const validRes = await createOrUpdateKit({
+    name: 'Kit Chévere de Frutas',
+    slug: 'Kit Chévere de Frutas',
+    fixed_price: 35000,
+    items: [{ product_id: 'p1', quantity: 2 }],
+  });
+  assert.equal(validRes.success, true);
+  assert.equal(validRes.slug, 'kit-chevere-de-frutas');
+  assert.equal(insertedSlug, 'kit-chevere-de-frutas');
+});
+
