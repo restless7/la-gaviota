@@ -102,3 +102,4 @@ INSERT INTO public.promotions (
   ends_at = NOW() + INTERVAL '7 days',
   tier_rules = EXCLUDED.tier_rules,
   updated_at = NOW();
+
