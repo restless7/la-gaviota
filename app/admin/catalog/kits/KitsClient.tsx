@@ -22,6 +22,7 @@ import {
 import { AdminProduct as Product } from '@/src/actions/products';
 import { createOrUpdateKit, updateKitStatus, updateKitName, deleteKit, KitPayload } from '@/src/actions/kits';
 import { uploadCatalogMedia, type KitBannerGalleryItem } from '@/src/actions/media';
+import { compressImage } from '@/src/lib/client/imageCompression';
 
 interface KitRecord {
   id: string;
@@ -345,8 +346,9 @@ export default function KitsClient({
 
       if (bannerFile) {
         try {
+          const compressed = await compressImage(bannerFile, { maxWidth: 1600, maxHeight: 1000, quality: 0.85 });
           const upload = new FormData();
-          upload.set('file', bannerFile);
+          upload.set('file', compressed);
           finalBannerUrl = (await uploadCatalogMedia('kit', upload)).url;
           setBannerGallery((prev) =>
             mergeBannerGallery(

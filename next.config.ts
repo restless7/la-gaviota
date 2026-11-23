@@ -3,7 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: { serverActions: { bodySizeLimit: '3mb' } },
   images: {
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 2678400, // 31 days edge cache
+    deviceSizes: [640, 750, 828, 1080, 1200],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: 'https',

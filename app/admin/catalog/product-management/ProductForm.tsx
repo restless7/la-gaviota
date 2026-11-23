@@ -6,6 +6,7 @@ import { Package, ArrowLeft, Save, Loader2, Image as ImageIcon, Trash2 } from 'l
 import Link from 'next/link';
 import { createProduct, updateProduct, deleteProduct, AdminProduct as Product } from '@/src/actions/products';
 import { uploadCatalogMedia } from '@/src/actions/media';
+import { compressImage } from '@/src/lib/client/imageCompression';
 import { CATEGORIES, SUBCATEGORIES } from '@/src/constants/productConstants';
 
 
@@ -49,7 +50,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       
       if (imageFile) {
         setIsUploading(true);
-        const upload = new FormData(); upload.set('file', imageFile);
+        const compressedFile = await compressImage(imageFile, { maxWidth: 1200, maxHeight: 1200, quality: 0.82 });
+        const upload = new FormData(); upload.set('file', compressedFile);
         finalImageUrl = (await uploadCatalogMedia('product', upload)).url;
         setIsUploading(false);
       }
