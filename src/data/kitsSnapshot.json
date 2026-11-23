@@ -1,0 +1,311 @@
+[
+  {
+    "id": "403ad16c-cc84-4395-acdd-d25921122800",
+    "name": "Kit Semanal",
+    "fixed_price": "160000",
+    "banner_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/kit-banners/managed/kit/e15e1334-3666-482c-9e5b-b94de63e90d0.jpg",
+    "status": "active",
+    "kit_items": [
+      {
+        "product_id": "prd_0092",
+        "quantity": 10,
+        "products": {
+          "id": "prd_0092",
+          "name": "Papa pastusa",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0123",
+        "quantity": 3,
+        "products": {
+          "id": "prd_0123",
+          "name": "Tomate chonto",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0068",
+        "quantity": 3,
+        "products": {
+          "id": "prd_0068",
+          "name": "Cebolla blanca",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/cebolla-blanca-1782952221624.png"
+        }
+      },
+      {
+        "product_id": "prd_0070",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0070",
+          "name": "Cebolla larga",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/cebolla-larga-1782952467871.jpeg"
+        }
+      },
+      {
+        "product_id": "prd_0091",
+        "quantity": 3,
+        "products": {
+          "id": "prd_0091",
+          "name": "Papa criolla o amarilla",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0126",
+        "quantity": 2,
+        "products": {
+          "id": "prd_0126",
+          "name": "Yuca",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0127",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0127",
+          "name": "Zanahoria",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/zanahoria-1782951886045.jpeg"
+        }
+      },
+      {
+        "product_id": "prd_0059",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0059",
+          "name": "Arveja desgranada",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/arveja-desgranada-1782961362316.jpeg"
+        }
+      },
+      {
+        "product_id": "prd_0079",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0079",
+          "name": "Frijol desgranado",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0111",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0111",
+          "name": "Pimentón rojo",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0054",
+        "quantity": 0.5,
+        "products": {
+          "id": "prd_0054",
+          "name": "Ajo blanco",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/ajo-blanco-1782949665642.png"
+        }
+      },
+      {
+        "product_id": "prd_0074",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0074",
+          "name": "Cilantro atado x2000",
+          "unit": "Atado",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0114",
+        "quantity": 3,
+        "products": {
+          "id": "prd_0114",
+          "name": "Plátano verde",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/managed/product/b1c09b4e-c9ce-42a9-a3b2-d8f4a810c91b.webp"
+        }
+      },
+      {
+        "product_id": "prd_0112",
+        "quantity": 2,
+        "products": {
+          "id": "prd_0112",
+          "name": "Plátano maduro",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0019",
+        "quantity": 2,
+        "products": {
+          "id": "prd_0019",
+          "name": "Limón taití",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0030",
+        "quantity": 2,
+        "products": {
+          "id": "prd_0030",
+          "name": "Naranja común",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0029",
+        "quantity": 2,
+        "products": {
+          "id": "prd_0029",
+          "name": "Mora",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0016",
+        "quantity": 2,
+        "products": {
+          "id": "prd_0016",
+          "name": "Guayaba",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/guayaba-1782951405186.png"
+        }
+      },
+      {
+        "product_id": "prd_0027",
+        "quantity": 2,
+        "products": {
+          "id": "prd_0027",
+          "name": "Maracuyá",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/maracuy-1793821120865.png"
+        }
+      },
+      {
+        "product_id": "prd_0011",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0011",
+          "name": "Fresa grande",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/fresa-grande-1782951232999.png"
+        }
+      },
+      {
+        "product_id": "prd_0046",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0046",
+          "name": "Uva Isabella",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0023",
+        "quantity": 4,
+        "products": {
+          "id": "prd_0023",
+          "name": "Manzana verde",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/manzana-verde-1782964267937.png"
+        }
+      },
+      {
+        "product_id": "prd_0014",
+        "quantity": 3,
+        "products": {
+          "id": "prd_0014",
+          "name": "Granadilla",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/granadilla-1782951320871.png"
+        }
+      },
+      {
+        "product_id": "prd_0036",
+        "quantity": 2,
+        "products": {
+          "id": "prd_0036",
+          "name": "Pera importada",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0039",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0039",
+          "name": "Piña oro miel",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0033",
+        "quantity": 2.5,
+        "products": {
+          "id": "prd_0033",
+          "name": "Papaya",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0009",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0009",
+          "name": "Durazno nacional",
+          "unit": "500 gr",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/durazno-nacional-1782950083415.png"
+        }
+      },
+      {
+        "product_id": "prd_0026",
+        "quantity": 2,
+        "products": {
+          "id": "prd_0026",
+          "name": "Mandarina",
+          "unit": "500 gr",
+          "image_url": null
+        }
+      },
+      {
+        "product_id": "prd_0048",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0048",
+          "name": "Aguacate choque",
+          "unit": "500 gr",
+          "image_url": "/PRODUCTS/prd_0048-aguacate-choque.jpg"
+        }
+      },
+      {
+        "product_id": "prd_0002",
+        "quantity": 1,
+        "products": {
+          "id": "prd_0002",
+          "name": "Arándanos",
+          "unit": "ESTUCHE ",
+          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/arndanos-1782949805851.png"
+        }
+      }
+    ]
+  }
+]

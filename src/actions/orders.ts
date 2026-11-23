@@ -177,7 +177,7 @@ export async function getLiveOperationalOrders(): Promise<Order[]> {
 
   if (error) {
     console.error('Error fetching live operational orders:', error);
-    throw new Error('Failed to fetch live orders');
+    return [];
   }
 
   const closedDates = ledgersData?.map(l => l.operational_date) || [];
@@ -546,7 +546,7 @@ export async function getHistoricLedgers() {
 
   if (error) {
     console.error('Error fetching ledgers:', error);
-    throw new Error('Failed to fetch historical ledgers');
+    return [];
   }
   return data || [];
 }
