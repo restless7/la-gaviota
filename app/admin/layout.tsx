@@ -27,6 +27,7 @@ import {
   Calculator,
   ScrollText,
   Activity,
+  CalendarClock,
 } from 'lucide-react';
 import { useRBAC } from '@/src/hooks/useRBAC';
 import { useClerk } from '@clerk/nextjs';
@@ -82,6 +83,7 @@ const navigation: NavItem[] = [
     ]
   },
   { name: 'Gestión de Pedidos', href: '/admin/orders', icon: TrendingUp, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },
+  { name: 'Mercados Programados', href: '/admin/mercados-programados', icon: CalendarClock, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },
   { name: 'Solicitudes de Negocio', href: '/admin/solicitudes', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN', 'COMMERCIAL'] },
   { name: 'Proveedores & Granjas', href: '/admin/suppliers', icon: Briefcase, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO'] },
   { name: 'Reportes y Ventas', href: '/admin/reports', icon: BarChart3, roles: ['SUPER_ADMIN', 'ADMIN', 'OPERARIO', 'COMMERCIAL'] },

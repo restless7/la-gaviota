@@ -1,15 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/src/contexts/CartContext';
 import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { CartItems } from '@/src/components/cart/CartItems';
+import { ScheduleSubscriptionModal } from '@/src/components/subscriptions/ScheduleSubscriptionModal';
 
 export default function CartPage() {
    const { items, cartTotal, cartReady, remainingForFreeShipping, discountInfo } = useCart();
    const { role } = useUserRole();
+   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
 
    const formatPrice = (p: number) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(p);
 
@@ -164,17 +166,31 @@ export default function CartPage() {
                         Agregar más productos ({formatPrice(remainingForMinOrder)})
                      </Link>
                   ) : (
-                     <Link 
-                        href="/checkout"
-                        className="w-full bg-slate-800 hover:bg-slate-900 text-white rounded-xl py-4 flex items-center justify-center font-bold text-lg transition-all shadow-md hover:shadow-xl hover:-translate-y-1"
-                     >
-                        Proceder al pago
-                     </Link>
+                     <div className="space-y-3">
+                        <Link 
+                           href="/checkout"
+                           className="w-full bg-slate-800 hover:bg-slate-900 text-white rounded-xl py-4 flex items-center justify-center font-bold text-lg transition-all shadow-md hover:shadow-xl hover:-translate-y-1"
+                        >
+                           Proceder al pago
+                        </Link>
+                        <button
+                           type="button"
+                           onClick={() => setIsScheduleOpen(true)}
+                           className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-2 border-emerald-300 rounded-xl py-3.5 flex items-center justify-center font-black text-sm transition-all shadow-xs gap-2"
+                        >
+                           <span>🗓️</span> Programar entrega recurrente
+                        </button>
+                     </div>
                   )}
                </div>
             </div>
          </div>
 
+         <ScheduleSubscriptionModal
+            isOpen={isScheduleOpen}
+            onClose={() => setIsScheduleOpen(false)}
+            items={items}
+         />
       </div>
    );
 }

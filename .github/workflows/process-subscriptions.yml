@@ -1,0 +1,40 @@
+name: Scheduled Recurring Grocery Orders (Free Cron Runner)
+
+on:
+  schedule:
+    # Runs at 10:00 UTC (5:00 AM Colombia time / UTC-5) every morning
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'Target Application URL'
+        required: false
+        default: 'https://www.lagaviotafruver.com'
+
+jobs:
+  process-subscriptions:
+    name: Process Due Subscriptions
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Trigger Subscription Engine
+        env:
+          TARGET_URL: ${{ github.event.inputs.target_url || 'https://www.lagaviotafruver.com' }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET || secrets.STAGING_CRON_SECRET }}
+        run: |
+          echo "Triggering subscription processing on ${TARGET_URL} at $(date)..."
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "${TARGET_URL}/api/cron/process-subscriptions" \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            -H "Content-Type: application/json")
+
+          HTTP_BODY=$(echo "$RESPONSE" | sed '$d')
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -n 1)
+
+          echo "HTTP Status: ${HTTP_STATUS}"
+          echo "Response Body: ${HTTP_BODY}"
+
+          if [ "${HTTP_STATUS}" -ne 200 ]; then
+            echo "Error: Subscription cron trigger failed with status code ${HTTP_STATUS}"
+            exit 1
+          fi

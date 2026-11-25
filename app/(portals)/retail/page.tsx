@@ -38,8 +38,16 @@ export default async function RetailDashboard() {
         <CustomerOrderHistory />
       </div>
 
-      {/* Promos & B2B Upgrade Callout */}
+      {/* Promos, Subscriptions & B2B Upgrade Callout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+         <Link href="/mi-cuenta/mercados-programados" className="bg-red-500/10 border border-red-500/30 hover:border-red-500 rounded-3xl p-6 flex items-center justify-between group overflow-hidden relative transition-all">
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-red-500/20 to-transparent"></div>
+            <div>
+               <h3 className="font-black text-slate-800 text-xl mb-1">Mercados Programados 🗓️</h3>
+               <p className="text-gray-600 text-sm mb-3">Recibe tu mercado semanal o quincenal sin pedirlo.</p>
+               <span className="text-[11px] font-black uppercase tracking-widest text-[#E30613] group-hover:underline">Administrar Entregas →</span>
+            </div>
+         </Link>
          <Link href="/?category=KITS+NEGOCIOS" className="bg-[#FFCC00]/10 border border-[#FFCC00]/30 hover:border-[#FFCC00] rounded-3xl p-6 flex items-center justify-between group overflow-hidden relative transition-all">
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#FFCC00]/20 to-transparent"></div>
             <div>

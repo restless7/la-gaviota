@@ -211,6 +211,7 @@ model orders {
   is_conflicted           Boolean?      @default(false)
   conflict_reason         String?
   purchase_tier           String?       @default("RETAIL")
+  subscription_occurrence_id String?   @unique @db.Uuid
   order_items             order_items[]
 
   @@index([clerk_user_id], map: "idx_orders_customer")
@@ -273,4 +274,99 @@ model system_settings {
   micro_margin     Decimal?  @default(15) @db.Decimal
   wholesale_margin Decimal?  @default(5) @db.Decimal
   updated_at       DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+/// Recurring Grocery Subscriptions for La Gaviota
+model grocery_subscriptions {
+  id                         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customer_id                String?
+  clerk_user_id              String
+  name                       String    @default("Mi Mercado Recurrente")
+  frequency                  String    // WEEKLY, EVERY_15_DAYS, MONTHLY
+  status                     String    @default("ACTIVE") // ACTIVE, PAUSED, CANCELED
+  timezone                   String    @default("America/Bogota")
+  anchor_date                DateTime  @db.Date
+  preferred_delivery_day     Int?
+  preferred_delivery_window  String    @default("08:00 - 12:00")
+  delivery_name              String
+  delivery_phone             String
+  delivery_email             String?
+  delivery_address           String
+  delivery_municipality      String    @default("Bucaramanga")
+  delivery_instructions      String?
+  payment_method             String    @default("cash")
+  confirmation_policy        String    @default("AUTO") // AUTO, MANUAL
+  maximum_authorized_total   Int?
+  next_occurrence_date       DateTime  @db.Date
+  version                    Int       @default(1)
+  paused_at                  DateTime? @db.Timestamptz(6)
+  canceled_at                DateTime? @db.Timestamptz(6)
+  created_at                 DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime? @default(now()) @db.Timestamptz(6)
+
+  items                      grocery_subscription_items[]
+  occurrences                grocery_subscription_occurrences[]
+  events                     grocery_subscription_events[]
+
+  @@index([clerk_user_id], map: "idx_grocery_subscriptions_customer")
+  @@index([status], map: "idx_grocery_subscriptions_status")
+  @@index([next_occurrence_date], map: "idx_grocery_subscriptions_next_date")
+}
+
+model grocery_subscription_items {
+  id                      String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subscription_id         String                @db.Uuid
+  product_id              String
+  product_name            String
+  quantity                Int
+  unit                    String                @default("unidad")
+  substitution_preference String                @default("CALL_CUSTOMER") // CALL_CUSTOMER, SIMILAR, SKIP_ITEM
+  created_at              DateTime?             @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime?             @default(now()) @db.Timestamptz(6)
+
+  subscription            grocery_subscriptions @relation(fields: [subscription_id], references: [id], onDelete: Cascade)
+
+  @@index([subscription_id], map: "idx_grocery_subscription_items_sub")
+}
+
+model grocery_subscription_occurrences {
+  id                          String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subscription_id             String                @db.Uuid
+  scheduled_delivery_date     DateTime              @db.Date
+  delivery_window             String                @default("08:00 - 12:00")
+  status                      String                @default("SCHEDULED") // SCHEDULED, PENDING_APPROVAL, GENERATING, CONFIRMED, SKIPPED, FAILED, CANCELED
+  source_subscription_version Int                   @default(1)
+  estimated_subtotal          Int                   @default(0)
+  estimated_delivery_cost     Int                   @default(0)
+  estimated_total             Int                   @default(0)
+  order_id                    String?               @db.Uuid
+  idempotency_key             String                @unique
+  generation_attempts         Int                   @default(0)
+  last_error_code             String?
+  last_error_message          String?
+  created_at                  DateTime?             @default(now()) @db.Timestamptz(6)
+  updated_at                  DateTime?             @default(now()) @db.Timestamptz(6)
+
+  subscription                grocery_subscriptions @relation(fields: [subscription_id], references: [id], onDelete: Cascade)
+  events                      grocery_subscription_events[]
+
+  @@index([subscription_id], map: "idx_grocery_occurrences_sub")
+  @@index([scheduled_delivery_date, status], map: "idx_grocery_occurrences_date_status")
+}
+
+model grocery_subscription_events {
+  id              String                            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subscription_id String                            @db.Uuid
+  occurrence_id   String?                           @db.Uuid
+  actor_id        String
+  actor_type      String                            // CUSTOMER, SYSTEM_SCHEDULER, ADMIN
+  event_type      String                            // CREATED, UPDATED, PAUSED, RESUMED, SKIPPED, CANCELED, OCCURRENCE_SCHEDULED, ORDER_GENERATED, APPROVAL_REQUESTED, GENERATION_FAILED
+  details         String?
+  metadata        Json?                             @default("{}")
+  created_at      DateTime?                         @default(now()) @db.Timestamptz(6)
+
+  subscription    grocery_subscriptions             @relation(fields: [subscription_id], references: [id], onDelete: Cascade)
+  occurrence      grocery_subscription_occurrences? @relation(fields: [occurrence_id], references: [id], onDelete: SetNull)
+
+  @@index([subscription_id], map: "idx_grocery_subscription_events_sub")
 }
