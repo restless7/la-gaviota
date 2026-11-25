@@ -220,12 +220,30 @@ export const CATALOG_LOCAL_IMAGES: Record<string, string> = {
   "prd_0255": "/PRODUCTS/prd_0255-kit-chevere-de-la-semana.jpg",
 };
 
+export function resolveKitBannerUrl(bannerUrl?: string | null): string {
+  if (!bannerUrl || typeof bannerUrl !== 'string' || bannerUrl.trim() === '') {
+    return '/IMAGES/kit-chevere-semana.jpg';
+  }
+  const clean = bannerUrl.trim();
+  if (clean.includes('supabase.co')) {
+    return '/IMAGES/kit-chevere-semana.jpg';
+  }
+  return clean;
+}
+
 export function resolveProductImageUrl(sku: string, dbImageUrl?: string | null): string | null {
   if (MANUAL_REPLACEMENT_SKUS.has(sku) && CATALOG_LOCAL_IMAGES[sku]) {
     return CATALOG_LOCAL_IMAGES[sku];
   }
   if (dbImageUrl && typeof dbImageUrl === 'string' && dbImageUrl.trim() !== '') {
-    return dbImageUrl;
+    // If URL points to Supabase Storage (which is subject to egress quotas), intercept and return local asset
+    if (dbImageUrl.includes('supabase.co')) {
+      if (CATALOG_LOCAL_IMAGES[sku]) {
+        return CATALOG_LOCAL_IMAGES[sku];
+      }
+    } else {
+      return dbImageUrl;
+    }
   }
   if (CATALOG_LOCAL_IMAGES[sku]) {
     return CATALOG_LOCAL_IMAGES[sku];

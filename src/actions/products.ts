@@ -9,7 +9,7 @@ import { auth, clerkClient } from '@clerk/nextjs/server';
 import { logAdminAction } from '@/src/lib/audit';
 
 import { CATEGORIES } from '@/src/constants/productConstants';
-import { resolveProductImageUrl } from '@/src/lib/catalogImages';
+import { resolveProductImageUrl, resolveKitBannerUrl } from '@/src/lib/catalogImages';
 import { CHRISTMAS_CUSHIONS } from '@/src/data/christmasProducts';
 import catalogSnapshot from '@/src/data/catalogSnapshot.json';
 import kitsSnapshot from '@/src/data/kitsSnapshot.json';
@@ -123,7 +123,7 @@ export async function fetchAdminProducts(): Promise<AdminProduct[]> {
     stockQuantity: 999, // Kits are virtually unlimited based on underlying stock
     isActive: true,
     isInSeason: true,
-    imageUrl: k.banner_url || null,
+    imageUrl: resolveKitBannerUrl(k.banner_url),
     description: `Combo mayorista: ${k.name}`
   }));
 
@@ -629,7 +629,7 @@ export async function fetchProducts(): Promise<Product[]> {
     stockQuantity: 999,
     isActive: true,
     isInSeason: true,
-    imageUrl: k.banner_url || null,
+    imageUrl: resolveKitBannerUrl(k.banner_url),
     description,
     isKit: true,
     kitItems,

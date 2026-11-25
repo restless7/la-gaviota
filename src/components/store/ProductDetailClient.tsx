@@ -17,7 +17,15 @@ export default function ProductDetailClient({ product, relatedProducts, trackInv
   return <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 py-10 sm:px-6 lg:px-8">
     <div className="grid gap-8 md:grid-cols-2 lg:gap-16">
       <div className={`relative overflow-hidden rounded-3xl border border-gray-100 bg-slate-50 self-start ${product.isKit ? 'aspect-[16/9]' : 'aspect-square'}`}>
-        <CatalogImage src={product.imageUrl || '/IMAGES/logo.jpeg'} alt={product.name} fill sizes="(max-width: 767px) 95vw, 550px" priority className={`object-contain p-3 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`} />
+        <CatalogImage 
+          src={product.imageUrl || (product.isKit ? '/IMAGES/kit-chevere-semana.jpg' : '/IMAGES/logo.jpeg')} 
+          fallbackSrc={product.isKit ? '/IMAGES/kit-chevere-semana.jpg' : '/IMAGES/logo.jpeg'} 
+          alt={product.name} 
+          fill 
+          sizes="(max-width: 767px) 95vw, 550px" 
+          priority 
+          className={`object-contain p-3 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`} 
+        />
         {isOutOfStock && (
           <span className="absolute top-4 left-4 rounded-full bg-red-600 px-3 py-1 text-xs font-black uppercase tracking-wider text-white shadow-sm">
             Agotado

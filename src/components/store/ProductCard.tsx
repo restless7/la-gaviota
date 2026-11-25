@@ -63,6 +63,7 @@ export function ProductCard({ product, trackInventory = false }: { product: Prod
           {product.imageUrl ? (
             <CatalogImage
               src={product.imageUrl}
+              fallbackSrc={product.isKit ? '/IMAGES/kit-chevere-semana.jpg' : '/IMAGES/logo.jpeg'}
               alt={product.name}
               fill
               sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 200px"
@@ -177,7 +178,8 @@ export function ProductCard({ product, trackInventory = false }: { product: Prod
           <div className="flex flex-col gap-6 sm:flex-row">
             <div className={`relative w-full overflow-hidden rounded-2xl bg-slate-50 sm:w-1/2 self-start ${product.isKit ? 'aspect-[16/9]' : 'aspect-square'}`}>
               <CatalogImage
-                src={product.imageUrl || '/IMAGES/logo.jpeg'}
+                src={product.imageUrl || (product.isKit ? '/IMAGES/kit-chevere-semana.jpg' : '/IMAGES/logo.jpeg')}
+                fallbackSrc={product.isKit ? '/IMAGES/kit-chevere-semana.jpg' : '/IMAGES/logo.jpeg'}
                 alt={product.name}
                 fill
                 sizes="(max-width: 639px) 90vw, 350px"

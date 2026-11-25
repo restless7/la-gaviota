@@ -3,7 +3,7 @@
     "id": "403ad16c-cc84-4395-acdd-d25921122800",
     "name": "Kit Semanal",
     "fixed_price": "160000",
-    "banner_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/kit-banners/managed/kit/e15e1334-3666-482c-9e5b-b94de63e90d0.jpg",
+    "banner_url": "/IMAGES/kit-chevere-semana.jpg",
     "status": "active",
     "kit_items": [
       {
@@ -13,7 +13,7 @@
           "id": "prd_0092",
           "name": "Papa pastusa",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0092-papa-pastusa.jpg"
         }
       },
       {
@@ -23,7 +23,7 @@
           "id": "prd_0123",
           "name": "Tomate chonto",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0123-tomate-chonto.jpg"
         }
       },
       {
@@ -33,7 +33,7 @@
           "id": "prd_0068",
           "name": "Cebolla blanca",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/cebolla-blanca-1782952221624.png"
+          "image_url": "/PRODUCTS/Gemini_Generated_Image_y3henvy3henvy3he.png"
         }
       },
       {
@@ -43,7 +43,7 @@
           "id": "prd_0070",
           "name": "Cebolla larga",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/cebolla-larga-1782952467871.jpeg"
+          "image_url": "/PRODUCTS/Gemini_Generated_Image_l6rorkl6rorkl6ro.png"
         }
       },
       {
@@ -53,7 +53,7 @@
           "id": "prd_0091",
           "name": "Papa criolla o amarilla",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0091-papa-criolla-o-amarilla.jpg"
         }
       },
       {
@@ -63,7 +63,7 @@
           "id": "prd_0126",
           "name": "Yuca",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0126-yuca-fresca.jpg"
         }
       },
       {
@@ -73,7 +73,7 @@
           "id": "prd_0127",
           "name": "Zanahoria",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/zanahoria-1782951886045.jpeg"
+          "image_url": "/PRODUCTS/prd_0131-zanahoria-picada.jpg"
         }
       },
       {
@@ -83,7 +83,7 @@
           "id": "prd_0059",
           "name": "Arveja desgranada",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/arveja-desgranada-1782961362316.jpeg"
+          "image_url": "/PRODUCTS/Gemini_Generated_Image_b3s08ob3s08ob3s0.png"
         }
       },
       {
@@ -93,7 +93,7 @@
           "id": "prd_0079",
           "name": "Frijol desgranado",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0079-frijol-desgranado.jpg"
         }
       },
       {
@@ -103,7 +103,7 @@
           "id": "prd_0111",
           "name": "Pimentón rojo",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0111-pimenton-rojo.jpg"
         }
       },
       {
@@ -113,7 +113,7 @@
           "id": "prd_0054",
           "name": "Ajo blanco",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/ajo-blanco-1782949665642.png"
+          "image_url": "/PRODUCTS/Gemini_Generated_Image_z9rhl9z9rhl9z9rh.png"
         }
       },
       {
@@ -123,7 +123,7 @@
           "id": "prd_0074",
           "name": "Cilantro atado x2000",
           "unit": "Atado",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0074-cilantro-atado-x2000.jpg"
         }
       },
       {
@@ -133,7 +133,7 @@
           "id": "prd_0114",
           "name": "Plátano verde",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/managed/product/b1c09b4e-c9ce-42a9-a3b2-d8f4a810c91b.webp"
+          "image_url": "/PRODUCTS/prd_0114-platano-verde.jpg"
         }
       },
       {
@@ -143,7 +143,7 @@
           "id": "prd_0112",
           "name": "Plátano maduro",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0112-platano-maduro-porcion.jpg"
         }
       },
       {
@@ -153,7 +153,7 @@
           "id": "prd_0019",
           "name": "Limón taití",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0019-limon-taiti.jpg"
         }
       },
       {
@@ -163,7 +163,7 @@
           "id": "prd_0030",
           "name": "Naranja común",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0030-naranja-comun.jpg"
         }
       },
       {
@@ -173,7 +173,7 @@
           "id": "prd_0029",
           "name": "Mora",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0029-mora.jpg"
         }
       },
       {
@@ -183,7 +183,7 @@
           "id": "prd_0016",
           "name": "Guayaba",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/guayaba-1782951405186.png"
+          "image_url": "/PRODUCTS/Gemini_Generated_Image_18ats918ats918at.png"
         }
       },
       {
@@ -193,7 +193,7 @@
           "id": "prd_0027",
           "name": "Maracuyá",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/maracuy-1793821120865.png"
+          "image_url": "/PRODUCTS/prd_0027-maracuya.jpg"
         }
       },
       {
@@ -203,7 +203,7 @@
           "id": "prd_0011",
           "name": "Fresa grande",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/fresa-grande-1782951232999.png"
+          "image_url": "/PRODUCTS/Gemini_Generated_Image_rpdg9prpdg9prpdg.png"
         }
       },
       {
@@ -213,7 +213,7 @@
           "id": "prd_0046",
           "name": "Uva Isabella",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0046-uva-isabella.jpg"
         }
       },
       {
@@ -223,7 +223,7 @@
           "id": "prd_0023",
           "name": "Manzana verde",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/manzana-verde-1782964267937.png"
+          "image_url": "/PRODUCTS/Gemini_Generated_Image_81puzn81puzn81pu.png"
         }
       },
       {
@@ -233,7 +233,7 @@
           "id": "prd_0014",
           "name": "Granadilla",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/granadilla-1782951320871.png"
+          "image_url": "/PRODUCTS/prd_0014-granadilla.jpg"
         }
       },
       {
@@ -243,7 +243,7 @@
           "id": "prd_0036",
           "name": "Pera importada",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0036-pera-importada.jpg"
         }
       },
       {
@@ -253,7 +253,7 @@
           "id": "prd_0039",
           "name": "Piña oro miel",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0039-pina-oro-miel.jpg"
         }
       },
       {
@@ -263,7 +263,7 @@
           "id": "prd_0033",
           "name": "Papaya",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0033-papaya.jpg"
         }
       },
       {
@@ -273,7 +273,7 @@
           "id": "prd_0009",
           "name": "Durazno nacional",
           "unit": "500 gr",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/durazno-nacional-1782950083415.png"
+          "image_url": "/PRODUCTS/Gemini_Generated_Image_ganmprganmprganm.png"
         }
       },
       {
@@ -283,7 +283,7 @@
           "id": "prd_0026",
           "name": "Mandarina",
           "unit": "500 gr",
-          "image_url": null
+          "image_url": "/PRODUCTS/prd_0026-mandarina.jpg"
         }
       },
       {
@@ -303,7 +303,7 @@
           "id": "prd_0002",
           "name": "Arándanos",
           "unit": "ESTUCHE ",
-          "image_url": "https://tcjeiizrarwerarcfyky.supabase.co/storage/v1/object/public/product-images/arndanos-1782949805851.png"
+          "image_url": "/PRODUCTS/Gemini_Generated_Image_fc2r3ofc2r3ofc2r.png"
         }
       }
     ]

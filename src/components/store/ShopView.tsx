@@ -575,6 +575,7 @@ export default function ShopView({ initialProducts, trackInventory = false }: { 
                 <div className="relative w-full lg:w-[48%] xl:w-[50%] aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-400/30 bg-slate-950/60 shrink-0 group">
                   <CatalogImage
                     src={kitProduct.imageUrl || '/IMAGES/kit-chevere-semana.jpg'}
+                    fallbackSrc="/IMAGES/kit-chevere-semana.jpg"
                     alt={kitProduct.name}
                     fill
                     sizes="(max-width: 1023px) 100vw, 560px"
@@ -617,7 +618,7 @@ export default function ShopView({ initialProducts, trackInventory = false }: { 
                       }`}
                     >
                       <div className="relative h-12 w-20 rounded-xl overflow-hidden shrink-0 bg-slate-900">
-                        <CatalogImage src={opt.imageUrl || '/IMAGES/kit-chevere-semana.jpg'} alt={opt.name} fill className="object-contain" />
+                        <CatalogImage src={opt.imageUrl || '/IMAGES/kit-chevere-semana.jpg'} fallbackSrc="/IMAGES/kit-chevere-semana.jpg" alt={opt.name} fill className="object-contain" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-bold text-white truncate">Opción {idx + 1}: {opt.name}</p>
