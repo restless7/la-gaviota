@@ -125,7 +125,10 @@ test('fetchProducts maps kit_items ingredients onto active kits and tags isKit=t
     '@clerk/nextjs/server': { auth: async () => ({}), clerkClient: async () => ({}) },
     '@/src/lib/audit': { logAdminAction: async () => {} },
     '@/src/constants/productConstants': { CATEGORIES: ['KITS NEGOCIOS'] },
-    '@/src/lib/catalogImages': { resolveProductImageUrl: (_id, url) => url || null },
+    '@/src/lib/catalogImages': {
+      resolveProductImageUrl: (_id, url) => url || null,
+      resolveKitBannerUrl: (url) => url || '/IMAGES/kit-chevere-semana.jpg',
+    },
   });
 
   const result = await fetchProducts();
