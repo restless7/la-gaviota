@@ -120,7 +120,10 @@ test('fetchProducts maps kit_items ingredients onto active kits and tags isKit=t
       getActor: async () => ({ userId: null, role: 'GUEST', tier: 'Personas Naturales' }),
       assertTargetId: () => { },
     },
-    '@/src/lib/server/database': { getServerDatabase: () => ({}) },
+    '@/src/lib/server/database': {
+      getServerDatabase: () => ({}),
+      getPublicDatabase: () => supabaseStub.createClient(),
+    },
     'next/cache': { revalidatePath: () => { } },
     '@clerk/nextjs/server': { auth: async () => ({}), clerkClient: async () => ({}) },
     '@/src/lib/audit': { logAdminAction: async () => { } },
@@ -260,7 +263,10 @@ test('createOrUpdateKit handles errors gracefully without throwing Minified Reac
         throw new Error('FORBIDDEN');
       },
     },
-    '@/src/lib/server/database': { getServerDatabase: () => ({}) },
+    '@/src/lib/server/database': {
+      getServerDatabase: () => ({}),
+      getPublicDatabase: () => supabaseStub.createClient(),
+    },
     '@clerk/nextjs/server': { auth: async () => ({ userId: 'user_123' }) },
     '@/src/lib/audit': { logAdminAction: async () => { } },
     'next/cache': { revalidatePath: () => { } },

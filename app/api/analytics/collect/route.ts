@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+import { getPublicDatabase } from '@/src/lib/server/database';
 
 function parseDevice(userAgent: string): { device: 'mobile' | 'desktop' | 'tablet'; browser: string } {
   const ua = userAgent.toLowerCase();
@@ -61,12 +58,9 @@ export async function POST(req: NextRequest) {
     const { device, browser } = parseDevice(userAgent);
     const channel = classifyChannel(referrer, utmSource);
 
-    if (supabaseUrl && serviceKey) {
-      const supabase = createClient(supabaseUrl, serviceKey, {
-        auth: { persistSession: false },
-      });
-
-      const { error } = await supabase.from('analytics_page_views').insert({
+    try {
+      const db = getPublicDatabase();
+      const { error } = await db.from('analytics_page_views').insert({
         pathname,
         session_id: sessionId || 'anon-session',
         visitor_id: visitorId || 'anon-visitor',
@@ -82,10 +76,11 @@ export async function POST(req: NextRequest) {
         product_id: productId ? String(productId).slice(0, 50) : null,
         category: category ? String(category).slice(0, 50) : null,
       });
-
       if (error && error.code !== '42P01') {
         console.warn('Analytics collect warning:', error.message);
       }
+    } catch {
+      // Non-blocking telemetry
     }
 
     return NextResponse.json({ ok: true });

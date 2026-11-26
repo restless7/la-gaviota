@@ -7,14 +7,10 @@ export const metadata: Metadata = {
   description: 'Gestión administrativa de entregas periódicas y suscripciones de frutas y verduras.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminSubscriptionsPage() {
-  let subscriptions: Awaited<ReturnType<typeof getAdminSubscriptionsList>> = [];
-  try {
-    subscriptions = await getAdminSubscriptionsList();
-  } catch (err) {
-    console.error('[AdminSubscriptionsPage] Database unreachable:', err);
-    // Page renders with empty list; no crash propagated to error.tsx
-  }
+  const subscriptions = await getAdminSubscriptionsList();
 
   return (
     <AdminSubscriptionsClient initialSubscriptions={subscriptions} />

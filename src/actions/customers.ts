@@ -27,8 +27,8 @@ export interface Customer {
 }
 
 export async function fetchCustomers(tier?: string): Promise<Customer[]> {
+  const actor = await requireCapability('customers.manage');
   try {
-    const actor = await requireCapability('customers.manage');
     const supabase = getServerDatabase(actor);
 
     let query = supabase

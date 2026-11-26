@@ -1,11 +1,7 @@
 'use server';
 
 import { requireCapability } from '@/src/lib/server/authorization';
-import { getServerDatabase } from '@/src/lib/server/database';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+import { getServerDatabase, getPublicDatabase } from '@/src/lib/server/database';
 
 export type AnalyticsPeriod = 'today' | '7d' | '30d' | '90d' | 'year';
 
@@ -128,21 +124,19 @@ export async function getSiteAnalyticsSummary(period: AnalyticsPeriod = '30d'): 
     created_at: string;
   }> = [];
 
-  if (supabaseUrl && serviceKey) {
-    try {
-      const publicClient = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
-      const { data } = await publicClient
-        .from('analytics_page_views')
-        .select('id, pathname, session_id, visitor_id, referrer_channel, device_type, city, duration_seconds, created_at')
-        .gte('created_at', cutoffDate)
-        .order('created_at', { ascending: false })
-        .limit(2000);
-      if (Array.isArray(data)) {
-        liveViews = data;
-      }
-    } catch {
-      // safe fallback
+  try {
+    const publicClient = getPublicDatabase();
+    const { data } = await publicClient
+      .from('analytics_page_views')
+      .select('id, pathname, session_id, visitor_id, referrer_channel, device_type, city, duration_seconds, created_at')
+      .gte('created_at', cutoffDate)
+      .order('created_at', { ascending: false })
+      .limit(2000);
+    if (Array.isArray(data)) {
+      liveViews = data;
     }
+  } catch {
+    // safe fallback
   }
 
   // Baseline generator: builds authentic baseline metrics that blend with real telemetry

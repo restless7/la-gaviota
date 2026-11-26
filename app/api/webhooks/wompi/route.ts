@@ -1,13 +1,10 @@
 import { NextResponse } from 'next/server';
 import { validateWebhookSignature, orderStatusForWompi } from '@/src/lib/wompi';
-import { createClient } from '@supabase/supabase-js';
+import { getPublicDatabase } from '@/src/lib/server/database';
 import { triggerOrderNotification } from '@/src/lib/notifications';
 
 function getWebhookDatabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) throw new Error('WEBHOOK_DATABASE_UNCONFIGURED');
-  return createClient(url, key);
+  return getPublicDatabase();
 }
 
 export async function POST(req: Request) {

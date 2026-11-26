@@ -1,9 +1,8 @@
 'use server';
 import { requireCapability, getActor, assertTargetId } from '@/src/lib/server/authorization';
-import { getServerDatabase } from '@/src/lib/server/database';
+import { getServerDatabase, getPublicDatabase } from '@/src/lib/server/database';
 
 
-import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { logAdminAction } from '@/src/lib/audit';
@@ -13,10 +12,6 @@ import { resolveProductImageUrl, resolveKitBannerUrl } from '@/src/lib/catalogIm
 import { CHRISTMAS_CUSHIONS } from '@/src/data/christmasProducts';
 import catalogSnapshot from '@/src/data/catalogSnapshot.json';
 import kitsSnapshot from '@/src/data/kitsSnapshot.json';
-
-// We initialize the Supabase client here for server actions
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export interface AdminProduct {
   id: string;
@@ -510,7 +505,7 @@ export async function fetchProducts(): Promise<Product[]> {
   let kits: any[] | null = null;
 
   try {
-    const publicDb = createClient(supabaseUrl, supabaseKey);
+    const publicDb = getPublicDatabase();
     const { data: dbData, error } = await publicDb.from('products')
       .select('id,name,category,subcategory,unit,price_retail,previous_price_retail,stock_quantity,is_active,is_in_season,image_url,description')
       .eq('is_active', true);
@@ -531,7 +526,7 @@ export async function fetchProducts(): Promise<Product[]> {
   }
 
   try {
-    const publicDb = createClient(supabaseUrl, supabaseKey);
+    const publicDb = getPublicDatabase();
     const { data: kitsData, error: kitsError } = await publicDb.from('kits')
       .select(`
         id,

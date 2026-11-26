@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef, useCallback, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
-import { createClient, type RealtimeChannel, type SupabaseClient } from '@supabase/supabase-js';
 import Link from 'next/link';
 import {
   Bell,
@@ -259,42 +258,16 @@ export function AdminOrderAlertSystem() {
     }
   }, [persistAckIds, triggerOrderAlertPopup]);
 
-  // Poll every 15 seconds + subscribe to Supabase Realtime INSERT on public.orders
+  // Poll every 15 seconds for new orders (Neon Postgres architecture)
   useEffect(() => {
     const initialTimer = setTimeout(() => {
       void checkOrders();
     }, 0);
     const intervalId = setInterval(checkOrders, 15000);
 
-    let supabaseChannel: RealtimeChannel | null = null;
-    let supabaseClient: SupabaseClient | null = null;
-    try {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-      if (supabaseUrl && supabaseKey) {
-        supabaseClient = createClient(supabaseUrl, supabaseKey);
-        supabaseChannel = supabaseClient
-          .channel('admin-global-order-alerts')
-          .on(
-            'postgres_changes',
-            { event: 'INSERT', schema: 'public', table: 'orders' },
-            () => {
-              // Immediately fetch enriched order with items and tier
-              checkOrders();
-            }
-          )
-          .subscribe();
-      }
-    } catch (err) {
-      console.warn('Realtime subscription fallback to polling:', err);
-    }
-
     return () => {
       clearTimeout(initialTimer);
       clearInterval(intervalId);
-      if (supabaseClient && supabaseChannel) {
-        supabaseClient.removeChannel(supabaseChannel);
-      }
     };
   }, [checkOrders]);
 

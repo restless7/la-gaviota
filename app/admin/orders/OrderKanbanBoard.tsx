@@ -11,7 +11,6 @@ import { ProcurementSheet } from './ProcurementSheet';
 import { getOrderTierPresentation } from './OrderCard';
 import { Archive, CalendarDays, Printer, Users, User, Store, UtensilsCrossed } from 'lucide-react';
 import { useUser } from '@clerk/nextjs';
-import { createClient } from '@supabase/supabase-js';
 
 interface HistoricLedger {
   id: string;
@@ -103,58 +102,19 @@ export function OrderKanbanBoard({ initialOrders, historicLedgers }: { initialOr
   const filteredOrders = orders.filter(matchesSearchAndTier);
   const filteredHistoricOrders = historicOrders.filter(matchesSearchAndTier);
 
+  // Poll every 15 seconds for live operational orders (Neon Postgres architecture)
   React.useEffect(() => {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    // Skip realtime subscription if credentials are missing
-    if (!supabaseUrl || !supabaseKey) return;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let supabaseInstance: ReturnType<typeof createClient> | null = null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let channel: any = null;
-
-    try {
-      supabaseInstance = createClient(supabaseUrl, supabaseKey);
-
-      channel = supabaseInstance
-        .channel('schema-db-changes')
-        .on(
-          'postgres_changes',
-          { event: 'UPDATE', schema: 'public', table: 'orders' },
-          (payload: { new: Partial<Order> & { id?: string } }) => {
-            const updatedOrder = payload.new;
-            if (!updatedOrder?.id) return;
-            setOrders((prev) =>
-              prev.map((o) => (o.id === updatedOrder.id ? { ...o, ...updatedOrder } : o))
-            );
-          }
-        )
-        .on(
-          'postgres_changes',
-          { event: 'INSERT', schema: 'public', table: 'orders' },
-          async () => {
-            try {
-              const refreshed = await getLiveOperationalOrders();
-              setOrders(refreshed);
-            } catch (err) {
-              console.warn('Could not refresh live orders after INSERT:', err);
-            }
-          }
-        )
-        .subscribe((status) => {
-          if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-            console.warn('[OrderKanban] Realtime unavailable, falling back to polling only:', status);
-          }
-        });
-    } catch (err) {
-      console.warn('[OrderKanban] Realtime setup failed, polling-only mode:', err);
-    }
+    const intervalId = setInterval(async () => {
+      try {
+        const refreshed = await getLiveOperationalOrders();
+        setOrders(refreshed);
+      } catch (err) {
+        console.warn('Could not refresh live orders:', err);
+      }
+    }, 15000);
 
     return () => {
-      if (supabaseInstance && channel) {
-        supabaseInstance.removeChannel(channel);
-      }
+      clearInterval(intervalId);
     };
   }, []);
 
