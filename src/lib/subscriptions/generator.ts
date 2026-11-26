@@ -1,5 +1,5 @@
 import 'server-only';
-import { getServerDatabase, readPublicInventoryFlag } from '@/src/lib/server/database';
+import { getPublicDatabase, readPublicInventoryFlag } from '@/src/lib/server/database';
 import { createOrder } from '@/src/lib/server/orderWriter';
 import { quoteCheckout, type CheckoutProduct } from '@/src/lib/checkoutValidation';
 import { calculateNextDeliveryDate, formatBogotaDateIso } from './recurrence';
@@ -27,8 +27,8 @@ export async function generateOrderForOccurrence(
   options: { isDryRun?: boolean; forceApproval?: boolean; actorId?: string } = {}
 ): Promise<GenerationResult> {
   const { isDryRun = false, forceApproval = false, actorId = 'SYSTEM_SCHEDULER' } = options;
-  // Use privileged system/admin client to read and transition occurrence
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  // Use privileged service client to read and transition occurrence
+  const db = getPublicDatabase();
 
   // 1. Fetch occurrence with parent subscription
   const { data: occurrence, error: occError } = await db

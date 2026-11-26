@@ -1,9 +1,12 @@
 import 'server-only';
 import { Pool, types } from 'pg';
 
-// Match PostgREST numeric/int8 behavior (return JS numbers instead of strings)
+// Match PostgREST numeric/int8/date/timestamp behavior
 types.setTypeParser(1700, (val: string) => parseFloat(val));
 types.setTypeParser(20, (val: string) => Number(val));
+types.setTypeParser(1082, (val: string) => val); // DATE -> 'YYYY-MM-DD'
+types.setTypeParser(1114, (val: string) => new Date(val + 'Z').toISOString()); // TIMESTAMP -> ISO string
+types.setTypeParser(1184, (val: string) => new Date(val).toISOString()); // TIMESTAMPTZ -> ISO string
 
 const globalForPg = globalThis as unknown as { __laGaviotaPgPool?: Pool };
 

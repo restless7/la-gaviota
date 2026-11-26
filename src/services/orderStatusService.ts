@@ -204,7 +204,7 @@ export function computeOrderLifeCycle(order: Order): ActiveOrderTrackingDetails 
   };
 
   const deliveryWindow = order.scheduled_delivery_date
-    ? `Entrega programada: ${new Date(order.scheduled_delivery_date + 'T12:00:00').toLocaleDateString('es-CO', {
+    ? `Entrega programada: ${new Date(String(order.scheduled_delivery_date).slice(0, 10) + 'T12:00:00').toLocaleDateString('es-CO', {
         weekday: 'long',
         day: 'numeric',
         month: 'long',

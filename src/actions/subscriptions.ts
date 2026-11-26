@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { randomUUID } from 'node:crypto';
 import { getActor, requireOwnedSubject, requireCapability } from '@/src/lib/server/authorization';
-import { getServerDatabase } from '@/src/lib/server/database';
+import { getServerDatabase, getGuestCheckoutDatabase } from '@/src/lib/server/database';
 import { calculateNextDeliveryDate, formatBogotaDateIso, SubscriptionFrequency } from '@/src/lib/subscriptions/recurrence';
 import { generateOrderForOccurrence } from '@/src/lib/subscriptions/generator';
 
@@ -97,7 +97,7 @@ export async function createGrocerySubscription(payload: CreateSubscriptionPaylo
     throw new Error('La canasta de suscripción debe contener al menos un producto.');
   }
 
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  const db = actor.userId ? getServerDatabase(actor) : getGuestCheckoutDatabase();
 
   const subscriptionId = randomUUID();
   const firstOccurrenceId = randomUUID();
@@ -204,7 +204,7 @@ export async function getCustomerSubscriptions(): Promise<SubscriptionRecord[]> 
   const actor = await getActor();
   if (!actor.userId) return [];
 
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  const db = actor.userId ? getServerDatabase(actor) : getGuestCheckoutDatabase();
 
   const { data: subs, error } = await db
     .from('grocery_subscriptions')
@@ -227,7 +227,7 @@ export async function getCustomerSubscriptions(): Promise<SubscriptionRecord[]> 
  */
 export async function pauseCustomerSubscription(subscriptionId: string) {
   const actor = await getActor();
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  const db = actor.userId ? getServerDatabase(actor) : getGuestCheckoutDatabase();
 
   const { data: sub } = await db.from('grocery_subscriptions').select('*').eq('id', subscriptionId).single();
   if (!sub) throw new Error('Suscripción no encontrada.');
@@ -262,7 +262,7 @@ export async function pauseCustomerSubscription(subscriptionId: string) {
  */
 export async function resumeCustomerSubscription(subscriptionId: string) {
   const actor = await getActor();
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  const db = actor.userId ? getServerDatabase(actor) : getGuestCheckoutDatabase();
 
   const { data: sub } = await db.from('grocery_subscriptions').select('*').eq('id', subscriptionId).single();
   if (!sub) throw new Error('Suscripción no encontrada.');
@@ -318,7 +318,7 @@ export async function resumeCustomerSubscription(subscriptionId: string) {
  */
 export async function skipNextSubscriptionDelivery(subscriptionId: string) {
   const actor = await getActor();
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  const db = actor.userId ? getServerDatabase(actor) : getGuestCheckoutDatabase();
 
   const { data: sub } = await db.from('grocery_subscriptions').select('*').eq('id', subscriptionId).single();
   if (!sub) throw new Error('Suscripción no encontrada.');
@@ -388,7 +388,7 @@ export async function skipNextSubscriptionDelivery(subscriptionId: string) {
  */
 export async function cancelCustomerSubscription(subscriptionId: string, reason?: string) {
   const actor = await getActor();
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  const db = actor.userId ? getServerDatabase(actor) : getGuestCheckoutDatabase();
 
   const { data: sub } = await db.from('grocery_subscriptions').select('*').eq('id', subscriptionId).single();
   if (!sub) throw new Error('Suscripción no encontrada.');
@@ -444,8 +444,8 @@ export async function approveSubscriptionOccurrence(occurrenceId: string) {
  * Admin action: Lists all subscriptions with filters for status and frequency.
  */
 export async function getAdminSubscriptionsList(filters?: { status?: string; frequency?: string }) {
-  await requireCapability('orders.manage');
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  const actor = await requireCapability('orders.manage');
+  const db = getServerDatabase(actor);
 
   let query = db
     .from('grocery_subscriptions')
@@ -490,8 +490,8 @@ export async function retryFailedSubscriptionOccurrence(occurrenceId: string) {
  * from the Admin Operations panel without needing a paid Vercel Pro Cron.
  */
 export async function processDueSubscriptionsAction(targetDateIso?: string) {
-  await requireCapability('orders.manage');
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  const actor = await requireCapability('orders.manage');
+  const db = getServerDatabase(actor);
 
   const nowBogota = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
   const cutoffDate = targetDateIso || (() => {

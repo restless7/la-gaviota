@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { timingSafeEqual } from 'node:crypto';
-import { getServerDatabase } from '@/src/lib/server/database';
+import { getPublicDatabase } from '@/src/lib/server/database';
 import { generateOrderForOccurrence } from '@/src/lib/subscriptions/generator';
 import { formatBogotaDateIso } from '@/src/lib/subscriptions/recurrence';
 
@@ -38,7 +38,7 @@ export async function GET(request: Request) {
   tomorrow.setDate(tomorrow.getDate() + 1);
   const tomorrowIso = formatBogotaDateIso(tomorrow);
 
-  const db = getServerDatabase({ userId: 'system', role: 'ADMIN', tier: 'Personas Naturales' });
+  const db = getPublicDatabase();
 
   // Query occurrences due for generation
   const { data: occurrences, error } = await db
