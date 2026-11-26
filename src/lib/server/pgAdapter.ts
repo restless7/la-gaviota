@@ -61,6 +61,9 @@ const RELATION_KEYS: Record<string, Record<string, { localKey: string; foreignKe
   orders: {
     order_items: { localKey: 'id', foreignKey: 'order_id', many: true },
   },
+  order_items: {
+    orders: { localKey: 'order_id', foreignKey: 'id', many: false },
+  },
   kits: {
     kit_items: { localKey: 'id', foreignKey: 'kit_id', many: true },
   },
@@ -164,6 +167,7 @@ class PgQueryBuilder implements PromiseLike<QueryResult> {
   private writePayload: unknown = null;
   private upsertConflictCols: string[] | null = null;
   private filters: Array<(nextParam: (v: unknown) => string) => string> = [];
+  private relationFilters: Map<string, Array<(nextParam: (v: unknown) => string) => string>> = new Map();
   private orders: Array<{ col: string; ascending: boolean }> = [];
   private limitVal: number | null = null;
   private expectSingle: 'none' | 'single' | 'maybeSingle' = 'none';
@@ -215,61 +219,63 @@ class PgQueryBuilder implements PromiseLike<QueryResult> {
     return this;
   }
 
-  eq(col: string, val: unknown) {
-    this.filters.push((p) => `${safeIdent(col)} = ${p(val)}`);
+  private addFilter(col: string, buildFn: (ident: string, p: (v: unknown) => string) => string) {
+    if (col.includes('.')) {
+      const [relName, relCol] = col.split('.', 2);
+      const list = this.relationFilters.get(relName) || [];
+      list.push((p) => buildFn(safeIdent(relCol), p));
+      this.relationFilters.set(relName, list);
+    } else {
+      this.filters.push((p) => buildFn(safeIdent(col), p));
+    }
     return this;
+  }
+
+  eq(col: string, val: unknown) {
+    return this.addFilter(col, (ident, p) => `${ident} = ${p(val)}`);
   }
 
   neq(col: string, val: unknown) {
-    this.filters.push((p) => `${safeIdent(col)} <> ${p(val)}`);
-    return this;
+    return this.addFilter(col, (ident, p) => `${ident} <> ${p(val)}`);
   }
 
   gt(col: string, val: unknown) {
-    this.filters.push((p) => `${safeIdent(col)} > ${p(val)}`);
-    return this;
+    return this.addFilter(col, (ident, p) => `${ident} > ${p(val)}`);
   }
 
   gte(col: string, val: unknown) {
-    this.filters.push((p) => `${safeIdent(col)} >= ${p(val)}`);
-    return this;
+    return this.addFilter(col, (ident, p) => `${ident} >= ${p(val)}`);
   }
 
   lt(col: string, val: unknown) {
-    this.filters.push((p) => `${safeIdent(col)} < ${p(val)}`);
-    return this;
+    return this.addFilter(col, (ident, p) => `${ident} < ${p(val)}`);
   }
 
   lte(col: string, val: unknown) {
-    this.filters.push((p) => `${safeIdent(col)} <= ${p(val)}`);
-    return this;
+    return this.addFilter(col, (ident, p) => `${ident} <= ${p(val)}`);
   }
 
   like(col: string, val: string) {
-    this.filters.push((p) => `${safeIdent(col)} LIKE ${p(val)}`);
-    return this;
+    return this.addFilter(col, (ident, p) => `${ident} LIKE ${p(val)}`);
   }
 
   ilike(col: string, val: string) {
-    this.filters.push((p) => `${safeIdent(col)} ILIKE ${p(val)}`);
-    return this;
+    return this.addFilter(col, (ident, p) => `${ident} ILIKE ${p(val)}`);
   }
 
   is(col: string, val: null | boolean) {
-    this.filters.push(() => {
-      if (val === null) return `${safeIdent(col)} IS NULL`;
-      return val ? `${safeIdent(col)} IS TRUE` : `${safeIdent(col)} IS FALSE`;
+    return this.addFilter(col, (ident) => {
+      if (val === null) return `${ident} IS NULL`;
+      return val ? `${ident} IS TRUE` : `${ident} IS FALSE`;
     });
-    return this;
   }
 
   in(col: string, vals: unknown[]) {
-    this.filters.push((p) => {
+    return this.addFilter(col, (ident, p) => {
       if (!Array.isArray(vals) || vals.length === 0) return 'FALSE';
       const placeholders = vals.map((v) => p(v)).join(', ');
-      return `${safeIdent(col)} IN (${placeholders})`;
+      return `${ident} IN (${placeholders})`;
     });
-    return this;
   }
 
   contains(col: string, val: unknown) {
@@ -373,9 +379,19 @@ class PgQueryBuilder implements PromiseLike<QueryResult> {
         }
         childCols = [...childColSet].map((c) => safeIdent(c)).join(', ');
       }
+      const childParams: unknown[] = [...parentKeys];
       const placeholders = parentKeys.map((_, i) => `$${i + 1}`).join(', ');
-      const sql = `SELECT ${childCols} FROM public.${safeIdent(rel.table)} WHERE ${safeIdent(mapping.foreignKey)} IN (${placeholders})`;
-      const { rows: childRows } = await this.pool.query(sql, parentKeys);
+      const nextChildParam = (v: unknown) => {
+        childParams.push(v);
+        return `$${childParams.length}`;
+      };
+      const relFilters = [
+        ...(this.relationFilters.get(rel.table) || []),
+        ...(rel.alias !== rel.table ? this.relationFilters.get(rel.alias) || [] : []),
+      ];
+      const extraWhere = relFilters.length > 0 ? ' AND ' + relFilters.map((fn) => fn(nextChildParam)).join(' AND ') : '';
+      const sql = `SELECT ${childCols} FROM public.${safeIdent(rel.table)} WHERE ${safeIdent(mapping.foreignKey)} IN (${placeholders})${extraWhere}`;
+      const { rows: childRows } = await this.pool.query(sql, childParams);
 
       const hydratedChildren =
         rel.nested.length > 0 ? await this.hydrateRelations(rel.table, childRows, rel.nested) : childRows;
