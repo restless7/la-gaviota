@@ -68,7 +68,7 @@ test('uploadCatalogMedia uses Vercel Blob put when BLOB_READ_WRITE_TOKEN is conf
         url: `https://my-store.public.blob.vercel-storage.com/${key}`,
       };
     },
-    del: async () => {},
+    del: async () => { },
     list: async () => ({ blobs: [] }),
   };
 
@@ -76,7 +76,7 @@ test('uploadCatalogMedia uses Vercel Blob put when BLOB_READ_WRITE_TOKEN is conf
     '@vercel/blob': mockBlob,
     '@/src/lib/server/authorization': {
       requireCapability: async () => ({ userId: 'admin-1', role: 'ADMIN' }),
-      assertTargetId: () => {},
+      assertTargetId: () => { },
     },
     '@/src/lib/server/database': { getServerDatabase: () => ({}) },
   });
@@ -109,7 +109,7 @@ test('deleteCatalogMedia invokes Vercel del for blob URLs and clears DB column',
   let updatedFields = null;
 
   const mockBlob = {
-    put: async () => {},
+    put: async () => { },
     del: async (url) => { deletedBlobUrl = url; },
     list: async () => ({ blobs: [] }),
   };
@@ -157,7 +157,7 @@ test('deleteCatalogMedia invokes Vercel del for blob URLs and clears DB column',
     '@vercel/blob': mockBlob,
     '@/src/lib/server/authorization': {
       requireCapability: async () => ({ userId: 'admin-1', role: 'ADMIN' }),
-      assertTargetId: () => {},
+      assertTargetId: () => { },
     },
     '@/src/lib/server/database': { getServerDatabase: () => mockDb },
   });

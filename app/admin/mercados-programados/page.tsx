@@ -8,7 +8,13 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminSubscriptionsPage() {
-  const subscriptions = await getAdminSubscriptionsList();
+  let subscriptions: Awaited<ReturnType<typeof getAdminSubscriptionsList>> = [];
+  try {
+    subscriptions = await getAdminSubscriptionsList();
+  } catch (err) {
+    console.error('[AdminSubscriptionsPage] Database unreachable:', err);
+    // Page renders with empty list; no crash propagated to error.tsx
+  }
 
   return (
     <AdminSubscriptionsClient initialSubscriptions={subscriptions} />

@@ -5,7 +5,13 @@ import { buildWhatsAppChatUrl, buildCustomerGreetingMessage } from '@/src/lib/wh
 import { WhatsAppIcon } from '@/src/components/ui/WhatsAppIcon';
 
 export default async function RetailCustomersPage() {
-  const customers = await fetchCustomers('Personas Naturales');
+  let customers: Awaited<ReturnType<typeof fetchCustomers>> = [];
+  try {
+    customers = await fetchCustomers('Personas Naturales');
+  } catch (err) {
+    console.error('[RetailCustomersPage] Error loading customers:', err);
+    // Page renders with empty list; no crash propagated to error.tsx
+  }
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-6 animate-fade-in">

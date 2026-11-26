@@ -27,26 +27,31 @@ export interface Customer {
 }
 
 export async function fetchCustomers(tier?: string): Promise<Customer[]> {
-  const actor = await requireCapability('customers.manage');
-  const supabase = getServerDatabase(actor);
+  try {
+    const actor = await requireCapability('customers.manage');
+    const supabase = getServerDatabase(actor);
 
-  let query = supabase
-    .from('customers')
-    .select('*')
-    .order('total_spent', { ascending: false });
+    let query = supabase
+      .from('customers')
+      .select('*')
+      .order('total_spent', { ascending: false });
 
-  if (tier) {
-    query = query.eq('tier', tier);
+    if (tier) {
+      query = query.eq('tier', tier);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error fetching customers:', error);
+      return [];
+    }
+
+    return data || [];
+  } catch (err) {
+    console.error('[fetchCustomers] Database unreachable, returning empty list:', err);
+    return [];
   }
-
-  const { data, error } = await query;
-
-  if (error) {
-    console.error('Error fetching customers:', error);
-    throw new Error('Failed to fetch customers');
-  }
-
-  return data || [];
 }
 
 export async function ensureCustomer(clerkUserId: string, data: Partial<Customer>) {

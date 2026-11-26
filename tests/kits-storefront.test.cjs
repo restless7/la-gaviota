@@ -118,12 +118,12 @@ test('fetchProducts maps kit_items ingredients onto active kits and tags isKit=t
     '@/src/lib/server/authorization': {
       requireCapability: async () => ({}),
       getActor: async () => ({ userId: null, role: 'GUEST', tier: 'Personas Naturales' }),
-      assertTargetId: () => {},
+      assertTargetId: () => { },
     },
     '@/src/lib/server/database': { getServerDatabase: () => ({}) },
-    'next/cache': { revalidatePath: () => {} },
+    'next/cache': { revalidatePath: () => { } },
     '@clerk/nextjs/server': { auth: async () => ({}), clerkClient: async () => ({}) },
-    '@/src/lib/audit': { logAdminAction: async () => {} },
+    '@/src/lib/audit': { logAdminAction: async () => { } },
     '@/src/constants/productConstants': { CATEGORIES: ['KITS NEGOCIOS'] },
     '@/src/lib/catalogImages': {
       resolveProductImageUrl: (_id, url) => url || null,
@@ -227,7 +227,7 @@ test('listKitBannerGallery aggregates kit-banners storage and used kit URLs with
         assert.equal(cap, 'catalog.manage');
         return { userId: 'user_admin', role: 'ADMIN', tier: 'Personas Naturales' };
       },
-      assertTargetId: () => {},
+      assertTargetId: () => { },
     },
     '@/src/lib/server/database': { getServerDatabase: () => mockDb },
   });
@@ -262,8 +262,8 @@ test('createOrUpdateKit handles errors gracefully without throwing Minified Reac
     },
     '@/src/lib/server/database': { getServerDatabase: () => ({}) },
     '@clerk/nextjs/server': { auth: async () => ({ userId: 'user_123' }) },
-    '@/src/lib/audit': { logAdminAction: async () => {} },
-    'next/cache': { revalidatePath: () => {} },
+    '@/src/lib/audit': { logAdminAction: async () => { } },
+    'next/cache': { revalidatePath: () => { } },
   });
 
   const res = await createOrUpdateKit({
@@ -313,8 +313,8 @@ test('createOrUpdateKit validates empty items and sanitizes accents in slug', as
     },
     '@/src/lib/server/database': { getServerDatabase: () => mockDb },
     '@clerk/nextjs/server': { auth: async () => ({ userId: 'admin_1' }) },
-    '@/src/lib/audit': { logAdminAction: async () => {} },
-    'next/cache': { revalidatePath: () => {} },
+    '@/src/lib/audit': { logAdminAction: async () => { } },
+    'next/cache': { revalidatePath: () => { } },
   });
 
   // Empty items validation
