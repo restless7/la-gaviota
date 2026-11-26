@@ -81,11 +81,14 @@ async function run() {
     await client.query(`
       ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS discount_amount NUMERIC DEFAULT 0;
       ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS payment_status TEXT DEFAULT 'pending';
+      ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS payment_reference TEXT;
+      ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS client_metadata JSONB DEFAULT '{}'::jsonb;
       ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS idempotency_key TEXT;
       ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS idempotency_fingerprint TEXT;
       ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS scheduled_delivery_date TEXT;
       ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS delivery_window TEXT;
       ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS subscription_id UUID;
+      ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS subscription_occurrence_id UUID;
       CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_idempotency_key ON public.orders(idempotency_key) WHERE idempotency_key IS NOT NULL;
     `);
 
