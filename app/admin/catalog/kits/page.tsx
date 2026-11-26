@@ -4,6 +4,8 @@ import { fetchAdminProducts } from '@/src/actions/products';
 import { fetchKits } from '@/src/actions/kits';
 import { listKitBannerGallery } from '@/src/actions/media';
 
+export const dynamic = 'force-dynamic';
+
 export default async function KitsAndPromotionsPage() {
   const [productsResult, kitsResult, galleryResult] = await Promise.allSettled([
     fetchAdminProducts(),

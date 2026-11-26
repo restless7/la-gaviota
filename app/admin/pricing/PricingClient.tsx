@@ -119,6 +119,8 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
   const [restaurantMargin, setRestaurantMargin] = useState(5);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(25);
   const [isApplying, setIsApplying] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -146,18 +148,23 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
     });
   }, [editableProducts, searchTerm, selectedCategory]);
 
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / pageSize));
+  const safePage = Math.min(currentPage, totalPages);
+  const paginatedProducts = useMemo(() => {
+    const start = (safePage - 1) * pageSize;
+    return filteredProducts.slice(start, start + pageSize);
+  }, [filteredProducts, safePage, pageSize]);
+
+  const editableProductsRef = React.useRef(editableProducts);
+  editableProductsRef.current = editableProducts;
+
   const handlePriceChange = React.useCallback(async (id: string, field: 'priceRetail' | 'priceMicro' | 'priceRestaurant', newValue: number) => {
     try {
-      let currentProduct: EditableProduct | undefined;
-      
-      setEditableProducts(prev => {
-        currentProduct = prev.find(p => p.id === id);
-        return prev.map(p => p.id === id ? { ...p, [field]: newValue } : p);
-      });
-      
-      // Delay slightly if state hasn't updated yet, but we already have currentProduct synchronously
+      const currentProduct = editableProductsRef.current.find(p => p.id === id);
       if (!currentProduct) return;
-      
+
+      setEditableProducts(prev => prev.map(p => p.id === id ? { ...p, [field]: newValue } : p));
+
       const newPrices = {
         retail: field === 'priceRetail' ? newValue : currentProduct.priceRetail,
         micro: field === 'priceMicro' ? newValue : currentProduct.priceMicro,
@@ -322,14 +329,20 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
             type="text"
             placeholder="Buscar producto..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
             className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:border-[#FFCC00] focus:ring-1 focus:ring-[#FFCC00] bg-white"
           />
         </div>
         <div className="relative">
           <select
             value={selectedCategory || ''}
-            onChange={(e) => setSelectedCategory(e.target.value || null)}
+            onChange={(e) => {
+              setSelectedCategory(e.target.value || null);
+              setCurrentPage(1);
+            }}
             className="appearance-none bg-white border border-gray-200 rounded-lg pl-4 pr-10 py-2.5 font-medium text-slate-700 outline-none focus:border-[#FFCC00] cursor-pointer"
           >
             <option value="">Todas las categorías</option>
@@ -339,6 +352,20 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
           </select>
           <ChevronDown className="h-4 w-4 absolute right-3 top-3 text-gray-400 pointer-events-none" />
         </div>
+        <select
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+            setCurrentPage(1);
+          }}
+          aria-label="Filas por página"
+          className="bg-white border border-gray-200 rounded-lg px-3 py-2.5 font-medium text-slate-700 outline-none focus:border-[#FFCC00] cursor-pointer text-sm"
+        >
+          <option value={25}>25 / pág</option>
+          <option value={50}>50 / pág</option>
+          <option value={100}>100 / pág</option>
+          <option value={9999}>Todos</option>
+        </select>
         <span className="text-sm font-bold text-gray-400 whitespace-nowrap">
           {filteredProducts.length} productos
         </span>
@@ -359,7 +386,7 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
                   </tr>
                </thead>
                <tbody className="divide-y divide-gray-100">
-                  {filteredProducts.map(p => (
+                  {paginatedProducts.map(p => (
                      <ProductRow
                        key={p.id}
                        product={p}
@@ -371,6 +398,34 @@ export default function PricingClient({ initialProducts }: { initialProducts: Pr
                </tbody>
             </table>
          </div>
+         {totalPages > 1 && (
+           <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border-t border-gray-200 text-sm">
+             <span className="text-gray-500 font-medium">
+               Mostrando {(safePage - 1) * pageSize + 1}–{Math.min(safePage * pageSize, filteredProducts.length)} de {filteredProducts.length}
+             </span>
+             <div className="flex items-center gap-2">
+               <button
+                 type="button"
+                 disabled={safePage <= 1}
+                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                 className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-slate-700 disabled:opacity-40 hover:bg-slate-100 transition-colors"
+               >
+                 Anterior
+               </button>
+               <span className="font-bold text-slate-700 px-2">
+                 Página {safePage} de {totalPages}
+               </span>
+               <button
+                 type="button"
+                 disabled={safePage >= totalPages}
+                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                 className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-slate-700 disabled:opacity-40 hover:bg-slate-100 transition-colors"
+               >
+                 Siguiente
+               </button>
+             </div>
+           </div>
+         )}
       </div>
     </div>
   );

@@ -96,6 +96,7 @@ export default function KitsClient({
   );
   const [editingKitId, setEditingKitId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [visibleCatalogCount, setVisibleCatalogCount] = useState(24);
   const [kitName, setKitName] = useState('Kit Chévere de la Semana');
   const [kitSlug, setKitSlug] = useState('kit-chevere-de-la-semana');
   const [kitPrice, setKitPrice] = useState('45000');
@@ -124,7 +125,14 @@ export default function KitsClient({
   }, []);
 
   const activeKits = kits.filter(k => k.status === 'active');
-  const filteredProducts = initialProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredProducts = React.useMemo(
+    () => initialProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())),
+    [initialProducts, searchTerm]
+  );
+  const visibleProducts = React.useMemo(
+    () => filteredProducts.slice(0, visibleCatalogCount),
+    [filteredProducts, visibleCatalogCount]
+  );
 
   const handleDragStart = (e: React.DragEvent, product: Product) => {
     e.dataTransfer.setData('application/json', JSON.stringify(product));
@@ -669,12 +677,15 @@ export default function KitsClient({
                  type="text" 
                  placeholder="Buscar producto para agregar..." 
                  value={searchTerm}
-                 onChange={(e) => setSearchTerm(e.target.value)}
+                 onChange={(e) => {
+                   setSearchTerm(e.target.value);
+                   setVisibleCatalogCount(24);
+                 }}
                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs outline-none focus:border-red-600 bg-white font-medium" 
                />
             </div>
             <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-slate-50/50">
-               {filteredProducts.map(p => (
+               {visibleProducts.map(p => (
                   <div 
                     key={p.id} 
                     draggable 
@@ -686,7 +697,7 @@ export default function KitsClient({
                      <div className="flex items-center gap-2.5 min-w-0">
                        <div className="h-9 w-9 rounded-lg bg-slate-100 overflow-hidden shrink-0">
                          {p.imageUrl ? (
-                           <img src={p.imageUrl} alt={p.name} className="h-full w-full object-cover" />
+                           <img src={p.imageUrl} alt={p.name} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                          ) : (
                            <div className="h-full w-full flex items-center justify-center text-xs">🧺</div>
                          )}
@@ -704,6 +715,15 @@ export default function KitsClient({
                      </button>
                   </div>
                ))}
+               {filteredProducts.length > visibleCatalogCount && (
+                 <button
+                   type="button"
+                   onClick={() => setVisibleCatalogCount(c => c + 30)}
+                   className="w-full py-2.5 text-xs font-bold text-slate-600 bg-white border border-gray-200 rounded-xl hover:bg-slate-100 transition-colors"
+                 >
+                   Mostrar más ({filteredProducts.length - visibleCatalogCount} restantes)
+                 </button>
+               )}
             </div>
          </div>
 
@@ -879,6 +899,8 @@ export default function KitsClient({
                              <img
                                src={item.url}
                                alt={item.name}
+                               loading="lazy"
+                               decoding="async"
                                className="w-full h-full object-contain"
                              />
                              <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent text-white text-[10px] font-bold px-1.5 py-1 truncate">
@@ -926,7 +948,7 @@ export default function KitsClient({
                         <GripVertical className="h-4 w-4 text-gray-300 cursor-grab" />
                         <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
                            {item.product.imageUrl ? (
-                             <img src={item.product.imageUrl} alt={item.product.name} className="w-full h-full object-cover" />
+                             <img src={item.product.imageUrl} alt={item.product.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                            ) : (
                              <span className="text-sm">📦</span>
                            )}
